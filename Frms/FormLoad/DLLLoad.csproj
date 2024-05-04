@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="DevExpress.Win.Design" Version="23.2.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Lib\Lib.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="UCGrid">
+      <HintPath>C:\EPIC\Ctrls\UCGrid.dll</HintPath>
+    </Reference>
+    <Reference Include="UCPanel">
+      <HintPath>C:\EPIC\Ctrls\UCPanel.dll</HintPath>
+    </Reference>
+    <Reference Include="UCTextBox">
+      <HintPath>C:\EPIC\Ctrls\UCTextBox.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>
