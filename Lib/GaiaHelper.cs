@@ -218,7 +218,6 @@ namespace Lib
             Lib.Common.gMsg = $"Query : {sql}";
         }
         #endregion
-
     }
     public class BoolCharTypeHandler : SqlMapper.ITypeHandler
     {

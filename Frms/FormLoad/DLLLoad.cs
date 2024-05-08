@@ -1,9 +1,8 @@
-﻿using DevExpress.Mvvm.POCO;
-using Repo;
+﻿using Repo;
 using System.Reflection;
 using Lib;
-using System.Formats.Tar;
 using System.IO;
+
 namespace Frms
 {
     public partial class DLLLoad : UserControl
@@ -23,7 +22,7 @@ namespace Frms
             openFileDialog1.Filter = "DLL Files|*.dll|EXE Files|*.exe";
             if (string.IsNullOrEmpty(GenFunc.GetIni("DLLPath")))
             {
-                openFileDialog1.InitialDirectory = @"C:\"; 
+                openFileDialog1.InitialDirectory = @"C:\";
             }
             else
             {
@@ -106,7 +105,7 @@ namespace Frms
                             //    Show_chk = (item.Visible == true) ? "1" : "0",
                             //    Edit_chk = (item.Enabled == true) ? "1" : "0",
                             //    Wkset_id = item.Name,
-                            //    Wkset_ty = repoCtrl.FindWorkSetType(item.GetType().Name)
+                            //    Wkset_ty = repoCtrls.FindWorkSetType(item.GetType().Name)
                             //});
                             break;
                         case "UCField":
@@ -122,7 +121,7 @@ namespace Frms
                             //    Show_chk = (item.Visible == true) ? "1" : "0",
                             //    Edit_chk = (item.Enabled == true) ? "1" : "0",
                             //    Wkset_id = item.Name,
-                            //    Wkset_ty = repoCtrl.FindWorkSetType(item.GetType().Name)
+                            //    Wkset_ty = repoCtrls.FindWorkSetType(item.GetType().Name)
                             //});
                             break;
                         case "UCGroup":
@@ -137,8 +136,8 @@ namespace Frms
                             //    TitleAlign = DevExpress.Utils.HorzAlignment.Default,
                             //    Show_chk = (item.Visible == true) ? "1" : "0",
                             //    Edit_chk = (item.Enabled == true) ? "1" : "0",
-                            //    Wkset_id = repoCtrl.FindWorkSetType(item.GetType().Name),
-                            //    Wkset_ty = repoCtrl.FindWorkSetType(item.GetType().Name)
+                            //    Wkset_id = repoCtrls.FindWorkSetType(item.GetType().Name),
+                            //    Wkset_ty = repoCtrls.FindWorkSetType(item.GetType().Name)
                             //});
                             break;
                         case "UCPanel":
@@ -153,8 +152,8 @@ namespace Frms
                             //    TitleAlign = DevExpress.Utils.HorzAlignment.Default,
                             //    Show_chk = (item.Visible == true) ? "1" : "0",
                             //    Edit_chk = (item.Enabled == true) ? "1" : "0",
-                            //    Wkset_id = repoCtrl.FindWorkSetType(item.GetType().Name),
-                            //    Wkset_ty = repoCtrl.FindWorkSetType(item.GetType().Name)
+                            //    Wkset_id = repoCtrls.FindWorkSetType(item.GetType().Name),
+                            //    Wkset_ty = repoCtrls.FindWorkSetType(item.GetType().Name)
                             //});
                             GetChildControls(item, userCtrl);
                             break;
@@ -175,8 +174,8 @@ namespace Frms
                             //    TitleAlign = item.TitleAlignment,
                             //    Show_chk = (item.Visible == true) ? "1" : "0",
                             //    Edit_chk = (item.Enabled == true) ? "1" : "0",
-                            //    Wkset_id = repoCtrl.FindWorkSetType(item.GetType().Name),
-                            //    Wkset_ty = repoCtrl.FindWorkSetType(item.GetType().Name)
+                            //    Wkset_id = repoCtrls.FindWorkSetType(item.GetType().Name),
+                            //    Wkset_ty = repoCtrls.FindWorkSetType(item.GetType().Name)
                             //});
                             break;
                     }
@@ -185,9 +184,14 @@ namespace Frms
                 {
 
                     Common.gMsg = $"Case2 : {item.GetType().Name}/{item.Name}";
-                    GetChildControls(item,userCtrl);
+                    GetChildControls(item, userCtrl);
                 }
             }
+        }
+
+        private void ucPanel2_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }

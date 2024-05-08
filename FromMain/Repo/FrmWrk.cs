@@ -6,34 +6,37 @@ namespace Repo
 {
     public class FrmWrk : MdlBase
     {
-        string _FrwId;
+        private string _FrwId;
         public string FrwId
         {
             get => _FrwId;
             set => Set(ref _FrwId, value);
         }
-        string _FrwNm;
+
+        private string _FrwNm;
         public string FrwNm
         {
             get => _FrwNm;
             set => Set(ref _FrwNm, value);
         }
-        string _Memo;
+
+        private string _Memo;
         public string Memo
         {
             get => _Memo;
             set => Set(ref _Memo, value);
         }
-        string _Ver;
+
+        private string _Ver;
         public string Ver
         {
             get => _Ver;
             set => Set(ref _Ver, value);
         }
-        string _PId;
+
+        private string _PId;
         public string PId
         {
-
             get => _PId;
             set => Set(ref _PId, value);
         }
@@ -85,7 +88,8 @@ delete
         public List<FrmWrk> GetAll()
         {
             string sql = @"
-select a.FrwId, a.FrwNm, a.Memo, a.Ver, a.PId
+select a.FrwId, a.FrwNm, a.Memo, a.Ver, a.PId,
+       a.CId, a.CDt, a.MId, a.Mdt
   from FRWMST a
 ";
             using (var db = new GaiaHelper())
@@ -97,7 +101,8 @@ select a.FrwId, a.FrwNm, a.Memo, a.Ver, a.PId
         public FrmWrk GetById(string id)
         {
             string sql = @"
-select a.FrwId, a.FrwNm, a.Memo, a.Ver, a.PId
+select a.FrwId, a.FrwNm, a.Memo, a.Ver, a.PId,
+       a.CId, a.CDt, a.MId, a.Mdt
   from FRWMST a
  where 1=1
    and a.FrwId = @FrwId
@@ -113,8 +118,7 @@ select a.FrwId, a.FrwNm, a.Memo, a.Ver, a.PId
         {
             string sql = @"
 update a
-   set FrwId= @FrwId,
-       FrwNm= @FrwNm,
+   set FrwNm= @FrwNm,
        Memo= @Memo,
        Ver= @Ver,
        PId= @PId,
@@ -122,7 +126,7 @@ update a
        Mdt= getdate()
   from FRWMST a
  where 1=1
-   and FrwId = @FrwId
+   and FrwId = @FrwId_old
 ";
             using (var db = new GaiaHelper())
             {

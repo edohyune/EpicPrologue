@@ -33,7 +33,7 @@
             // PRJMST
             // 
             Name = "PRJMST";
-            Size = new Size(917, 497);
+            Size = new Size(729, 387);
             ResumeLayout(false);
         }
 

@@ -9,39 +9,51 @@ namespace Repo
 {
     public class UsrMst : MdlBase
     {
-        string _UsrId;
+        private int _Id;
+        public int Id
+        {
+            get => _Id;
+            set => Set(ref _Id, value);
+        }
+
+        private string _UsrId;
         public string UsrId
         {
             get => _UsrId;
             set => Set(ref _UsrId, value);
         }
-        string _UsrNm;
+
+        private string _UsrNm;
         public string UsrNm
         {
             get => _UsrNm;
             set => Set(ref _UsrNm, value);
         }
-        string _Pwd;
+
+        private string _Pwd;
         public string Pwd
         {
             get => _Pwd;
             set => Set(ref _Pwd, value);
         }
-        string _Cls;
+
+        private string _Cls;
         public string Cls
         {
             get => _Cls;
             set => Set(ref _Cls, value);
         }
+
     }
     public interface IUsrRepo
     {
-        UsrMst GetById(string uid);
+        UsrMst GetById(int uid);
+        UsrMst GetByUsrId(string uid);
         UsrMst CheckSignIn(string id, string pwd);
         List<UsrMst> GetAll();
         void Add(UsrMst usr);
         void Update(UsrMst usr);
-        void Delete(string uid);
+        void Delete(int uid);
     }
     public class UsrRepo : IUsrRepo
     {
@@ -49,8 +61,10 @@ namespace Repo
         {
             string sql = @"
 insert into USRMST
-       (UsrId, UsrNm, Pwd, Cls)
-select @UsrId, @UsrNm, @Pwd, @Cls
+      (UsrId, UsrNm, Pwd, Cls,
+       CId, CDt, MId, MDt)
+select @UsrId, @UsrNm, @Pwd, @Cls,
+       @CId, getdate(), @MId, getdate()
 ";
             using (var db = new GaiaHelper())
             {
@@ -61,7 +75,8 @@ select @UsrId, @UsrNm, @Pwd, @Cls
         public UsrMst CheckSignIn(string id, string pwd)
         {
             string sql = @"
-select a.UsrId, a.UsrNm, a.Pwd, a.Cls
+select a.Id, a.UsrId, a.UsrNm, a.Pwd, a.Cls,
+       a.CId, a.CDt, a.MId, a.MDt
   from USRMST a
  where 1=1
    and a.UsrId = @UsrId
@@ -74,24 +89,25 @@ select a.UsrId, a.UsrNm, a.Pwd, a.Cls
             }
         }
 
-        public void Delete(string uid)
+        public void Delete(int uid)
         {
             string sql = @"
 delete
   from USRMST
  where 1=1
-   and UsrId = @UsrId
+   and Id = @id
 ";
             using (var db = new GaiaHelper())
             {
-                db.OpenExecute(sql, new { UsrId = uid });
+                db.OpenExecute(sql, new { id = uid });
             }
         }
 
         public List<UsrMst> GetAll()
         {
             string sql = @"
-select a.UsrId, a.UsrNm, a.Pwd, a.Cls
+select a.Id, a.UsrId, a.UsrNm, a.Pwd, a.Cls,
+       a.CId, a.CDt, a.MId, a.MDt
   from USRMST a
 ";
             using (var db = new GaiaHelper())
@@ -100,10 +116,31 @@ select a.UsrId, a.UsrNm, a.Pwd, a.Cls
             }
         }
 
-        public UsrMst GetById(string uid)
+        public UsrMst GetById(int uid)
         {
             string sql = @"
-select a.UsrId, a.UsrNm, a.Pwd, a.Cls
+select a.Id, a.UsrId, a.UsrNm, a.Pwd, a.Cls,
+       a.CId, a.CDt, a.MId, a.MDt
+  from USRMST a
+ where 1=1
+   and a.Id = @Id
+";
+            using (var db = new GaiaHelper())
+            {
+                var result = db.Query<UsrMst>(sql, new { Id = uid }).FirstOrDefault();
+                if (result == null)
+                {
+                    throw new KeyNotFoundException($"A record with the code {uid} was not found.");
+                }
+                return result;
+            }
+        }
+
+        public UsrMst GetByUsrId(string uid)
+        {
+            string sql = @"
+select a.Id, a.UsrId, a.UsrNm, a.Pwd, a.Cls,
+       a.CId, a.CDt, a.MId, a.MDt
   from USRMST a
  where 1=1
    and a.UsrId = @UId
@@ -123,13 +160,16 @@ select a.UsrId, a.UsrNm, a.Pwd, a.Cls
         {
             string sql = @"
 update a
-   set UsrId= @UsrId,
+   set Id = @Id,
+       UsrId= @UsrId,
        UsrNm= @UsrNm,
        Pwd= @Pwd,
-       Cls= @Cls
+       Cls= @Cls,
+       MId= @MId,
+       MDt= getdate()
   from USRMST a
  where 1=1
-   and UsrId = @UsrId_old
+   and Id = @Id
 ";
             using (var db = new GaiaHelper())
             {

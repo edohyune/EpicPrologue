@@ -1,5 +1,5 @@
 ﻿using Lib;
-using Ctrl;
+using Ctrls;
 
 namespace Frms
 {

@@ -32,13 +32,13 @@
             xtraTabPage5 = new DevExpress.XtraTab.XtraTabPage();
             xtraTabPage1 = new DevExpress.XtraTab.XtraTabPage();
             xtraTabPage2 = new DevExpress.XtraTab.XtraTabPage();
-            ucSplit1 = new Ctrl.UCSplit();
-            ucSplit2 = new Ctrl.UCSplit();
-            ucPanel1 = new Ctrl.UCPanel();
-            ucPanel2 = new Ctrl.UCPanel();
-            g110 = new Ctrl.UCGrid();
-            ucPanel3 = new Ctrl.UCPanel();
-            ucGrid1 = new Ctrl.UCGrid();
+            ucSplit1 = new Ctrls.UCSplit();
+            ucSplit2 = new Ctrls.UCSplit();
+            ucPanel1 = new Ctrls.UCPanel();
+            ucPanel2 = new Ctrls.UCPanel();
+            g110 = new Ctrls.UCGrid();
+            ucPanel3 = new Ctrls.UCPanel();
+            ucGrid1 = new Ctrls.UCGrid();
             xtraTabPage3 = new DevExpress.XtraTab.XtraTabPage();
             xtraTabPage4 = new DevExpress.XtraTab.XtraTabPage();
             ((System.ComponentModel.ISupportInitialize)xtraTabControl1).BeginInit();
@@ -233,12 +233,12 @@
         private DevExpress.XtraTab.XtraTabPage xtraTabPage2;
         private DevExpress.XtraTab.XtraTabPage xtraTabPage3;
         private DevExpress.XtraTab.XtraTabPage xtraTabPage4;
-        private Ctrl.UCSplit ucSplit1;
-        private Ctrl.UCSplit ucSplit2;
-        private Ctrl.UCPanel ucPanel1;
-        private Ctrl.UCPanel ucPanel2;
-        private Ctrl.UCPanel ucPanel3;
-        private Ctrl.UCGrid g110;
-        private Ctrl.UCGrid ucGrid1;
+        private Ctrls.UCSplit ucSplit1;
+        private Ctrls.UCSplit ucSplit2;
+        private Ctrls.UCPanel ucPanel1;
+        private Ctrls.UCPanel ucPanel2;
+        private Ctrls.UCPanel ucPanel3;
+        private Ctrls.UCGrid g110;
+        private Ctrls.UCGrid ucGrid1;
     }
 }

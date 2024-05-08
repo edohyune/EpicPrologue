@@ -9,70 +9,86 @@ namespace Repo
 {
     public class FrmMst : MdlBase
     {
-        string _Id;
-        public string Id
+        private string _FrmId;
+        public string FrmId
         {
-            get => _Id;
-            set => Set(ref _Id, value);
+            get => _FrmId;
+            set => Set(ref _FrmId, value);
         }
-        string _Nm;
-        public string Nm
+
+        private string _FrmNm;
+        public string FrmNm
         {
-            get => _Nm;
-            set => Set(ref _Nm, value);
+            get => _FrmNm;
+            set => Set(ref _FrmNm, value);
         }
-        string _Memo;
-        public string Memo
+
+        private int _OwnId;
+        public int OwnId
         {
-            get => _Memo;
-            set => Set(ref _Memo, value);
+            get => _OwnId;
+            set => Set(ref _OwnId, value);
         }
-        string _FrmWrkId;
-        public string FrmWrkId
+
+        private string _FrwId;
+        public string FrwId
         {
-            get => _FrmWrkId;
-            set => Set(ref _FrmWrkId, value);
+            get => _FrwId;
+            set => Set(ref _FrwId, value);
         }
-        FrmType _FrmTy;
-        public FrmType FrmTy
-        {
-            get => _FrmTy;
-            set => Set(ref _FrmTy, value);
-        }
-        string _FilePath;
+
+        private string _FilePath;
         public string FilePath
         {
             get => _FilePath;
             set => Set(ref _FilePath, value);
         }
-        string _FileNm;
+
+        private string _FileNm;
         public string FileNm
         {
             get => _FileNm;
             set => Set(ref _FileNm, value);
         }
-        string _NmSpace;
+
+        private string _NmSpace;
         public string NmSpace
         {
             get => _NmSpace;
             set => Set(ref _NmSpace, value);
         }
-        string _UsrId;
-        public string UsrId
+
+        private bool _FldYn;
+        public bool FldYn
         {
-            get => _UsrId;
-            set => Set(ref _UsrId, value);
+            get => _FldYn;
+            set => Set(ref _FldYn, value);
         }
+
+        private string _PId;
+        public string PId
+        {
+            get => _PId;
+            set => Set(ref _PId, value);
+        }
+
+        private string _Memo;
+        public string Memo
+        {
+            get => _Memo;
+            set => Set(ref _Memo, value);
+        }
+
         public override string ToString()
         {
-            return Nm;
+            return FrmNm;
         }
     }
     public interface IFrmRepo
     {
         List<FrmMst> GetByFrmWrkId(string frmWrkId);
         //List<FrmMst> GetByUsrId(int usrId);
-        List<FrmMst> GetByFrmTy(FrmType frmTy);
+        //List<FrmMst> GetByFrmTy(FrmType frmTy);
         List<FrmMst> GetDevFrmByUsrId(int usrId);
         FrmMst GetById(string id);
         List<FrmMst> GetAll();
@@ -86,10 +102,12 @@ namespace Repo
         {
             string sql = @"
 insert into FRMMST
-      (Id, Nm, Memo, FrmWrkId, FilePath,
-       FileNm, NmSpace, UsrId)
-select @Id, @Nm, @Memo, @FrmWrkId, @FilePath,
-       @FileNm, @NmSpace, @UsrId
+      (FrmId, FrmNm, OwnId, FrwId, FilePath,
+       FileNm, NmSpace, FldYn, PId, Memo,
+       CId, CDt, MId, MDt)
+select @FrmId, @FrmNm, @OwnId, @FrwId, @FilePath,
+       @FileNm, @NmSpace, @FldYn, @PId, @Memo,
+       @CId, getdate(), @MId, getdate()
 ";
             using (var db = new GaiaHelper())
             {
@@ -103,56 +121,57 @@ select @Id, @Nm, @Memo, @FrmWrkId, @FilePath,
 delete
   from FRMMST
  where 1=1
-   and Id = @Id
+   and FrmId = @FrmId
 ";
             using (var db = new GaiaHelper())
             {
-                db.OpenExecute(sql, new { Id = id });
+                db.OpenExecute(sql, new { FrmId = id });
             }
         }
 
         public List<FrmMst> GetAll()
         {
             string sql = @"
-select a.Id, a.Nm, a.Memo, a.FrmWrkId, a.FilePath,
-       a.FileNm, a.NmSpace, a.UsrId
+select a.FrmId, a.FrmNm, a.OwnId, a.FrwId, a.FilePath,
+       a.FileNm, a.NmSpace, a.FldYn, a.PId, a.Memo,
+       a.CId, a.CDt, a.MId, a.MDt
   from FRMMST a
- where 1=1
 ";
             using (var db = new GaiaHelper())
             {
                 return db.Query<FrmMst>(sql).ToList();
             }
         }
-
-        public List<FrmMst> GetByFrmTy(FrmType frmTy)
-        {
-            string sql = @"
-select a.Id, a.Nm, a.Memo, a.FrmWrkId, a.FilePath,
-       a.FileNm, a.NmSpace, a.UsrId
-  from FRMMST a
- where 1=1
-   and a.FrmTy = @frmTy
-";
-            using (var db = new GaiaHelper())
-            {
-                var result = db.Query<FrmMst>(sql, new { FrmTy = frmTy.ToString() }).ToList();
-                return result;
-            }
-        }
+        
+//        public List<FrmMst> GetByFrmTy(FrmType frmTy)
+//        {
+//            string sql = @"
+//select a.Id, a.Nm, a.Memo, a.FrmWrkId, a.FilePath,
+//       a.FileNm, a.NmSpace, a.UsrId
+//  from FRMMST a
+// where 1=1
+//   and a.FrmTy = @frmTy
+//";
+//            using (var db = new GaiaHelper())
+//            {
+//                var result = db.Query<FrmMst>(sql, new { FrmTy = frmTy.ToString() }).ToList();
+//                return result;
+//            }
+//        }
 
         public List<FrmMst> GetByFrmWrkId(string frmWrkId)
         {
             string sql = @"
-select a.Id, a.Nm, a.Memo, a.FrmWrkId, a.FilePath,
-       a.FileNm, a.NmSpace, a.UsrId
+select a.FrmId, a.FrmNm, a.OwnId, a.FrwId, a.FilePath,
+       a.FileNm, a.NmSpace, a.FldYn, a.PId, a.Memo,
+       a.CId, a.CDt, a.MId, a.MDt
   from FRMMST a
  where 1=1
-   and a.FrmWrkId = @FrmWrkId
+   and a.FrwId = @FrwId
 ";
             using (var db = new GaiaHelper())
             {
-                var result = db.Query<FrmMst>(sql, new { FrmWrkId = frmWrkId }).ToList();
+                var result = db.Query<FrmMst>(sql, new { FrwId = frmWrkId }).ToList();
                 return result;
             }
         }
@@ -160,15 +179,16 @@ select a.Id, a.Nm, a.Memo, a.FrmWrkId, a.FilePath,
         public FrmMst GetById(string id)
         {
             string sql = @"
-select a.Id, a.Nm, a.Memo, a.FrmWrkId, a.FilePath,
-       a.FileNm, a.NmSpace, a.UsrId
+select a.FrmId, a.FrmNm, a.OwnId, a.FrwId, a.FilePath,
+       a.FileNm, a.NmSpace, a.FldYn, a.PId, a.Memo,
+       a.CId, a.CDt, a.MId, a.MDt
   from FRMMST a
  where 1=1
-   and a.Id = @Id
+   and a.FrmId = @FrmId
 ";
             using (var db = new GaiaHelper())
             {
-                var result = db.Query<FrmMst>(sql, new { Id = id }).FirstOrDefault();
+                var result = db.Query<FrmMst>(sql, new { FrmId = id }).FirstOrDefault();
                 return result;
             }
         }
@@ -192,16 +212,16 @@ select a.Id, a.Nm, a.Memo, a.FrmWrkId, a.FilePath,
         public List<FrmMst> GetDevFrmByUsrId(int usrId)
         {
             string sql = @"
-select a.Id, a.Nm, a.Memo, a.FrmWrkId, a.FilePath,
-       a.FileNm, a.NmSpace, a.UsrId
+select a.FrmId, a.FrmNm, a.OwnId, a.FrwId, a.FilePath,
+       a.FileNm, a.NmSpace, a.FldYn, a.PId, a.Memo,
+       a.CId, a.CDt, a.MId, a.MDt
   from FRMMST a
  where 1=1
-   and a.UsrId = @UId
-   and a.FrmTy = 'Development'
+   and a.OwnId = @OwnId
 ";
             using (var db = new GaiaHelper())
             {
-                var result = db.Query<FrmMst>(sql, new { UId = usrId }).ToList();
+                var result = db.Query<FrmMst>(sql, new { OwnId = usrId }).ToList();
                 return result;
             }
         }
@@ -210,17 +230,23 @@ select a.Id, a.Nm, a.Memo, a.FrmWrkId, a.FilePath,
         {
             string sql = @"
 update a
-   set Id= @Id,
-       Nm= @Nm,
-       Memo= @Memo,
-       FrmWrkId= @FrmWrkId,
+   set FrmId= @FrmId,
+       FrmNm= @FrmNm,
+       OwnId= @OwnId,
+       FrwId= @FrwId,
        FilePath= @FilePath,
        FileNm= @FileNm,
        NmSpace= @NmSpace,
-       UsrId= @UsrId
+       FldYn= @FldYn,
+       PId= @PId,
+       Memo= @Memo,
+       CId= @CId,
+       CDt= @CDt,
+       MId= @MId,
+       MDt= @MDt
   from FRMMST a
  where 1=1
-   and Id = @Id_old
+   and FrmId = @FrmId_old
 ";
             using (var db = new GaiaHelper())
             {

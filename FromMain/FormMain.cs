@@ -87,7 +87,7 @@ namespace GAIA
             List<FrmMst> frms = new FrmRepo().GetByFrmWrkId(Common.gFrameWorkId);
             foreach (var frm in frms)
             {
-                menuCtrl.Items.Add(new IdObject {Txt = frm.Nm, Val=frm });
+                menuCtrl.Items.Add(new IdObject {Txt = frm.FrmNm, Val=frm });
             }
             menuCtrl.DisplayMember = "Txt";
             menuCtrl.ValueMember = "Val";
@@ -201,6 +201,8 @@ namespace GAIA
 
             string frmFullPath = $"{frm.FilePath}\\{frm.FileNm}"; //@"C:\path\to\your\file.txt";
 
+        
+
             if (File.Exists(frmFullPath))
             {
                 Assembly assmbly = AppDomain.CurrentDomain.Load(File.ReadAllBytes(frmFullPath));
@@ -213,8 +215,8 @@ namespace GAIA
                 Form fb = new Form();
                 fb.Controls.Add(ucform);
                 ucform.Dock = System.Windows.Forms.DockStyle.Fill;
-                fb.Name = frm.Nm;
-                fb.Text = frm.Nm;
+                fb.Name = frm.FrmNm;
+                fb.Text = frm.FrmNm;
                 fb.MdiParent = this;
 
                 fb.Show();

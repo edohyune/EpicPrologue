@@ -6,6 +6,17 @@ using System.Threading.Tasks;
 
 namespace Lib
 {
+    public class IdNm
+    {
+        public string Txt { get; set; }
+        public object Val { get; set; }
+
+        public override string ToString()
+        {
+            return Txt;
+        }
+    }
+
     public static class GenFunc
     {
         public static void SetIni(string key, string value = null)
@@ -78,6 +89,13 @@ namespace Lib
 
             // 설정 이름에 해당하는 값이 없으면 null을 반환
             return null;
+        }
+
+        //문자열 함수 
+        public static string GetLastSubstring(string input, char delimiter)
+        {
+            string[] parts = input.Split(delimiter);
+            return parts[^1]; // C# 8.0 이상에서 사용 가능한 인덱스 from end 연산자
         }
     }
 }

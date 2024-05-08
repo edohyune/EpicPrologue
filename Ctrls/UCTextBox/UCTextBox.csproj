@@ -5,14 +5,19 @@
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>Ctrls</RootNamespace>
   </PropertyGroup>
   
   <ItemGroup>
-    <ProjectReference Include="..\..\Ctrls\UCGrid\UCGrid.csproj" />
-    <ProjectReference Include="..\..\Ctrls\UCPanel\UCPanel.csproj" />
-    <ProjectReference Include="..\..\Ctrls\UCTextBox\UCTextBox.csproj" />
+    <PackageReference Include="devexpress.win.navigation" Version="23.2.3" />
+  </ItemGroup>
+  
+  <ItemGroup>
     <ProjectReference Include="..\..\Lib\Lib.csproj" />
   </ItemGroup>
-
+  
+  <ItemGroup>
+    <Folder Include="Repo\" />
+  </ItemGroup>
 
 </Project>
