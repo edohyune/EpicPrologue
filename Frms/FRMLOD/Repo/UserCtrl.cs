@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Frms.Repo
+namespace Repo
 {
     public class UserCtrl : MdlBase
     {

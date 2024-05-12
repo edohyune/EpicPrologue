@@ -19,6 +19,7 @@
     <ProjectReference Include="..\Ctrls\UCField\UCField.csproj" />
     <ProjectReference Include="..\Ctrls\UCGrid\UCGrid.csproj" />
     <ProjectReference Include="..\Ctrls\UCPanel\UCPanel.csproj" />
+    <ProjectReference Include="..\Ctrls\UCSplit\UCSplit.csproj" />
     <ProjectReference Include="..\Ctrls\UCTextBox\UCTextBox.csproj" />
     <ProjectReference Include="..\Lib\Lib.csproj" />
   </ItemGroup>

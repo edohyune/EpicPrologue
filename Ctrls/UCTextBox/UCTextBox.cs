@@ -194,12 +194,19 @@ namespace Ctrls
         public event delEventButtonClick UCButtonClick;
         private void textCtrl_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
         {
-            string strText = string.Empty;
-            strText = textCtrl.Text;
-            if (UCButtonClick != null)
+            try
             {
-                UCButtonClick(this, textCtrl);
+                string strText = string.Empty;
+                strText = textCtrl.Text;
+                if (UCButtonClick != null)
+                {
+                    UCButtonClick(this, textCtrl);
+                }
             }
+            catch (Exception)
+            {
+            }
+
         }
         #endregion
 

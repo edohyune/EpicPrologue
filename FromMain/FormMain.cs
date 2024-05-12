@@ -57,7 +57,10 @@ namespace GAIA
             //xtraTabbedMdiManager.Pages.Count 사용 못하여 예외처리함
             try
             {
-                Common.gMsg= $"{xtraTabbedMdiManager.SelectedPage.MdiChild.Text} ({xtraTabbedMdiManager.SelectedPage.MdiChild.Name})";
+                if (xtraTabbedMdiManager.Pages.Count>1)
+                {
+                    Common.gMsg = $"{xtraTabbedMdiManager.SelectedPage.MdiChild.Text} ({xtraTabbedMdiManager.SelectedPage.MdiChild.Name})";
+                }
                 //this.barStaticItemForm.Caption = xtraTabbedMdiManager.SelectedPage.MdiChild.Text + "(" + xtraTabbedMdiManager.SelectedPage.MdiChild.Name + ")";
             }
             catch (Exception)
