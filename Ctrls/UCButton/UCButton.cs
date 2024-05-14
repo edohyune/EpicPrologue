@@ -1,28 +1,28 @@
-﻿namespace Ctrls
+﻿using DevExpress.Utils.DirectXPaint;
+
+namespace Ctrl
 {
-    public class UCPanel : DevExpress.XtraEditors.GroupControl
+    public class UCButton : DevExpress.XtraEditors.SimpleButton
     {
         private string sysCd { get; set; }
         private string frmId { get; set; }
         private string fldId { get; set; }
-        public DevExpress.XtraEditors.GroupControl panelCtrl { get; set; }
-        public UCPanel()
+
+        public DevExpress.XtraEditors.SimpleButton btnCtrl { get; set; }
+
+        public UCButton()
         {
-            panelCtrl = new DevExpress.XtraEditors.GroupControl();
+            btnCtrl = new DevExpress.XtraEditors.SimpleButton();
 
-            //panelCtrls.Appearance.BackColor = System.Drawing.Color.White;
-            //panelCtrls.Appearance.Options.UseBackColor = true;
-            //panelCtrls.AppearanceCaption.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold);
-            //panelCtrls.AppearanceCaption.Options.UseFont = true;
-            //panelCtrls.AppearanceCaption.Options.UseTextOptions = true;
-            //panelCtrls.AppearanceCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
-            //panelCtrls.AppearanceCaption.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Center
+            btnCtrl.Appearance.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            btnCtrl.Appearance.Options.UseFont = true;
+            btnCtrl.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.Simple;
 
-            panelCtrl.Text = "UCPanel";
-            HandleCreated += UCPanel_HandleCreated;
+            btnCtrl.Text = "UCButton";
+            HandleCreated += UCButton_HandleCreated;
         }
 
-        private void UCPanel_HandleCreated(object? sender, EventArgs e)
+        private void UCButton_HandleCreated(object? sender, EventArgs e)
         {
             sysCd = Lib.Common.gSysCd;
 
@@ -41,14 +41,16 @@
             if (sysCd != string.Empty)
             {
                 ResetCtrl();
+
             }
+
         }
 
         private void ResetCtrl()
         {
             try
             {
-                Lib.Common.gMsg = $"UCPanel : {sysCd}.{frmId}.{fldId}";
+                Lib.Common.gMsg = $"UCButton : {sysCd}.{frmId}.{fldId}";
                 using (var db = new Lib.GaiaHelper())
                 {
                     //var ucInfo = db.GetUc(new { sys = SysCode, frm = FrmID, ctrl = FldID }).SingleOrDefault();
@@ -65,8 +67,8 @@
                     //}
                 }
             }
-            catch (Exception ex) 
-            { 
+            catch (Exception ex)
+            {
                 Lib.Common.gMsg = $"Exception : {ex}";
             }
         }

@@ -13,19 +13,19 @@ namespace Lib
 
         //GAIA 개발자 - 모든 시스템의 프레임워크를 개발한다. 
         //프레임워크는 프로젝트별로 생성된다. 
-        public static string gId = string.Empty;           //로그인 ID
+        public static string gId = string.Empty;           //로그인 ID - varchar
+        public static int? gRegId = null;           //로그인 ID - int
         public static string gNm = string.Empty;           //로그인 이름
         public static string gCls = string.Empty;          //사용자 구분
 
         //EMAX용 프레임워크, Lao Goverment용 프레임워크 등
-        public static string gFrameWorkId = string.Empty;  //GAIS에서 생산하는 모든 프레임 워크
+        public static string gFrameWorkId = string.Empty;  //GAIA에서 생산하는 모든 프레임 워크
 
         //사용자의 환경설정 파일
         // 사용자 프로필 폴더의 경로를 동적으로 가져옵니다.
         public static string gUserProfilePath = string.Empty;
         public static string gIniFilePath = string.Empty;
-
-        
+                
         //public static string gSysNm = string.Empty;
 
         //public static string gEmpId = string.Empty;

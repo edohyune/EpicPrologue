@@ -58,6 +58,7 @@
             gvControls = new DevExpress.XtraGrid.Views.Grid.GridView();
             openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             ucField1 = new Ctrls.UCField();
+            ucButton1 = new Ctrl.UCButton();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
             splitContainer1.Panel2.SuspendLayout();
@@ -203,6 +204,7 @@
             // 
             // ucPanel3
             // 
+            ucPanel3.Controls.Add(ucButton1);
             ucPanel3.Controls.Add(txtChange);
             ucPanel3.Controls.Add(chkFld);
             ucPanel3.Controls.Add(txtNmSpace);
@@ -388,6 +390,15 @@
             // 
             ucField1.ChangedFlag = Lib.MdlState.Inserted;
             // 
+            // ucButton1
+            // 
+            ucButton1.Location = new System.Drawing.Point(484, 54);
+            ucButton1.Name = "ucButton1";
+            ucButton1.Size = new System.Drawing.Size(126, 21);
+            ucButton1.TabIndex = 12;
+            ucButton1.Text = "ReLoad Controller";
+            ucButton1.Click += ucButton1_Click;
+            // 
             // FRMLOD
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -450,5 +461,6 @@
         private DevExpress.XtraGrid.Views.Grid.GridView gvControls;
         private DevExpress.XtraEditors.CheckEdit chkFld;
         private Ctrls.UCTextBox txtChange;
+        private Ctrl.UCButton ucButton1;
     }
 }

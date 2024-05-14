@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Repo
+namespace Lib.Repo
 {
     public class FrmMst : MdlBase
     {

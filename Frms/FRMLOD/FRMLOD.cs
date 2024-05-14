@@ -1,6 +1,6 @@
 ﻿using DevExpress.XtraEditors;
-using Repo;
 using Lib;
+using Lib.Repo;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -13,8 +13,6 @@ namespace Frms
     [ToolboxItem(false)]
     public partial class FRMLOD : UserControl
     {
-        List<UserCtrl> userCtrls;
-
         public FRMLOD()
         {
             InitializeComponent();
@@ -30,15 +28,20 @@ namespace Frms
             var row = view.GetFocusedRow() as FrmMst;
             if (row == null) return;
 
+            SetFrmMstFreeForm(row);
+        }
+
+        private void SetFrmMstFreeForm(FrmMst row)
+        {
+            selectedFrmMst = row;
+            txtFilePath.Text = row.FilePath;
+            txtFileNm.Text = row.FileNm;
             txtFrmId.Text = row.FrmId;
             txtFrmNm.Text = row.FrmNm;
             txtOwnId.Text = row.OwnId.ToString();
             txtFrwId.Text = row.FrwId;
-            txtFilePath.Text = row.FilePath;
-            txtFileNm.Text = row.FileNm;
             txtNmSpace.Text = row.NmSpace;
             chkFld.Checked = row.FldYn;
-            txtChange.Text = MdlState.Updated.ToString();
         }
 
         //txtFrmId의 값이 변경되면 txtFrmId을 openGridControl(txtFrmId)로 gridControl을 오픈한다
@@ -55,8 +58,7 @@ namespace Frms
             frmctrls = new BindingList<FrmCtrl>(frmCtrlRepo.GetByFrm(frmId));
             gridControls.DataSource = frmctrls;
         }
-
-
+        FrmMst selectedFrmMst = new FrmMst();
         private void txtDllpath_UCButtonClick(object Sender, Control control)
         {
 
@@ -72,78 +74,79 @@ namespace Frms
             }
             openFileDialog1.ShowDialog();
 
-            //선택한 파일 정보읽기   
-            //strFilePath : D:\00_WorkSpace\EpicPrologue\Frms\FRMLOD\bin\Debug\net8.0-windows\FRMLOD.dll
-            //strFile : FRMLOD
-            //strExt : dll
-            //strFileExt : FRMLOD.dll
+            selectedFrmMst.FilePath = Path.GetDirectoryName(openFileDialog1.FileName);
+            selectedFrmMst.FileNm = openFileDialog1.SafeFileName;
+            selectedFrmMst.FrmId = selectedFrmMst.FileNm.Substring(0, selectedFrmMst.FileNm.Length - 4);
+            selectedFrmMst.OwnId = (int)Common.gRegId;
+            selectedFrmMst.FrwId = Common.gFrameWorkId;
+            selectedFrmMst.NmSpace = $"Frms.{selectedFrmMst.FrmId}";
 
-            string strFilePath = openFileDialog1.FileName;
-            string strFileExt = openFileDialog1.SafeFileName;
-            //string strExt = strFileExt.Substring(strFileExt.Length - 3, 3);
-            string strFile = strFileExt.Substring(0, strFileExt.Length - 4);
+            SetFrmMstFreeForm(selectedFrmMst);
 
-            GenFunc.SetIni("DLLPath", strFilePath);
+            GenFunc.SetIni("DLLPath", txtFilePath.Text);
 
+            LoadDll(selectedFrmMst);
+        }
+
+        private void LoadDll(FrmMst frm)
+        {
+            //frm.FilePath, frm.NmSpace의 값이 없으면 아무것도 하지 않는다.
+            if (string.IsNullOrEmpty(frm.FilePath) || string.IsNullOrEmpty(frm.NmSpace))
+            {
+                return;
+            }
             //선택한 파일 버전 정보읽기   
             UserControl ucform = null;
             try
             {
-                Assembly assembly = AppDomain.CurrentDomain.Load(File.ReadAllBytes(strFilePath));
-                //Assembly assembly = Assembly.LoadFile(strFile);
-                string strVersion = assembly.GetName().Version.ToString();
+                Assembly assembly = AppDomain.CurrentDomain.Load(File.ReadAllBytes(frm.FilePath));
+                //string strVersion = assembly.GetName().Version.ToString();
 
-                Common.gMsg = $"assembly.GetName().Name : {assembly.GetName().Name}";
-                //Common.gMsg = $"assembly.GetName().CultureName : {assembly.GetName().CultureName}";
-                Common.gMsg = $"assembly.GetName().FullName : {assembly.GetName().FullName}";
-
-                //Rule : Form NameSpace -> Frms.[strFile] 
-                var ty = assembly.GetType($"Frms.{strFile}");
+                var ty = assembly.GetType(frm.NmSpace);
                 ucform = (UserControl)Activator.CreateInstance(ty);
 
-                var ctrlInForms = CtrlsIncludeinForm(ucform, strFileExt);
+                var ctrlInForms = CtrlsIncludeinForm(ucform, frm.FileNm);
+                var ctrlMsts = new CtrlClsRepo();
 
-                using (var db = new Lib.GaiaHelper())
+                foreach (var item in ctrlInForms)
                 {
-                    var ctrlMsts = new CtrlClsRepo();
-                    string ctrlNm;
-                    string toolNm;
-                    //CtrlMsts에 저장하는 것은 Epic Prologue에서만 사용하는 것으로 한다.
-                    foreach (var item in ctrlInForms)
+                    string ctrlNm = item.Txt;
+                    string toolNm = Lib.GenFunc.GetLastSubstring(item.Val.ToString(), '.');
+                    string toolNs = item.Val.ToString();
+
+                    if (ctrlMsts.ChkByCtrlNm(toolNm))
                     {
-                        ctrlNm = item.Txt;
-                        toolNm = Lib.GenFunc.GetLastSubstring(item.Val.ToString(), '.');
-                        if (ctrlMsts.ChkByCtrlNm(toolNm))
+                        if (toolNs.Contains("BindingList") || toolNs.Contains("Repo") || toolNs.Contains("IContainer"))
+                        {
+                            continue;
+                        }
+                        else
                         {
                             ctrlMsts.Add(new CtrlCls
                             {
-                                CtrlNm = ctrlNm,
-                                CtrlGrpCd = null,
-                                CtrlRegNm = toolNm,
-                                ContainYn = true,
-                                CustomYn = true,
-                                Rnd = null,
-                                Memo = null,
-                                CId = 10020,
-                                MId = 10020
+                                CtrlNm = toolNm,
+                                CtrlRegNm = toolNs,
+                                Memo = $"{frm.FrmId}작업 중 시스템이 추가"
                             });
                         }
-
-                        FrmCtrl frmCtrl = new FrmCtrl
-                        {
-                            CtrlNm = ctrlNm,
-                            ToolNm = toolNm,
-                            FrmId = txtFrmId.Text // FrmCtrl은 FrmMst의 FrmId와 연결된다.
-                        };
-                        //frmCtrl을 gridControls에 새로운 줄로 추가합니다. 
-                        Common.gMsg = $"frmCtrl : {ctrlNm}/{toolNm}";
-
-
-                        //frmCtrl = GetpropertiesController();
-                        //frmCtrlRepo.Add(frmCtrl);
                     }
-                    gvControls.RefreshData();
+
+                    FrmCtrl frmCtrl = new FrmCtrl
+                    {
+                        CtrlNm = ctrlNm,
+                        ToolNm = toolNm,
+                        FrmId = frm.FrmId // FrmCtrl은 FrmMst의 FrmId와 연결된다.
+                    };
+                    frmctrls.Add(frmCtrl);
+
+                    //frmCtrl을 gridControls에 새로운 줄로 추가합니다. 
+                    Common.gMsg = $"frmCtrl : {ctrlNm}/{toolNm}";
+
+
+                    //frmCtrl = GetpropertiesController();
+                    //frmCtrlRepo.Add(frmCtrl);
                 }
+                gvControls.RefreshData();
             }
             catch (Exception ex)
             {
@@ -173,7 +176,7 @@ namespace Frms
             return idNms;
         }
 
-        private void GetChildControls(Control ucform, UserCtrlRepo userCtrl)
+        private void GetChildControls(Control ucform, CtrlClsRepo userCtrl)
         {
             foreach (Control item in ucform.Controls)
             {
@@ -407,7 +410,7 @@ namespace Frms
                 txtFrwId.Text = "";
                 txtFilePath.Text = "";
                 txtFileNm.Text = "";
-                txtNmSpace.Text = ""; 
+                txtNmSpace.Text = "";
                 chkFld.Checked = false;
                 txtChange.Text = MdlState.Inserted.ToString();
             }
@@ -513,6 +516,11 @@ namespace Frms
                     }
                     break;
             }
+        }
+
+        private void ucButton1_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

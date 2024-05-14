@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using System.Windows.Forms;
 using static DevExpress.Xpo.Helpers.AssociatedCollectionCriteriaHelper;
 
@@ -52,6 +53,7 @@ namespace GAIA
             else
             {
                 Common.gId = usr.UsrId;
+                Common.gRegId = usr.Id;
                 Common.gNm = usr.UsrNm;
                 Common.gCls = usr.Cls;
 

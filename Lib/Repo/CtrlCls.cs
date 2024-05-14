@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Repo
+namespace Lib.Repo
 {
     public class CtrlCls : MdlBase
     {
@@ -118,6 +118,8 @@ select a.CtrlId, a.CtrlNm, a.CtrlGrpCd, a.CtrlRegNm, a.ContainYn,
                 {
                     throw new KeyNotFoundException($"A record with the code {ctrlNm} was not found.");
                 }
+                result.ChangedFlag = MdlState.None;  // 객체 상태를 None으로 설정
+
                 return result;
             }
         }
@@ -132,8 +134,15 @@ select a.CtrlId, a.CtrlNm, a.CtrlGrpCd, a.CtrlRegNm, a.ContainYn,
             using (var db = new GaiaHelper())
             {
                 var result = db.Query<CtrlCls>(sql).ToList();
+
+                foreach (var item in result)
+                {
+                    item.ChangedFlag = MdlState.None;  // 객체 상태를 None으로 설정
+                }
+
                 return result;
             }
+
         }
 
         public void Add(CtrlCls uctrl)
@@ -165,14 +174,13 @@ update a
        Rnd= @Rnd,
        Memo= @Memo,
        PId= @PId,
-       CId= @CId,
-       CDt= @CDt,
        MId= @MId,
-       MDt= @MDt
+       MDt= getdate()
   from CTRLMST a
  where 1=1
-   and CtrlId = @CtrlId_old
+   and CtrlId = @CtrlId
 ";
+            Common.gMsg  = sql;
             using (var db = new GaiaHelper())
             {
                 db.OpenExecute(sql, uctrl);

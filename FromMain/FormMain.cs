@@ -45,7 +45,7 @@ namespace GAIA
             }
 
             //Tab 설정
-            xtraTabbedMdiManager.AppearancePage.HeaderActive.ForeColor = System.Drawing.Color.Red;
+            xtraTabbedMdiManager.AppearancePage.HeaderActive.ForeColor = System.Drawing.Color.BlueViolet;
             xtraTabbedMdiManager.AppearancePage.HeaderActive.BorderColor = System.Drawing.Color.Black;
             xtraTabbedMdiManager.AppearancePage.HeaderActive.Font = new System.Drawing.Font(xtraTabbedMdiManager.AppearancePage.HeaderActive.Font, System.Drawing.FontStyle.Bold);
             xtraTabbedMdiManager.ClosePageButtonShowMode = DevExpress.XtraTab.ClosePageButtonShowMode.InAllTabPageHeaders;
@@ -203,8 +203,6 @@ namespace GAIA
             //   Frm Version Check 후 다운로드 받아서 실행
 
             string frmFullPath = $"{frm.FilePath}\\{frm.FileNm}"; //@"C:\path\to\your\file.txt";
-
-        
 
             if (File.Exists(frmFullPath))
             {

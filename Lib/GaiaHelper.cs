@@ -19,7 +19,7 @@ namespace Lib
         static GaiaHelper()
         {
             // BoolCharTypeHandler 클래스가 ITypeHandler 인터페이스를 구현한다고 가정
-            SqlMapper.AddTypeHandler(typeof(bool), new BoolCharTypeHandler());
+            //SqlMapper.AddTypeHandler(typeof(bool), new BoolCharTypeHandler());
         }
 
         public GaiaHelper()
