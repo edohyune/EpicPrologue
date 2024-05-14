@@ -166,8 +166,8 @@ namespace Frms
 
             List<IdNm> idNms = new List<IdNm>();
 
-            foreach (var field in fields)
-            {
+            foreach (var field in fields)            
+            { 
                 if (field.Module.ToString() == strFileExt)
                 {
                     idNms.Add(new IdNm { Txt = field.Name, Val = field.FieldType });

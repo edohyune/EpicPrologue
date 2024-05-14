@@ -37,6 +37,18 @@ namespace Lib.Repo
             set => Set(ref _FrwId, value);
         }
 
+        // 이 부분은 사용되지 않는 코드입니다. 작업환경이 자주 달라지는 경우 DLL File Path가 달라져 문제가 발생할 수 있다.
+        // D:\00_WorkSpace\EpicPrologue\Frms\CTRLMST\bin\Debug\net8.0-windows
+        // WorkPath = D:\00_WorkSpace\
+        // FilePath = EpicPrologue\Frms\CTRLMST\bin\Debug\net8.0-windows
+        // 위와 같이 분리하면 사용자는 작업공간을 선택하여 쉽게 작업이 가능하다.
+        //private string _WorkPath; 
+        //public string WorkPath
+        //{
+        //    get => _WorkPath;
+        //    set => Set(ref _WorkPath, value);
+        //}
+
         private string _FilePath;
         public string FilePath
         {

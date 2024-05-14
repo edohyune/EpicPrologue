@@ -1,5 +1,6 @@
 ﻿using DevExpress.XtraEditors;
 using Lib;
+using Lib.Repo;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -43,7 +44,7 @@ namespace GAIA
             string id = txtId.Text;
             string pwd = txtPwd.Text;
 
-            var repo = new Repo.UsrRepo();
+            var repo = new UsrRepo();
             var usr = repo.CheckSignIn(id, pwd);
 
             if (usr == null)
