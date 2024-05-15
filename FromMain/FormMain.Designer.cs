@@ -142,7 +142,7 @@
             barDockControlTop.Location = new System.Drawing.Point(0, 0);
             barDockControlTop.Manager = barManager1;
             barDockControlTop.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            barDockControlTop.Size = new System.Drawing.Size(1125, 22);
+            barDockControlTop.Size = new System.Drawing.Size(1121, 22);
             // 
             // barDockControlBottom
             // 
@@ -151,7 +151,7 @@
             barDockControlBottom.Location = new System.Drawing.Point(0, 528);
             barDockControlBottom.Manager = barManager1;
             barDockControlBottom.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            barDockControlBottom.Size = new System.Drawing.Size(1125, 24);
+            barDockControlBottom.Size = new System.Drawing.Size(1121, 24);
             // 
             // barDockControlLeft
             // 
@@ -166,7 +166,7 @@
             // 
             barDockControlRight.CausesValidation = false;
             barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
-            barDockControlRight.Location = new System.Drawing.Point(1125, 22);
+            barDockControlRight.Location = new System.Drawing.Point(1121, 22);
             barDockControlRight.Manager = barManager1;
             barDockControlRight.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             barDockControlRight.Size = new System.Drawing.Size(0, 506);
@@ -232,7 +232,7 @@
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 14F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            ClientSize = new System.Drawing.Size(1125, 552);
+            ClientSize = new System.Drawing.Size(1121, 552);
             Controls.Add(menuCtrl);
             Controls.Add(simpleButton1);
             Controls.Add(msgCtrl);

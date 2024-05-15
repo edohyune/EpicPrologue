@@ -1,4 +1,5 @@
-﻿using DevExpress.XtraEditors;
+﻿using DevExpress.Mvvm.POCO;
+using DevExpress.XtraEditors;
 using Lib;
 using Lib.Repo;
 using System;
@@ -7,58 +8,136 @@ using System.ComponentModel;
 using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
+using static DevExpress.Accessibility.LookupPopupAccessibleObject;
 
 namespace Frms
 {
     [ToolboxItem(false)]
     public partial class FRMLOD : UserControl
     {
+        private FrmMst selectedFrmMst { get; set; }
+        private BindingList<FrmMst> frmMsts { get; set; }
+        private FrmMstRepo frmMstRepo { get; set; }
+        private BindingList<FrmCtrl> frmCtrls { get; set; }
+        private FrmCtrlRepo frmCtrlRepo { get; set; }
+
+
         public FRMLOD()
         {
             InitializeComponent();
             txtFilePath.btnVisiable = true;
+            cmbStatus.DataSource = Enum.GetValues(typeof(MdlState));
+            //cmbStatus.DisplayMember = "Display";
+            //cmbStatus.ValueMember = "Value";
             //chkFld의 caption이 checkbox 왼쪽에 오도록 한다
         }
-        //gridForms의 Row선택이 바뀌는 이벤트
+
         private void gvForms_FocusedRowChanged(object sender, DevExpress.XtraGrid.Views.Base.FocusedRowChangedEventArgs e)
         {
             var view = sender as DevExpress.XtraGrid.Views.Grid.GridView;
             if (view == null) return;
 
-            var row = view.GetFocusedRow() as FrmMst;
-            if (row == null) return;
+            selectedFrmMst = view.GetFocusedRow() as FrmMst;
 
-            SetFrmMstFreeForm(row);
+            SetFrmMstFreeForm();
         }
 
-        private void SetFrmMstFreeForm(FrmMst row)
+        private void SetFrmMstFreeForm()
         {
-            selectedFrmMst = row;
-            txtFilePath.Text = row.FilePath;
-            txtFileNm.Text = row.FileNm;
-            txtFrmId.Text = row.FrmId;
-            txtFrmNm.Text = row.FrmNm;
-            txtOwnId.Text = row.OwnId.ToString();
-            txtFrwId.Text = row.FrwId;
-            txtNmSpace.Text = row.NmSpace;
-            chkFld.Checked = row.FldYn;
+            if (selectedFrmMst == null)
+            {
+                MessageBox.Show($"selectedFrmMst이 null입니다.");
+            }
+            else
+            {
+                // selectedFrmMst의 각 필드를 컨트롤에 바인딩
+                AddBindingIfNotExists(txtFilePath, "Text", selectedFrmMst, "FilePath");
+                AddBindingIfNotExists(txtFileNm, "Text", selectedFrmMst, "FileNm");
+                AddBindingIfNotExists(txtFrmId, "Text", selectedFrmMst, "FrmId");
+                AddBindingIfNotExists(txtFrmNm, "Text", selectedFrmMst, "FrmNm");
+                AddBindingIfNotExists(txtOwnId, "Text", selectedFrmMst, "OwnId");
+                AddBindingIfNotExists(txtFrwId, "Text", selectedFrmMst, "FrwId");
+                AddBindingIfNotExists(txtNmSpace, "Text", selectedFrmMst, "NmSpace");
+                AddBindingIfNotExists(chkFld, "Checked", selectedFrmMst, "FldYn");
+                AddBindingIfNotExists(cmbStatus, "Text", selectedFrmMst, "ChangedFlag");
+            }
         }
 
-        //txtFrmId의 값이 변경되면 txtFrmId을 openGridControl(txtFrmId)로 gridControl을 오픈한다
+        private void AddBindingIfNotExists(Control control, string propertyName, object dataSource, string dataMember)
+        {
+            foreach (Binding binding in control.DataBindings)
+            {
+                if (binding.PropertyName == propertyName)
+                {
+                    return; // Skip adding the binding if it already exists
+                }
+            }
+
+            control.DataBindings.Add(propertyName, dataSource, dataMember);
+        }
+
+        private void GetFrmMstFreeForm()
+        {
+            selectedFrmMst.FilePath = txtFilePath.Text;
+            selectedFrmMst.FileNm = txtFileNm.Text;
+            selectedFrmMst.FrmId = txtFrmId.Text;
+            selectedFrmMst.FrmNm = txtFrmNm.Text;
+            //txtOwnId의 Text를 int로 변환
+            selectedFrmMst.OwnId = Convert.ToInt32(txtOwnId.Text);
+            selectedFrmMst.FrwId = txtFrwId.Text;
+            selectedFrmMst.NmSpace = txtNmSpace.Text;
+            selectedFrmMst.FldYn = chkFld.Checked;
+            //txtChange의 값을 MdlState로 변환
+            selectedFrmMst.ChangedFlag = (MdlState)Enum.Parse(typeof(MdlState), cmbStatus.Text);
+        }
+
         private void txtFrmId_EditValueChanged(object Sender, Control control)
         {
-            openGridControl(txtFrmId.Text);
+            OpengridControls();
         }
 
-        BindingList<FrmCtrl> frmctrls;
-        FrmCtrlRepo frmCtrlRepo;
-        private void openGridControl(string frmId)
+        private void OpengridControls()
         {
             frmCtrlRepo = new FrmCtrlRepo();
-            frmctrls = new BindingList<FrmCtrl>(frmCtrlRepo.GetByFrm(frmId));
-            gridControls.DataSource = frmctrls;
+            frmCtrls = new BindingList<FrmCtrl>(frmCtrlRepo.GetByFrm(selectedFrmMst.FrmId));
+            gridControls.DataSource = frmCtrls;
         }
-        FrmMst selectedFrmMst = new FrmMst();
+
+        private void ucPenel2_CustomButtonClick(object sender, DevExpress.XtraBars.Docking2010.BaseButtonEventArgs e)
+        {
+            if (e.Button.Properties.Caption == "Open")
+            {
+                OpengridFrms();
+            }
+
+        }
+        private void OpengridFrms()
+        {
+            frmMstRepo = new FrmMstRepo();
+            frmMsts = new BindingList<FrmMst>(frmMstRepo.GetAll());
+            gcForms.DataSource = frmMsts;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         private void txtDllpath_UCButtonClick(object Sender, Control control)
         {
 
@@ -81,7 +160,7 @@ namespace Frms
             selectedFrmMst.FrwId = Common.gFrameWorkId;
             selectedFrmMst.NmSpace = $"Frms.{selectedFrmMst.FrmId}";
 
-            SetFrmMstFreeForm(selectedFrmMst);
+            SetFrmMstFreeForm();
 
             GenFunc.SetIni("DLLPath", txtFilePath.Text);
 
@@ -137,7 +216,7 @@ namespace Frms
                         ToolNm = toolNm,
                         FrmId = frm.FrmId // FrmCtrl은 FrmMst의 FrmId와 연결된다.
                     };
-                    frmctrls.Add(frmCtrl);
+                    frmCtrls.Add(frmCtrl);
 
                     //frmCtrl을 gridControls에 새로운 줄로 추가합니다. 
                     Common.gMsg = $"frmCtrl : {ctrlNm}/{toolNm}";
@@ -166,8 +245,8 @@ namespace Frms
 
             List<IdNm> idNms = new List<IdNm>();
 
-            foreach (var field in fields)            
-            { 
+            foreach (var field in fields)
+            {
                 if (field.Module.ToString() == strFileExt)
                 {
                     idNms.Add(new IdNm { Txt = field.Name, Val = field.FieldType });
@@ -323,34 +402,8 @@ namespace Frms
         }
 
         //List<FrmMst> frmmsts;
-        BindingList<FrmMst> frmmsts;
-        FrmMstRepo frmmstrepo;
 
-        private void ucPenel2_CustomButtonClick(object sender, DevExpress.XtraBars.Docking2010.BaseButtonEventArgs e)
-        {
-            if (e.Button.Properties.Caption == "Open")
-            {
-                gridForms_open();
-            }
-            else if (e.Button.Properties.Caption == "Save")
-            {
-                gridForms_save();
-            }
-            else if (e.Button.Properties.Caption == "Delete")
-            {
-                Common.gMsg = ((FrmMst)gvForms.GetFocusedRow()).FrmNm.ToString();
-            }
-        }
-        private void gridForms_open()
-        {
-            frmmstrepo = new FrmMstRepo();
-            frmmsts = new BindingList<FrmMst>(frmmstrepo.GetAll());
-            gcForms.DataSource = frmmsts;
-        }
-        private void gridForms_save()
-        {
-            MessageBox.Show("Save");
-        }
+
 
         private void gdForms_EmbeddedNavigator_ButtonClick(object sender, NavigatorButtonClickEventArgs e)
         {
@@ -365,7 +418,7 @@ namespace Frms
                     var idToRemove = view.GetFocusedRowCellValue("FrmId");
                     if (idToRemove != null)
                     {
-                        frmmstrepo.Delete((string)idToRemove);
+                        frmMstRepo.Delete((string)idToRemove);
                         data.Remove(data.Find(x => x.FrmId == (string)idToRemove));
                         view.RefreshData();
                     }
@@ -387,12 +440,12 @@ namespace Frms
                         if (updatedRow.ChangedFlag == MdlState.Inserted)
                         {
                             // 새 행을 추가합니다.
-                            frmmstrepo.Add(updatedRow);
+                            frmMstRepo.Add(updatedRow);
                         }
                         else
                         {
                             // 기존 행을 업데이트합니다.
-                            frmmstrepo.Update(updatedRow);
+                            frmMstRepo.Update(updatedRow);
                         }
                         view.RefreshData();
                     }
@@ -412,43 +465,45 @@ namespace Frms
                 txtFileNm.Text = "";
                 txtNmSpace.Text = "";
                 chkFld.Checked = false;
-                txtChange.Text = MdlState.Inserted.ToString();
+                cmbStatus.Text = MdlState.Inserted.ToString();
             }
             else if (e.Button.Properties.Caption == "Save")
             {
-                if (txtChange.Text == MdlState.Inserted.ToString())
+                if (selectedFrmMst.ChangedFlag == MdlState.Inserted)
                 {
-                    frmmstrepo.Add(new FrmMst
-                    {
-                        FrmId = txtFrmId.Text,
-                        FrmNm = txtFrmNm.Text,
-                        OwnId = Convert.ToInt32(txtOwnId.Text),
-                        FrwId = txtFrwId.Text,
-                        FilePath = txtFilePath.Text,
-                        FileNm = txtFileNm.Text,
-                        FldYn = chkFld.Checked,
-                        NmSpace = txtNmSpace.Text
-                    });
+                    frmMstRepo.Add(selectedFrmMst);
+                    //frmMstRepo.Add(new FrmMst
+                    //{
+                    //    FrmId = txtFrmId.Text,
+                    //    FrmNm = txtFrmNm.Text,
+                    //    OwnId = Convert.ToInt32(txtOwnId.Text),
+                    //    FrwId = txtFrwId.Text,
+                    //    FilePath = txtFilePath.Text,
+                    //    FileNm = txtFileNm.Text,
+                    //    FldYn = chkFld.Checked,
+                    //    NmSpace = txtNmSpace.Text
+                    //});
                 }
                 else
                 {
-                    frmmstrepo.Update(new FrmMst
-                    {
-                        FrmId = txtFrmId.Text,
-                        FrmNm = txtFrmNm.Text,
-                        OwnId = Convert.ToInt32(txtOwnId.Text),
-                        FrwId = txtFrwId.Text,
-                        FilePath = txtFilePath.Text,
-                        FileNm = txtFileNm.Text,
-                        NmSpace = txtNmSpace.Text,
-                        FldYn = chkFld.Checked
-                    });
+                    frmMstRepo.Update(selectedFrmMst);
+                    //frmMstRepo.Update(new FrmMst
+                    //{
+                    //    FrmId = txtFrmId.Text,
+                    //    FrmNm = txtFrmNm.Text,
+                    //    OwnId = Convert.ToInt32(txtOwnId.Text),
+                    //    FrwId = txtFrwId.Text,
+                    //    FilePath = txtFilePath.Text,
+                    //    FileNm = txtFileNm.Text,
+                    //    NmSpace = txtNmSpace.Text,
+                    //    FldYn = chkFld.Checked
+                    //});
                 }
 
             }
             else if (e.Button.Properties.Caption == "Delete")
             {
-                if (txtChange.Text == MdlState.Inserted.ToString())
+                if (cmbStatus.Text == MdlState.Inserted.ToString())
                 {
                     txtFrmId.Text = "";
                     txtFrmNm.Text = "";
@@ -458,14 +513,34 @@ namespace Frms
                     txtFileNm.Text = "";
                     txtNmSpace.Text = "";
                     chkFld.Checked = false;
-                    txtChange.Text = MdlState.Inserted.ToString();
+                    cmbStatus.Text = MdlState.Inserted.ToString();
                 }
                 else
                 {
-                    frmmstrepo.Delete(txtFrmId.Text);
+                    frmMstRepo.Delete(selectedFrmMst.FrmId);
                 }
             }
         }
+
+        private void ucPanel4_CustomButtonClick(object sender, DevExpress.XtraBars.Docking2010.BaseButtonEventArgs e)
+        {
+            if (e.Button.Properties.Caption == "Save")
+            {
+                if (cmbStatus.Text == MdlState.Inserted.ToString())
+                {
+                    Common.gMsg = "Insert";
+                }
+                else
+                {
+                    Common.gMsg = "Update";
+                }
+            }
+            else if (e.Button.Properties.Caption == "Delete")
+            {
+                Common.gMsg = "Delete";
+            }
+        }
+
         //gridControls는 FrmCtrl을 이용한다.
         //gridControls의 EmbeddedNavigator의 버튼 클릭 이벤트를 처리한다.
         //gdForms_EmbeddedNavigator_ButtonClick의 기능을 참고하여 구현한다.
@@ -477,8 +552,6 @@ namespace Frms
 
             switch (e.Button.ButtonType)
             {
-                case NavigatorButtonType.Append:
-                    break;
                 case NavigatorButtonType.Remove:
                     var idToRemove = view.GetFocusedRowCellValue("CtrlNm");
                     if (idToRemove != null)
@@ -487,9 +560,6 @@ namespace Frms
                         data.Remove(data.Find(x => x.CtrlNm == (string)idToRemove));
                         view.RefreshData();
                     }
-                    break;
-                case NavigatorButtonType.Edit:
-                    view.ShowEditor();
                     break;
                 case NavigatorButtonType.EndEdit:
                     if (view.IsEditing)
@@ -518,9 +588,10 @@ namespace Frms
             }
         }
 
-        private void ucButton1_Click(object sender, EventArgs e)
+        private void btnReload_Click(object sender, EventArgs e)
         {
 
         }
+
     }
 }
