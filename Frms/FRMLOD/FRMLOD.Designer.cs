@@ -44,11 +44,12 @@ namespace Frms
             gvForms = new DevExpress.XtraGrid.Views.Grid.GridView();
             splitContainer3 = new System.Windows.Forms.SplitContainer();
             ucPanel3 = new Ctrls.UCPanel();
+            ucButton3 = new Ctrl.UCButton();
+            ucButton2 = new Ctrl.UCButton();
             cmbStatus = new System.Windows.Forms.ComboBox();
             ucButton1 = new Ctrl.UCButton();
             chkFld = new DevExpress.XtraEditors.CheckEdit();
             txtNmSpace = new Ctrls.UCTextBox();
-            txtFileNm = new Ctrls.UCTextBox();
             txtOwnId = new Ctrls.UCTextBox();
             txtFrmId = new Ctrls.UCTextBox();
             txtFilePath = new Ctrls.UCTextBox();
@@ -59,6 +60,7 @@ namespace Frms
             gvControls = new DevExpress.XtraGrid.Views.Grid.GridView();
             openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             ucField1 = new Ctrls.UCField();
+            txtFileNm = new Ctrls.UCTextBox();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
             splitContainer1.Panel2.SuspendLayout();
@@ -214,11 +216,13 @@ namespace Frms
             // 
             // ucPanel3
             // 
+            ucPanel3.Controls.Add(txtFileNm);
+            ucPanel3.Controls.Add(ucButton3);
+            ucPanel3.Controls.Add(ucButton2);
             ucPanel3.Controls.Add(cmbStatus);
             ucPanel3.Controls.Add(ucButton1);
             ucPanel3.Controls.Add(chkFld);
             ucPanel3.Controls.Add(txtNmSpace);
-            ucPanel3.Controls.Add(txtFileNm);
             ucPanel3.Controls.Add(txtOwnId);
             ucPanel3.Controls.Add(txtFrmId);
             ucPanel3.Controls.Add(txtFilePath);
@@ -233,6 +237,22 @@ namespace Frms
             ucPanel3.TabIndex = 1;
             ucPanel3.Text = "Form Registration - FrmMst";
             ucPanel3.CustomButtonClick += ucPanel3_CustomButtonClick;
+            // 
+            // ucButton3
+            // 
+            ucButton3.Location = new System.Drawing.Point(313, 138);
+            ucButton3.Name = "ucButton3";
+            ucButton3.Size = new System.Drawing.Size(56, 21);
+            ucButton3.TabIndex = 16;
+            ucButton3.Text = "ReLoad Controller";
+            // 
+            // ucButton2
+            // 
+            ucButton2.Location = new System.Drawing.Point(409, 111);
+            ucButton2.Name = "ucButton2";
+            ucButton2.Size = new System.Drawing.Size(56, 21);
+            ucButton2.TabIndex = 14;
+            ucButton2.Text = "ReLoad Controller";
             // 
             // cmbStatus
             // 
@@ -278,20 +298,6 @@ namespace Frms
             txtNmSpace.Title = "Name Space";
             txtNmSpace.TitleAlignment = DevExpress.Utils.HorzAlignment.Default;
             txtNmSpace.TitleWidth = 80;
-            // 
-            // txtFileNm
-            // 
-            txtFileNm.BindText = "";
-            txtFileNm.btnVisiable = false;
-            txtFileNm.ControlHeight = 21;
-            txtFileNm.ControlWidth = 297;
-            txtFileNm.Location = new System.Drawing.Point(10, 57);
-            txtFileNm.Name = "txtFileNm";
-            txtFileNm.Size = new System.Drawing.Size(297, 21);
-            txtFileNm.TabIndex = 8;
-            txtFileNm.Title = "File Name";
-            txtFileNm.TitleAlignment = DevExpress.Utils.HorzAlignment.Default;
-            txtFileNm.TitleWidth = 80;
             // 
             // txtOwnId
             // 
@@ -406,6 +412,20 @@ namespace Frms
             // 
             ucField1.ChangedFlag = Lib.MdlState.Inserted;
             // 
+            // txtFileNm
+            // 
+            txtFileNm.BindText = "";
+            txtFileNm.btnVisiable = true;
+            txtFileNm.ControlHeight = 20;
+            txtFileNm.ControlWidth = 180;
+            txtFileNm.Location = new System.Drawing.Point(88, 58);
+            txtFileNm.Name = "txtFileNm";
+            txtFileNm.Size = new System.Drawing.Size(180, 20);
+            txtFileNm.TabIndex = 17;
+            txtFileNm.Title = "UCTextBox";
+            txtFileNm.TitleAlignment = DevExpress.Utils.HorzAlignment.Default;
+            txtFileNm.TitleWidth = 80;
+            // 
             // FRMLOD
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -462,11 +482,13 @@ namespace Frms
         private Ctrls.UCTextBox txtFrmId;
         private Ctrls.UCTextBox txtOwnId;
         private Ctrls.UCTextBox txtNmSpace;
-        private Ctrls.UCTextBox txtFileNm;
         private DevExpress.XtraGrid.GridControl gridControls;
         private DevExpress.XtraGrid.Views.Grid.GridView gvControls;
         private DevExpress.XtraEditors.CheckEdit chkFld;
         private Ctrl.UCButton ucButton1;
         private System.Windows.Forms.ComboBox cmbStatus;
+        private Ctrl.UCButton ucButton2;
+        private Ctrl.UCButton ucButton3;
+        private Ctrls.UCTextBox txtFileNm;
     }
 }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
 using Lib;
+using Lib.Repo;
 using System.IO;
 using Repo;
 
@@ -87,7 +88,7 @@ namespace GAIA
             menuCtrl.Items.Clear();
 
             //From List by FrmaeWork
-            List<FrmMst> frms = new FrmRepo().GetByFrmWrkId(Common.gFrameWorkId);
+            List<FrmMst> frms = new FrmMstRepo().GetByOwnFrw((int)Common.gRegId, Common.gFrameWorkId);
             foreach (var frm in frms)
             {
                 menuCtrl.Items.Add(new IdObject {Txt = frm.FrmNm, Val=frm });

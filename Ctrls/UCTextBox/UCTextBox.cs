@@ -1,12 +1,14 @@
 ﻿using DevExpress.Drawing.Printing.Internal;
 using DevExpress.Utils.DirectXPaint;
+using Lib;
 using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace Ctrls
 {
     [System.ComponentModel.DefaultBindingProperty("BindText")]
     [System.ComponentModel.DefaultEvent("UCEditValueChanged")]
-    public partial class UCTextBox : UserControl
+    public partial class UCTextBox : UserControl, INotifyPropertyChanged
     {
         private string SysCd { get; }
         private string FrmID { get; set; }
@@ -85,6 +87,7 @@ namespace Ctrls
             set
             {
                 this.textCtrl.Text = value;
+                this.BindText = value;  // Text가 업데이트 될 때 BindText도 업데이트
             }
         }
         [Category("UserController Property"), Description("BindText")]
@@ -98,8 +101,16 @@ namespace Ctrls
             set
             {
                 this.textCtrl.Text = value;
+                OnPropertyChanged("BindText");
+                UCEditValueChanged?.Invoke(this, textCtrl);
             }
         }
+        //private void textCtrl_TextChanged(object sender, EventArgs e)
+        //{
+        //    // This will also trigger UCEditValueChanged via the BindText setter
+        //}
+
+
         [Category("UserController Property"), Description("Text Alignment")]
         public DevExpress.Utils.HorzAlignment TextAlignment
         {
@@ -115,7 +126,6 @@ namespace Ctrls
             {
                 bool result = textCtrl.Properties.Buttons[0].Visible;
                 return result;
-
             }
             set
             {
@@ -192,6 +202,8 @@ namespace Ctrls
 
         public delegate void delEventButtonClick(object Sender, Control control);
         public event delEventButtonClick UCButtonClick;
+        public event PropertyChangedEventHandler? PropertyChanged;
+
         private void textCtrl_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
         {
             try
@@ -210,5 +222,14 @@ namespace Ctrls
         }
         #endregion
 
+        public void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+           PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        private void textCtrl_TextChanged(object sender, EventArgs e)
+        {
+            BindText = textCtrl.Text;
+        }
     }
 }

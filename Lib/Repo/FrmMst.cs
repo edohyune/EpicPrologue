@@ -119,7 +119,28 @@ select a.FrmId, a.FrmNm, a.OwnId, a.FrwId, a.FilePath,
                 return result == null;
             }
         }
-       
+        public List<FrmMst> GetByOwnFrw(int ownId, string frwId)
+        {
+            string sql = @"
+select a.FrmId, a.FrmNm, a.OwnId, a.FrwId, a.FilePath,
+       a.FileNm, a.NmSpace, a.FldYn, a.PId, a.Memo,
+       a.CId, a.CDt, a.MId, a.MDt
+  from FRMMST a
+ where 1=1
+   and a.OwnId = @OwnId
+   and a.FrwId = @FrwId
+";
+            using (var db = new GaiaHelper())
+            {
+                var result = db.Query<FrmMst>(sql, new { FrwId = frwId, OwnId = ownId }).ToList();
+                foreach (var item in result)
+                {
+                    item.ChangedFlag = MdlState.None;  // 객체 상태를 None으로 설정
+                }
+                return result;
+            }
+        }
+
         public FrmMst GetByFrmId(string frmId)
         {
             string sql = @"

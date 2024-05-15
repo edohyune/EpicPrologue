@@ -62,7 +62,6 @@ namespace Ctrls
             // 
             // labelCtrl
             // 
-            labelCtrl.Appearance.Font = new Font("Tahoma", 9F);
             labelCtrl.Appearance.Options.UseFont = true;
             labelCtrl.Appearance.Options.UseTextOptions = true;
             labelCtrl.Appearance.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Center;
@@ -79,7 +78,6 @@ namespace Ctrls
             textCtrl.Dock = DockStyle.Fill;
             textCtrl.Location = new Point(0, 0);
             textCtrl.Name = "textCtrl";
-            textCtrl.Properties.Appearance.Font = new Font("Tahoma", 9F);
             textCtrl.Properties.Appearance.Options.UseFont = true;
             textCtrl.Properties.Appearance.Options.UseTextOptions = true;
             textCtrl.Properties.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Near;
@@ -88,6 +86,7 @@ namespace Ctrls
             textCtrl.TabIndex = 0;
             textCtrl.ButtonClick += textCtrl_ButtonClick;
             textCtrl.EditValueChanged += textCtrl_EditValueChanged;
+            textCtrl.TextChanged += textCtrl_TextChanged;
             // 
             // UCTextBox
             // 
