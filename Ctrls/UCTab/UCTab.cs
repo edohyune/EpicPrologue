@@ -1,55 +1,30 @@
-﻿using DevExpress.Utils.DirectXPaint;
-using System.ComponentModel;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Lib;
 
 namespace Ctrls
 {
-    public class UCButton : DevExpress.XtraEditors.SimpleButton
+    public class UCTab : DevExpress.XtraTab.XtraTabControl
     {
         private string sysCd { get; set; }
         private string frmId { get; set; }
         private string fldId { get; set; }
 
-        [Category("UserController Property"), Description("Title Alignment")]
-        public DevExpress.Utils.HorzAlignment TitleAlignment
+        public DevExpress.XtraTab.XtraTabControl tabCtrl { get; set; }
+        public UCTab()
         {
-            get
-            {
-                return this.btnCtrl.Appearance.TextOptions.HAlignment;
-            }
-            set
-            {
-                this.btnCtrl.Appearance.TextOptions.HAlignment = value;
-            }
+            tabCtrl = new DevExpress.XtraTab.XtraTabControl();
+            //tabCtrl 기본설정
+            tabCtrl.HeaderLocation = DevExpress.XtraTab.TabHeaderLocation.Top;
+            tabCtrl.HeaderButtons = DevExpress.XtraTab.TabButtons.Default;
+
+            HandleCreated += UCTab_HandleCreated;
         }
 
-        [Category("UserController Property"), Description("ReadOnly - Not Enabled")]
-        public bool Readonly
-        {
-            get
-            {
-                return !(this.btnCtrl.Enabled);
-            }
-            set
-            {
-                this.btnCtrl.Enabled = !(value);
-            }
-        }
-
-        public DevExpress.XtraEditors.SimpleButton btnCtrl { get; set; }
-
-        public UCButton()
-        {
-            btnCtrl = new DevExpress.XtraEditors.SimpleButton();
-
-            btnCtrl.Appearance.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            btnCtrl.Appearance.Options.UseFont = true;
-            btnCtrl.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.Simple;
-
-            btnCtrl.Text = "UCButton";
-            HandleCreated += UCButton_HandleCreated;
-        }
-
-        private void UCButton_HandleCreated(object? sender, EventArgs e)
+        private void UCTab_HandleCreated(object? sender, EventArgs e)
         {
             sysCd = Lib.Common.gSysCd;
 
@@ -68,16 +43,14 @@ namespace Ctrls
             if (sysCd != string.Empty)
             {
                 ResetCtrl();
-
             }
-
         }
 
         private void ResetCtrl()
         {
             try
             {
-                Lib.Common.gMsg = $"UCButton : {sysCd}.{frmId}.{fldId}";
+                Lib.Common.gMsg = $"UCPanel : {sysCd}.{frmId}.{fldId}";
                 using (var db = new Lib.GaiaHelper())
                 {
                     //var ucInfo = db.GetUc(new { sys = SysCode, frm = FrmID, ctrl = FldID }).SingleOrDefault();

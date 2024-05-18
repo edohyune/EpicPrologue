@@ -23,8 +23,8 @@ namespace Frms
                     var idToRemove = view.GetFocusedRowCellValue("CtrlId");
                     if (idToRemove != null)
                     {
-                        //ctrlclsrepo.Delete((int)idToRemove);
-                        data.Remove(data.Find(x => x.CtrlId == (int)idToRemove));
+                        ctrlclsrepo.Delete((int)idToRemove);
+                        //data.Remove(data.Find(x => x.CtrlId == (int)idToRemove));
                         view.RefreshData();
                     }
                     break;

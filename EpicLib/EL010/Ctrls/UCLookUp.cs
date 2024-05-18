@@ -1,7 +1,7 @@
 ﻿using DevExpress.XtraEditors;
 using System.ComponentModel;
 
-namespace Ctrls
+namespace EL010.Ctrls
 {
     [System.ComponentModel.DefaultBindingProperty("BindText")]
     [System.ComponentModel.DefaultEvent("UCTextChanged")]

@@ -1,9 +1,8 @@
-﻿using DevExpress.Utils.DirectXPaint;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 
-namespace Ctrls
+namespace EL010.Ctrls
 {
-    public class UCButton : DevExpress.XtraEditors.SimpleButton
+    public class UCPanel : DevExpress.XtraEditors.GroupControl
     {
         private string sysCd { get; set; }
         private string frmId { get; set; }
@@ -14,11 +13,11 @@ namespace Ctrls
         {
             get
             {
-                return this.btnCtrl.Appearance.TextOptions.HAlignment;
+                return this.panelCtrl.Appearance.TextOptions.HAlignment;
             }
             set
             {
-                this.btnCtrl.Appearance.TextOptions.HAlignment = value;
+                this.panelCtrl.Appearance.TextOptions.HAlignment = value;
             }
         }
 
@@ -27,29 +26,32 @@ namespace Ctrls
         {
             get
             {
-                return !(this.btnCtrl.Enabled);
+                return !(this.panelCtrl.Enabled);
             }
             set
             {
-                this.btnCtrl.Enabled = !(value);
+                this.panelCtrl.Enabled = !(value);
             }
         }
 
-        public DevExpress.XtraEditors.SimpleButton btnCtrl { get; set; }
-
-        public UCButton()
+        public DevExpress.XtraEditors.GroupControl panelCtrl { get; set; }
+        public UCPanel()
         {
-            btnCtrl = new DevExpress.XtraEditors.SimpleButton();
+            panelCtrl = new DevExpress.XtraEditors.GroupControl();
 
-            btnCtrl.Appearance.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            btnCtrl.Appearance.Options.UseFont = true;
-            btnCtrl.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.Simple;
+            //panelCtrls.Appearance.BackColor = System.Drawing.Color.White;
+            //panelCtrls.Appearance.Options.UseBackColor = true;
+            //panelCtrls.AppearanceCaption.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold);
+            //panelCtrls.AppearanceCaption.Options.UseFont = true;
+            //panelCtrls.AppearanceCaption.Options.UseTextOptions = true;
+            //panelCtrls.AppearanceCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            //panelCtrls.AppearanceCaption.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Center
 
-            btnCtrl.Text = "UCButton";
-            HandleCreated += UCButton_HandleCreated;
+            panelCtrl.Text = "UCPanel";
+            HandleCreated += UCPanel_HandleCreated;
         }
 
-        private void UCButton_HandleCreated(object? sender, EventArgs e)
+        private void UCPanel_HandleCreated(object? sender, EventArgs e)
         {
             sysCd = Lib.Common.gSysCd;
 
@@ -68,16 +70,14 @@ namespace Ctrls
             if (sysCd != string.Empty)
             {
                 ResetCtrl();
-
             }
-
         }
 
         private void ResetCtrl()
         {
             try
             {
-                Lib.Common.gMsg = $"UCButton : {sysCd}.{frmId}.{fldId}";
+                Lib.Common.gMsg = $"UCPanel : {sysCd}.{frmId}.{fldId}";
                 using (var db = new Lib.GaiaHelper())
                 {
                     //var ucInfo = db.GetUc(new { sys = SysCode, frm = FrmID, ctrl = FldID }).SingleOrDefault();
@@ -94,8 +94,8 @@ namespace Ctrls
                     //}
                 }
             }
-            catch (Exception ex)
-            {
+            catch (Exception ex) 
+            { 
                 Lib.Common.gMsg = $"Exception : {ex}";
             }
         }

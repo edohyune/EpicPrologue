@@ -1,10 +1,9 @@
 ﻿using DevExpress.Drawing.Printing.Internal;
 using DevExpress.Utils.DirectXPaint;
-using Lib;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace Ctrls
+namespace EL010.Ctrls
 {
     [System.ComponentModel.DefaultBindingProperty("BindText")]
     [System.ComponentModel.DefaultEvent("UCEditValueChanged")]

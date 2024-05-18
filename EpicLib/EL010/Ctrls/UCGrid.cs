@@ -2,9 +2,8 @@
 using System.ComponentModel;
 using DevExpress.Utils;
 using DevExpress.XtraEditors.Repository;
-using Lib;
-
-namespace Ctrls
+using EL010.Lib;
+namespace EL010.Ctrls
 {
     public class UCGrid : DevExpress.XtraGrid.GridControl
     {
@@ -76,7 +75,7 @@ namespace Ctrls
             try
             {
                 // GridPropRepo의 인스턴스를 생성합니다.
-                var repo = new Repo.TGridColumnPropRepo();
+                var repo = new EL010.Lib.Repo.TGridColumnPropRepo();
                 // 모든 컬럼 설정을 데이터베이스에서 가져옵니다.
                 var colProperties = repo.GetTGridColumnProperties(sysCd, frmId, wkSetId);
                 // MainView를 GridView 타입으로 캐스팅합니다.

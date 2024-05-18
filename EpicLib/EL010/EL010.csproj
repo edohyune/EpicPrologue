@@ -1,0 +1,42 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Dapper" Version="2.1.35" />
+    <PackageReference Include="DevExpress.Win.Design" Version="23.2.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Ctrls\UCButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Ctrls\UCField.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Ctrls\UCGrid.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Ctrls\UCLookUp.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Ctrls\UCPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Ctrls\UCSplit.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Ctrls\UCTab.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Ctrls\UCTextBox.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+  </ItemGroup>
+
+</Project>

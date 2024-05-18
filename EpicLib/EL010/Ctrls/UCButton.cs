@@ -1,7 +1,6 @@
-﻿using DevExpress.Utils.DirectXPaint;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 
-namespace Ctrls
+namespace EL010.Ctrls
 {
     public class UCButton : DevExpress.XtraEditors.SimpleButton
     {

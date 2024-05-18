@@ -1,10 +1,39 @@
-﻿namespace Ctrls
+﻿using System.ComponentModel;
+
+namespace Ctrls
 {
     public class UCPanel : DevExpress.XtraEditors.GroupControl
     {
         private string sysCd { get; set; }
         private string frmId { get; set; }
         private string fldId { get; set; }
+
+        [Category("UserController Property"), Description("Title Alignment")]
+        public DevExpress.Utils.HorzAlignment TitleAlignment
+        {
+            get
+            {
+                return this.panelCtrl.Appearance.TextOptions.HAlignment;
+            }
+            set
+            {
+                this.panelCtrl.Appearance.TextOptions.HAlignment = value;
+            }
+        }
+
+        [Category("UserController Property"), Description("ReadOnly - Not Enabled")]
+        public bool Readonly
+        {
+            get
+            {
+                return !(this.panelCtrl.Enabled);
+            }
+            set
+            {
+                this.panelCtrl.Enabled = !(value);
+            }
+        }
+
         public DevExpress.XtraEditors.GroupControl panelCtrl { get; set; }
         public UCPanel()
         {

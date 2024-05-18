@@ -39,7 +39,8 @@ namespace GAIA
             Common.gMsgChanged += new EventHandler(AddGAIAMsg);
 
             //FrmaeWork List
-            List<FrmWrk> frmwrks = new Repo.FrmWrkRepo().GetAll();
+
+            List<FrwMst> frmwrks = new FrwMstRepo().GetAll();
             foreach (var frmWrk in frmwrks)
             {
                 cmbForm.Properties.Items.Add(frmWrk);
@@ -82,7 +83,7 @@ namespace GAIA
         private void cmbForm_SelectedIndexChanged(object sender, EventArgs e)
         {
             //ComboBox cmbForm = sender as ComboBox;
-            FrmWrk frmWrk = cmbForm.SelectedItem as FrmWrk;
+            FrwMst frmWrk = cmbForm.SelectedItem as FrwMst;
             Common.gFrameWorkId = frmWrk.FrwId.ToString();
 
             menuCtrl.Items.Clear();

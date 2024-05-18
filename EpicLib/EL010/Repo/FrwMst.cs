@@ -1,10 +1,6 @@
-﻿using Lib;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace Repo
+﻿namespace EL010.Lib.Repo
 {
-    public class FrmWrk : MdlBase
+    public class FrwMst : MdlBase
     {
         private string _FrwId;
         public string FrwId
@@ -46,17 +42,17 @@ namespace Repo
             return FrwNm;
         }
     }
-    public interface IFrmWrkRepo
+    public interface IFrwMstRepo
     {
-        FrmWrk GetById(string id);
-        List<FrmWrk> GetAll();
-        void Add(FrmWrk frmWrk);
-        void Update(FrmWrk frmWrk);
+        FrwMst GetById(string id);
+        List<FrwMst> GetAll();
+        void Add(FrwMst frmWrk);
+        void Update(FrwMst frmWrk);
         void Delete(string id);
     }
-    public class FrmWrkRepo : IFrmWrkRepo
+    public class FrwMstRepo : IFrwMstRepo
     {
-        public void Add(FrmWrk frmWrk)
+        public void Add(FrwMst frmWrk)
         {
             string sql = @"
 insert into FRWMST
@@ -85,7 +81,7 @@ delete
             }
         }
 
-        public List<FrmWrk> GetAll()
+        public List<FrwMst> GetAll()
         {
             string sql = @"
 select a.FrwId, a.FrwNm, a.Memo, a.Ver, a.PId,
@@ -94,11 +90,11 @@ select a.FrwId, a.FrwNm, a.Memo, a.Ver, a.PId,
 ";
             using (var db = new GaiaHelper())
             {
-                return db.Query<FrmWrk>(sql).ToList();
+                return db.Query<FrwMst>(sql).ToList();
             }
         }
 
-        public FrmWrk GetById(string id)
+        public FrwMst GetById(string id)
         {
             string sql = @"
 select a.FrwId, a.FrwNm, a.Memo, a.Ver, a.PId,
@@ -109,12 +105,12 @@ select a.FrwId, a.FrwNm, a.Memo, a.Ver, a.PId,
 ";
             using (var db = new GaiaHelper())
             {
-                var result = db.Query<FrmWrk>(sql, new { FrwId = id }).FirstOrDefault();
+                var result = db.Query<FrwMst>(sql, new { FrwId = id }).FirstOrDefault();
                 return result;
             }
         }
 
-        public void Update(FrmWrk frmWrk)
+        public void Update(FrwMst frmWrk)
         {
             string sql = @"
 update a
