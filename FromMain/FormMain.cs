@@ -40,7 +40,7 @@ namespace GAIA
 
             //FrmaeWork List
 
-            List<FrwMst> frmwrks = new FrwMstRepo().GetAll();
+            List<PrjFrw> frmwrks = new PrjFrwRepo().GetAll();
             foreach (var frmWrk in frmwrks)
             {
                 cmbForm.Properties.Items.Add(frmWrk);
@@ -83,13 +83,13 @@ namespace GAIA
         private void cmbForm_SelectedIndexChanged(object sender, EventArgs e)
         {
             //ComboBox cmbForm = sender as ComboBox;
-            FrwMst frmWrk = cmbForm.SelectedItem as FrwMst;
+            PrjFrw frmWrk = cmbForm.SelectedItem as PrjFrw;
             Common.gFrameWorkId = frmWrk.FrwId.ToString();
 
             menuCtrl.Items.Clear();
 
             //From List by FrmaeWork
-            List<FrmMst> frms = new FrmMstRepo().GetByOwnFrw((int)Common.gRegId, Common.gFrameWorkId);
+            List<FrwFrm> frms = new FrwFrmRepo().GetByOwnFrw((int)Common.gRegId, Common.gFrameWorkId);
             foreach (var frm in frms)
             {
                 menuCtrl.Items.Add(new IdObject {Txt = frm.FrmNm, Val=frm });
@@ -160,7 +160,7 @@ namespace GAIA
             {
                 if (menuCtrl.SelectedItem is IdObject selectedItem)
                 {
-                    FrmMst frm = selectedItem.Val as FrmMst;
+                    FrwFrm frm = selectedItem.Val as FrwFrm;
                     if (frm != null)
                     {
                         OpenFrm(frm);
@@ -194,7 +194,7 @@ namespace GAIA
             //OpenForm(dynamicForm);
         }
 
-        private void OpenFrm(FrmMst frm)
+        private void OpenFrm(FrwFrm frm)
         {
             //Form은 두가지 개념으로 분리
 

@@ -1,6 +1,6 @@
 ﻿namespace EL010.Lib.Repo
 {
-    public class CtrlCls : MdlBase
+    public class CtrlMst : MdlBase
     {
         private int _CtrlId;
         public int CtrlId
@@ -72,18 +72,18 @@
             set => Set(ref _PId, value);
         }
     }
-    public interface ICtrlClsRepo
+    public interface ICtrlMstRepo
     {
         bool ChkByCtrlNm(string ctrlNm);
-        CtrlCls GetByCtrlNm(string ctrlNm);
-        List<CtrlCls> GetAll();
-        List<CtrlCls> GetUCCtrl();
-        void Add(CtrlCls uctrl);
-        void Update(CtrlCls uctrl);
+        CtrlMst GetByCtrlNm(string ctrlNm);
+        List<CtrlMst> GetAll();
+        List<CtrlMst> GetUCCtrl();
+        void Add(CtrlMst uctrl);
+        void Update(CtrlMst uctrl);
         void Delete(int Id);
 
     }
-    public class  CtrlClsRepo : ICtrlClsRepo
+    public class  CtrlMstRepo : ICtrlMstRepo
     {
         public bool ChkByCtrlNm(string ctrlNm)
         {
@@ -97,12 +97,12 @@ select a.CtrlId, a.CtrlNm, a.CtrlGrpCd, a.CtrlRegNm, a.ContainYn, a.UseYn,
 ";
             using (var db = new GaiaHelper())
             {
-                var result = db.Query<CtrlCls>(sql, new { CtrlNm = ctrlNm }).FirstOrDefault();
+                var result = db.Query<CtrlMst>(sql, new { CtrlNm = ctrlNm }).FirstOrDefault();
                 return result == null;
             }
         }
 
-        public CtrlCls GetByCtrlNm(string ctrlNm)
+        public CtrlMst GetByCtrlNm(string ctrlNm)
         {
             string sql = @"
 select a.CtrlId, a.CtrlNm, a.CtrlGrpCd, a.CtrlRegNm, a.ContainYn, a.UseYn,
@@ -114,7 +114,7 @@ select a.CtrlId, a.CtrlNm, a.CtrlGrpCd, a.CtrlRegNm, a.ContainYn, a.UseYn,
 ";
             using (var db = new GaiaHelper())
             {
-                var result = db.Query<CtrlCls>(sql, new { CtrlNm = ctrlNm }).FirstOrDefault();
+                var result = db.Query<CtrlMst>(sql, new { CtrlNm = ctrlNm }).FirstOrDefault();
                 if (result == null)
                 {
                     throw new KeyNotFoundException($"A record with the code {ctrlNm} was not found.");
@@ -124,7 +124,7 @@ select a.CtrlId, a.CtrlNm, a.CtrlGrpCd, a.CtrlRegNm, a.ContainYn, a.UseYn,
                 return result;
             }
         }
-        public List<CtrlCls> GetAll()
+        public List<CtrlMst> GetAll()
         {
             string sql = @"
 select a.CtrlId, a.CtrlNm, a.CtrlGrpCd, a.CtrlRegNm, a.ContainYn, a.UseYn,
@@ -134,7 +134,7 @@ select a.CtrlId, a.CtrlNm, a.CtrlGrpCd, a.CtrlRegNm, a.ContainYn, a.UseYn,
 ";
             using (var db = new GaiaHelper())
             {
-                var result = db.Query<CtrlCls>(sql).ToList();
+                var result = db.Query<CtrlMst>(sql).ToList();
 
                 foreach (var item in result)
                 {
@@ -146,7 +146,7 @@ select a.CtrlId, a.CtrlNm, a.CtrlGrpCd, a.CtrlRegNm, a.ContainYn, a.UseYn,
 
         }
 
-        public void Add(CtrlCls uctrl)
+        public void Add(CtrlMst uctrl)
         {
             string sql = @"
 insert into CTRLMST
@@ -163,7 +163,7 @@ select @CtrlNm, @CtrlGrpCd, @CtrlRegNm, @ContainYn, @UseYn,
             }
         }
 
-        public void Update(CtrlCls uctrl)
+        public void Update(CtrlMst uctrl)
         {
             string sql = @"
 update a
@@ -202,7 +202,7 @@ delete
             }
         }
 
-        public List<CtrlCls> GetUCCtrl()
+        public List<CtrlMst> GetUCCtrl()
         {
             string sql = @"
 select a.CtrlId, a.CtrlNm, a.CtrlGrpCd, a.CtrlRegNm, a.ContainYn, a.UseYn,
@@ -214,7 +214,7 @@ select a.CtrlId, a.CtrlNm, a.CtrlGrpCd, a.CtrlRegNm, a.ContainYn, a.UseYn,
 ";
             using (var db = new GaiaHelper())
             {
-                var result = db.Query<CtrlCls>(sql).ToList();
+                var result = db.Query<CtrlMst>(sql).ToList();
 
                 foreach (var item in result)
                 {

@@ -9,11 +9,11 @@ namespace Lib.Repo
 {
     public class UsrMst : MdlBase
     {
-        private int _Id;
-        public int Id
+        private int _UsrRegId;
+        public int UsrRegId
         {
-            get => _Id;
-            set => Set(ref _Id, value);
+            get => _UsrRegId;
+            set => Set(ref _UsrRegId, value);
         }
 
         private string _UsrId;
@@ -75,7 +75,7 @@ select @UsrId, @UsrNm, @Pwd, @Cls,
         public UsrMst CheckSignIn(string id, string pwd)
         {
             string sql = @"
-select a.Id, a.UsrId, a.UsrNm, a.Pwd, a.Cls,
+select a.UsrRegId, a.UsrId, a.UsrNm, a.Pwd, a.Cls,
        a.CId, a.CDt, a.MId, a.MDt
   from USRMST a
  where 1=1
@@ -95,7 +95,7 @@ select a.Id, a.UsrId, a.UsrNm, a.Pwd, a.Cls,
 delete
   from USRMST
  where 1=1
-   and Id = @id
+   and UsrRegId = @id
 ";
             using (var db = new GaiaHelper())
             {
@@ -106,7 +106,7 @@ delete
         public List<UsrMst> GetAll()
         {
             string sql = @"
-select a.Id, a.UsrId, a.UsrNm, a.Pwd, a.Cls,
+select a.UsrRegId, a.UsrId, a.UsrNm, a.Pwd, a.Cls,
        a.CId, a.CDt, a.MId, a.MDt
   from USRMST a
 ";
@@ -119,15 +119,15 @@ select a.Id, a.UsrId, a.UsrNm, a.Pwd, a.Cls,
         public UsrMst GetById(int uid)
         {
             string sql = @"
-select a.Id, a.UsrId, a.UsrNm, a.Pwd, a.Cls,
+select a.UsrRegId, a.UsrId, a.UsrNm, a.Pwd, a.Cls,
        a.CId, a.CDt, a.MId, a.MDt
   from USRMST a
  where 1=1
-   and a.Id = @Id
+   and a.UsrRegId = @UsrRegId
 ";
             using (var db = new GaiaHelper())
             {
-                var result = db.Query<UsrMst>(sql, new { Id = uid }).FirstOrDefault();
+                var result = db.Query<UsrMst>(sql, new { UsrRegId = uid }).FirstOrDefault();
                 if (result == null)
                 {
                     throw new KeyNotFoundException($"A record with the code {uid} was not found.");
@@ -139,7 +139,7 @@ select a.Id, a.UsrId, a.UsrNm, a.Pwd, a.Cls,
         public UsrMst GetByUsrId(string uid)
         {
             string sql = @"
-select a.Id, a.UsrId, a.UsrNm, a.Pwd, a.Cls,
+select a.UsrRegId, a.UsrId, a.UsrNm, a.Pwd, a.Cls,
        a.CId, a.CDt, a.MId, a.MDt
   from USRMST a
  where 1=1
@@ -160,8 +160,7 @@ select a.Id, a.UsrId, a.UsrNm, a.Pwd, a.Cls,
         {
             string sql = @"
 update a
-   set Id = @Id,
-       UsrId= @UsrId,
+   set UsrId= @UsrId,
        UsrNm= @UsrNm,
        Pwd= @Pwd,
        Cls= @Cls,
@@ -169,7 +168,7 @@ update a
        MDt= getdate()
   from USRMST a
  where 1=1
-   and Id = @Id
+   and UsrRegId = @UsrRegId
 ";
             using (var db = new GaiaHelper())
             {

@@ -152,7 +152,7 @@ select a.WrkId, a.FrwId, a.FrmId, a.CtrlNm, a.WrkNm,
 update a
    set FrmId= @FrmId,
        FrmNm= @FrmNm,
-       OwnId= @OwnId,
+       UsrRegId= @UsrRegId,
        FrwId= @FrwId,
        FilePath= @FilePath,
        FileNm= @FileNm,
@@ -162,7 +162,7 @@ update a
        Memo= @Memo,
        MId= @MId,
        MDt= getdate()
-  from FRMMST a
+  from FRWFRM a
  where 1=1
    and FrmId = @FrmId
 ";

@@ -51,7 +51,7 @@ namespace Frms
             ucButton1 = new Ctrls.UCButton();
             chkFld = new DevExpress.XtraEditors.CheckEdit();
             txtNmSpace = new Ctrls.UCTextBox();
-            txtOwnId = new Ctrls.UCTextBox();
+            txtUsrRegId = new Ctrls.UCTextBox();
             txtFrmId = new Ctrls.UCTextBox();
             txtFilePath = new Ctrls.UCTextBox();
             txtFrwId = new Ctrls.UCTextBox();
@@ -179,7 +179,7 @@ namespace Frms
             ucPanel2.Readonly = false;
             ucPanel2.Size = new System.Drawing.Size(352, 661);
             ucPanel2.TabIndex = 1;
-            ucPanel2.Text = "Forms - FrmMst";
+            ucPanel2.Text = "Forms - FrwFrm";
             ucPanel2.TitleAlignment = DevExpress.Utils.HorzAlignment.Default;
             ucPanel2.CustomButtonClick += ucPenel2_CustomButtonClick;
             // 
@@ -242,7 +242,7 @@ namespace Frms
             ucPanel3.Controls.Add(ucButton1);
             ucPanel3.Controls.Add(chkFld);
             ucPanel3.Controls.Add(txtNmSpace);
-            ucPanel3.Controls.Add(txtOwnId);
+            ucPanel3.Controls.Add(txtUsrRegId);
             ucPanel3.Controls.Add(txtFrmId);
             ucPanel3.Controls.Add(txtFilePath);
             ucPanel3.Controls.Add(txtFrwId);
@@ -255,7 +255,7 @@ namespace Frms
             ucPanel3.Readonly = false;
             ucPanel3.Size = new System.Drawing.Size(969, 168);
             ucPanel3.TabIndex = 1;
-            ucPanel3.Text = "Form Registration - FrmMst";
+            ucPanel3.Text = "Form Registration - FrwFrm";
             ucPanel3.TitleAlignment = DevExpress.Utils.HorzAlignment.Default;
             ucPanel3.CustomButtonClick += ucPanel3_CustomButtonClick;
             // 
@@ -322,20 +322,20 @@ namespace Frms
             txtNmSpace.TitleAlignment = DevExpress.Utils.HorzAlignment.Default;
             txtNmSpace.TitleWidth = 80;
             // 
-            // txtOwnId
+            // txtUsrRegId
             // 
-            txtOwnId.BindText = "";
-            txtOwnId.btnVisiable = false;
-            txtOwnId.ControlHeight = 21;
-            txtOwnId.ControlWidth = 297;
-            txtOwnId.Location = new System.Drawing.Point(313, 57);
-            txtOwnId.Name = "txtOwnId";
-            txtOwnId.Readonly = false;
-            txtOwnId.Size = new System.Drawing.Size(297, 21);
-            txtOwnId.TabIndex = 7;
-            txtOwnId.Title = "Developer";
-            txtOwnId.TitleAlignment = DevExpress.Utils.HorzAlignment.Default;
-            txtOwnId.TitleWidth = 80;
+            txtUsrRegId.BindText = "";
+            txtUsrRegId.btnVisiable = false;
+            txtUsrRegId.ControlHeight = 21;
+            txtUsrRegId.ControlWidth = 297;
+            txtUsrRegId.Location = new System.Drawing.Point(313, 57);
+            txtUsrRegId.Name = "txtUsrRegId";
+            txtUsrRegId.Readonly = false;
+            txtUsrRegId.Size = new System.Drawing.Size(297, 21);
+            txtUsrRegId.TabIndex = 7;
+            txtUsrRegId.Title = "Developer";
+            txtUsrRegId.TitleAlignment = DevExpress.Utils.HorzAlignment.Default;
+            txtUsrRegId.TitleWidth = 80;
             // 
             // txtFrmId
             // 
@@ -471,7 +471,7 @@ namespace Frms
             ucPanel5.Readonly = false;
             ucPanel5.Size = new System.Drawing.Size(967, 537);
             ucPanel5.TabIndex = 2;
-            ucPanel5.Text = "Workset in Form - FrwMst";
+            ucPanel5.Text = "Workset in Form - PrjFrw";
             ucPanel5.TitleAlignment = DevExpress.Utils.HorzAlignment.Default;
             ucPanel5.CustomButtonClick += ucPanel5_CustomButtonClick;
             // 
@@ -576,7 +576,7 @@ namespace Frms
         private DevExpress.XtraGrid.GridControl gcForms;
         private DevExpress.XtraGrid.Views.Grid.GridView gvForms;
         private Ctrls.UCTextBox txtFrmId;
-        private Ctrls.UCTextBox txtOwnId;
+        private Ctrls.UCTextBox txtUsrRegId;
         private Ctrls.UCTextBox txtNmSpace;
         private DevExpress.XtraGrid.GridControl gridControls;
         private DevExpress.XtraGrid.Views.Grid.GridView gvControls;

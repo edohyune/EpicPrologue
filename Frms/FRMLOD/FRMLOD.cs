@@ -21,9 +21,9 @@ namespace Frms
     [ToolboxItem(false)]
     public partial class FRMLOD : UserControl
     {
-        private FrmMst selectedFrmMst { get; set; }
-        private BindingList<FrmMst> frmMstbs { get; set; }
-        private FrmMstRepo frmMstRepo { get; set; }
+        private FrwFrm selectedFrwFrm { get; set; }
+        private BindingList<FrwFrm> frmMstbs { get; set; }
+        private FrwFrmRepo frmMstRepo { get; set; }
 
 
         private FrmCtrl frmCtrl { get; set; }
@@ -31,10 +31,10 @@ namespace Frms
         private FrmCtrlRepo frmCtrlRepo { get; set; }
 
 
-        private CtrlCls ctrlCls { get; set; }
-        private List<CtrlCls> ctrlClss { get; set; }
-        private BindingList<CtrlCls> ctrlClsbs { get; set; }
-        private CtrlClsRepo ctrlClsRepo { get; set; }
+        private CtrlMst ctrlCls { get; set; }
+        private List<CtrlMst> ctrlClss { get; set; }
+        private BindingList<CtrlMst> ctrlClsbs { get; set; }
+        private CtrlMstRepo ctrlClsRepo { get; set; }
 
         public FrmWrk frmWrk { get; set; }
         public List<FrmWrk> frmWrks { get; set; }
@@ -53,26 +53,26 @@ namespace Frms
             var view = sender as DevExpress.XtraGrid.Views.Grid.GridView;
             if (view == null) return;
 
-            selectedFrmMst = view.GetFocusedRow() as FrmMst;
+            selectedFrwFrm = view.GetFocusedRow() as FrwFrm;
 
-            if (selectedFrmMst != null)
+            if (selectedFrwFrm != null)
             {
-                SetFrmMstFreeForm();
+                SetFrwFrmFreeForm();
             }
 
         }
 
-        private void SetFrmMstFreeForm()
+        private void SetFrwFrmFreeForm()
         {
-            AddBindingIfNotExists(txtFilePath, "BindText", selectedFrmMst, "FilePath");
-            AddBindingIfNotExists(txtFileNm, "BindText", selectedFrmMst, "FileNm");
-            AddBindingIfNotExists(txtFrmId, "BindText", selectedFrmMst, "FrmId");
-            AddBindingIfNotExists(txtFrmNm, "BindText", selectedFrmMst, "FrmNm");
-            AddBindingIfNotExists(txtOwnId, "BindText", selectedFrmMst, "OwnId");
-            AddBindingIfNotExists(txtFrwId, "BindText", selectedFrmMst, "FrwId");
-            AddBindingIfNotExists(txtNmSpace, "BindText", selectedFrmMst, "NmSpace");
-            AddBindingIfNotExists(chkFld, "EditValue", selectedFrmMst, "FldYn");
-            AddBindingIfNotExists(cmbStatus, "SelectedItem", selectedFrmMst, "ChangedFlag");
+            AddBindingIfNotExists(txtFilePath, "BindText", selectedFrwFrm, "FilePath");
+            AddBindingIfNotExists(txtFileNm, "BindText", selectedFrwFrm, "FileNm");
+            AddBindingIfNotExists(txtFrmId, "BindText", selectedFrwFrm, "FrmId");
+            AddBindingIfNotExists(txtFrmNm, "BindText", selectedFrwFrm, "FrmNm");
+            AddBindingIfNotExists(txtUsrRegId, "BindText", selectedFrwFrm, "UsrRegId");
+            AddBindingIfNotExists(txtFrwId, "BindText", selectedFrwFrm, "FrwId");
+            AddBindingIfNotExists(txtNmSpace, "BindText", selectedFrwFrm, "NmSpace");
+            AddBindingIfNotExists(chkFld, "EditValue", selectedFrwFrm, "FldYn");
+            AddBindingIfNotExists(cmbStatus, "SelectedItem", selectedFrwFrm, "ChangedFlag");
 
         }
         private System.Windows.Forms.BindingSource bindingSource = new System.Windows.Forms.BindingSource();
@@ -92,12 +92,12 @@ namespace Frms
         {
             frmCtrl = new FrmCtrl();
             frmCtrlRepo = new FrmCtrlRepo();
-            frmCtrlbs = new BindingList<FrmCtrl>(frmCtrlRepo.GetByFrwFrm(selectedFrmMst.FrwId, selectedFrmMst.FrmId));
+            frmCtrlbs = new BindingList<FrmCtrl>(frmCtrlRepo.GetByFrwFrm(selectedFrwFrm.FrwId, selectedFrwFrm.FrmId));
             gridControls.DataSource = frmCtrlbs;
 
             frmWrk = new FrmWrk();
             frmWrkRepo = new FrmWrkRepo();
-            frmWrkbs = new BindingList<FrmWrk>(frmWrkRepo.GetByFrwFrm(selectedFrmMst.FrwId, selectedFrmMst.FrmId));
+            frmWrkbs = new BindingList<FrmWrk>(frmWrkRepo.GetByFrwFrm(selectedFrwFrm.FrwId, selectedFrwFrm.FrmId));
             gridWorkset.DataSource = frmWrkbs;
 
         }
@@ -112,8 +112,8 @@ namespace Frms
         }
         private void OpengridFrms()
         {
-            frmMstRepo = new FrmMstRepo();
-            frmMstbs = new BindingList<FrmMst>(frmMstRepo.GetAll());
+            frmMstRepo = new FrwFrmRepo();
+            frmMstbs = new BindingList<FrwFrm>(frmMstRepo.GetAll());
             gcForms.DataSource = frmMstbs;
         }
 
@@ -121,33 +121,33 @@ namespace Frms
         {
             if (e.Button.Properties.Caption == "New")
             {
-                selectedFrmMst = new FrmMst();
-                selectedFrmMst.ChangedFlag = MdlState.Inserted;
-                SetFrmMstFreeForm();
+                selectedFrwFrm = new FrwFrm();
+                selectedFrwFrm.ChangedFlag = MdlState.Inserted;
+                SetFrwFrmFreeForm();
             }
             else if (e.Button.Properties.Caption == "Save")
             {
-                if (selectedFrmMst.ChangedFlag == MdlState.Inserted)
+                if (selectedFrwFrm.ChangedFlag == MdlState.Inserted)
                 {
-                    frmMstRepo.Add(selectedFrmMst);
+                    frmMstRepo.Add(selectedFrwFrm);
                 }
                 else
                 {
-                    frmMstRepo.Update(selectedFrmMst);
+                    frmMstRepo.Update(selectedFrwFrm);
                 }
 
             }
             else if (e.Button.Properties.Caption == "Delete")
             {
-                if (selectedFrmMst.ChangedFlag == MdlState.Inserted)
+                if (selectedFrwFrm.ChangedFlag == MdlState.Inserted)
                 {
-                    selectedFrmMst = new FrmMst();
+                    selectedFrwFrm = new FrwFrm();
                     cmbStatus.Text = MdlState.Inserted.ToString();
-                    SetFrmMstFreeForm();
+                    SetFrwFrmFreeForm();
                 }
                 else
                 {
-                    frmMstRepo.Delete(selectedFrmMst.FrmId);
+                    frmMstRepo.Delete(selectedFrwFrm.FrmId);
                 }
             }
         }
@@ -157,28 +157,28 @@ namespace Frms
             openFileDialog1.FileName = "";
             openFileDialog1.Filter = "DLL Files|*.dll|EXE Files|*.exe";
 
-            if (string.IsNullOrEmpty(selectedFrmMst.FilePath))
+            if (string.IsNullOrEmpty(selectedFrwFrm.FilePath))
             {
                 openFileDialog1.InitialDirectory = @"C:\";
             }
             else
             {
-                openFileDialog1.InitialDirectory = selectedFrmMst.FilePath;
+                openFileDialog1.InitialDirectory = selectedFrwFrm.FilePath;
             }
             openFileDialog1.ShowDialog();
 
-            selectedFrmMst.FilePath = Path.GetDirectoryName(openFileDialog1.FileName);
-            selectedFrmMst.FileNm = openFileDialog1.SafeFileName;
-            selectedFrmMst.FrmId = selectedFrmMst.FileNm.Substring(0, selectedFrmMst.FileNm.Length - 4);
-            selectedFrmMst.OwnId = (int)Common.gRegId;
-            selectedFrmMst.FrwId = Common.gFrameWorkId;
-            selectedFrmMst.NmSpace = $"Frms.{selectedFrmMst.FrmId}";
+            selectedFrwFrm.FilePath = Path.GetDirectoryName(openFileDialog1.FileName);
+            selectedFrwFrm.FileNm = openFileDialog1.SafeFileName;
+            selectedFrwFrm.FrmId = selectedFrwFrm.FileNm.Substring(0, selectedFrwFrm.FileNm.Length - 4);
+            selectedFrwFrm.UsrRegId = (int)Common.gRegId;
+            selectedFrwFrm.FrwId = Common.gFrameWorkId;
+            selectedFrwFrm.NmSpace = $"Frms.{selectedFrwFrm.FrmId}";
         }
 
         private void btnReload_Click(object sender, EventArgs e)
         {
             //frm.FilePath, frm.NmSpace의 값이 없으면 아무것도 하지 않는다.
-            if (string.IsNullOrEmpty(selectedFrmMst.FilePath) || string.IsNullOrEmpty(selectedFrmMst.NmSpace))
+            if (string.IsNullOrEmpty(selectedFrwFrm.FilePath) || string.IsNullOrEmpty(selectedFrwFrm.NmSpace))
             {
                 return;
             }
@@ -186,12 +186,12 @@ namespace Frms
             //UserControl정보를 넣는 변수 ucform을 선언한다.
             UserControl ucform = null;
             //추가 정보을 읽어 올 파일의 목록
-            ctrlClsRepo = new CtrlClsRepo();
+            ctrlClsRepo = new CtrlMstRepo();
             ctrlClss = ctrlClsRepo.GetAll();
             //frmCtrlbs.Clear();
 
-            Assembly assembly = AppDomain.CurrentDomain.Load(File.ReadAllBytes($"{selectedFrmMst.FilePath}\\{selectedFrmMst.FileNm}"));
-            var ty = assembly.GetType(selectedFrmMst.NmSpace);
+            Assembly assembly = AppDomain.CurrentDomain.Load(File.ReadAllBytes($"{selectedFrwFrm.FilePath}\\{selectedFrwFrm.FileNm}"));
+            var ty = assembly.GetType(selectedFrwFrm.NmSpace);
             ucform = (UserControl)Activator.CreateInstance(ty);
 
             // 1. Non-Visual Components Tray Area 컨트롤 확인
@@ -218,7 +218,7 @@ namespace Frms
                     if (frmCtrl != null)
                     {
                         frmCtrl.FrwId = Common.gFrameWorkId;
-                        frmCtrl.FrmId = selectedFrmMst.FrmId;
+                        frmCtrl.FrmId = selectedFrwFrm.FrmId;
                         frmCtrl.CtrlNm = ctrlNm;
                         frmCtrl.ToolNm = toolNm;
                         frmCtrl.ChangedFlag = MdlState.Updated;
@@ -228,7 +228,7 @@ namespace Frms
                         frmCtrlbs.Add(new FrmCtrl
                         {
                             FrwId = Common.gFrameWorkId,
-                            FrmId = selectedFrmMst.FrmId,
+                            FrmId = selectedFrwFrm.FrmId,
                             CtrlNm = ctrlNm,
                             ToolNm = toolNm,
                             ChangedFlag = MdlState.Inserted
@@ -311,7 +311,7 @@ namespace Frms
             {
                 if (!ctrlClss.Any(c => c.CtrlRegNm == ctrl.GetType().FullName))
                 {
-                    ctrlCls = new CtrlCls
+                    ctrlCls = new CtrlMst
                     {
                         CtrlNm = ctrl.GetType().Name,
                         CtrlRegNm = ctrl.GetType().FullName,
@@ -321,7 +321,7 @@ namespace Frms
                 }
                 else
                 {
-                    ctrlCls = new CtrlCls
+                    ctrlCls = new CtrlMst
                     {
                         CtrlNm = ctrl.GetType().Name,
                         CtrlRegNm = ctrl.GetType().FullName,
@@ -340,7 +340,7 @@ namespace Frms
                         if (frmCtrl != null)
                         {
                             frmCtrl.FrwId = Common.gFrameWorkId;
-                            frmCtrl.FrmId = selectedFrmMst.FrmId;
+                            frmCtrl.FrmId = selectedFrwFrm.FrmId;
                             frmCtrl.CtrlNm = ctrl.Name;
                             frmCtrl.ToolNm = ctrl.GetType().Name;
                             frmCtrl.CtrlW = GetWidth(ctrl);
@@ -356,7 +356,7 @@ namespace Frms
                             frmCtrlbs.Add(new FrmCtrl
                             {
                                 FrwId = Common.gFrameWorkId,
-                                FrmId = selectedFrmMst.FrmId,
+                                FrmId = selectedFrwFrm.FrmId,
                                 CtrlNm = ctrl.Name,
                                 ToolNm = ctrl.GetType().Name,
                                 CtrlW = GetWidth(ctrl),

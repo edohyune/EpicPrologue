@@ -54,7 +54,7 @@ namespace GAIA
             else
             {
                 Common.gId = usr.UsrId;
-                Common.gRegId = usr.Id;
+                Common.gRegId = usr.UsrRegId;
                 Common.gNm = usr.UsrNm;
                 Common.gCls = usr.Cls;
 

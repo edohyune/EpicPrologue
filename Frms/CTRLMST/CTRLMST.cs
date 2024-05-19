@@ -15,7 +15,7 @@ namespace Frms
         private void gridCtrls_EmbeddedNavigator_ButtonClick(object sender, NavigatorButtonClickEventArgs e)
         {
             var view = gvCtrls;
-            var data = gridCtrls.DataSource as List<CtrlCls>;
+            var data = gridCtrls.DataSource as List<CtrlMst>;
 
             switch (e.Button.ButtonType)
             {
@@ -35,7 +35,7 @@ namespace Frms
                         view.UpdateCurrentRow();
                     }
 
-                    var updatedRow = view.GetFocusedRow() as CtrlCls;
+                    var updatedRow = view.GetFocusedRow() as CtrlMst;
 
                     if (updatedRow != null)
                     {
@@ -58,13 +58,13 @@ namespace Frms
             }
         }
 
-        BindingList<CtrlCls> ctrlclss;
-        CtrlClsRepo ctrlclsrepo;
+        BindingList<CtrlMst> ctrlclss;
+        CtrlMstRepo ctrlclsrepo;
         private void gridCtrls_open()
         {
             ctrlclss = null;
-            ctrlclsrepo = new CtrlClsRepo();
-            ctrlclss = new BindingList<CtrlCls>(ctrlclsrepo.GetAll());
+            ctrlclsrepo = new CtrlMstRepo();
+            ctrlclss = new BindingList<CtrlMst>(ctrlclsrepo.GetAll());
             gridCtrls.DataSource = ctrlclss;
         }
     }

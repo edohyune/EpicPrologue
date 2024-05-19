@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Lib.Repo
 {
-    public class FrmMst : MdlBase
+    public class FrwFrm : MdlBase
     {
         private string _FrmId;
         public string FrmId
@@ -23,11 +23,11 @@ namespace Lib.Repo
             set => Set(ref _FrmNm, value);
         }
 
-        private int _OwnId;
-        public int OwnId
+        private int _UsrRegId;
+        public int UsrRegId
         {
-            get => _OwnId;
-            set => Set(ref _OwnId, value);
+            get => _UsrRegId;
+            set => Set(ref _UsrRegId, value);
         }
 
         private string _FrwId;
@@ -91,48 +91,48 @@ namespace Lib.Repo
             set => Set(ref _Memo, value);
         }
     }
-    public interface IFrmMstRepo
+    public interface IFrwFrmRepo
     {
         bool ChkByFrm(string frmId);
-        FrmMst GetByFrmId(string frmId);
-        List<FrmMst> GetAll();
-        void Add(FrmMst frmMst);
-        void Update(FrmMst frmMst);
+        FrwFrm GetByFrmId(string frmId);
+        List<FrwFrm> GetAll();
+        void Add(FrwFrm frmMst);
+        void Update(FrwFrm frmMst);
         void Delete(string frmId);
 
     }
-    public class FrmMstRepo : IFrmMstRepo
+    public class FrwFrmRepo : IFrwFrmRepo
     {
         public bool ChkByFrm(string frmId)
         {
             string sql = @"
-select a.FrmId, a.FrmNm, a.OwnId, a.FrwId, a.FilePath,
+select a.FrmId, a.FrmNm, a.UsrRegId, a.FrwId, a.FilePath,
        a.FileNm, a.NmSpace, a.FldYn, a.PId, a.Memo,
        a.CId, a.CDt, a.MId, a.MDt
-  from FRMMST a
+  from FRWFRM a
  where 1=1
    and a.FrmId = @FrmId
 ";
             using (var db = new GaiaHelper())
             {
-                var result = db.Query<FrmMst>(sql, new { FrmId = frmId }).FirstOrDefault();
+                var result = db.Query<FrwFrm>(sql, new { FrmId = frmId }).FirstOrDefault();
                 return result == null;
             }
         }
-        public List<FrmMst> GetByOwnFrw(int ownId, string frwId)
+        public List<FrwFrm> GetByOwnFrw(int ownId, string frwId)
         {
             string sql = @"
-select a.FrmId, a.FrmNm, a.OwnId, a.FrwId, a.FilePath,
+select a.FrmId, a.FrmNm, a.UsrRegId, a.FrwId, a.FilePath,
        a.FileNm, a.NmSpace, a.FldYn, a.PId, a.Memo,
        a.CId, a.CDt, a.MId, a.MDt
-  from FRMMST a
+  from FRWFRM a
  where 1=1
-   and a.OwnId = @OwnId
+   and a.UsrRegId = @UsrRegId
    and a.FrwId = @FrwId
 ";
             using (var db = new GaiaHelper())
             {
-                var result = db.Query<FrmMst>(sql, new { FrwId = frwId, OwnId = ownId }).ToList();
+                var result = db.Query<FrwFrm>(sql, new { FrwId = frwId, UsrRegId = ownId }).ToList();
                 foreach (var item in result)
                 {
                     item.ChangedFlag = MdlState.None;  // 객체 상태를 None으로 설정
@@ -141,19 +141,19 @@ select a.FrmId, a.FrmNm, a.OwnId, a.FrwId, a.FilePath,
             }
         }
 
-        public FrmMst GetByFrmId(string frmId)
+        public FrwFrm GetByFrmId(string frmId)
         {
             string sql = @"
-select a.FrmId, a.FrmNm, a.OwnId, a.FrwId, a.FilePath,
+select a.FrmId, a.FrmNm, a.UsrRegId, a.FrwId, a.FilePath,
        a.FileNm, a.NmSpace, a.FldYn, a.PId, a.Memo,
        a.CId, a.CDt, a.MId, a.MDt
-  from FRMMST a
+  from FRWFRM a
  where 1=1
    and a.FrmId = @FrmId
 ";
             using (var db = new GaiaHelper())
             {
-                var result = db.Query<FrmMst>(sql, new { FrmId = frmId }).FirstOrDefault();
+                var result = db.Query<FrwFrm>(sql, new { FrmId = frmId }).FirstOrDefault();
                 if (result == null)
                 {
                     throw new KeyNotFoundException($"A record with the code {frmId} was not found.");
@@ -165,17 +165,17 @@ select a.FrmId, a.FrmNm, a.OwnId, a.FrwId, a.FilePath,
                 }
             }
         }
-        public List<FrmMst> GetAll()
+        public List<FrwFrm> GetAll()
         {
             string sql = @"
-select a.FrmId, a.FrmNm, a.OwnId, a.FrwId, a.FilePath,
+select a.FrmId, a.FrmNm, a.UsrRegId, a.FrwId, a.FilePath,
        a.FileNm, a.NmSpace, a.FldYn, a.PId, a.Memo,
        a.CId, a.CDt, a.MId, a.MDt
-  from FRMMST a
+  from FRWFRM a
 ";
             using (var db = new GaiaHelper())
             {
-                var result = db.Query<FrmMst>(sql).ToList();
+                var result = db.Query<FrwFrm>(sql).ToList();
 
                 foreach (var item in result)
                 {
@@ -185,14 +185,14 @@ select a.FrmId, a.FrmNm, a.OwnId, a.FrwId, a.FilePath,
             }
         }
 
-        public void Add(FrmMst frmMst)
+        public void Add(FrwFrm frmMst)
         {
             string sql = @"
-insert into FRMMST
-      (FrmId, FrmNm, OwnId, FrwId, FilePath,
+insert into FRWFRM
+      (FrmId, FrmNm, UsrRegId, FrwId, FilePath,
        FileNm, NmSpace, FldYn, PId, Memo,
        CId, CDt, MId, MDt)
-select @FrmId, @FrmNm, @OwnId, @FrwId, @FilePath,
+select @FrmId, @FrmNm, @UsrRegId, @FrwId, @FilePath,
        @FileNm, @NmSpace, @FldYn, @PId, @Memo,
        @CId, getdate(), @MId, getdate()
 ";
@@ -202,13 +202,13 @@ select @FrmId, @FrmNm, @OwnId, @FrwId, @FilePath,
             }
         }
 
-        public void Update(FrmMst frmMst)
+        public void Update(FrwFrm frmMst)
         {
             string sql = @"
 update a
    set FrmId= @FrmId,
        FrmNm= @FrmNm,
-       OwnId= @OwnId,
+       UsrRegId= @UsrRegId,
        FrwId= @FrwId,
        FilePath= @FilePath,
        FileNm= @FileNm,
@@ -218,7 +218,7 @@ update a
        Memo= @Memo,
        MId= @MId,
        MDt= getdate()
-  from FRMMST a
+  from FRWFRM a
  where 1=1
    and FrmId = @FrmId
 ";
@@ -232,7 +232,7 @@ update a
         {
             string sql = @"
 delete
-  from FRMMST
+  from FRWFRM
  where 1=1
    and FrmId = @FrmId
 ";

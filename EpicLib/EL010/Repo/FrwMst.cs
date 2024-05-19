@@ -1,6 +1,6 @@
 ﻿namespace EL010.Lib.Repo
 {
-    public class FrwMst : MdlBase
+    public class PrjFrw : MdlBase
     {
         private string _FrwId;
         public string FrwId
@@ -42,20 +42,20 @@
             return FrwNm;
         }
     }
-    public interface IFrwMstRepo
+    public interface IPrjFrwRepo
     {
-        FrwMst GetById(string id);
-        List<FrwMst> GetAll();
-        void Add(FrwMst frmWrk);
-        void Update(FrwMst frmWrk);
+        PrjFrw GetById(string id);
+        List<PrjFrw> GetAll();
+        void Add(PrjFrw frmWrk);
+        void Update(PrjFrw frmWrk);
         void Delete(string id);
     }
-    public class FrwMstRepo : IFrwMstRepo
+    public class PrjFrwRepo : IPrjFrwRepo
     {
-        public void Add(FrwMst frmWrk)
+        public void Add(PrjFrw frmWrk)
         {
             string sql = @"
-insert into FRWMST
+insert into PRJFRW
       (FrwId, FrwNm, Memo, Ver, PId,
        CId, CDt, MId, Mdt)
 select @FrwId, @FrwNm, @Memo, @Ver, @PId,
@@ -71,7 +71,7 @@ select @FrwId, @FrwNm, @Memo, @Ver, @PId,
         {
             string sql = @"
 delete
-  from FRWMST
+  from PRJFRW
  where 1=1
    and FrwId = @FrwId
 ";
@@ -81,36 +81,36 @@ delete
             }
         }
 
-        public List<FrwMst> GetAll()
+        public List<PrjFrw> GetAll()
         {
             string sql = @"
 select a.FrwId, a.FrwNm, a.Memo, a.Ver, a.PId,
        a.CId, a.CDt, a.MId, a.Mdt
-  from FRWMST a
+  from PRJFRW a
 ";
             using (var db = new GaiaHelper())
             {
-                return db.Query<FrwMst>(sql).ToList();
+                return db.Query<PrjFrw>(sql).ToList();
             }
         }
 
-        public FrwMst GetById(string id)
+        public PrjFrw GetById(string id)
         {
             string sql = @"
 select a.FrwId, a.FrwNm, a.Memo, a.Ver, a.PId,
        a.CId, a.CDt, a.MId, a.Mdt
-  from FRWMST a
+  from PRJFRW a
  where 1=1
    and a.FrwId = @FrwId
 ";
             using (var db = new GaiaHelper())
             {
-                var result = db.Query<FrwMst>(sql, new { FrwId = id }).FirstOrDefault();
+                var result = db.Query<PrjFrw>(sql, new { FrwId = id }).FirstOrDefault();
                 return result;
             }
         }
 
-        public void Update(FrwMst frmWrk)
+        public void Update(PrjFrw frmWrk)
         {
             string sql = @"
 update a
@@ -120,7 +120,7 @@ update a
        PId= @PId,
        MId= @MId,
        Mdt= getdate()
-  from FRWMST a
+  from PRJFRW a
  where 1=1
    and FrwId = @FrwId_old
 ";
