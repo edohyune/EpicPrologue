@@ -1,4 +1,5 @@
 ﻿using DevExpress.Utils.DirectXPaint;
+using DevExpress.XtraPrinting.Native;
 using System.ComponentModel;
 
 namespace Ctrls
@@ -9,7 +10,7 @@ namespace Ctrls
         private string frmId { get; set; }
         private string fldId { get; set; }
 
-        [Category("UserController Property"), Description("Title Alignment")]
+        [Category("A UserController Property"), Description("Title Alignment")]
         public DevExpress.Utils.HorzAlignment TitleAlignment
         {
             get
@@ -22,18 +23,19 @@ namespace Ctrls
             }
         }
 
-        [Category("UserController Property"), Description("ReadOnly - Not Enabled")]
-        public bool Readonly
+        [Category("A UserController Property"), Description("Editable=Enable=Not ReadOnly")] //chk
+        public bool EditYn
         {
             get
             {
-                return !(this.btnCtrl.Enabled);
+                return this.btnCtrl.Enabled;
             }
             set
             {
-                this.btnCtrl.Enabled = !(value);
+                this.btnCtrl.Enabled = value;
             }
         }
+
 
         public DevExpress.XtraEditors.SimpleButton btnCtrl { get; set; }
 

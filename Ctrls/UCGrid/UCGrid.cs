@@ -3,30 +3,31 @@ using System.ComponentModel;
 using DevExpress.Utils;
 using DevExpress.XtraEditors.Repository;
 using Lib;
+using Lib.Repo;
+using DevExpress.XtraPrinting.Native;
 
 namespace Ctrls
 {
     public class UCGrid : DevExpress.XtraGrid.GridControl
     {
-        private string sysCd { get; set; }
+        private string frwId { get; set; }
         private string frmId { get; set; }
-        private string wkSetId { get; set; }
+        private string wrkId { get; set; }
         [Browsable(false)]
         public DevExpress.XtraGrid.Views.Grid.GridView gvCtrl { get; set; }
 
-        [Category("UserController Property"), Description("ReadOnly - Not Enabled")]
-        public bool Readonly
+        [Category("A UserController Property"), Description("Visiable")] //chk
+        public bool ShowYn
         {
             get
             {
-                return !(this.Enabled);
+                return this.Visible;
             }
             set
             {
-                this.Enabled = !(value);
+                this.Visible = value;
             }
         }
-        
 
         public UCGrid()
         {
@@ -34,26 +35,12 @@ namespace Ctrls
             this.MainView.GridControl = this;
             this.UseEmbeddedNavigator = true;
 
-            //this.EmbeddedNavigator.ButtonClick += (sender, e) =>
-            //{
-            //    switch (e.Button.ButtonType)
-            //    {
-            //        case NavigatorButtonType.Edit:
-            //            this.MainView.ShowEditor();
-            //            // 추가 버튼 클릭 시 수행할 동작
-            //            break;
-            //        case NavigatorButtonType.Remove:
-            //            // 제거 버튼 클릭 시 수행할 동작
-            //            break;
-            //            // 필요에 따라 다른 버튼 유형 처리
-            //    }
-            //};
             HandleCreated += ucGrid_HandleCreated;
         }
 
         private void ucGrid_HandleCreated(object? sender, EventArgs e)
         {
-            sysCd = Common.gSysCd;
+            frwId = Common.gSysCd;
 
             Form? form = this.FindForm();
             if (form != null)
@@ -64,9 +51,9 @@ namespace Ctrls
             {
                 frmId = "Unknown";
             }
-            wkSetId = this.Name;
+            wrkId = this.Name;
 
-            if (sysCd != string.Empty)
+            if (frwId != string.Empty)
             {
                 ResetColumns();
             }
@@ -76,40 +63,44 @@ namespace Ctrls
             try
             {
                 // GridPropRepo의 인스턴스를 생성합니다.
-                var repo = new Repo.TGridColumnPropRepo();
+                WrkFldRepo wrkFldRepo = new WrkFldRepo();
                 // 모든 컬럼 설정을 데이터베이스에서 가져옵니다.
-                var colProperties = repo.GetTGridColumnProperties(sysCd, frmId, wkSetId);
+                List<WrkFld> colProperties = wrkFldRepo.GetColumnProperties(frwId, frmId, wrkId);
+
+                //var repo = new Repo.TGridColumnPropRepo();
+                //var colProperties = repo.GetTGridColumnProperties(sysCd, frmId, wkSetId);
+
                 // MainView를 GridView 타입으로 캐스팅합니다.
                 gvCtrl = this.MainView as DevExpress.XtraGrid.Views.Grid.GridView;
                 // GridView에 설정된 기존의 컬럼들을 제거합니다.
                 gvCtrl.Columns.Clear();
-                // 데이터베이스에서 가져온 컬럼 설정 정보를 사용하여 GridView의 컬럼을 설정합니다.
-                if (colProperties.Count == 0)
+
+                if (colProperties!=null)
                 {
-                    return;
+                    foreach (var colproperty in colProperties)
+                    {
+                        AddGridColumn(gvCtrl, SetGridProperties(colproperty.FldNm,     // Column ID
+                                                                colproperty.FldTy,     // Text, Int, Date, Decimal, Code(Lookup)
+                                                                colproperty.FldTitle,       // Title
+                                                                colproperty.TitleAlign,  // Title Alignment DevExpress.Utils.HorzAlignment TitleAlign
+                                                                colproperty.FldTitleWidth,      // Title Width
+                                                                colproperty.Popup,       // Lookup
+                                                                colproperty.DefaultText,         // Default Text
+                                                                colproperty.TextAlign,    // Text Alignment DevExpress.Utils.HorzAlignment TxtAlign
+                                                                colproperty.FixYn,     // Freeze Column
+                                                                colproperty.GroupYn,   // Grouping
+                                                                colproperty.ShowYn,    // Hide
+                                                                colproperty.NeedYn,    // Necessary Field
+                                                                colproperty.EditYn,    // ReadOnly
+                                                                colproperty.Band1,       // Title Band 2nd
+                                                                colproperty.Band2,       // Title Band 1st
+                                                                colproperty.FuncStr,      // sum, avg, max, min
+                                                                colproperty.FormatStr,   // #.##, #,##0.00
+                                                                colproperty.ColorBg,    // Column Background Color
+                                                                colproperty.ColorFont));// Text Color
+                    }
                 }
-                foreach (var colproperty in colProperties)
-                {
-                    AddGridColumn(gvCtrl, SetGridProperties(colproperty.Ctrl_id,     // Column ID
-                                                            colproperty.Ctrl_ty,     // Text, Int, Date, Decimal, Code(Lookup)
-                                                            colproperty.Title,       // Title
-                                                            colproperty.TitleAlign,  // Title Alignment DevExpress.Utils.HorzAlignment TitleAlign
-                                                            colproperty.TitleW,      // Title Width
-                                                            colproperty.Popup,       // Lookup
-                                                            colproperty.Txt,         // Default Text
-                                                            colproperty.TxtAlign,    // Text Alignment DevExpress.Utils.HorzAlignment TxtAlign
-                                                            colproperty.Fix_chk,     // Freeze Column
-                                                            colproperty.Group_chk,   // Grouping
-                                                            colproperty.Show_chk,    // Hide
-                                                            colproperty.Need_chk,    // Necessary Field
-                                                            colproperty.Edit_chk,    // ReadOnly
-                                                            colproperty.Band1,       // Title Band 2nd
-                                                            colproperty.Band2,       // Title Band 1st
-                                                            colproperty.Sum_ty,      // sum, avg, max, min
-                                                            colproperty.Format_ty,   // #.##, #,##0.00
-                                                            colproperty.Color_bg,    // Column Background Color
-                                                            colproperty.Color_fore));// Text Color
-                }
+
                 // GridView를 갱신합니다.
                 gvCtrl.RefreshData();
             }
@@ -127,16 +118,16 @@ namespace Ctrls
         private DevExpress.XtraGrid.Columns.GridColumn SetGridProperties(string ctrl_id,     // Column ID
                                              string ctrl_ty,     // Text, Int, Date, Decimal, Code(Lookup), Form, Checkbox, Memo
                                              string title,       // Title
-                                             HorzAlignment titleAlign,  // Title Alignment DevExpress.Utils.HorzAlignment TitleAlign
-                                             string titleW,      // Title Width
+                                             string titleAlign,  // Title Alignment DevExpress.Utils.HorzAlignment TitleAlign
+                                             int titleW,      // Title Width
                                              string popup,       // ctrl_ty에 따라 다른 값이 들어갑니다. (Lookup, Form, Checkbox, Memo)
                                              string txt,         // Default Text
-                                             HorzAlignment txtAlign,    // Text Alignment DevExpress.Utils.HorzAlignment TxtAlign
-                                             string fix_chk,     // Freeze Column
-                                             string group_chk,   // Grouping
-                                             string show_chk,    // Hide
-                                             string need_chk,    // Necessary Field
-                                             string edit_chk,    // ReadOnly
+                                             string txtAlign,    // Text Alignment DevExpress.Utils.HorzAlignment TxtAlign
+                                             bool fix_chk,     // Freeze Column
+                                             bool group_chk,   // Grouping
+                                             bool show_chk,    // Hide
+                                             bool need_chk,    // Necessary Field
+                                             bool edit_chk,    // ReadOnly
                                              string band1,       // Title Band 2nd
                                              string band2,       // Title Band 1st
                                              string sum_ty,      // sum, avg, max, min
@@ -181,16 +172,16 @@ namespace Ctrls
                     // ... 기타 컨트롤 타입에 대한 설정
             }
             column.Caption = title;
-            column.AppearanceHeader.TextOptions.HAlignment = titleAlign;
-            column.Width = int.Parse(titleW);
+            column.AppearanceHeader.TextOptions.HAlignment = GenFunc.StrToAlign(titleAlign);
+            column.Width = titleW;
             //pupup Controller Type에 따라 다른 설정이 필요합니다.
             //txt는 GridView의 AddNewRow 이벤트에서 설정합니다. 
-            column.AppearanceCell.TextOptions.HAlignment = txtAlign;
-            column.Fixed = (fix_chk == "1" ? FixedStyle.Left : FixedStyle.None);
-            column.OptionsColumn.AllowGroup = (group_chk == "1" ? DefaultBoolean.True : DefaultBoolean.False);
-            column.Visible = show_chk != "0";
+            column.AppearanceCell.TextOptions.HAlignment = GenFunc.StrToAlign(txtAlign);
+            column.Fixed = fix_chk ? FixedStyle.Left : FixedStyle.None;
+            column.OptionsColumn.AllowGroup = group_chk ? DefaultBoolean.True : DefaultBoolean.False;
+            column.Visible = show_chk;
             //need_chk는 저장시 확인하는 로직에서 사용합니다.
-            column.OptionsColumn.AllowEdit = edit_chk != "1";
+            column.OptionsColumn.AllowEdit = edit_chk;
             if (!string.IsNullOrEmpty(band1))
             {
                 // 밴드 설정은 그리드 뷰에 밴드가 있는 경우에만 유효합니다.

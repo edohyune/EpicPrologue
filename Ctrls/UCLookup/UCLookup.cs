@@ -11,7 +11,7 @@ namespace Ctrls
         private string FrmID { get; set; }
         private string FldID { get; set; }
 
-        [Category("UserController Property"), Description("ReadOnly")]
+        [Category("A UserController Property"), Description("ReadOnly")]
         public bool Readonly
         {
             get
@@ -24,7 +24,7 @@ namespace Ctrls
             }
         }
 
-        [Category("UserController Property"), Description("Title")]
+        [Category("A UserController Property"), Description("Title")]
         public string Title
         {
             get
@@ -36,7 +36,7 @@ namespace Ctrls
                 this.labelCtrl.Text = value;
             }
         }
-        [Category("UserController Property"), Description("Height")]
+        [Category("A UserController Property"), Description("Height")]
         public int ControlHeight
         {
             get
@@ -49,7 +49,7 @@ namespace Ctrls
             }
         }
 
-        [Category("UserController Property"), Description("Width")]
+        [Category("A UserController Property"), Description("Width")]
         public int ControlWidth
         {
             get
@@ -61,17 +61,9 @@ namespace Ctrls
                 this.Width = value;
             }
         }
-        [Category("UserController Property"), Description("Title Width")]
+        [Category("A UserController Property"), Description("Title Width")]
         public int TitleWidth
         {
-            //get
-            //{
-            //    return this.labelCtrl.Width;
-            //}
-            //set
-            //{
-            //    this.labelCtrl.Width = value;
-            //}
             get
             {
                 return splitCtrl.SplitterDistance;
@@ -82,7 +74,7 @@ namespace Ctrls
             }
 
         }
-        [Category("UserController Property"), Description("Title Alignment")]
+        [Category("A UserController Property"), Description("Title Alignment")]
         public DevExpress.Utils.HorzAlignment TitleAlignment
         {
             get
@@ -94,7 +86,20 @@ namespace Ctrls
                 this.labelCtrl.Appearance.TextOptions.HAlignment = value;
             }
         }
-        [Category("UserController Property"), Description("Bind Text")]
+        [Category("A UserController Property"), Description("Text Alignment")] //chk
+        public DevExpress.Utils.HorzAlignment TextAlignment
+        {
+            get
+            {
+                return this.lookupCtrl.Properties.Appearance.TextOptions.HAlignment;
+            }
+            set
+            {
+                this.lookupCtrl.Properties.Appearance.TextOptions.HAlignment = value;
+            }
+        }
+
+        [Category("A UserController Property"), Description("Bind Text")]
         public string BindText
         {
             get
@@ -106,7 +111,7 @@ namespace Ctrls
                 this.lookupCtrl.Text = value;
             }
         }
-        [Category("UserController Property"), Description("Bind Text")]
+        [Category("A UserController Property"), Description("Bind Text")]
         public string BindValue
         {
             get
@@ -118,7 +123,7 @@ namespace Ctrls
                 this.lookupCtrl.EditValue = value;
             }
         }
-        [Category("UserController Property"), Description("Bind Text")]
+        [Category("A UserController Property"), Description("Bind Text")]
         public string BindDisplayMember
         {
             get
@@ -130,7 +135,7 @@ namespace Ctrls
                 this.lookupCtrl.Properties.DisplayMember = value;
             }
         }
-        [Category("UserController Property"), Description("Bind Text")]
+        [Category("A UserController Property"), Description("Bind Text")]
         public string BindValueMember
         {
             get

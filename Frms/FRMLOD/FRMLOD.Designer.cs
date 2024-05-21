@@ -31,12 +31,12 @@ namespace Frms
         /// </summary>
         private void InitializeComponent()
         {
+            DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions buttonImageOptions7 = new DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions();
             DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions buttonImageOptions1 = new DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions();
+            DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions buttonImageOptions8 = new DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions();
+            DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions buttonImageOptions9 = new DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions();
             DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions buttonImageOptions2 = new DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions();
             DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions buttonImageOptions3 = new DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions();
-            DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions buttonImageOptions4 = new DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions();
-            DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions buttonImageOptions5 = new DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions();
-            DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions buttonImageOptions6 = new DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions();
             splitContainer1 = new System.Windows.Forms.SplitContainer();
             splitContainer2 = new System.Windows.Forms.SplitContainer();
             ucPanel1 = new Ctrls.UCPanel();
@@ -46,6 +46,7 @@ namespace Frms
             gvForms = new DevExpress.XtraGrid.Views.Grid.GridView();
             splitContainer3 = new System.Windows.Forms.SplitContainer();
             ucPanel3 = new Ctrls.UCPanel();
+            btnFTPUpload = new Ctrls.UCButton();
             txtFileNm = new Ctrls.UCTextBox();
             cmbStatus = new System.Windows.Forms.ComboBox();
             ucButton1 = new Ctrls.UCButton();
@@ -66,8 +67,6 @@ namespace Frms
             gridWorkset = new DevExpress.XtraGrid.GridControl();
             gvWorkset = new DevExpress.XtraGrid.Views.Grid.GridView();
             openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            ucField1 = new Ctrls.UCField();
-            btnFTPUpload = new Ctrls.UCButton();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
             splitContainer1.Panel2.SuspendLayout();
@@ -101,7 +100,6 @@ namespace Frms
             ucPanel5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)gridWorkset).BeginInit();
             ((System.ComponentModel.ISupportInitialize)gvWorkset).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)ucField1).BeginInit();
             SuspendLayout();
             // 
             // splitContainer1
@@ -147,7 +145,7 @@ namespace Frms
             ucPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             ucPanel1.Location = new System.Drawing.Point(0, 0);
             ucPanel1.Name = "ucPanel1";
-            ucPanel1.Readonly = false;
+            ucPanel1.EditYn = true;
             ucPanel1.Size = new System.Drawing.Size(352, 70);
             ucPanel1.TabIndex = 0;
             ucPanel1.Text = "Search Condition";
@@ -157,11 +155,11 @@ namespace Frms
             // 
             s_txt.BindText = "";
             s_txt.btnVisiable = false;
-            s_txt.ControlHeight = 20;
             s_txt.ControlWidth = 297;
             s_txt.Location = new System.Drawing.Point(5, 35);
             s_txt.Name = "s_txt";
-            s_txt.Readonly = false;
+            s_txt.EditYn = true;
+            s_txt.ShowYn = true;
             s_txt.Size = new System.Drawing.Size(297, 20);
             s_txt.TabIndex = 0;
             s_txt.Title = "Search";
@@ -171,12 +169,12 @@ namespace Frms
             // ucPanel2
             // 
             ucPanel2.Controls.Add(gcForms);
-            ucPanel2.CustomHeaderButtons.AddRange(new DevExpress.XtraEditors.ButtonPanel.IBaseButton[] { new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Open", true, buttonImageOptions1, ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1) });
+            ucPanel2.CustomHeaderButtons.AddRange(new DevExpress.XtraEditors.ButtonPanel.IBaseButton[] { new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Open", true, buttonImageOptions7, ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1) });
             ucPanel2.CustomHeaderButtonsLocation = DevExpress.Utils.GroupElementLocation.AfterText;
             ucPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             ucPanel2.Location = new System.Drawing.Point(0, 0);
             ucPanel2.Name = "ucPanel2";
-            ucPanel2.Readonly = false;
+            ucPanel2.EditYn = true;
             ucPanel2.Size = new System.Drawing.Size(352, 661);
             ucPanel2.TabIndex = 1;
             ucPanel2.Text = "Forms - FrwFrm";
@@ -247,27 +245,38 @@ namespace Frms
             ucPanel3.Controls.Add(txtFilePath);
             ucPanel3.Controls.Add(txtFrwId);
             ucPanel3.Controls.Add(txtFrmNm);
-            ucPanel3.CustomHeaderButtons.AddRange(new DevExpress.XtraEditors.ButtonPanel.IBaseButton[] { new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("New", true, buttonImageOptions2, ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1), new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Save", true, buttonImageOptions3, ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1), new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Delete", true, buttonImageOptions4, ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1) });
+            ucPanel3.CustomHeaderButtons.AddRange(new DevExpress.XtraEditors.ButtonPanel.IBaseButton[] { new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("New", true, buttonImageOptions1, ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1), new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Save", true, buttonImageOptions8, ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1), new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Delete", true, buttonImageOptions9, ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1) });
             ucPanel3.CustomHeaderButtonsLocation = DevExpress.Utils.GroupElementLocation.AfterText;
             ucPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
             ucPanel3.Location = new System.Drawing.Point(0, 0);
             ucPanel3.Name = "ucPanel3";
-            ucPanel3.Readonly = false;
+            ucPanel3.EditYn = true;
             ucPanel3.Size = new System.Drawing.Size(969, 168);
             ucPanel3.TabIndex = 1;
             ucPanel3.Text = "Form Registration - FrwFrm";
             ucPanel3.TitleAlignment = DevExpress.Utils.HorzAlignment.Default;
             ucPanel3.CustomButtonClick += ucPanel3_CustomButtonClick;
             // 
+            // btnFTPUpload
+            // 
+            btnFTPUpload.Location = new System.Drawing.Point(509, 110);
+            btnFTPUpload.Name = "btnFTPUpload";
+            btnFTPUpload.EditYn = true;
+            btnFTPUpload.Size = new System.Drawing.Size(101, 21);
+            btnFTPUpload.TabIndex = 18;
+            btnFTPUpload.Text = "FTP Upload";
+            btnFTPUpload.TitleAlignment = DevExpress.Utils.HorzAlignment.Default;
+            btnFTPUpload.Click += btnFTPUpload_Click;
+            // 
             // txtFileNm
             // 
             txtFileNm.BindText = "";
             txtFileNm.btnVisiable = true;
-            txtFileNm.ControlHeight = 20;
             txtFileNm.ControlWidth = 297;
             txtFileNm.Location = new System.Drawing.Point(10, 58);
             txtFileNm.Name = "txtFileNm";
-            txtFileNm.Readonly = false;
+            txtFileNm.EditYn = true;
+            txtFileNm.ShowYn = true;
             txtFileNm.Size = new System.Drawing.Size(297, 20);
             txtFileNm.TabIndex = 17;
             txtFileNm.Title = "File Name";
@@ -280,14 +289,14 @@ namespace Frms
             cmbStatus.FormattingEnabled = true;
             cmbStatus.Location = new System.Drawing.Point(395, 137);
             cmbStatus.Name = "cmbStatus";
-            cmbStatus.Size = new System.Drawing.Size(215, 22);
+            cmbStatus.Size = new System.Drawing.Size(215, 21);
             cmbStatus.TabIndex = 13;
             // 
             // ucButton1
             // 
             ucButton1.Location = new System.Drawing.Point(395, 110);
             ucButton1.Name = "ucButton1";
-            ucButton1.Readonly = false;
+            ucButton1.EditYn = true;
             ucButton1.Size = new System.Drawing.Size(108, 21);
             ucButton1.TabIndex = 12;
             ucButton1.Text = "ReLoad Controller";
@@ -304,18 +313,18 @@ namespace Frms
             chkFld.Properties.Caption = "Folder";
             chkFld.Properties.ContentAlignment = DevExpress.Utils.HorzAlignment.Near;
             chkFld.Properties.GlyphAlignment = DevExpress.Utils.HorzAlignment.Default;
-            chkFld.Size = new System.Drawing.Size(56, 20);
+            chkFld.Size = new System.Drawing.Size(53, 20);
             chkFld.TabIndex = 10;
             // 
             // txtNmSpace
             // 
             txtNmSpace.BindText = "";
             txtNmSpace.btnVisiable = false;
-            txtNmSpace.ControlHeight = 21;
             txtNmSpace.ControlWidth = 297;
             txtNmSpace.Location = new System.Drawing.Point(10, 111);
             txtNmSpace.Name = "txtNmSpace";
-            txtNmSpace.Readonly = false;
+            txtNmSpace.EditYn = true;
+            txtNmSpace.ShowYn = true;
             txtNmSpace.Size = new System.Drawing.Size(297, 21);
             txtNmSpace.TabIndex = 9;
             txtNmSpace.Title = "Name Space";
@@ -326,11 +335,11 @@ namespace Frms
             // 
             txtUsrRegId.BindText = "";
             txtUsrRegId.btnVisiable = false;
-            txtUsrRegId.ControlHeight = 21;
             txtUsrRegId.ControlWidth = 297;
             txtUsrRegId.Location = new System.Drawing.Point(313, 57);
             txtUsrRegId.Name = "txtUsrRegId";
-            txtUsrRegId.Readonly = false;
+            txtUsrRegId.EditYn = true;
+            txtUsrRegId.ShowYn = true;
             txtUsrRegId.Size = new System.Drawing.Size(297, 21);
             txtUsrRegId.TabIndex = 7;
             txtUsrRegId.Title = "Developer";
@@ -341,11 +350,11 @@ namespace Frms
             // 
             txtFrmId.BindText = "";
             txtFrmId.btnVisiable = false;
-            txtFrmId.ControlHeight = 21;
             txtFrmId.ControlWidth = 297;
             txtFrmId.Location = new System.Drawing.Point(10, 84);
             txtFrmId.Name = "txtFrmId";
-            txtFrmId.Readonly = false;
+            txtFrmId.EditYn = true;
+            txtFrmId.ShowYn = true;
             txtFrmId.Size = new System.Drawing.Size(297, 21);
             txtFrmId.TabIndex = 6;
             txtFrmId.Title = "Form ID";
@@ -357,11 +366,11 @@ namespace Frms
             // 
             txtFilePath.BindText = "";
             txtFilePath.btnVisiable = true;
-            txtFilePath.ControlHeight = 21;
             txtFilePath.ControlWidth = 600;
             txtFilePath.Location = new System.Drawing.Point(10, 30);
             txtFilePath.Name = "txtFilePath";
-            txtFilePath.Readonly = false;
+            txtFilePath.EditYn = true;
+            txtFilePath.ShowYn = true;
             txtFilePath.Size = new System.Drawing.Size(600, 21);
             txtFilePath.TabIndex = 3;
             txtFilePath.Title = "File(DLL) Path";
@@ -373,11 +382,11 @@ namespace Frms
             // 
             txtFrwId.BindText = "";
             txtFrwId.btnVisiable = false;
-            txtFrwId.ControlHeight = 21;
             txtFrwId.ControlWidth = 297;
             txtFrwId.Location = new System.Drawing.Point(313, 84);
             txtFrwId.Name = "txtFrwId";
-            txtFrwId.Readonly = false;
+            txtFrwId.EditYn = true;
+            txtFrwId.ShowYn = true;
             txtFrwId.Size = new System.Drawing.Size(297, 21);
             txtFrwId.TabIndex = 2;
             txtFrwId.Title = "Frame Work";
@@ -388,11 +397,11 @@ namespace Frms
             // 
             txtFrmNm.BindText = "";
             txtFrmNm.btnVisiable = false;
-            txtFrmNm.ControlHeight = 21;
             txtFrmNm.ControlWidth = 297;
             txtFrmNm.Location = new System.Drawing.Point(10, 138);
             txtFrmNm.Name = "txtFrmNm";
-            txtFrmNm.Readonly = false;
+            txtFrmNm.EditYn = true;
+            txtFrmNm.ShowYn = true;
             txtFrmNm.Size = new System.Drawing.Size(297, 21);
             txtFrmNm.TabIndex = 1;
             txtFrmNm.Title = "Form Name";
@@ -413,20 +422,20 @@ namespace Frms
             // 
             xtraTabPage1.Controls.Add(ucPanel4);
             xtraTabPage1.Name = "xtraTabPage1";
-            xtraTabPage1.Size = new System.Drawing.Size(967, 537);
+            xtraTabPage1.Size = new System.Drawing.Size(967, 538);
             xtraTabPage1.TabPageWidth = 120;
             xtraTabPage1.Text = "Controller";
             // 
             // ucPanel4
             // 
             ucPanel4.Controls.Add(gridControls);
-            ucPanel4.CustomHeaderButtons.AddRange(new DevExpress.XtraEditors.ButtonPanel.IBaseButton[] { new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Save", true, buttonImageOptions3, ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1), new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Delete", true, buttonImageOptions4, ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1) });
+            ucPanel4.CustomHeaderButtons.AddRange(new DevExpress.XtraEditors.ButtonPanel.IBaseButton[] { new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Save", true, buttonImageOptions8, ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1), new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Delete", true, buttonImageOptions9, ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1) });
             ucPanel4.CustomHeaderButtonsLocation = DevExpress.Utils.GroupElementLocation.AfterText;
             ucPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
             ucPanel4.Location = new System.Drawing.Point(0, 0);
             ucPanel4.Name = "ucPanel4";
-            ucPanel4.Readonly = false;
-            ucPanel4.Size = new System.Drawing.Size(967, 537);
+            ucPanel4.EditYn = true;
+            ucPanel4.Size = new System.Drawing.Size(967, 538);
             ucPanel4.TabIndex = 1;
             ucPanel4.Text = "Controller included in Form - FrmCtrl";
             ucPanel4.TitleAlignment = DevExpress.Utils.HorzAlignment.Default;
@@ -442,7 +451,7 @@ namespace Frms
             gridControls.Location = new System.Drawing.Point(2, 23);
             gridControls.MainView = gvControls;
             gridControls.Name = "gridControls";
-            gridControls.Size = new System.Drawing.Size(963, 512);
+            gridControls.Size = new System.Drawing.Size(963, 513);
             gridControls.TabIndex = 1;
             gridControls.UseEmbeddedNavigator = true;
             gridControls.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] { gvControls });
@@ -456,20 +465,20 @@ namespace Frms
             // 
             xtraTabPage2.Controls.Add(ucPanel5);
             xtraTabPage2.Name = "xtraTabPage2";
-            xtraTabPage2.Size = new System.Drawing.Size(967, 537);
+            xtraTabPage2.Size = new System.Drawing.Size(967, 538);
             xtraTabPage2.TabPageWidth = 120;
             xtraTabPage2.Text = "WorkSet";
             // 
             // ucPanel5
             // 
             ucPanel5.Controls.Add(gridWorkset);
-            ucPanel5.CustomHeaderButtons.AddRange(new DevExpress.XtraEditors.ButtonPanel.IBaseButton[] { new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Save", true, buttonImageOptions5, ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1), new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Delete", true, buttonImageOptions6, ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1) });
+            ucPanel5.CustomHeaderButtons.AddRange(new DevExpress.XtraEditors.ButtonPanel.IBaseButton[] { new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Save", true, buttonImageOptions2, ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1), new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Delete", true, buttonImageOptions3, ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1) });
             ucPanel5.CustomHeaderButtonsLocation = DevExpress.Utils.GroupElementLocation.AfterText;
             ucPanel5.Dock = System.Windows.Forms.DockStyle.Fill;
             ucPanel5.Location = new System.Drawing.Point(0, 0);
             ucPanel5.Name = "ucPanel5";
-            ucPanel5.Readonly = false;
-            ucPanel5.Size = new System.Drawing.Size(967, 537);
+            ucPanel5.EditYn = true;
+            ucPanel5.Size = new System.Drawing.Size(967, 538);
             ucPanel5.TabIndex = 2;
             ucPanel5.Text = "Workset in Form - PrjFrw";
             ucPanel5.TitleAlignment = DevExpress.Utils.HorzAlignment.Default;
@@ -485,7 +494,7 @@ namespace Frms
             gridWorkset.Location = new System.Drawing.Point(2, 23);
             gridWorkset.MainView = gvWorkset;
             gridWorkset.Name = "gridWorkset";
-            gridWorkset.Size = new System.Drawing.Size(963, 512);
+            gridWorkset.Size = new System.Drawing.Size(963, 513);
             gridWorkset.TabIndex = 1;
             gridWorkset.UseEmbeddedNavigator = true;
             gridWorkset.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] { gvWorkset });
@@ -498,21 +507,6 @@ namespace Frms
             // openFileDialog1
             // 
             openFileDialog1.FileName = "openFileDialog1";
-            // 
-            // ucField1
-            // 
-            ucField1.ChangedFlag = Lib.MdlState.Inserted;
-            // 
-            // btnFTPUpload
-            // 
-            btnFTPUpload.Location = new System.Drawing.Point(509, 110);
-            btnFTPUpload.Name = "btnFTPUpload";
-            btnFTPUpload.Readonly = false;
-            btnFTPUpload.Size = new System.Drawing.Size(101, 21);
-            btnFTPUpload.TabIndex = 18;
-            btnFTPUpload.Text = "FTP Upload";
-            btnFTPUpload.TitleAlignment = DevExpress.Utils.HorzAlignment.Default;
-            btnFTPUpload.Click += btnFTPUpload_Click;
             // 
             // FRMLOD
             // 
@@ -555,7 +549,6 @@ namespace Frms
             ucPanel5.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)gridWorkset).EndInit();
             ((System.ComponentModel.ISupportInitialize)gvWorkset).EndInit();
-            ((System.ComponentModel.ISupportInitialize)ucField1).EndInit();
             ResumeLayout(false);
         }
         #endregion
@@ -572,7 +565,7 @@ namespace Frms
         private Ctrls.UCTextBox txtFrmNm;
         private Ctrls.UCPanel ucPanel4;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
-        private Ctrls.UCField ucField1;
+        //private Ctrls.UCField ucField1;
         private DevExpress.XtraGrid.GridControl gcForms;
         private DevExpress.XtraGrid.Views.Grid.GridView gvForms;
         private Ctrls.UCTextBox txtFrmId;

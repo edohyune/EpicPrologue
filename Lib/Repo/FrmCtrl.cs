@@ -57,6 +57,13 @@ namespace Lib.Repo
             set => Set(ref _TitleText, value);
         }
 
+        private int _TitleWidth;
+        public int TitleWidth
+        {
+            get => _TitleWidth;
+            set => Set(ref _TitleWidth, value);
+        }
+
         private string _TitleAlign;
         public string TitleAlign
         {
@@ -64,18 +71,32 @@ namespace Lib.Repo
             set => Set(ref _TitleAlign, value);
         }
 
-        private bool _VisibleYn;
-        public bool VisibleYn
+        private string _DefaultText;
+        public string DefaultText
         {
-            get => _VisibleYn;
-            set => Set(ref _VisibleYn, value);
+            get => _DefaultText;
+            set => Set(ref _DefaultText, value);
         }
 
-        private bool _ReadonlyYn;
-        public bool ReadonlyYn
+        private string _TextAlign;
+        public string TextAlign
         {
-            get => _ReadonlyYn;
-            set => Set(ref _ReadonlyYn, value);
+            get => _TextAlign;
+            set => Set(ref _TextAlign, value);
+        }
+
+        private bool _ShowYn;
+        public bool ShowYn
+        {
+            get => _ShowYn;
+            set => Set(ref _ShowYn, value);
+        }
+
+        private bool _EditYn;
+        public bool EditYn
+        {
+            get => _EditYn;
+            set => Set(ref _EditYn, value);
         }
     }
     public interface IFrmCtrlRepo
@@ -92,12 +113,14 @@ namespace Lib.Repo
         {
             string sql = @"
 insert into FRMCTRL
-      (FrwId, FrmId, CtrlNm, ToolNm, CtrlW, CtrlH,
-       TitleText, TitleAlign, VisibleYn, ReadonlyYn, CId,
-       CDt, MId, MDt)
-select @FrwId, @FrmId, @CtrlNm, @ToolNm, @CtrlW, @CtrlH,
-       @TitleText, @TitleAlign, @VisibleYn, @ReadonlyYn, @CId,
-       getdate(), @MId, getdate()
+      (FrwId, FrmId, CtrlNm, ToolNm, CtrlW,
+       CtrlH, TitleText, TitleWidth, TitleAlign, DefaultText,
+       TextAlign, ShowYn, EditYn, CId, CDt,
+       MId, MDt)
+select @FrwId, @FrmId, @CtrlNm, @ToolNm, @CtrlW,
+       @CtrlH, @TitleText, @TitleWidth, @TitleAlign, @DefaultText,
+       @TextAlign, @ShowYn, @EditYn,
+       @CId, getdate(), @MId, getdate()
 ";
             using (var db = new Lib.GaiaHelper())
             {
@@ -124,10 +147,10 @@ delete
         public List<FrmCtrl> GetByFrwFrm(string frwId, string frmId)
         {
             string sql = @"
-select a.FrwId, a.FrmId, a.CtrlNm, a.ToolNm, a.CtrlW, a.CtrlH,
-       a.TitleText, a.TitleAlign, a.VisibleYn, a.ReadonlyYn, a.CId,
-       a.CDt, a.MId, a.MDt
-  from FRMCTRL a
+select a.FrwId, a.FrmId, a.CtrlNm, a.ToolNm, a.CtrlW,
+       a.CtrlH, a.TitleText, a.TitleWidth, a.TitleAlign, a.DefaultText,
+       a.TextAlign, a.ShowYn, a.EditYn, a.CId, a.CDt,
+       a.MId, a.MDt
  where 1 = 1
    and a.FrwId = @FrwId
    and a.FrmId = @FrmId
@@ -155,19 +178,21 @@ select a.FrwId, a.FrmId, a.CtrlNm, a.ToolNm, a.CtrlW, a.CtrlH,
         {
             string sql = @"
 update a
-   set FrmId= @FrmId,
+   set FrwId= @FrwId,
+       FrmId= @FrmId,
        CtrlNm= @CtrlNm,
        ToolNm= @ToolNm,
        CtrlW= @CtrlW,
        CtrlH= @CtrlH,
        TitleText= @TitleText,
+       TitleWidth= @TitleWidth,
        TitleAlign= @TitleAlign,
-       VisibleYn= @VisibleYn,
-       ReadonlyYn= @ReadonlyYn,
-       CId= @CId,
-       CDt= @CDt,
+       DefaultText= @DefaultText,
+       TextAlign= @TextAlign,
+       ShowYn= @ShowYn,
+       EditYn= @EditYn,
        MId= @MId,
-       MDt= @MDt
+       MDt= getdate()
   from FRMCTRL a
  where 1=1
    and FrwId= @FrwId

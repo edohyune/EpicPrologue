@@ -346,10 +346,15 @@ namespace Frms
                             frmCtrl.CtrlW = GetWidth(ctrl);
                             frmCtrl.CtrlH = GetHeight(ctrl);
                             frmCtrl.TitleText = GetTitleText(ctrl);
+                            frmCtrl.TitleWidth = GetTitleWidth(ctrl);
                             frmCtrl.TitleAlign = GetTitleAlign(ctrl);
-                            frmCtrl.VisibleYn = ctrl.Visible;
-                            frmCtrl.ReadonlyYn = GetReadonly(ctrl);
+                            frmCtrl.DefaultText = GetText(ctrl);
+                            frmCtrl.TextAlign = GetTextAlign(ctrl);
+                            frmCtrl.ShowYn = ctrl.Visible;
+                            frmCtrl.EditYn = GetEditYn(ctrl);
                             frmCtrl.ChangedFlag = MdlState.Updated;
+                            //frmCtrl.CtrlX = GetWidth(ctrl);
+                            //frmCtrl.CtrlY = GetHeight(ctrl);
                         }
                         else
                         {
@@ -362,12 +367,58 @@ namespace Frms
                                 CtrlW = GetWidth(ctrl),
                                 CtrlH = GetHeight(ctrl),
                                 TitleText = GetTitleText(ctrl),
+                                TitleWidth = GetTitleWidth(ctrl),
                                 TitleAlign = GetTitleAlign(ctrl),
-                                VisibleYn = ctrl.Visible,
-                                ReadonlyYn = GetReadonly(ctrl),
-                                ChangedFlag = MdlState.Inserted
+                                DefaultText = GetText(ctrl),
+                                TextAlign = GetTextAlign(ctrl),
+                                ShowYn = ctrl.Visible,
+                                EditYn = GetEditYn(ctrl),
+                                ChangedFlag = MdlState.Updated
                             });
                         }
+
+                        //wrkFld에 데이터가 있으면 업데이트, 없으면 추가.
+                        //var frmCtrl = frmCtrlbs.FirstOrDefault(c => c.CtrlNm == ctrl.Name);
+                        //if (frmCtrl != null)
+                        //{
+                        //    frmCtrl.FrwId = Common.gFrameWorkId;
+                        //    frmCtrl.FrmId = selectedFrwFrm.FrmId;
+                        //    frmCtrl.CtrlNm = ctrl.Name;
+                        //    frmCtrl.ToolNm = ctrl.GetType().Name;
+                        //    frmCtrl.CtrlW = GetWidth(ctrl);
+                        //    frmCtrl.CtrlH = GetHeight(ctrl);
+                        //    frmCtrl.TitleText = GetTitleText(ctrl);
+                        //    frmCtrl.TitleWidth = GetTitleWidth(ctrl);
+                        //    frmCtrl.TitleAlign = GetTitleAlign(ctrl);
+                        //    frmCtrl.DefaultText = GetText(ctrl);
+                        //    frmCtrl.TextAlign = GetTextAlign(ctrl);
+                        //    frmCtrl.ShowYn = ctrl.Visible;
+                        //    frmCtrl.EditYn = GetEditYn(ctrl);
+                        //    frmCtrl.ChangedFlag = MdlState.Updated;
+                        //    //frmCtrl.CtrlX = GetWidth(ctrl);
+                        //    //frmCtrl.CtrlY = GetHeight(ctrl);
+                        //}
+                        //else
+                        //{
+                        //    frmCtrlbs.Add(new FrmCtrl
+                        //    {
+                        //        FrwId = Common.gFrameWorkId,
+                        //        FrmId = selectedFrwFrm.FrmId,
+                        //        CtrlNm = ctrl.Name,
+                        //        ToolNm = ctrl.GetType().Name,
+                        //        CtrlW = GetWidth(ctrl),
+                        //        CtrlH = GetHeight(ctrl),
+                        //        TitleText = GetTitleText(ctrl),
+                        //        TitleWidth = GetTitleWidth(ctrl),
+                        //        TitleAlign = GetTitleAlign(ctrl),
+                        //        DefaultText = GetText(ctrl),
+                        //        TextAlign = GetTextAlign(ctrl),
+                        //        ShowYn = ctrl.Visible,
+                        //        EditYn = GetEditYn(ctrl),
+                        //        ChangedFlag = MdlState.Updated
+                        //    });
+                        //}
+
                     }
 
                     if (ctrlClss.Any(c => c.CtrlRegNm == ctrl.GetType().FullName && c.ContainYn))
@@ -376,6 +427,57 @@ namespace Frms
                     }
                 }
             }
+        }
+
+        private string GetTextAlign(Control ctrl)
+        {
+            if (ctrl is Ctrls.UCLookUp ucLookUp)
+                return ucLookUp.TextAlignment.ToString();
+            //else if (ctrl is Ctrls.UCField ucField)
+            //else if (ctrl is Ctrls.UCGrid ucGrid)
+            //else if (ctrl is Ctrls.UCLookUp ucLookUp)
+            //    return ucLookUp.TextAlignment.ToString();
+            //else if (ctrl is Ctrls.UCPanel ucPanel)
+            //else if (ctrl is Ctrls.UCSplit ucSplit)
+            //else if (ctrl is Ctrls.UCDateBox ucDateBox)
+            //    return ucLookUp.TextAlignment.ToString();
+            else if (ctrl is Ctrls.UCTextBox ucTextBox)
+                return ucTextBox.TextAlignment.ToString();
+            //else if (ctrl is Ctrls.UCTab ucTab)
+            else
+                return string.Empty;
+        }
+
+        private string GetText(Control ctrl)
+        {
+            if (ctrl is Ctrls.UCTextBox ucTextBox)
+                return ucTextBox.Text;
+            else if (ctrl is Ctrls.UCLookUp ucLookUp)
+                return ucLookUp.Text;
+            //else if (ctrl is Ctrls.UCMemo ucMemo)
+            //    return ucLookUp.TitleWidth;
+            //else if (ctrl is Ctrls.UCDateBox ucDateBox)
+            //    return ucLookUp.TitleWidth;
+            //else if (ctrl is Ctrls.UCCheckBox ucCheckBox)
+            //    return ucLookUp.TitleWidth;
+            else
+                return "";
+        }
+
+        private int GetTitleWidth(Control ctrl)
+        {
+            if (ctrl is Ctrls.UCTextBox ucTextBox)
+                return ucTextBox.TitleWidth;
+            else if (ctrl is Ctrls.UCLookUp ucLookUp)
+                return ucLookUp.TitleWidth;
+            //else if (ctrl is Ctrls.UCMemo ucMemo)
+            //    return ucLookUp.TitleWidth;
+            //else if (ctrl is Ctrls.UCDateBox ucDateBox)
+            //    return ucLookUp.TitleWidth;
+            //else if (ctrl is Ctrls.UCCheckBox ucCheckBox)
+            //    return ucLookUp.TitleWidth;
+            else
+                return 0;
         }
 
         private int GetWidth(Control ctrl)
@@ -395,7 +497,18 @@ namespace Frms
         }
         private int GetHeight(Control ctrl)
         {
-            return ctrl.Width;
+            if (ctrl is DevExpress.XtraTab.XtraTabPage tabPage)
+                return ctrl.TabIndex;
+            //else if (ctrl is Ctrls.UCButton ucButton)
+            //else if (ctrl is Ctrls.UCField ucField)
+            //else if (ctrl is Ctrls.UCGrid ucGrid)
+            //else if (ctrl is Ctrls.UCLookUp ucLookUp)
+            //else if (ctrl is Ctrls.UCPanel ucPanel)
+            //else if (ctrl is Ctrls.UCSplit ucSplit)
+            //else if (ctrl is Ctrls.UCTextBox ucTextBox)
+            //else if (ctrl is Ctrls.UCTab ucTab)
+            else
+                return ctrl.Height;
         }
 
         private string GetTitleText(Control ctrl)
@@ -437,20 +550,20 @@ namespace Frms
                 return string.Empty;
         }
 
-        private bool GetReadonly(Control ctrl)
+        private bool GetEditYn(Control ctrl)
         {
             if (ctrl is Ctrls.UCButton ucButton)
-                return ucButton.Readonly;
+                return ucButton.EditYn;
             //else if (ctrl is Ctrls.UCField ucField)
             else if (ctrl is Ctrls.UCGrid ucGrid)
-                return ucGrid.Readonly;
+                return ucGrid.gvCtrl.Editable;
             else if (ctrl is Ctrls.UCLookUp ucLookUp)
                 return ucLookUp.Readonly;
             else if (ctrl is Ctrls.UCPanel ucPanel)
-                return ucPanel.Readonly;
+                return ucPanel.EditYn;
             //else if (ctrl is Ctrls.UCSplit ucSplit)
             else if (ctrl is Ctrls.UCTextBox ucTextBox)
-                return ucTextBox.Readonly;
+                return ucTextBox.EditYn;
             //else if (ctrl is Ctrls.UCTab ucTab)
             else
                 return false;

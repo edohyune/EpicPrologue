@@ -97,6 +97,25 @@ namespace Lib
             string[] parts = input.Split(delimiter);
             return parts[^1]; // C# 8.0 이상에서 사용 가능한 인덱스 from end 연산자
         }
+
+        public static DevExpress.Utils.HorzAlignment StrToAlign(string align)
+        {
+            DevExpress.Utils.HorzAlignment horz = new DevExpress.Utils.HorzAlignment();
+            switch (align)
+            {
+                case "0": horz = DevExpress.Utils.HorzAlignment.Default; break;
+                case "1": horz = DevExpress.Utils.HorzAlignment.Near; break;
+                case "2": horz = DevExpress.Utils.HorzAlignment.Center; break;
+                case "3": horz = DevExpress.Utils.HorzAlignment.Far; break;
+            }
+            return horz;
+        }
+
+        public static System.Drawing.Color StrToColor(string colorName)
+        {
+            return System.Drawing.Color.FromName(colorName);
+        }
+
     }
 }
 

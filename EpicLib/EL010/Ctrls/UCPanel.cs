@@ -8,7 +8,7 @@ namespace EL010.Ctrls
         private string frmId { get; set; }
         private string fldId { get; set; }
 
-        [Category("UserController Property"), Description("Title Alignment")]
+        [Category("A UserController Property"), Description("Title Alignment")]
         public DevExpress.Utils.HorzAlignment TitleAlignment
         {
             get
@@ -21,7 +21,7 @@ namespace EL010.Ctrls
             }
         }
 
-        [Category("UserController Property"), Description("ReadOnly - Not Enabled")]
+        [Category("A UserController Property"), Description("ReadOnly - Not Enabled")]
         public bool Readonly
         {
             get

@@ -14,7 +14,7 @@ namespace EL010.Ctrls
         private string FldID { get; set; }
 
         #region Properties  
-        [Category("UserController Property"), Description("Title")]
+        [Category("A UserController Property"), Description("Title")]
         public string Title
         {
             get
@@ -26,7 +26,7 @@ namespace EL010.Ctrls
                 this.labelCtrl.Text = value;
             }
         }
-        [Category("UserController Property"), Description("Height")]
+        [Category("A UserController Property"), Description("Height")]
         public int ControlHeight
         {
             get
@@ -39,7 +39,7 @@ namespace EL010.Ctrls
             }
         }
 
-        [Category("UserController Property"), Description("Width")]
+        [Category("A UserController Property"), Description("Width")]
         public int ControlWidth
         {
             get
@@ -51,7 +51,7 @@ namespace EL010.Ctrls
                 this.Width = value;
             }
         }
-        [Category("UserController Property"), Description("Title Width")]
+        [Category("A UserController Property"), Description("Title Width")]
         public int TitleWidth
         {
             get
@@ -63,7 +63,7 @@ namespace EL010.Ctrls
                 this.splitCtrl.SplitterDistance = value;
             }
         }
-        [Category("UserController Property"), Description("Title Alignment")]
+        [Category("A UserController Property"), Description("Title Alignment")]
         public DevExpress.Utils.HorzAlignment TitleAlignment
         {
             get
@@ -75,7 +75,7 @@ namespace EL010.Ctrls
                 this.labelCtrl.Appearance.TextOptions.HAlignment = value;
             }
         }
-        [Category("UserController Property"), Description("DefaultText")]
+        [Category("A UserController Property"), Description("DefaultText")]
         public override string Text
         {
             get
@@ -89,7 +89,7 @@ namespace EL010.Ctrls
                 this.BindText = value;  // Text가 업데이트 될 때 BindText도 업데이트
             }
         }
-        [Category("UserController Property"), Description("BindText")]
+        [Category("A UserController Property"), Description("BindText")]
         public string BindText
         {
             get
@@ -110,7 +110,7 @@ namespace EL010.Ctrls
         //}
 
 
-        [Category("UserController Property"), Description("Text Alignment")]
+        [Category("A UserController Property"), Description("Text Alignment")]
         public DevExpress.Utils.HorzAlignment TextAlignment
         {
             set
@@ -118,7 +118,7 @@ namespace EL010.Ctrls
                 this.textCtrl.Properties.Appearance.TextOptions.HAlignment = value;
             }
         }
-        [Category("UserController Property"), Description("Text Button Visiable")]
+        [Category("A UserController Property"), Description("Text Button Visiable")]
         public bool btnVisiable
         {
             get
@@ -132,7 +132,7 @@ namespace EL010.Ctrls
             }
         }
 
-        [Category("UserController Property"), Description("ReadOnly")]
+        [Category("A UserController Property"), Description("ReadOnly")]
         public bool Readonly
         {
             get

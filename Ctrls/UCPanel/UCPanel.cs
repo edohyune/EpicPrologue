@@ -1,14 +1,23 @@
-﻿using System.ComponentModel;
+﻿using Lib.Repo;
+using System.ComponentModel;
 
 namespace Ctrls
 {
     public class UCPanel : DevExpress.XtraEditors.GroupControl
     {
-        private string sysCd { get; set; }
+        [Browsable(false)]
+        private string frwId { get; set; }
         private string frmId { get; set; }
-        private string fldId { get; set; }
+        private string ctrlNm { get; set; }
 
-        [Category("UserController Property"), Description("Title Alignment")]
+        [Category("ACE UC Property"), Description("Title")]
+        public string Title
+        {
+            get { return this.panelCtrl.Text; }
+            set { this.panelCtrl.Text = value; }
+        }
+
+        [Category("A UserController Property"), Description("Title Alignment")]
         public DevExpress.Utils.HorzAlignment TitleAlignment
         {
             get
@@ -21,39 +30,43 @@ namespace Ctrls
             }
         }
 
-        [Category("UserController Property"), Description("ReadOnly - Not Enabled")]
-        public bool Readonly
+        [Category("A UserController Property"), Description("Editable=Enable=Not ReadOnly")]
+        public bool EditYn
         {
             get
-            {
-                return !(this.panelCtrl.Enabled);
+            { 
+                return this.panelCtrl.Enabled;
             }
             set
             {
-                this.panelCtrl.Enabled = !(value);
+                this.panelCtrl.Enabled = value;
             }
         }
 
+        [Category("A UserController Property"), Description("Visiable")]
+        public bool ShowYn
+        {
+            get
+            {
+                return this.Visible;
+            }
+            set
+            {
+                this.Visible = value;
+            }
+        }
         public DevExpress.XtraEditors.GroupControl panelCtrl { get; set; }
         public UCPanel()
         {
             panelCtrl = new DevExpress.XtraEditors.GroupControl();
-
-            //panelCtrls.Appearance.BackColor = System.Drawing.Color.White;
-            //panelCtrls.Appearance.Options.UseBackColor = true;
-            //panelCtrls.AppearanceCaption.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold);
-            //panelCtrls.AppearanceCaption.Options.UseFont = true;
-            //panelCtrls.AppearanceCaption.Options.UseTextOptions = true;
-            //panelCtrls.AppearanceCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
-            //panelCtrls.AppearanceCaption.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Center
-
+            panelCtrl.CustomHeaderButtonsLocation = DevExpress.Utils.GroupElementLocation.AfterText;
             panelCtrl.Text = "UCPanel";
             HandleCreated += UCPanel_HandleCreated;
         }
 
         private void UCPanel_HandleCreated(object? sender, EventArgs e)
         {
-            sysCd = Lib.Common.gSysCd;
+            frwId = Lib.Common.gFrameWorkId;
 
             Form? form = this.FindForm();
             if (form != null)
@@ -64,10 +77,10 @@ namespace Ctrls
             {
                 frmId = "Unknown";
             }
-            fldId = this.Name;
+            ctrlNm = this.Name;
 
             //Design모드에서 DB에서 설정값을 가져오지 않기
-            if (sysCd != string.Empty)
+            if (frwId != string.Empty)
             {
                 ResetCtrl();
             }
@@ -77,26 +90,19 @@ namespace Ctrls
         {
             try
             {
-                Lib.Common.gMsg = $"UCPanel : {sysCd}.{frmId}.{fldId}";
-                using (var db = new Lib.GaiaHelper())
+                Lib.Common.gMsg = $"UCPanel : {frwId}.{frmId}.{ctrlNm}";
+                var wrkFldRepo = new WrkFldRepo();
+                var wrkFld = wrkFldRepo.GetFldProperties(frwId, frmId, ctrlNm);
+                if (wrkFld != null)
                 {
-                    //var ucInfo = db.GetUc(new { sys = SysCode, frm = FrmID, ctrl = FldID }).SingleOrDefault();
-                    //if (ucInfo != null)
-                    //{
-                    //    this.Title = ucInfo.Title;
-                    //    this.TitleWidth = ucInfo.TitleW;
-                    //    this.labelCtrl.Visible = (ucInfo.Show_chk == "0" ? false : true);
-                    //    this.textCtrl.Visible = (ucInfo.Show_chk == "0" ? false : true);
-                    //    this.labelCtrl.Appearance.TextOptions.HAlignment = GenFunc.StrToAlign(ucInfo.TitleAlign);
-                    //    this.Text = ucInfo.Txt;
-                    //    this.textCtrl.Properties.Appearance.TextOptions.HAlignment = GenFunc.StrToAlign(ucInfo.TxtAlign);
-                    //    this.textCtrl.ReadOnly = (ucInfo.Edit_chk == "1" ? false : true);
-                    //}
+                    this.Title = wrkFld.FldTitle;
+                    this.EditYn = wrkFld.EditYn;
+                    this.ShowYn = wrkFld.ShowYn;
                 }
             }
             catch (Exception ex) 
             { 
-                Lib.Common.gMsg = $"Exception : {ex}";
+                Lib.Common.gMsg = $"UCPanel_HandleCreated>>ResetCtrl{Environment.NewLine}Exception : {ex.Message}";
             }
         }
     }

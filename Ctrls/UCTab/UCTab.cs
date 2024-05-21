@@ -1,32 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Lib;
+﻿using Lib;
+using Lib.Repo;
 
 namespace Ctrls
 {
     public class UCTab : DevExpress.XtraTab.XtraTabControl
     {
-        private string sysCd { get; set; }
+        private string frwId { get; set; }
         private string frmId { get; set; }
-        private string fldId { get; set; }
+        private string ctrlNm { get; set; }
 
         public DevExpress.XtraTab.XtraTabControl tabCtrl { get; set; }
         public UCTab()
         {
             tabCtrl = new DevExpress.XtraTab.XtraTabControl();
-            //tabCtrl 기본설정
-            tabCtrl.HeaderLocation = DevExpress.XtraTab.TabHeaderLocation.Top;
-            tabCtrl.HeaderButtons = DevExpress.XtraTab.TabButtons.Default;
-
             HandleCreated += UCTab_HandleCreated;
         }
 
         private void UCTab_HandleCreated(object? sender, EventArgs e)
         {
-            sysCd = Lib.Common.gSysCd;
+            frwId = Lib.Common.gFrameWorkId;
 
             Form? form = this.FindForm();
             if (form != null)
@@ -37,10 +29,10 @@ namespace Ctrls
             {
                 frmId = "Unknown";
             }
-            fldId = this.Name;
+            ctrlNm = this.Name;
 
             //Design모드에서 DB에서 설정값을 가져오지 않기
-            if (sysCd != string.Empty)
+            if (frwId != string.Empty)
             {
                 ResetCtrl();
             }
@@ -50,26 +42,31 @@ namespace Ctrls
         {
             try
             {
-                Lib.Common.gMsg = $"UCPanel : {sysCd}.{frmId}.{fldId}";
-                using (var db = new Lib.GaiaHelper())
+                Common.gMsg = $"UCTab : {frwId}.{frmId}.{ctrlNm}";
+                var wrkFldRepo = new WrkFldRepo();
+                foreach (DevExpress.XtraTab.XtraTabPage tabPage in tabCtrl.TabPages)
                 {
-                    //var ucInfo = db.GetUc(new { sys = SysCode, frm = FrmID, ctrl = FldID }).SingleOrDefault();
-                    //if (ucInfo != null)
-                    //{
-                    //    this.Title = ucInfo.Title;
-                    //    this.TitleWidth = ucInfo.TitleW;
-                    //    this.labelCtrl.Visible = (ucInfo.Show_chk == "0" ? false : true);
-                    //    this.textCtrl.Visible = (ucInfo.Show_chk == "0" ? false : true);
-                    //    this.labelCtrl.Appearance.TextOptions.HAlignment = GenFunc.StrToAlign(ucInfo.TitleAlign);
-                    //    this.Text = ucInfo.Txt;
-                    //    this.textCtrl.Properties.Appearance.TextOptions.HAlignment = GenFunc.StrToAlign(ucInfo.TxtAlign);
-                    //    this.textCtrl.ReadOnly = (ucInfo.Edit_chk == "1" ? false : true);
-                    //}
+                    WrkFld wrkFld = wrkFldRepo.GetTabPageProperties(frwId, frmId, tabPage.Name);
+                    if (wrkFld != null) 
+                    {
+                        tabPage.Text = wrkFld.FldTitle;
+                        tabPage.PageVisible = wrkFld.ShowYn;
+                        //tabpage 배경색상
+                        tabPage.Appearance.Header.BackColor = GenFunc.StrToColor(wrkFld.ColorBg);
+                        //tabpage 글자색상
+                        tabPage.Appearance.Header.ForeColor = GenFunc.StrToColor(wrkFld.ColorFont);
+                        //tabpage 탭사이즈
+                        tabPage.TabPageWidth = wrkFld.FldTitleWidth;
+
+                        //아래 FldTab을 만들면 구현하도록 한다. 
+                        //tabCtrl.HeaderLocation = DevExpress.XtraTab.TabHeaderLocation.Top;
+                        //tabCtrl.HeaderButtons = DevExpress.XtraTab.TabButtons.Default;
+                    }
                 }
             }
             catch (Exception ex)
             {
-                Lib.Common.gMsg = $"Exception : {ex}";
+                Lib.Common.gMsg = $"UCTab_HandleCreated>>ResetCtrl{Environment.NewLine}Exception : {ex.Message}";
             }
         }
     }

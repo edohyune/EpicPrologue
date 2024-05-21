@@ -13,7 +13,7 @@ namespace EL010.Ctrls
         [Browsable(false)]
         public DevExpress.XtraGrid.Views.Grid.GridView gvCtrl { get; set; }
 
-        [Category("UserController Property"), Description("ReadOnly - Not Enabled")]
+        [Category("A UserController Property"), Description("ReadOnly - Not Enabled")]
         public bool Readonly
         {
             get
