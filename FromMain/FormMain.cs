@@ -36,10 +36,15 @@ namespace GAIA
         public FormMain()
         {
             InitializeComponent();
+
+            menuCtrl.VisibleChanged += new EventHandler(menuCtrl_VisibleChanged);
+            msgCtrl.VisibleChanged += new EventHandler(msgCtrl_VisibleChanged);
             Common.gMsgChanged += new EventHandler(AddGAIAMsg);
 
-            //FrmaeWork List
+            msgCtrl.Visible = false;
+            menuCtrl.Visible = false;
 
+            //FrameWork List
             List<PrjFrw> frmwrks = new PrjFrwRepo().GetAll();
             foreach (var frmWrk in frmwrks)
             {
@@ -51,15 +56,15 @@ namespace GAIA
             xtraTabbedMdiManager.AppearancePage.HeaderActive.BorderColor = System.Drawing.Color.Black;
             xtraTabbedMdiManager.AppearancePage.HeaderActive.Font = new System.Drawing.Font(xtraTabbedMdiManager.AppearancePage.HeaderActive.Font, System.Drawing.FontStyle.Bold);
             xtraTabbedMdiManager.ClosePageButtonShowMode = DevExpress.XtraTab.ClosePageButtonShowMode.InAllTabPageHeaders;
-
         }
+
         private void xtraTabbedMdiManager_SelectedPageChanged(object sender, EventArgs e)
         {
             //마지막 Tab 삭제될때 이벤트가 삭제보다 먼저 수행되어 에러 발생
             //xtraTabbedMdiManager.Pages.Count 사용 못하여 예외처리함
             try
             {
-                if (xtraTabbedMdiManager.Pages.Count>1)
+                if (xtraTabbedMdiManager.Pages.Count > 1)
                 {
                     Common.gMsg = $"{xtraTabbedMdiManager.SelectedPage.MdiChild.Text} ({xtraTabbedMdiManager.SelectedPage.MdiChild.Name})";
                 }
@@ -72,13 +77,6 @@ namespace GAIA
             }
         }
 
-
-        private void AddGAIAMsg(object sender, EventArgs e)
-        {
-            msgCtrl.Text += sender.ToString() + Environment.NewLine;
-        }
-
-
         dynamic dynamicForm;
         private void cmbForm_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -87,48 +85,15 @@ namespace GAIA
             Common.gFrameWorkId = frmWrk.FrwId.ToString();
 
             menuCtrl.Items.Clear();
-
+            menuCtrl.Visible = true;
             //From List by FrmaeWork
             List<FrwFrm> frms = new FrwFrmRepo().GetByOwnFrw((int)Common.gRegId, Common.gFrameWorkId);
             foreach (var frm in frms)
             {
-                menuCtrl.Items.Add(new IdObject {Txt = frm.FrmNm, Val=frm });
+                menuCtrl.Items.Add(new IdObject { Txt = frm.FrmNm, Val = frm });
             }
             menuCtrl.DisplayMember = "Txt";
             menuCtrl.ValueMember = "Val";
-        }
-
-        private void barButtonItem2_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
-        {
-            Common.gSysCd = "CD0110";
-        }
-
-        private void barButtonShowMsg_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
-        {
-            if (msgCtrl.Visible)
-            {
-                msgCtrl.Visible = false;
-                barButtonShowMsg.Caption = "Show Message";
-            }
-            else
-            {
-                msgCtrl.Visible = true;
-                barButtonShowMsg.Caption = "Hide Message";
-            }
-        }
-
-        private void simpleButton1_Click(object sender, EventArgs e)
-        {
-            if (menuCtrl.Visible)
-            {
-                menuCtrl.Visible = false;
-                simpleButton1.Text = "Show Menu";
-            }
-            else
-            {
-                menuCtrl.Visible = true;
-                simpleButton1.Text = "Hide Menu";
-            }
         }
 
         private void barButtonItem3_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
@@ -164,7 +129,7 @@ namespace GAIA
                     if (frm != null)
                     {
                         OpenFrm(frm);
-                    }                
+                    }
                 }
 
             }
@@ -218,7 +183,7 @@ namespace GAIA
                 Form fb = new Form();
                 fb.Controls.Add(ucform);
                 ucform.Dock = System.Windows.Forms.DockStyle.Fill;
-                fb.Name = frm.FrmNm;
+                fb.Name = frm.FrmId;
                 fb.Text = frm.FrmNm;
                 fb.MdiParent = this;
 
@@ -228,6 +193,28 @@ namespace GAIA
             {
                 MessageBox.Show($"Form File not found.{frmFullPath}");
             }
+        }
+
+
+        private void menuCtrl_VisibleChanged(object sender, EventArgs e)
+        {
+            simpleButton1.Text = menuCtrl.Visible ? "Hide Menu": "Show Menu";
+        }
+        private void msgCtrl_VisibleChanged(object sender, EventArgs e)
+        {
+            barButtonShowMsg.Caption = msgCtrl.Visible ? "Hide Message": "Show Message";
+        }
+        private void simpleButton1_Click(object sender, EventArgs e)
+        {
+            menuCtrl.Visible = !(menuCtrl.Visible);
+        }
+        private void barButtonShowMsg_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            msgCtrl.Visible = !(msgCtrl.Visible);
+        }
+        private void AddGAIAMsg(object sender, EventArgs e)
+        {
+            msgCtrl.Text += sender.ToString() + Environment.NewLine;
         }
     }
 }

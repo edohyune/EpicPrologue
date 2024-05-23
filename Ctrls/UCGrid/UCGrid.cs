@@ -5,16 +5,317 @@ using DevExpress.XtraEditors.Repository;
 using Lib;
 using Lib.Repo;
 using DevExpress.XtraPrinting.Native;
+using DevExpress.XtraGrid.Views.Grid;
+using System.Data;
+using DevExpress.Data;
+using DevExpress.Utils.DirectXPaint;
+using DevExpress.XtraGrid.Views.Base;
 
 namespace Ctrls
 {
     public class UCGrid : DevExpress.XtraGrid.GridControl
     {
+        [Browsable(false)]
         private string frwId { get; set; }
         private string frmId { get; set; }
-        private string wrkId { get; set; }
-        [Browsable(false)]
+        private string fldId { get; set; }
+        public string openFrm { get; set; }
+        public string openFld { get; set; }
+        public long RowCount { get { return gvCtrl.RowCount; } }
+        public int FocuseRowIndex
+        {
+            get => gvCtrl.FocusedRowHandle;
+            set => gvCtrl.FocusedRowHandle = value;
+        }
         public DevExpress.XtraGrid.Views.Grid.GridView gvCtrl { get; set; }
+
+        public DataRow GetForcuseDataRow { get { return gvCtrl.GetFocusedDataRow(); } }
+
+        [Category("ACE UC Property"), Description("RowAutoHeigh")]
+        public bool RowAutoHeigh
+        {
+            get => gvCtrl.OptionsView.RowAutoHeight;
+            set => gvCtrl.OptionsView.RowAutoHeight = value;
+        }
+        [Category("ACE UC Property"), Description("ColumnAutoWidth")]
+        public bool ColumnAutoWidth
+        {
+            get => gvCtrl.OptionsView.ColumnAutoWidth;
+            set => gvCtrl.OptionsView.ColumnAutoWidth = value;
+        }
+        [Category("ACE UC Property"), Description("ShowGroupPanel")]
+        public bool ShowGroupPanel
+        {
+            get => gvCtrl.OptionsView.ShowGroupPanel;
+            set => gvCtrl.OptionsView.ShowGroupPanel = value;
+        }
+        [Category("ACE UC Property"), Description("ShowFindPanel")]
+        public bool ShowFindPanel
+        {
+            get => gvCtrl.OptionsFind.AlwaysVisible;
+            set => gvCtrl.OptionsFind.AlwaysVisible = value;
+        }
+        [Category("ACE UC Property"), Description("MultiSelect")]
+        public bool MultiSelect
+        {
+            get => gvCtrl.OptionsSelection.MultiSelect;
+            set => gvCtrl.OptionsSelection.MultiSelect = value;
+        }
+        [Category("ACE UC Property"), Description("MultiSelectMode")]
+        public GridMultiSelectMode MultiSelectMode
+        {
+            get => gvCtrl.OptionsSelection.MultiSelectMode;
+            set => gvCtrl.OptionsSelection.MultiSelectMode = value;
+        }
+
+        #region UserController Event
+        #endregion
+        #region ACE UC Event
+        public delegate void delEvent(object sender, EventArgs e);   // delegate 선언
+        public event delEvent BeforeLeaveRow;
+        private void gvCtrl_BeforeLeaveRow(object sender, RowAllowEventArgs e)
+        {
+            BeforeLeaveRow?.Invoke(sender, e);
+        }
+        public delegate void delEventSelectionChanged(object sender, SelectionChangedEventArgs e);   // delegate 선언
+        public event delEventSelectionChanged SelectionChanged;
+        private void gvCtrl_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            SelectionChanged?.Invoke(sender, e);
+        }
+        public delegate void delEventInitNewRow(object sender, InitNewRowEventArgs e);   // delegate 선언
+        public event delEventInitNewRow InitNewRow;
+        private void gvCtrl_InitNewRow(object sender, InitNewRowEventArgs e)
+        {
+
+            InitNewRow?.Invoke(sender, e);
+        }
+        public delegate void delEvent4(object sender, RowDeletingEventArgs e);
+        public event delEvent4 RowDeleting;
+        private void gvCtrl_RowDeleting(object sender, RowDeletingEventArgs e)
+        {
+            RowDeleting?.Invoke(sender, e);
+        }
+
+        //ForcuseRow가 변경이 되면 발생하는 이벤트
+        //컬럼과 특정 컨트롤러를 연결하여 해당 컨트롤러에 
+
+        //public delegate void delEventFocusedRowChanged(object sender, int preIndex, int rowIndex, FocusedRowChangedEventArgs e);   // delegate 선언
+        //public event delEventFocusedRowChanged FocusedRowChanged;
+        //public void gvCtrl_FocusedRowChanged(object sender, FocusedRowChangedEventArgs e)
+        //{
+        //    if ((FocusedRowChanged != null) && (e.FocusedRowHandle >= 0))
+        //    {
+        //        List<WrkGet> ctrls = new WrkGetRepo().GetPullFlds(frwId, frmId, fldId);
+        //        if (ctrls != null)
+        //        {
+        //            foreach (var item in ctrls)
+        //            {
+        //                if (gvCtrl.GetFocusedRowCellValue(item.CtrlNm) != null)
+        //                {
+        //                    InitBinding(this.FindForm(), item.CtrlNm, item.CtrlTy, gvCtrl.GetFocusedRowCellValue(item.CtrlNm).ToString());
+        //                }
+        //            }
+        //        }
+        //        var ctrls = db.PushParam(new { sys = SysCode, frm = FrmID, wkset = FldID });
+        //        if (ctrls != null)
+        //        {
+        //            Common.gLog = $"{Environment.NewLine}-- {FldID} Start Push";
+        //            var fieldInfo = ctrls.ToDictionary(x => x.Ctrl_id, x => x.Ctrl_ty);
+        //            var mapping = ctrls.ToDictionary(x => x.Ctrl_id, x => x.Param_name);
+        //            string rtn = string.Empty;
+        //            foreach (var item in fieldInfo)
+        //            {
+        //                if (gvCtrl.GetFocusedRowCellValue(mapping[item.Key]) != null)
+        //                {
+        //                    rtn = gvCtrl.GetFocusedRowCellValue(mapping[item.Key]).ToString();
+        //                }
+
+        //                InitBinding(this.FindForm(), item.Key, item.Value, rtn);
+        //                Common.gLog = $"Enter Value({rtn}) into Control({item.Key})";
+        //            }
+        //        }
+
+        //        FocusedRowChanged(sender, e.PrevFocusedRowHandle, e.FocusedRowHandle, e);
+        //    }
+        //}
+        //private void InitBinding(Form uc, string ctrlID, string ctrlTY, string map)
+        //{
+        //    switch (ctrlTY.ToLower())
+        //    {
+        //        case "uctext":
+        //            UCText uctext = uc.Controls.Find(ctrlID, true).FirstOrDefault() as UCText;
+        //            uctext.BindText = map;
+        //            break;
+        //        case "ucdate":
+        //            UCDate ucdate = uc.Controls.Find(ctrlID, true).FirstOrDefault() as UCDate;
+        //            ucdate.BindText = map;
+        //            break;
+        //        case "uccombo":
+        //            UCCombo uccombo = uc.Controls.Find(ctrlID, true).FirstOrDefault() as UCCombo;
+        //            uccombo.BindText = map;
+        //            break;
+        //        case "uccheckbox":
+        //            UCCheckBox uccheckbox = uc.Controls.Find(ctrlID, true).FirstOrDefault() as UCCheckBox;
+        //            uccheckbox.BindText = map;
+        //            break;
+        //        case "ucmemo":
+        //            UCMemo ucmemo = uc.Controls.Find(ctrlID, true).FirstOrDefault() as UCMemo;
+        //            ucmemo.BindText = map;
+        //            break;
+        //        default:
+        //            break;
+        //    }
+        //}
+
+        public delegate void delEventCellValueChanged(object sender, CellValueChangedEventArgs e);
+        public event delEventCellValueChanged CellValueChanged;
+        private void gvCtrl_CellValueChanged(object sender, CellValueChangedEventArgs e)
+        {
+            CellValueChanged?.Invoke(sender, e);
+        }
+        public delegate void delEventCellValueChanging(object sender, CellValueChangedEventArgs e);
+        public event delEventCellValueChanging CellValueChanging;
+        private void gvCtrl_CellValueChanging(object sender, CellValueChangedEventArgs e)
+        {
+            CellValueChanging?.Invoke(sender, e);
+        }
+        #endregion
+
+        #region 1. Text(Get, Set)
+        public string GetText(string columnName)
+        {
+            string rtn;
+            if (gvCtrl.GetFocusedRowCellValue(columnName) == null)
+            {
+                rtn = string.Empty;
+            }
+            else
+            {
+                rtn = gvCtrl.GetFocusedRowCellValue(columnName).ToString();
+            }
+            return rtn;
+        }
+        public string GetText(int columnIndex)
+        {
+            string columnName = GetColumnName(columnIndex);
+            string rtn;
+            if (gvCtrl.GetFocusedRowCellValue(columnName) == null)
+            {
+                rtn = string.Empty;
+            }
+            else
+            {
+                rtn = gvCtrl.GetFocusedRowCellValue(columnName).ToString();
+            }
+            return rtn;
+        }
+        public string GetText(string columnName, int rowIndex)
+        {
+            if (rowIndex < 0)
+            {
+                return string.Empty;
+            }
+            else
+            {
+                string rtn;
+                if (gvCtrl.GetRowCellValue(rowIndex, columnName) == null)
+                {
+                    rtn = string.Empty;
+                }
+                else
+                {
+                    rtn = gvCtrl.GetRowCellValue(rowIndex, columnName).ToString();
+                }
+                return rtn;
+            }
+        }
+        public string GetText(int columnIndex, int rowIndex)
+        {
+            if (rowIndex < 0)
+            {
+                return string.Empty;
+            }
+            else
+            {
+                string columnName = GetColumnName(columnIndex);
+                string rtn;
+
+                if (gvCtrl.GetRowCellValue(rowIndex, columnName) == null)
+                {
+                    rtn = string.Empty;
+                }
+                else
+                {
+                    rtn = gvCtrl.GetRowCellValue(rowIndex, columnName).ToString();
+                }
+                return rtn;
+            }
+        }
+        private string GetColumnName(int columnIndex)
+        {
+            string columnName = null;
+            foreach (GridColumn item in gvCtrl.Columns)
+            {
+                if (item.FieldName == gvCtrl.Columns[columnIndex].FieldName)
+                {
+                    columnName = item.FieldName;
+                }
+            }
+            return columnName;
+        }
+        public void SetText(string columnName, dynamic value)
+        {
+            int rowIndex = gvCtrl.GetFocusedDataSourceRowIndex();
+            gvCtrl.SetRowCellValue(rowIndex, columnName, value);
+        }
+        public void SetText(int columnIndex, dynamic value)
+        {
+            int rowIndex = gvCtrl.GetFocusedDataSourceRowIndex();
+            string columnName = GetColumnName(columnIndex);
+            gvCtrl.SetRowCellValue(rowIndex, columnName, value);
+        }
+        public void SetText(string columnName, int rowIndex, dynamic value)
+        {
+            gvCtrl.SetRowCellValue(rowIndex, columnName, value);
+        }
+        public void SetText(int columnIndex, int rowIndex, dynamic value)
+        {
+            string columnName = GetColumnName(columnIndex);
+            gvCtrl.SetRowCellValue(rowIndex, columnName, value);
+        }
+        #endregion
+
+        #region 2. Document(Get, Create, Update, Delete)
+        public T GetDocument<T>(int rowIndex)
+        {
+            T doc = (T)gvCtrl.GetRow(rowIndex);
+            return doc;
+        }
+        public BindingList<T> GetDocuments<T>()
+        {
+            var list = (BindingList<T>)gcCtrl.DataSource;
+            return list;
+        }
+        public void AddNewDocument()
+        {
+            gvCtrl.AddNewRow();
+        }
+        public void SetGridData<T>(List<T> lists)
+        {
+            gcCtrl.DataSource = new BindingList<T>(lists);
+        }
+        public void Clear()
+        {
+            gcCtrl.DataSource = null;
+        }
+        public void FindRow(string col, string val)
+        {
+            int rowHandle = gvCtrl.LocateByValue(col, val);
+            if (rowHandle != DevExpress.Data.DataController.OperationInProgress)
+                gvCtrl.FocusedRowHandle = rowHandle;
+        }
+        #endregion
 
         [Category("A UserController Property"), Description("Visiable")] //chk
         public bool ShowYn
@@ -31,8 +332,9 @@ namespace Ctrls
 
         public UCGrid()
         {
-            this.MainView = new DevExpress.XtraGrid.Views.Grid.GridView();
-            this.MainView.GridControl = this;
+            gvCtrl = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.MainView = gvCtrl;
+            this.ViewCollection.Add(gvCtrl);
             this.UseEmbeddedNavigator = true;
 
             HandleCreated += ucGrid_HandleCreated;
@@ -51,7 +353,7 @@ namespace Ctrls
             {
                 frmId = "Unknown";
             }
-            wrkId = this.Name;
+            fldId = this.Name;
 
             if (frwId != string.Empty)
             {
@@ -65,7 +367,7 @@ namespace Ctrls
                 // GridPropRepo의 인스턴스를 생성합니다.
                 WrkFldRepo wrkFldRepo = new WrkFldRepo();
                 // 모든 컬럼 설정을 데이터베이스에서 가져옵니다.
-                List<WrkFld> colProperties = wrkFldRepo.GetColumnProperties(frwId, frmId, wrkId);
+                List<WrkFld> colProperties = wrkFldRepo.GetColumnProperties(frwId, frmId, fldId);
 
                 //var repo = new Repo.TGridColumnPropRepo();
                 //var colProperties = repo.GetTGridColumnProperties(sysCd, frmId, wkSetId);
@@ -100,7 +402,6 @@ namespace Ctrls
                                                                 colproperty.ColorFont));// Text Color
                     }
                 }
-
                 // GridView를 갱신합니다.
                 gvCtrl.RefreshData();
             }

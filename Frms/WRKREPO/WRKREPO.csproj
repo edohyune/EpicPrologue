@@ -1,28 +1,29 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
+    <TargetFramework>net8.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
-    <!--<BaseOutputPath>F:\20_EpicFrameWork\BUILD_TMP</BaseOutputPath>
-    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>-->
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
-  <!--<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <OutputPath>F:\20_EpicFrameWork\BUILD_TMP\</OutputPath>
-  </PropertyGroup>-->
-  <!--<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <OutputPath>F:\20_EpicFrameWork\BUILD_TMP\</OutputPath>
-  </PropertyGroup>-->
+
   <ItemGroup>
-    <PackageReference Include="Dapper" Version="2.1.28" />
-    <PackageReference Include="System.Data.SqlClient" Version="4.8.6" />
+    <PackageReference Include="DevExpress.Win.Design" Version="23.2.3" />
   </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Ctrls\UCButton\UCButton.csproj" />
+    <ProjectReference Include="..\..\Ctrls\UCGrid\UCGrid.csproj" />
+    <ProjectReference Include="..\..\Ctrls\UCPanel\UCPanel.csproj" />
+    <ProjectReference Include="..\..\Ctrls\UCSplit\UCSplit.csproj" />
+    <ProjectReference Include="..\..\Ctrls\UCTab\UCTab.csproj" />
+    <ProjectReference Include="..\..\Ctrls\UCTextBox\UCTextBox.csproj" />
+    <ProjectReference Include="..\..\Lib\Lib.csproj" />
+  </ItemGroup>
+
   <ItemGroup>
     <Reference Include="DevExpress.CodeParser.v23.2">
       <HintPath>C:\Program Files\DevExpress 23.2\Components\Bin\Framework\DevExpress.CodeParser.v23.2.dll</HintPath>
-    </Reference>
-    <Reference Include="DevExpress.Data.Desktop.v23.2">
-      <HintPath>C:\Program Files\DevExpress 23.2\Components\Bin\Framework\DevExpress.Data.Desktop.v23.2.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Data.v23.2">
       <HintPath>C:\Program Files\DevExpress 23.2\Components\Bin\Framework\DevExpress.Data.v23.2.dll</HintPath>
@@ -50,9 +51,6 @@
     </Reference>
     <Reference Include="DevExpress.Utils.v23.2">
       <HintPath>C:\Program Files\DevExpress 23.2\Components\Bin\Framework\DevExpress.Utils.v23.2.dll</HintPath>
-    </Reference>
-    <Reference Include="DevExpress.Utils.v23.2.UI">
-      <HintPath>C:\Program Files\DevExpress 23.2\Components\Bin\Framework\DevExpress.Utils.v23.2.UI.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.XtraEditors.v23.2">
       <HintPath>C:\Program Files\DevExpress 23.2\Components\Bin\Framework\DevExpress.XtraEditors.v23.2.dll</HintPath>

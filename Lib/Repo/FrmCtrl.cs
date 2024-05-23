@@ -49,7 +49,18 @@ namespace Lib.Repo
             get => _CtrlH;
             set => Set(ref _CtrlH, value);
         }
-
+        private int _CtrlX;
+        public int CtrlX
+        {
+            get => _CtrlX;
+            set => Set(ref _CtrlX, value);
+        }
+        private int _CtrlY;
+        public int CtrlY
+        {
+            get => _CtrlY;
+            set => Set(ref _CtrlY, value);
+        }
         private string _TitleText;
         public string TitleText
         {
@@ -114,12 +125,12 @@ namespace Lib.Repo
             string sql = @"
 insert into FRMCTRL
       (FrwId, FrmId, CtrlNm, ToolNm, CtrlW,
-       CtrlH, TitleText, TitleWidth, TitleAlign, DefaultText,
-       TextAlign, ShowYn, EditYn, CId, CDt,
-       MId, MDt)
+       CtrlH, CtrlX, CtrlY, TitleText, TitleWidth,
+       TitleAlign, DefaultText, TextAlign, ShowYn, EditYn,
+       CId, CDt, MId, MDt)
 select @FrwId, @FrmId, @CtrlNm, @ToolNm, @CtrlW,
-       @CtrlH, @TitleText, @TitleWidth, @TitleAlign, @DefaultText,
-       @TextAlign, @ShowYn, @EditYn,
+       @CtrlH, @CtrlX, @CtrlY, @TitleText, @TitleWidth,
+       @TitleAlign, @DefaultText, @TextAlign, @ShowYn, @EditYn,
        @CId, getdate(), @MId, getdate()
 ";
             using (var db = new Lib.GaiaHelper())
@@ -148,9 +159,10 @@ delete
         {
             string sql = @"
 select a.FrwId, a.FrmId, a.CtrlNm, a.ToolNm, a.CtrlW,
-       a.CtrlH, a.TitleText, a.TitleWidth, a.TitleAlign, a.DefaultText,
-       a.TextAlign, a.ShowYn, a.EditYn, a.CId, a.CDt,
-       a.MId, a.MDt
+       a.CtrlH, a.CtrlX, a.CtrlY, a.TitleText, a.TitleWidth,
+       a.TitleAlign, a.DefaultText, a.TextAlign, a.ShowYn, a.EditYn,
+       a.CId, a.CDt, a.MId, a.MDt
+  from FRMCTRL a
  where 1 = 1
    and a.FrwId = @FrwId
    and a.FrmId = @FrmId
@@ -184,6 +196,8 @@ update a
        ToolNm= @ToolNm,
        CtrlW= @CtrlW,
        CtrlH= @CtrlH,
+       CtrlX= @CtrlX,
+       CtrlY= @CtrlY,
        TitleText= @TitleText,
        TitleWidth= @TitleWidth,
        TitleAlign= @TitleAlign,

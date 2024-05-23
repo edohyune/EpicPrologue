@@ -90,11 +90,10 @@
             barButtonItem2.Caption = "Select System";
             barButtonItem2.Id = 1;
             barButtonItem2.Name = "barButtonItem2";
-            barButtonItem2.ItemClick += barButtonItem2_ItemClick;
             // 
             // barButtonShowMsg
             // 
-            barButtonShowMsg.Caption = "Hide Message";
+            barButtonShowMsg.Caption = "Show Message";
             barButtonShowMsg.Id = 4;
             barButtonShowMsg.Name = "barButtonShowMsg";
             barButtonShowMsg.ItemClick += barButtonShowMsg_ItemClick;
@@ -110,7 +109,6 @@
             barButtonItem3.Caption = "Show In Templet";
             barButtonItem3.Id = 6;
             barButtonItem3.Name = "barButtonItem3";
-            barButtonItem3.ItemClick += barButtonItem3_ItemClick;
             // 
             // bar3
             // 
@@ -141,56 +139,50 @@
             barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
             barDockControlTop.Location = new System.Drawing.Point(0, 0);
             barDockControlTop.Manager = barManager1;
-            barDockControlTop.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            barDockControlTop.Size = new System.Drawing.Size(1121, 22);
+            barDockControlTop.Size = new System.Drawing.Size(1438, 21);
             // 
             // barDockControlBottom
             // 
             barDockControlBottom.CausesValidation = false;
             barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            barDockControlBottom.Location = new System.Drawing.Point(0, 528);
+            barDockControlBottom.Location = new System.Drawing.Point(0, 845);
             barDockControlBottom.Manager = barManager1;
-            barDockControlBottom.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            barDockControlBottom.Size = new System.Drawing.Size(1121, 24);
+            barDockControlBottom.Size = new System.Drawing.Size(1438, 23);
             // 
             // barDockControlLeft
             // 
             barDockControlLeft.CausesValidation = false;
             barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
-            barDockControlLeft.Location = new System.Drawing.Point(0, 22);
+            barDockControlLeft.Location = new System.Drawing.Point(0, 21);
             barDockControlLeft.Manager = barManager1;
-            barDockControlLeft.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            barDockControlLeft.Size = new System.Drawing.Size(0, 506);
+            barDockControlLeft.Size = new System.Drawing.Size(0, 824);
             // 
             // barDockControlRight
             // 
             barDockControlRight.CausesValidation = false;
             barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
-            barDockControlRight.Location = new System.Drawing.Point(1121, 22);
+            barDockControlRight.Location = new System.Drawing.Point(1438, 21);
             barDockControlRight.Manager = barManager1;
-            barDockControlRight.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            barDockControlRight.Size = new System.Drawing.Size(0, 506);
+            barDockControlRight.Size = new System.Drawing.Size(0, 824);
             // 
             // cmbForm
             // 
             cmbForm.EditValue = "Select";
-            cmbForm.Location = new System.Drawing.Point(107, 0);
-            cmbForm.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            cmbForm.Location = new System.Drawing.Point(92, 0);
             cmbForm.MenuManager = barManager1;
             cmbForm.Name = "cmbForm";
             cmbForm.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
-            cmbForm.Size = new System.Drawing.Size(208, 20);
+            cmbForm.Size = new System.Drawing.Size(178, 20);
             cmbForm.TabIndex = 4;
             cmbForm.SelectedIndexChanged += cmbForm_SelectedIndexChanged;
             // 
             // msgCtrl
             // 
             msgCtrl.Dock = System.Windows.Forms.DockStyle.Left;
-            msgCtrl.Location = new System.Drawing.Point(0, 22);
-            msgCtrl.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            msgCtrl.Location = new System.Drawing.Point(0, 21);
             msgCtrl.MenuManager = barManager1;
             msgCtrl.Name = "msgCtrl";
-            msgCtrl.Size = new System.Drawing.Size(447, 506);
+            msgCtrl.Size = new System.Drawing.Size(383, 824);
             msgCtrl.TabIndex = 10;
             // 
             // bar2
@@ -205,21 +197,19 @@
             // 
             // simpleButton1
             // 
-            simpleButton1.Location = new System.Drawing.Point(9, 0);
-            simpleButton1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            simpleButton1.Location = new System.Drawing.Point(8, 0);
             simpleButton1.Name = "simpleButton1";
-            simpleButton1.Size = new System.Drawing.Size(93, 22);
+            simpleButton1.Size = new System.Drawing.Size(80, 20);
             simpleButton1.TabIndex = 20;
-            simpleButton1.Text = "simpleButton1";
+            simpleButton1.Text = "ShowMenu";
             simpleButton1.Click += simpleButton1_Click;
             // 
             // menuCtrl
             // 
             menuCtrl.Dock = System.Windows.Forms.DockStyle.Left;
-            menuCtrl.Location = new System.Drawing.Point(447, 22);
-            menuCtrl.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            menuCtrl.Location = new System.Drawing.Point(383, 21);
             menuCtrl.Name = "menuCtrl";
-            menuCtrl.Size = new System.Drawing.Size(252, 506);
+            menuCtrl.Size = new System.Drawing.Size(216, 824);
             menuCtrl.TabIndex = 26;
             menuCtrl.DoubleClick += menuCtrl_DoubleClick;
             // 
@@ -230,9 +220,9 @@
             // 
             // FormMain
             // 
-            AutoScaleDimensions = new System.Drawing.SizeF(7F, 14F);
+            AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            ClientSize = new System.Drawing.Size(1121, 552);
+            ClientSize = new System.Drawing.Size(1438, 868);
             Controls.Add(menuCtrl);
             Controls.Add(simpleButton1);
             Controls.Add(msgCtrl);
@@ -242,9 +232,9 @@
             Controls.Add(barDockControlBottom);
             Controls.Add(barDockControlTop);
             IsMdiContainer = true;
-            Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             Name = "FormMain";
-            Text = "FormMaker";
+            StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            Text = "Epic Prologue";
             ((System.ComponentModel.ISupportInitialize)barManager1).EndInit();
             ((System.ComponentModel.ISupportInitialize)cmbForm.Properties).EndInit();
             ((System.ComponentModel.ISupportInitialize)msgCtrl.Properties).EndInit();

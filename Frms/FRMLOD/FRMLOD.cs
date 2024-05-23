@@ -90,16 +90,18 @@ namespace Frms
 
         private void OpengridControls()
         {
-            frmCtrl = new FrmCtrl();
-            frmCtrlRepo = new FrmCtrlRepo();
-            frmCtrlbs = new BindingList<FrmCtrl>(frmCtrlRepo.GetByFrwFrm(selectedFrwFrm.FrwId, selectedFrwFrm.FrmId));
-            gridControls.DataSource = frmCtrlbs;
+            if (selectedFrwFrm != null)
+            {
+                frmCtrl = new FrmCtrl();
+                frmCtrlRepo = new FrmCtrlRepo();
+                frmCtrlbs = new BindingList<FrmCtrl>(frmCtrlRepo.GetByFrwFrm(selectedFrwFrm.FrwId, selectedFrwFrm.FrmId));
+                gridControls.DataSource = frmCtrlbs;
 
-            frmWrk = new FrmWrk();
-            frmWrkRepo = new FrmWrkRepo();
-            frmWrkbs = new BindingList<FrmWrk>(frmWrkRepo.GetByFrwFrm(selectedFrwFrm.FrwId, selectedFrwFrm.FrmId));
-            gridWorkset.DataSource = frmWrkbs;
-
+                frmWrk = new FrmWrk();
+                frmWrkRepo = new FrmWrkRepo();
+                frmWrkbs = new BindingList<FrmWrk>(frmWrkRepo.GetByFrwFrm(selectedFrwFrm.FrwId, selectedFrwFrm.FrmId));
+                gridWorkset.DataSource = frmWrkbs;
+            }
         }
 
         private void ucPenel2_CustomButtonClick(object sender, DevExpress.XtraBars.Docking2010.BaseButtonEventArgs e)
@@ -154,6 +156,8 @@ namespace Frms
 
         private void txtDllpath_UCButtonClick(object Sender, Control control)
         {
+            if (selectedFrwFrm == null) return;
+
             openFileDialog1.FileName = "";
             openFileDialog1.Filter = "DLL Files|*.dll|EXE Files|*.exe";
 
@@ -177,6 +181,8 @@ namespace Frms
 
         private void btnReload_Click(object sender, EventArgs e)
         {
+            if (selectedFrwFrm == null) return;
+
             //frm.FilePath, frm.NmSpace의 값이 없으면 아무것도 하지 않는다.
             if (string.IsNullOrEmpty(selectedFrwFrm.FilePath) || string.IsNullOrEmpty(selectedFrwFrm.NmSpace))
             {
@@ -345,6 +351,8 @@ namespace Frms
                             frmCtrl.ToolNm = ctrl.GetType().Name;
                             frmCtrl.CtrlW = GetWidth(ctrl);
                             frmCtrl.CtrlH = GetHeight(ctrl);
+                            frmCtrl.CtrlX = ctrl.Location.X;
+                            frmCtrl.CtrlY = ctrl.Location.Y;
                             frmCtrl.TitleText = GetTitleText(ctrl);
                             frmCtrl.TitleWidth = GetTitleWidth(ctrl);
                             frmCtrl.TitleAlign = GetTitleAlign(ctrl);
@@ -353,8 +361,6 @@ namespace Frms
                             frmCtrl.ShowYn = ctrl.Visible;
                             frmCtrl.EditYn = GetEditYn(ctrl);
                             frmCtrl.ChangedFlag = MdlState.Updated;
-                            //frmCtrl.CtrlX = GetWidth(ctrl);
-                            //frmCtrl.CtrlY = GetHeight(ctrl);
                         }
                         else
                         {
@@ -366,6 +372,8 @@ namespace Frms
                                 ToolNm = ctrl.GetType().Name,
                                 CtrlW = GetWidth(ctrl),
                                 CtrlH = GetHeight(ctrl),
+                                CtrlX = ctrl.Location.X,
+                                CtrlY = ctrl.Location.Y,
                                 TitleText = GetTitleText(ctrl),
                                 TitleWidth = GetTitleWidth(ctrl),
                                 TitleAlign = GetTitleAlign(ctrl),
@@ -373,52 +381,9 @@ namespace Frms
                                 TextAlign = GetTextAlign(ctrl),
                                 ShowYn = ctrl.Visible,
                                 EditYn = GetEditYn(ctrl),
-                                ChangedFlag = MdlState.Updated
+                                ChangedFlag = MdlState.Inserted
                             });
                         }
-
-                        //wrkFld에 데이터가 있으면 업데이트, 없으면 추가.
-                        //var frmCtrl = frmCtrlbs.FirstOrDefault(c => c.CtrlNm == ctrl.Name);
-                        //if (frmCtrl != null)
-                        //{
-                        //    frmCtrl.FrwId = Common.gFrameWorkId;
-                        //    frmCtrl.FrmId = selectedFrwFrm.FrmId;
-                        //    frmCtrl.CtrlNm = ctrl.Name;
-                        //    frmCtrl.ToolNm = ctrl.GetType().Name;
-                        //    frmCtrl.CtrlW = GetWidth(ctrl);
-                        //    frmCtrl.CtrlH = GetHeight(ctrl);
-                        //    frmCtrl.TitleText = GetTitleText(ctrl);
-                        //    frmCtrl.TitleWidth = GetTitleWidth(ctrl);
-                        //    frmCtrl.TitleAlign = GetTitleAlign(ctrl);
-                        //    frmCtrl.DefaultText = GetText(ctrl);
-                        //    frmCtrl.TextAlign = GetTextAlign(ctrl);
-                        //    frmCtrl.ShowYn = ctrl.Visible;
-                        //    frmCtrl.EditYn = GetEditYn(ctrl);
-                        //    frmCtrl.ChangedFlag = MdlState.Updated;
-                        //    //frmCtrl.CtrlX = GetWidth(ctrl);
-                        //    //frmCtrl.CtrlY = GetHeight(ctrl);
-                        //}
-                        //else
-                        //{
-                        //    frmCtrlbs.Add(new FrmCtrl
-                        //    {
-                        //        FrwId = Common.gFrameWorkId,
-                        //        FrmId = selectedFrwFrm.FrmId,
-                        //        CtrlNm = ctrl.Name,
-                        //        ToolNm = ctrl.GetType().Name,
-                        //        CtrlW = GetWidth(ctrl),
-                        //        CtrlH = GetHeight(ctrl),
-                        //        TitleText = GetTitleText(ctrl),
-                        //        TitleWidth = GetTitleWidth(ctrl),
-                        //        TitleAlign = GetTitleAlign(ctrl),
-                        //        DefaultText = GetText(ctrl),
-                        //        TextAlign = GetTextAlign(ctrl),
-                        //        ShowYn = ctrl.Visible,
-                        //        EditYn = GetEditYn(ctrl),
-                        //        ChangedFlag = MdlState.Updated
-                        //    });
-                        //}
-
                     }
 
                     if (ctrlClss.Any(c => c.CtrlRegNm == ctrl.GetType().FullName && c.ContainYn))
@@ -429,6 +394,7 @@ namespace Frms
             }
         }
 
+        #region Get Control Properties
         private string GetTextAlign(Control ctrl)
         {
             if (ctrl is Ctrls.UCLookUp ucLookUp)
@@ -520,7 +486,7 @@ namespace Frms
             else if (ctrl is Ctrls.UCLookUp ucLookUp)
                 return ucLookUp.Title;
             else if (ctrl is Ctrls.UCPanel ucPanel)
-                return ucPanel.Text;
+                return ucPanel.Title;
             else if (ctrl is Ctrls.UCSplit ucSplit)
                 return ucSplit.Text;
             else if (ctrl is Ctrls.UCTextBox ucTextBox)
@@ -540,8 +506,7 @@ namespace Frms
             //else if (ctrl is Ctrls.UCGrid ucGrid)
             else if (ctrl is Ctrls.UCLookUp ucLookUp)
                 return ucLookUp.TitleAlignment.ToString();
-            else if (ctrl is Ctrls.UCPanel ucPanel)
-                return ucPanel.TitleAlignment.ToString();
+            //else if (ctrl is Ctrls.UCPanel ucPanel)
             //else if (ctrl is Ctrls.UCSplit ucSplit)
             else if (ctrl is Ctrls.UCTextBox ucTextBox)
                 return ucTextBox.TitleAlignment.ToString();
@@ -556,7 +521,10 @@ namespace Frms
                 return ucButton.EditYn;
             //else if (ctrl is Ctrls.UCField ucField)
             else if (ctrl is Ctrls.UCGrid ucGrid)
-                return ucGrid.gvCtrl.Editable;
+                if (ucGrid.gvCtrl != null)
+                    return ucGrid.gvCtrl.Editable;
+                else
+                    return false; // or throw new Exception("gvCtrl is not initialized");
             else if (ctrl is Ctrls.UCLookUp ucLookUp)
                 return ucLookUp.Readonly;
             else if (ctrl is Ctrls.UCPanel ucPanel)
@@ -568,6 +536,7 @@ namespace Frms
             else
                 return false;
         }
+        #endregion
 
         private void ucPanel4_CustomButtonClick(object sender, DevExpress.XtraBars.Docking2010.BaseButtonEventArgs e)
         {
@@ -579,12 +548,15 @@ namespace Frms
                     {
                         frmCtrlRepo.Add(frmCtrl);
                     }
-                    else
+                    else if (frmCtrl.ChangedFlag == MdlState.Updated)
                     {
                         frmCtrlRepo.Update(frmCtrl);
                     }
+                    else if (frmCtrl.ChangedFlag == MdlState.None)
+                    {
+                        continue;
+                    }   
                 }
-
             }
             else if (e.Button.Properties.Caption == "Delete")
             {
@@ -601,16 +573,19 @@ namespace Frms
             {
                 foreach (var frmWrk in frmWrkbs)
                 {
-                    if (frmWrk.ChangedFlag == MdlState.Inserted)
+                    if (frmWrk.ChangedFlag == MdlState.None)
+                    {
+                        continue;
+                    }
+                    else if (frmWrk.ChangedFlag == MdlState.Inserted)
                     {
                         frmWrkRepo.Add(frmWrk);
                     }
-                    else
+                    else if (frmWrk.ChangedFlag == MdlState.Updated)
                     {
                         frmWrkRepo.Update(frmWrk);
                     }
                 }
-
             }
             else if (e.Button.Properties.Caption == "Delete")
             {
@@ -619,7 +594,19 @@ namespace Frms
                 {
                     frmWrkRepo.Delete(frmWrk.WrkId);
                 }
-
+            }
+            else if (e.Button.Properties.Caption == "Add")
+            {
+                //입력을 위한 새로운 line을 준비한다. 저장은 Save 버튼을 눌러야 한다.
+                frmWrkbs.Add(new FrmWrk
+                {
+                    FrwId = Common.gFrameWorkId,
+                    FrmId = selectedFrwFrm.FrmId,
+                    CtrlNm = "",
+                    WrkCd = "",
+                    UseYn = true,
+                    ChangedFlag = MdlState.Inserted
+                });
             }
         }
 

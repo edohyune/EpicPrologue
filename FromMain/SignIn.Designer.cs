@@ -89,6 +89,7 @@
             Controls.Add(btnSignInOthers);
             Controls.Add(btnSignInIDO);
             Name = "SignIn";
+            StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             Text = "SignIn";
             ((System.ComponentModel.ISupportInitialize)txtId.Properties).EndInit();
             ((System.ComponentModel.ISupportInitialize)txtPwd.Properties).EndInit();

@@ -80,6 +80,23 @@ namespace Lib.Repo
     }
     public class WrkSetRepo : IWrkSetRepo
     {
+        //public List<MdlParam> PushParam(object param)
+        //{
+        //    string sql = @"
+        //    select a.Id, a.Sys_cd, a.Frm_id, a.Wkset_id, 
+        //           a.Ctrl_id, b.Ctrl_ty, 
+        //           a.Param_wkset, a.Param_name, a.Param_value, a.Pid
+        //      from ATZ31Push a
+        //      join ATZ310 b on a.Sys_cd=b.Sys_cd and a.Frm_id=b.Frm_id and a.Ctrl_id=b.Ctrl_id
+        //     where a.Sys_cd=@sys
+        //       and a.Frm_id=@frm
+        //       and a.Param_wkset=@wkset
+        //    ";
+
+        //    var result = SqlMapper.Query<MdlParam>(_conn, sql, param, _tran).ToList();
+        //    return result;
+        //}
+
         public List<WrkSet> GetPushFlds(string frwId, string frmId, string wrkId)
         {
             string sql = @"

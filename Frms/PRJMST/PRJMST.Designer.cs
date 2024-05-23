@@ -30,29 +30,25 @@
         {
             ucSplit1 = new Ctrls.UCSplit();
             ucPanel3 = new Ctrls.UCPanel();
+            ucGrid1 = new Ctrls.UCGrid();
             ucSplit2 = new Ctrls.UCSplit();
             ucPanel1 = new Ctrls.UCPanel();
             ucPanel2 = new Ctrls.UCPanel();
             ucField1 = new Ctrls.UCField();
             ucField2 = new Ctrls.UCField();
-            ucTextBox1 = new Ctrls.UCTextBox();
-            ucGrid1 = new Ctrls.UCGrid();
             ((System.ComponentModel.ISupportInitialize)ucSplit1).BeginInit();
             ucSplit1.Panel1.SuspendLayout();
             ucSplit1.Panel2.SuspendLayout();
             ucSplit1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)ucPanel3).BeginInit();
             ucPanel3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)ucGrid1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)ucSplit2).BeginInit();
             ucSplit2.Panel1.SuspendLayout();
             ucSplit2.Panel2.SuspendLayout();
             ucSplit2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)ucPanel1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)ucPanel2).BeginInit();
-            ucPanel2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)ucField1).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)ucField2).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)ucGrid1).BeginInit();
             SuspendLayout();
             // 
             // ucSplit1
@@ -70,18 +66,34 @@
             // 
             ucSplit1.Panel2.Controls.Add(ucSplit2);
             ucSplit1.Size = new Size(729, 387);
-            ucSplit1.SplitterDistance = 88;
+            ucSplit1.SplitterDistance = 282;
             ucSplit1.TabIndex = 0;
+            ucSplit1.TitleWidth = 50;
             // 
             // ucPanel3
             // 
             ucPanel3.Controls.Add(ucGrid1);
             ucPanel3.Dock = DockStyle.Fill;
+            ucPanel3.EditYn = true;
             ucPanel3.Location = new Point(0, 0);
             ucPanel3.Name = "ucPanel3";
-            ucPanel3.Size = new Size(729, 88);
+            ucPanel3.ShowYn = true;
+            ucPanel3.Size = new Size(729, 282);
             ucPanel3.TabIndex = 1;
             ucPanel3.Text = "ucPanel3";
+            ucPanel3.Title = "UCPanel";
+            ucPanel3.TitleAlignment = DevExpress.Utils.HorzAlignment.Default;
+            // 
+            // ucGrid1
+            // 
+            ucGrid1.Dock = DockStyle.Fill;
+            ucGrid1.gvCtrl = null;
+            ucGrid1.Location = new Point(2, 23);
+            ucGrid1.Name = "ucGrid1";
+            ucGrid1.ShowYn = true;
+            ucGrid1.Size = new Size(725, 257);
+            ucGrid1.TabIndex = 0;
+            ucGrid1.UseEmbeddedNavigator = true;
             // 
             // ucSplit2
             // 
@@ -96,60 +108,56 @@
             // ucSplit2.Panel2
             // 
             ucSplit2.Panel2.Controls.Add(ucPanel2);
-            ucSplit2.Size = new Size(729, 295);
+            ucSplit2.Size = new Size(729, 101);
             ucSplit2.SplitterDistance = 235;
             ucSplit2.TabIndex = 0;
+            ucSplit2.TitleWidth = 50;
             // 
             // ucPanel1
             // 
             ucPanel1.Dock = DockStyle.Fill;
+            ucPanel1.EditYn = true;
             ucPanel1.Location = new Point(0, 0);
             ucPanel1.Name = "ucPanel1";
-            ucPanel1.Size = new Size(235, 295);
+            ucPanel1.ShowYn = true;
+            ucPanel1.Size = new Size(235, 101);
             ucPanel1.TabIndex = 0;
             ucPanel1.Text = "ucPanel1";
+            ucPanel1.Title = "UCPanel";
+            ucPanel1.TitleAlignment = DevExpress.Utils.HorzAlignment.Default;
             // 
             // ucPanel2
             // 
-            ucPanel2.Controls.Add(ucTextBox1);
             ucPanel2.Dock = DockStyle.Fill;
+            ucPanel2.EditYn = true;
             ucPanel2.Location = new Point(0, 0);
             ucPanel2.Name = "ucPanel2";
-            ucPanel2.Size = new Size(490, 295);
+            ucPanel2.ShowYn = true;
+            ucPanel2.Size = new Size(490, 101);
             ucPanel2.TabIndex = 1;
             ucPanel2.Text = "ucPanel2";
+            ucPanel2.Title = "UCPanel";
+            ucPanel2.TitleAlignment = DevExpress.Utils.HorzAlignment.Default;
             // 
             // ucField1
             // 
             ucField1.ChangedFlag = Lib.MdlState.Inserted;
+            ucField1.FldID = null;
+            ucField1.FrmID = null;
+            ucField1.Location = new Point(0, 0);
+            ucField1.Name = "ucField1";
+            ucField1.Size = new Size(150, 150);
+            ucField1.TabIndex = 0;
             // 
             // ucField2
             // 
             ucField2.ChangedFlag = Lib.MdlState.Inserted;
-            // 
-            // ucTextBox1
-            // 
-            ucTextBox1.BindText = "";
-            ucTextBox1.btnVisiable = true;
-            ucTextBox1.ControlHeight = 20;
-            ucTextBox1.ControlWidth = 180;
-            ucTextBox1.Location = new Point(177, 143);
-            ucTextBox1.Name = "ucTextBox1";
-            ucTextBox1.Size = new Size(180, 20);
-            ucTextBox1.TabIndex = 0;
-            ucTextBox1.Title = "UCTextBox";
-            ucTextBox1.TitleAlignment = DevExpress.Utils.HorzAlignment.Default;
-            ucTextBox1.TitleWidth = 80;
-            // 
-            // ucGrid1
-            // 
-            ucGrid1.Dock = DockStyle.Fill;
-            ucGrid1.gvCtrl = null;
-            ucGrid1.Location = new Point(2, 23);
-            ucGrid1.Name = "ucGrid1";
-            ucGrid1.Size = new Size(725, 63);
-            ucGrid1.TabIndex = 0;
-            ucGrid1.UseEmbeddedNavigator = true;
+            ucField2.FldID = null;
+            ucField2.FrmID = null;
+            ucField2.Location = new Point(0, 0);
+            ucField2.Name = "ucField2";
+            ucField2.Size = new Size(150, 150);
+            ucField2.TabIndex = 0;
             // 
             // PRJMST
             // 
@@ -162,16 +170,13 @@
             ucSplit1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)ucPanel3).EndInit();
             ucPanel3.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)ucGrid1).EndInit();
             ucSplit2.Panel1.ResumeLayout(false);
             ucSplit2.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)ucSplit2).EndInit();
             ucSplit2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)ucPanel1).EndInit();
             ((System.ComponentModel.ISupportInitialize)ucPanel2).EndInit();
-            ucPanel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)ucField1).EndInit();
-            ((System.ComponentModel.ISupportInitialize)ucField2).EndInit();
-            ((System.ComponentModel.ISupportInitialize)ucGrid1).EndInit();
             ResumeLayout(false);
         }
 
@@ -183,7 +188,6 @@
         private Ctrls.UCPanel ucPanel3;
         private Ctrls.UCPanel ucPanel2;
         private Ctrls.UCGrid ucGrid1;
-        private Ctrls.UCTextBox ucTextBox1;
         private Ctrls.UCField ucField1;
         private Ctrls.UCField ucField2;
     }

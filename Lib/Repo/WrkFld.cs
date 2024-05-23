@@ -215,12 +215,12 @@ namespace Lib.Repo
         public WrkFld GetTabPageProperties(string frwId, string frmId, string tabPageNm)
         {
             string sql = @"
-select a.FrwId, a.FrmId, a.WrkId, a.CtrlNm, a.FldNm,
-       a.FldTy, a.FldX, a.FldY, a.FldWidth, a.FldTitleWidth,
-       a.FldTitle, a.TitleAlign, a.Popup, a.DefaultText, a.TextAlign,
-       a.FixYn, a.GroupYn, a.ShowYn, a.NeedYn, a.EditYn,
-       a.Band1, a.Band2, a.FuncStr, a.FormatStr, a.ColorFont,
-       a.ColorBg, a.Seq, a.Id, 
+select a.FrwId, a.FrmId, a.CtrlNm, a.WrkId, a.CtrlCls,
+       a.FldNm, a.FldTy, a.FldX, a.FldY, a.FldWidth,
+       a.FldTitleWidth, a.FldTitle, a.TitleAlign, a.Popup, a.DefaultText,
+       a.TextAlign, a.FixYn, a.GroupYn, a.ShowYn, a.NeedYn,
+       a.EditYn, a.Band1, a.Band2, a.FuncStr, a.FormatStr,
+       a.ColorFont, a.ColorBg, a.ToolNm, a.Seq, a.Id,
        a.CId, a.CDt, a.MId, a.MDt
   from WRKFLD a
  where 1=1
@@ -246,18 +246,18 @@ select a.FrwId, a.FrmId, a.WrkId, a.CtrlNm, a.FldNm,
         public List<WrkFld> GetColumnProperties(string frwId, string frmId, string wrkId)
         {
             string sql = @"
-select a.FrwId, a.FrmId, a.WrkId, a.CtrlNm, a.FldNm,
-       a.FldTy, a.FldX, a.FldY, a.FldWidth, a.FldTitleWidth,
-       a.FldTitle, a.TitleAlign, a.Popup, a.DefaultText, a.TextAlign,
-       a.FixYn, a.GroupYn, a.ShowYn, a.NeedYn, a.EditYn,
-       a.Band1, a.Band2, a.FuncStr, a.FormatStr, a.ColorFont,
-       a.ColorBg, a.Seq, a.Id, 
+select a.FrwId, a.FrmId, a.CtrlNm, a.WrkId, a.CtrlCls,
+       a.FldNm, a.FldTy, a.FldX, a.FldY, a.FldWidth,
+       a.FldTitleWidth, a.FldTitle, a.TitleAlign, a.Popup, a.DefaultText,
+       a.TextAlign, a.FixYn, a.GroupYn, a.ShowYn, a.NeedYn,
+       a.EditYn, a.Band1, a.Band2, a.FuncStr, a.FormatStr,
+       a.ColorFont, a.ColorBg, a.ToolNm, a.Seq, a.Id,
        a.CId, a.CDt, a.MId, a.MDt
   from WRKFLD a
  where 1=1
    and a.FrmId = @FrmId
    and a.FrwId = @FrwId
-   and a.WrkId = @WrkId
+   and a.CtrlNm = @CtrlNm
    and a.FldTy = 'Column'
 ";
             using (var db = new GaiaHelper())
@@ -282,13 +282,13 @@ select a.FrwId, a.FrmId, a.WrkId, a.CtrlNm, a.FldNm,
         public WrkFld GetFldProperties(string frwId, string frmId, string ctrlNm)
         {
             string sql = @"
-select a.FrwId, a.FrmId, a.WrkId, a.CtrlNm, a.FldNm,
-       a.FldTy, a.FldX, a.FldY, a.FldWidth, a.FldTitleWidth,
-       a.FldTitle, a.TitleAlign, a.Popup, a.DefaultText, a.TextAlign,
-       a.FixYn, a.GroupYn, a.ShowYn, a.NeedYn, a.EditYn,
-       a.Band1, a.Band2, a.FuncStr, a.FormatStr, a.ColorFont,
-       a.ColorBg, a.Seq, a.Id, a.CId, a.CDt,
-       a.MId, a.MDt
+select a.FrwId, a.FrmId, a.CtrlNm, a.WrkId, a.CtrlCls,
+       a.FldNm, a.FldTy, a.FldX, a.FldY, a.FldWidth,
+       a.FldTitleWidth, a.FldTitle, a.TitleAlign, a.Popup, a.DefaultText,
+       a.TextAlign, a.FixYn, a.GroupYn, a.ShowYn, a.NeedYn,
+       a.EditYn, a.Band1, a.Band2, a.FuncStr, a.FormatStr,
+       a.ColorFont, a.ColorBg, a.ToolNm, a.Seq, a.Id,
+       a.CId, a.CDt, a.MId, a.MDt
   from WRKFLD a
  where 1=1
    and a.FrmId = @FrmId
@@ -314,13 +314,13 @@ select a.FrwId, a.FrmId, a.WrkId, a.CtrlNm, a.FldNm,
         public List<WrkFld> GetByFrwFrmWrk(string frwId, string frmId, string wrkId)
         {
             string sql = @"
-select a.FrwId, a.FrmId, a.WrkId, a.CtrlNm, a.FldNm,
-       a.FldTy, a.FldX, a.FldY, a.FldWidth, a.FldTitleWidth,
-       a.FldTitle, a.TitleAlign, a.Popup, a.DefaultText, a.TextAlign,
-       a.FixYn, a.GroupYn, a.ShowYn, a.NeedYn, a.EditYn,
-       a.Band1, a.Band2, a.FuncStr, a.FormatStr, a.ColorFont,
-       a.ColorBg, a.Seq, a.Id, a.CId, a.CDt,
-       a.MId, a.MDt
+select a.FrwId, a.FrmId, a.CtrlNm, a.WrkId, a.CtrlCls,
+       a.FldNm, a.FldTy, a.FldX, a.FldY, a.FldWidth,
+       a.FldTitleWidth, a.FldTitle, a.TitleAlign, a.Popup, a.DefaultText,
+       a.TextAlign, a.FixYn, a.GroupYn, a.ShowYn, a.NeedYn,
+       a.EditYn, a.Band1, a.Band2, a.FuncStr, a.FormatStr,
+       a.ColorFont, a.ColorBg, a.ToolNm, a.Seq, a.Id,
+       a.CId, a.CDt, a.MId, a.MDt
   from WRKFLD a
  where 1=1
    and a.FrmId = @FrmId
@@ -350,19 +350,19 @@ select a.FrwId, a.FrmId, a.WrkId, a.CtrlNm, a.FldNm,
         {
             string sql = @"
 insert into WRKFLD
-      (FrwId, FrmId, WrkId, CtrlNm, FldNm,
-       FldTy, FldX, FldY, FldWidth, FldTitleWidth,
-       FldTitle, TitleAlign, Popup, DefaultText, TextAlign,
-       FixYn, GroupYn, ShowYn, NeedYn, EditYn,
-       Band1, Band2, FuncStr, FormatStr, ColorFont,
-       ColorBg, Seq, Id, CId, CDt,
-       MId, MDt)
-select @FrwId, @FrmId, @WrkId, @CtrlNm, @FldNm,
-       @FldTy, @FldX, @FldY, @FldWidth, @FldTitleWidth,
-       @FldTitle, @TitleAlign, @Popup, @DefaultText, @TextAlign,
-       @FixYn, @GroupYn, @ShowYn, @NeedYn, @EditYn,
-       @Band1, @Band2, @FuncStr, @FormatStr, @ColorFont,
-       @ColorBg, @Seq, @Id, 
+      (FrwId, FrmId, CtrlNm, WrkId, CtrlCls,
+       FldNm, FldTy, FldX, FldY, FldWidth,
+       FldTitleWidth, FldTitle, TitleAlign, Popup, DefaultText,
+       TextAlign, FixYn, GroupYn, ShowYn, NeedYn,
+       EditYn, Band1, Band2, FuncStr, FormatStr,
+       ColorFont, ColorBg, ToolNm, Seq, Id,
+       CId, CDt, MId, MDt)
+select @FrwId, @FrmId, @CtrlNm, @WrkId, @CtrlCls,
+       @FldNm, @FldTy, @FldX, @FldY, @FldWidth,
+       @FldTitleWidth, @FldTitle, @TitleAlign, @Popup, @DefaultText,
+       @TextAlign, @FixYn, @GroupYn, @ShowYn, @NeedYn,
+       @EditYn, @Band1, @Band2, @FuncStr, @FormatStr,
+       @ColorFont, @ColorBg, @ToolNm, @Seq, @Id,
        @CId, getdate(), @MId, getdate()
 ";
             using (var db = new Lib.GaiaHelper())
@@ -375,7 +375,12 @@ select @FrwId, @FrmId, @WrkId, @CtrlNm, @FldNm,
         {
             string sql = @"
 update a
-   set FldNm= @FldNm,
+   set FrwId= @FrwId,
+       FrmId= @FrmId,
+       CtrlNm= @CtrlNm,
+       WrkId= @WrkId,
+       CtrlCls= @CtrlCls,
+       FldNm= @FldNm,
        FldTy= @FldTy,
        FldX= @FldX,
        FldY= @FldY,
@@ -397,7 +402,9 @@ update a
        FormatStr= @FormatStr,
        ColorFont= @ColorFont,
        ColorBg= @ColorBg,
+       ToolNm= @ToolNm,
        Seq= @Seq,
+       Id= @Id,
        MId= @MId,
        MDt= getdate()
   from WRKFLD a

@@ -10,23 +10,15 @@ namespace Ctrls
         private string frmId { get; set; }
         private string ctrlNm { get; set; }
 
-        [Category("ACE UC Property"), Description("Title")]
+        private string _title;
+        [Category("A UserController Property"), Description("Title")]
         public string Title
         {
-            get { return this.panelCtrl.Text; }
-            set { this.panelCtrl.Text = value; }
-        }
-
-        [Category("A UserController Property"), Description("Title Alignment")]
-        public DevExpress.Utils.HorzAlignment TitleAlignment
-        {
-            get
-            {
-                return this.panelCtrl.Appearance.TextOptions.HAlignment;
-            }
-            set
-            {
-                this.panelCtrl.Appearance.TextOptions.HAlignment = value;
+            get { return _title; }
+            set 
+            { 
+                _title = value; 
+                this.Text = value;
             }
         }
 
@@ -35,11 +27,11 @@ namespace Ctrls
         {
             get
             { 
-                return this.panelCtrl.Enabled;
+                return panelCtrl.Enabled;
             }
             set
             {
-                this.panelCtrl.Enabled = value;
+                panelCtrl.Enabled = value;
             }
         }
 
@@ -48,11 +40,11 @@ namespace Ctrls
         {
             get
             {
-                return this.Visible;
+                return panelCtrl.Visible;
             }
             set
             {
-                this.Visible = value;
+                panelCtrl.Visible = value;
             }
         }
         public DevExpress.XtraEditors.GroupControl panelCtrl { get; set; }
@@ -95,10 +87,17 @@ namespace Ctrls
                 var wrkFld = wrkFldRepo.GetFldProperties(frwId, frmId, ctrlNm);
                 if (wrkFld != null)
                 {
-                    this.Title = wrkFld.FldTitle;
-                    this.EditYn = wrkFld.EditYn;
-                    this.ShowYn = wrkFld.ShowYn;
+                    panelCtrl.Text = wrkFld.FldTitle;
+                    panelCtrl.Enabled = wrkFld.EditYn;
+                    panelCtrl.Visible = wrkFld.ShowYn;
                 }
+                else
+                {
+                    panelCtrl.Text = this.Name;
+                    panelCtrl.Enabled = this.Enabled;
+                    panelCtrl.Visible = this.Visible;
+                }
+
             }
             catch (Exception ex) 
             { 

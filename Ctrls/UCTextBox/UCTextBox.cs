@@ -8,6 +8,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Rebar;
 using System.Windows.Controls.Primitives;
+using DevExpress.Utils.Implementation;
 
 namespace Ctrls
 {
@@ -205,7 +206,7 @@ namespace Ctrls
 
             if (frwId != string.Empty)
             {
-                //ResetCtrl();
+                ResetCtrl();
             }
         }
 
@@ -219,10 +220,10 @@ namespace Ctrls
                 var wrkFld = wrkFldRepo.GetFldProperties(frwId, frmId, ctrlNm);
                 if (wrkFld != null)
                 {
-                    //this. = wrkFld.FldX;
-                    //this. = wrkFld.FldY;
+                    //wrkFld.FldX와 wrkFld.FldY를 사용하여 위치 설정
+                    this.Location =  new Point(wrkFld.FldX, wrkFld.FldY);
                     this.ControlWidth = wrkFld.FldWidth;
-                    this.TitleWidth = wrkFld.FldWidth;
+                    this.TitleWidth = wrkFld.FldTitleWidth;
                     this.Title = wrkFld.FldTitle;
                     this.TitleAlignment = GenFunc.StrToAlign(wrkFld.TitleAlign);
                     //this. = wrkFld.Popup;
@@ -232,11 +233,13 @@ namespace Ctrls
                     //this. = wrkFld.GroupYn;
                     this.Visible = wrkFld.ShowYn;
                     this.Necessary = wrkFld.NeedYn;
-                    this.EditYn = wrkFld.EditYn == true ? false : false;
+                    this.EditYn = wrkFld.EditYn ? false : true;
                     //this. = wrkFld.Band1;
                     //this. = wrkFld.Band2;
                     //this. = wrkFld.FuncStr;
+                    SetFuncStr(wrkFld.FuncStr);
                     //this. = wrkFld.FormatStr;
+                    SetFormatStr(wrkFld.FuncStr);
                     //this. = wrkFld.ColorFont;
                     //this. = wrkFld.ColorBg;
                     //this. = wrkFld.Seq;
@@ -246,6 +249,10 @@ namespace Ctrls
                     {
                         this.btnVisiable = true;
                     }
+                    else
+                    {
+                        this.btnVisiable = false;
+                    }
                 }
 
             }
@@ -253,6 +260,16 @@ namespace Ctrls
             {
                 Lib.Common.gMsg = $"UCTextBox_Load>>ResetCtrl{Environment.NewLine}Exception : {ex.Message}";
             }
+        }
+
+        private void SetFormatStr(string funcStr)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void SetFuncStr(string funcStr)
+        {
+            throw new NotImplementedException();
         }
 
         #region FrameWork Value 전달을 위한 함수
