@@ -163,6 +163,8 @@
             g10.gvCtrl = null;
             g10.Location = new Point(2, 23);
             g10.Name = "g10";
+            g10.openFld = null;
+            g10.openFrm = null;
             g10.ShowYn = true;
             g10.Size = new Size(213, 450);
             g10.TabIndex = 0;
@@ -217,6 +219,7 @@
             pnlModel.Size = new Size(713, 425);
             pnlModel.TabIndex = 3;
             pnlModel.Title = "";
+            pnlModel.CustomButtonClick += pnlModel_CustomButtonClick;
             // 
             // tpR
             // 
@@ -237,6 +240,7 @@
             pnlSelect.Size = new Size(713, 425);
             pnlSelect.TabIndex = 1;
             pnlSelect.Title = "";
+            pnlSelect.CustomButtonClick += pnlSelect_CustomButtonClick;
             // 
             // tpC
             // 

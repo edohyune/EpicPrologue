@@ -66,7 +66,7 @@ namespace Lib.Repo
     }
     public interface IFrmWrkRepo
     {
-        FrmWrk GetByWrk(string wrkId);
+        FrmWrk GetByWrk(string frwId, string frmId, string ctrlNm);
         List<FrmWrk> GetByFrwFrm(string frwId, string frmId);
         void Add(FrmWrk frmWrk);
         void Update(FrmWrk frmWrk);
@@ -135,7 +135,7 @@ select a.WrkId, a.FrwId, a.FrmId, a.CtrlNm, a.WrkNm,
             }
         }
 
-        public FrmWrk GetByWrk(string wrkId)
+        public FrmWrk GetByWrk(string frwId, string frmId, string ctrlNm)
         {
             string sql = @"
 select a.WrkId, a.FrwId, a.FrmId, a.CtrlNm, a.WrkNm,
@@ -143,11 +143,13 @@ select a.WrkId, a.FrwId, a.FrmId, a.CtrlNm, a.WrkNm,
        a.MId, a.MDt
   from FRMWRK a
  where 1=1
-   and a.WrkId = @WrkId
+   and a.FrwId = @FrwId
+   and a.FrmId = @FrmId
+   and a.CtrlNm = @CtrlNm
 ";
             using (var db = new GaiaHelper())
             {
-                var result = db.Query<FrmWrk>(sql, new { WrkId = wrkId }).FirstOrDefault();
+                var result = db.Query<FrmWrk>(sql, new {FrwId = frwId, FrmId = frmId, CtrlNm = ctrlNm }).FirstOrDefault();
                 return result;
             }
         }
@@ -156,21 +158,20 @@ select a.WrkId, a.FrwId, a.FrmId, a.CtrlNm, a.WrkNm,
         {
             string sql = @"
 update a
-   set FrmId= @FrmId,
-       FrmNm= @FrmNm,
-       UsrRegId= @UsrRegId,
+   set WrkId= @WrkId,
        FrwId= @FrwId,
-       FilePath= @FilePath,
-       FileNm= @FileNm,
-       NmSpace= @NmSpace,
-       FldYn= @FldYn,
-       PId= @PId,
+       FrmId= @FrmId,
+       CtrlNm= @CtrlNm,
+       WrkNm= @WrkNm,
+       WrkCd= @WrkCd,
+       UseYn= @UseYn,
        Memo= @Memo,
        MId= @MId,
        MDt= getdate()
-  from FRWFRM a
+  from FRMWRK a
  where 1=1
-   and FrmId = @FrmId
+   and frwId = @FrwId
+   and WrkId = @WrkId
 ";
             using (var db = new GaiaHelper())
             {

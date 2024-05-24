@@ -1,6 +1,6 @@
 ﻿using DevExpress.Mvvm.POCO;
 using DevExpress.XtraBars.Docking2010;
-
+using Lib.Repo;
 namespace Frms.TST
 {
     public partial class GridSet : UserControl
@@ -17,7 +17,7 @@ namespace Frms.TST
 
         private void ucPanel1_CustomButtonClick(object sender, BaseButtonEventArgs e)
         {
-            throw new NotImplementedException();
+            g10.Open<Person>();
         }
 
         private void ucPanel2_CustomButtonClick(object sender, BaseButtonEventArgs e)

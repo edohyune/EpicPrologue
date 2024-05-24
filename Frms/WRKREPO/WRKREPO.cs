@@ -2,10 +2,6 @@
 using DevExpress.XtraRichEdit;
 using Lib;
 using DevExpress.Office.Utils;
-using DevExpress.XtraEditors;
-using static System.Windows.Forms.Design.AxImporter;
-using DevExpress.Diagram.Core.Native.Generation;
-using System.ComponentModel;
 using Lib.Repo;
 
 namespace Frms
@@ -172,13 +168,52 @@ namespace Frms
             if (e.Button.Properties.Caption == "Open")
             {
                 var frmWrkRepo = new FrmWrkRepo();
-                g10.DataSource = frmWrkRepo.GetByFrwFrm(Lib.Common.gFrameWorkId, "WrkRepo");
+                g10.DataSource = frmWrkRepo.GetByFrwFrm(Lib.Common.gFrameWorkId, "GridSet");
+            }
+        }
+        private FrwFrm selectedDoc { get; set; }
+        private void g10_FocusedViewChanged(object sender, DevExpress.XtraGrid.ViewFocusEventArgs e)
+        {
+            //var view = sender as DevExpress.XtraGrid.Views.Grid.GridView;
+            //if (view == null) return;
+
+            //selectedDoc = view.GetFocusedRow() as FrwFrm;
+
+            //if (selectedDoc != null)
+            //{
+            //    SetWrkForm();
+            //}
+        }
+
+        private void SetWrkForm()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void pnlModel_CustomButtonClick(object sender, DevExpress.XtraBars.Docking2010.BaseButtonEventArgs e)
+        {
+            if (e.Button.Properties.Caption == "Save")
+            {
+
+                var frmWrkRepo = new FrmWrkRepo();
+                g10.DataSource = frmWrkRepo.GetByFrwFrm(Lib.Common.gFrameWorkId, "GridSet");
             }
         }
 
-        private void g10_FocusedViewChanged(object sender, DevExpress.XtraGrid.ViewFocusEventArgs e)
+        private void pnlSelect_CustomButtonClick(object sender, DevExpress.XtraBars.Docking2010.BaseButtonEventArgs e)
         {
+            if (e.Button.Properties.Caption == "Delete")
+            {
 
+            }
+            else if (e.Button.Properties.Caption == "Save")
+            { 
+
+            }
+            else if (e.Button.Properties.Caption == "Generate") 
+            { 
+
+            }
         }
     }
 }

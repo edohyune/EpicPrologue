@@ -90,10 +90,10 @@ namespace GAIA
             List<FrwFrm> frms = new FrwFrmRepo().GetByOwnFrw((int)Common.gRegId, Common.gFrameWorkId);
             foreach (var frm in frms)
             {
-                menuCtrl.Items.Add(new IdObject { Txt = frm.FrmNm, Val = frm });
+                menuCtrl.Items.Add(new IdObject { Txt = frm.FrmNm, Obj = frm });
             }
             menuCtrl.DisplayMember = "Txt";
-            menuCtrl.ValueMember = "Val";
+            menuCtrl.ValueMember = "Obj";
         }
 
         private void barButtonItem3_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
@@ -125,7 +125,7 @@ namespace GAIA
             {
                 if (menuCtrl.SelectedItem is IdObject selectedItem)
                 {
-                    FrwFrm frm = selectedItem.Val as FrwFrm;
+                    FrwFrm frm = selectedItem.Obj as FrwFrm;
                     if (frm != null)
                     {
                         OpenFrm(frm);

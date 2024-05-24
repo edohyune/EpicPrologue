@@ -22,18 +22,12 @@ namespace Repo
         public string Txt { get; set; }
         public string Val { get; set; }
 
-        public List<IdValue> GetLookUp(string query, object param)
+        public List<IdValue> GetLookUp(string query)
         {
-            string sql = query
             using (var db = new Lib.GaiaHelper())
             {
-
-                //var result = db.Query<FrwFrm>(sql, new { FrwId = frwId, UsrRegId = ownId }).ToList();
-                //foreach (var item in result)
-                //{
-                //    item.ChangedFlag = MdlState.None;  // 객체 상태를 None으로 설정
-                //}
-                //return result;
+                var result = db.Query<IdValue>(query).ToList();
+                return result;
             }
         }
     }

@@ -294,7 +294,7 @@ namespace Ctrls
         }
         public BindingList<T> GetDocuments<T>()
         {
-            var list = (BindingList<T>)gcCtrl.DataSource;
+            var list = (BindingList<T>)this.DataSource;
             return list;
         }
         public void AddNewDocument()
@@ -303,11 +303,11 @@ namespace Ctrls
         }
         public void SetGridData<T>(List<T> lists)
         {
-            gcCtrl.DataSource = new BindingList<T>(lists);
+            this.DataSource = new BindingList<T>(lists);
         }
         public void Clear()
         {
-            gcCtrl.DataSource = null;
+            this.DataSource = null;
         }
         public void FindRow(string col, string val)
         {

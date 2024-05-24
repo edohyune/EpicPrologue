@@ -69,6 +69,7 @@ namespace Lib.Repo
         WrkSql GetSql(string frwId, string frmId, string wrkId, string crudm);
         List<WrkSql> GetSqls(string frwId, string frmId, string wrkId);
         void Add(WrkSql wrkSql);
+        void Save(WrkSql wrkSql);
         void Update(WrkSql wrkSql);
         void Delete(WrkSql wrkSql);
     }
@@ -177,6 +178,39 @@ update a
   from WRKSQL a
  where 1=1
    and Id = @Id
+";
+            using (var db = new Lib.GaiaHelper())
+            {
+                db.OpenExecute(sql, wrkSql);
+            }
+        }
+
+        public void Save(WrkSql wrkSql)
+        {
+            string sql = @"
+if exists(select 1 from WRKSQL where FrwId=@FrwId and FrmId=@FrmId and WrkId=@WrkId and CRUDM=@CRUDM)
+begin 
+    update a
+       set Query= @Query,
+           Memo= @Memo,
+           PId= @PId,
+           MId= @MId,
+           MDt= getdate()
+      from WRKSQL a
+     where 1=1
+       and FrwId = @FrwId
+       and FrmId = @FrmId
+       and WrkId = @WrkId
+       and CRUDM = @CRUDM
+end else begin 
+    insert into WRKSQL
+          (FrwId, FrmId, WrkId, CRUDM, Query,
+           Memo, PId, CId, CDt,
+           MId, MDt)
+    select @FrwId, @FrmId, @WrkId, @CRUDM, @Query,
+           @Memo, @PId, 
+           @CId, getdate(), @MId, getdate()
+end 
 ";
             using (var db = new Lib.GaiaHelper())
             {
