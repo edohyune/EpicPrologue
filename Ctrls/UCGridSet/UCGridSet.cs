@@ -11,6 +11,9 @@ using DevExpress.Pdf.Native.BouncyCastle.Asn1.Ocsp;
 using DevExpress.Utils;
 using DevExpress.XtraEditors.Repository;
 using System.Reflection;
+using DevExpress.XtraGrid;
+using DevExpress.XtraEditors.Controls;
+using DevExpress.XtraEditors;
 
 namespace Ctrls
 {
@@ -603,28 +606,49 @@ select a.SysCd, a.MenuId, a.MenuNm, a.FrmId, a.HideYn, a.CId, a.CDt
                 gvCtrl.Columns.Clear();
                 if (colProperties != null)
                 {
-                    //foreach (var column in colProperties)
-                    //{
-                    //    AddGridColumn(gvCtrl, GetGridColumn(column.Ctrl_id,
-                    //                                        column.Title,
-                    //                                        column.TitleW,
-                    //                                        column.Show_chk,
-                    //                                        column.TitleAlign,
-                    //                                        column.TxtAlign,
-                    //                                        column.Field_ty,
-                    //                                        column.Edit_chk,
-                    //                                        column.Popup,
-                    //                                        column.Format_ty,
-                    //                                        column.Fix_chk,
-                    //                                        column.Need_chk,
-                    //                                        column.Group_chk,
-                    //                                        column.Sum_ty,
-                    //                                        column.Txt,
-                    //                                        column.Color_bg,
-                    //                                        column.Color_fore,
-                    //                                        ButtonEdit
-                    //                                        ));
-                    //}
+
+                    foreach (var column in colProperties)
+                    {
+                        AddGridColumn(gvCtrl, GetGridColumn(column.FldNm,     // Column ID
+                                                            column.FldTy,     // Text, Int, Date, Decimal, Code(Lookup)
+                                                            column.FldTitle,       // Title
+                                                            column.TitleAlign,  // Title Alignment DevExpress.Utils.HorzAlignment TitleAlign
+                                                            column.FldTitleWidth,      // Title Width
+                                                            column.Popup,       // Lookup
+                                                            column.DefaultText,         // Default Text
+                                                            column.TextAlign,    // Text Alignment DevExpress.Utils.HorzAlignment TxtAlign
+                                                            column.FixYn,     // Freeze Column
+                                                            column.GroupYn,   // Grouping
+                                                            column.ShowYn,    // Hide
+                                                            column.NeedYn,    // Necessary Field
+                                                            column.EditYn,    // ReadOnly
+                                                            column.Band1,       // Title Band 2nd
+                                                            column.Band2,       // Title Band 1st
+                                                            column.FuncStr,      // sum, avg, max, min
+                                                            column.FormatStr,   // #.##, #,##0.00
+                                                            column.ColorBg,    // Column Background Color
+                                                            column.ColorFont));// Text Color
+
+                                                                //    AddGridColumn(gvCtrl, GetGridColumn(column.Ctrl_id,
+                                                                //                                        column.Title,
+                                                                //                                        column.TitleW,
+                                                                //                                        column.Show_chk,
+                                                                //                                        column.TitleAlign,
+                                                                //                                        column.TxtAlign,
+                                                                //                                        column.Field_ty,
+                                                                //                                        column.Edit_chk,
+                                                                //                                        column.Popup,
+                                                                //                                        column.Format_ty,
+                                                                //                                        column.Fix_chk,
+                                                                //                                        column.Need_chk,
+                                                                //                                        column.Group_chk,
+                                                                //                                        column.Sum_ty,
+                                                                //                                        column.Txt,
+                                                                //                                        column.Color_bg,
+                                                                //                                        column.Color_fore,
+                                                                //                                        ButtonEdit
+                                                                //                                        ));
+                    }
                     //var sql = db.GetCRUDQuery(new { sys = SysCode, frm = FrmID, wkset = FldID, CRUD = "R" });
 
                     //Common.gLog = sql;
@@ -663,6 +687,7 @@ select a.SysCd, a.MenuId, a.MenuNm, a.FrmId, a.HideYn, a.CId, a.CDt
                 Common.gMsg = $"UCGridSet_OpenForm<T>() : {Environment.NewLine}--frwId : {frwId}{Environment.NewLine}-- frmId : {frmId}{Environment.NewLine}-- GridSet : {ctrlNm}{Environment.NewLine}Exception : {e.Message}";
             }
         }
+
         #endregion
         #region Grid Save
         #endregion
@@ -783,272 +808,270 @@ select a.SysCd, a.MenuId, a.MenuNm, a.FrmId, a.HideYn, a.CId, a.CDt
         ///// <param name="formatType">형식 종류</param>
         ///// <param name="formatString">형식 문자열</param>
         ///// <returns>그리드 컬럼</returns>
-        //private GridColumn GetGridColumn(string ctrlid, string title, int titlew, string showchk, string titlealign,
-        //                                 string txtalign, string fieldty, string editchk, string popup,
-        //                                 string formatty, string fixchk, string needchk, string groupchk,
-        //                                 string sumty, string txt,
-        //                                 string backColor, //
-        //                                 string foreColor, //
-        //                                 RepositoryItemButtonEdit buttonEdit)
-        //{
-        //    GridColumn column = new GridColumn();
+        private GridColumn GetGridColumn(string fldNm, string fldTy, string fldTitle, string titleAlign, int fldTitleWidth, 
+                                         string popup, string defaultText, string textAlign, bool fixYn, 
+                                         bool groupYn, bool showYn, bool needYn, bool editYn, 
+                                         string band1, string band2, string funcStr, string formatStr, 
+                                         string colorBg, string colorFont)
+        {
+            GridColumn column = new GridColumn();
 
-        //    column.Name = ctrlid;
-        //    column.FieldName = ctrlid;
-        //    column.Caption = title;
-        //    column.Width = titlew;
-        //    column.Visible = (showchk == "0" ? false : true);
-        //    column.OptionsColumn.AllowEdit = (editchk == "0" ? false : true);
-        //    //column.Tag = new AceTool.Common.MyRowStyle(AceTool.Grid.SetColor(foreColor), AceTool.Grid.SetColor(backColor), popup);
-        //    column.AppearanceCell.TextOptions.VAlignment = VertAlignment.Center;
-        //    column.AppearanceHeader.Options.UseTextOptions = true;
-        //    column.AppearanceHeader.TextOptions.VAlignment = VertAlignment.Center;
-        //    column.Fixed = (fixchk == "0" ? FixedStyle.None : FixedStyle.Left);
-        //    column.UnboundType = DevExpress.Data.UnboundColumnType.String;
+            column.Name = fldNm;
+            column.FieldName = fldNm;
+            column.Caption = fldTitle;
+            column.Width = fldTitleWidth;
+            column.Visible = showYn;
+            column.OptionsColumn.AllowEdit = editYn;
+            //column.Tag = new AceTool.Common.MyRowStyle(AceTool.Grid.SetColor(foreColor), AceTool.Grid.SetColor(backColor), popup);
+            column.AppearanceCell.TextOptions.VAlignment = VertAlignment.Center;
+            column.AppearanceHeader.Options.UseTextOptions = true;
+            column.AppearanceHeader.TextOptions.VAlignment = VertAlignment.Center;
+            column.Fixed = (fixYn? FixedStyle.None : FixedStyle.Left);
+            column.UnboundType = DevExpress.Data.UnboundColumnType.String;
 
-        //    switch (titlealign)
-        //    {
-        //        case "0": column.AppearanceHeader.TextOptions.HAlignment = HorzAlignment.Default; break;
-        //        case "1": column.AppearanceHeader.TextOptions.HAlignment = HorzAlignment.Near; break;
-        //        case "2": column.AppearanceHeader.TextOptions.HAlignment = HorzAlignment.Center; break;
-        //        case "3": column.AppearanceHeader.TextOptions.HAlignment = HorzAlignment.Far; break;
-        //    }
+            switch (titleAlign)
+            {
+                case "Default": column.AppearanceHeader.TextOptions.HAlignment = HorzAlignment.Default; break;
+                case "Near": column.AppearanceHeader.TextOptions.HAlignment = HorzAlignment.Near; break;
+                case "Center": column.AppearanceHeader.TextOptions.HAlignment = HorzAlignment.Center; break;
+                case "Far": column.AppearanceHeader.TextOptions.HAlignment = HorzAlignment.Far; break;
+            }
 
-        //    switch (txtalign)
-        //    {
-        //        case "0": column.AppearanceCell.TextOptions.HAlignment = HorzAlignment.Default; break;
-        //        case "1": column.AppearanceCell.TextOptions.HAlignment = HorzAlignment.Near; break;
-        //        case "2": column.AppearanceCell.TextOptions.HAlignment = HorzAlignment.Center; break;
-        //        case "3": column.AppearanceCell.TextOptions.HAlignment = HorzAlignment.Far; break;
-        //    }
+            switch (textAlign)
+            {
+                case "Default": column.AppearanceCell.TextOptions.HAlignment = HorzAlignment.Default; break;
+                case "Near": column.AppearanceCell.TextOptions.HAlignment = HorzAlignment.Near; break;
+                case "Center": column.AppearanceCell.TextOptions.HAlignment = HorzAlignment.Center; break;
+                case "Far": column.AppearanceCell.TextOptions.HAlignment = HorzAlignment.Far; break;
+            }
 
-        //    if (formatty == "")
-        //        column.DisplayFormat.FormatType = FormatType.None;
-        //    else
-        //    {
-        //        switch (fieldty)
-        //        {
-        //            case "Decimal":
-        //                column.DisplayFormat.FormatType = FormatType.Numeric;
-        //                break;
-        //            case "Int":
-        //                column.DisplayFormat.FormatType = FormatType.Numeric;
-        //                break;
-        //            case "Date":
-        //                column.DisplayFormat.FormatType = FormatType.DateTime;
-        //                break;
-        //            case "DateTime":
-        //                column.DisplayFormat.FormatType = FormatType.DateTime;
-        //                break;
-        //            default:
-        //                column.DisplayFormat.FormatType = FormatType.Custom;
-        //                break;
-        //        }
+            if (formatStr == "")
+                column.DisplayFormat.FormatType = FormatType.None;
+            else
+            {
+                switch (fldTy)
+                {
+                    case "Decimal":
+                        column.DisplayFormat.FormatType = FormatType.Numeric;
+                        break;
+                    case "Int":
+                        column.DisplayFormat.FormatType = FormatType.Numeric;
+                        break;
+                    case "Date":
+                        column.DisplayFormat.FormatType = FormatType.DateTime;
+                        break;
+                    case "DateTime":
+                        column.DisplayFormat.FormatType = FormatType.DateTime;
+                        break;
+                    default:
+                        column.DisplayFormat.FormatType = FormatType.Custom;
+                        break;
+                }
 
-        //        column.DisplayFormat.FormatString = formatty;
+                column.DisplayFormat.FormatString = formatStr;
 
-        //        //SummaryItem
-        //        switch (sumty)
-        //        {
-        //            case "AVG":
-        //                GridColumnSummaryItem SummaryAvg = new GridColumnSummaryItem(SummaryItemType.Average, ctrlid, "{0:" + formatty + "}");
-        //                column.Summary.Add(SummaryAvg);
-        //                break;
-        //            case "Count":
-        //                GridColumnSummaryItem SummaryCnt = new GridColumnSummaryItem(SummaryItemType.Count, ctrlid, "{0:" + formatty + "}");
-        //                column.Summary.Add(SummaryCnt);
-        //                break;
-        //            case "Max":
-        //                GridColumnSummaryItem SummaryMax = new GridColumnSummaryItem(SummaryItemType.Max, ctrlid, "{0:" + formatty + "}");
-        //                column.Summary.Add(SummaryMax);
-        //                break;
-        //            case "Min":
-        //                GridColumnSummaryItem SummaryMin = new GridColumnSummaryItem(SummaryItemType.Min, ctrlid, "{0:" + formatty + "}");
-        //                column.Summary.Add(SummaryMin);
-        //                break;
-        //            case "Sum":
-        //                GridColumnSummaryItem SummarySum = new GridColumnSummaryItem(SummaryItemType.Sum, ctrlid, "{0:" + formatty + "}");
-        //                column.Summary.Add(SummarySum);
-        //                break;
-        //        }
-        //    }
+                //SummaryItem
+                switch (funcStr)
+                {
+                    case "AVG":
+                        GridColumnSummaryItem SummaryAvg = new GridColumnSummaryItem(SummaryItemType.Average, fldNm, "{0:" + formatStr + "}");
+                        column.Summary.Add(SummaryAvg);
+                        break;
+                    case "Count":
+                        GridColumnSummaryItem SummaryCnt = new GridColumnSummaryItem(SummaryItemType.Count, fldNm, "{0:" + formatStr + "}");
+                        column.Summary.Add(SummaryCnt);
+                        break;
+                    case "Max":
+                        GridColumnSummaryItem SummaryMax = new GridColumnSummaryItem(SummaryItemType.Max, fldNm, "{0:" + formatStr + "}");
+                        column.Summary.Add(SummaryMax);
+                        break;
+                    case "Min":
+                        GridColumnSummaryItem SummaryMin = new GridColumnSummaryItem(SummaryItemType.Min, fldNm, "{0:" + formatStr + "}");
+                        column.Summary.Add(SummaryMin);
+                        break;
+                    case "Sum":
+                        GridColumnSummaryItem SummarySum = new GridColumnSummaryItem(SummaryItemType.Sum, fldNm, "{0:" + formatStr + "}");
+                        column.Summary.Add(SummarySum);
+                        break;
+                }
+            }
 
-        //    switch (fieldty.ToUpper())
-        //    {
-        //        case "CHECKBOX":
-        //            column.ColumnEdit = SetCheckBox();
-        //            break;
-        //        case "CODE":
-        //            column.ColumnEdit = SetColumnLookup(popup);//SetLookupCode(popup, 1);
-        //            break;
-        //        case "CODE2":
-        //            column.ColumnEdit = SetColumnLookup_Value(popup); //SetLookupCode(popup, 2);
-        //            break;
-        //        case "COMBO":
-        //            column.ColumnEdit = SetLookupCombo(popup, 1);
-        //            break;
-        //        case "COMBO2":
-        //            column.ColumnEdit = SetLookupCombo(popup, 2);
-        //            break;
-        //        case "POPUP":
-        //            column.ColumnEdit = ButtonEdit;
-        //            break;
-        //        case "MEMO":
-        //            RepositoryItemMemoEdit MemoEdit = new RepositoryItemMemoEdit();
-        //            MemoEdit.AutoHeight = true;
-        //            MemoEdit.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-        //            MemoEdit.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Near;
-        //            MemoEdit.Appearance.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Top;
-        //            column.ColumnEdit = MemoEdit;
-        //            break;
-        //    }
-        //    return column;
-        //}
-        //private RepositoryItem SetColumnLookup(string pcode)
-        //{
-        //    RepositoryItemLookUpEdit lookUp = new RepositoryItemLookUpEdit();
+            switch (fldTy.ToUpper())
+            {
+                case "CHECKBOX":
+                    column.ColumnEdit = SetCheckBox();
+                    break;
+                case "CODE":
+                    column.ColumnEdit = SetColumnLookup(popup);//SetLookupCode(popup, 1);
+                    break;
+                case "CODE2":
+                    column.ColumnEdit = SetColumnLookup_Value(popup); //SetLookupCode(popup, 2);
+                    break;
+                case "COMBO":
+                    column.ColumnEdit = SetLookupCombo(popup, 1);
+                    break;
+                case "COMBO2":
+                    column.ColumnEdit = SetLookupCombo(popup, 2);
+                    break;
+                case "POPUP":
+                    RepositoryItemButtonEdit buttonEdit = new RepositoryItemButtonEdit();
+                    column.ColumnEdit = buttonEdit;
+                    break;
+                case "MEMO":
+                    RepositoryItemMemoEdit MemoEdit = new RepositoryItemMemoEdit();
+                    MemoEdit.AutoHeight = true;
+                    MemoEdit.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+                    MemoEdit.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Near;
+                    MemoEdit.Appearance.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Top;
+                    column.ColumnEdit = MemoEdit;
+                    break;
+            }
+            return column;
+        }
+        private RepositoryItemCheckEdit SetCheckBox()
+        {
+            RepositoryItemCheckEdit chkbox = new RepositoryItemCheckEdit();
+            chkbox.NullText = "0";
+            chkbox.ValueChecked = "1";
+            chkbox.ValueUnchecked = "0";
+            chkbox.ValueGrayed = "0";
+            chkbox.NullStyle = StyleIndeterminate.Unchecked;
+            chkbox.CheckStyle = CheckStyles.Radio; // CheckStyles.Standard;
+            return chkbox;
+        }
+        private RepositoryItem SetColumnLookup(string pcode)
+        {
+            RepositoryItemLookUpEdit lookUp = new RepositoryItemLookUpEdit();
 
-        //    using (var db = new ACE.Lib.DbHelper())
-        //    {
-        //        List<MdlIdName> lists = new List<MdlIdName>();
-        //        lists = db.GetCodeNm(new { Grp = pcode });
-        //        lookUp.DataSource = lists;
-        //        lookUp.ValueMember = "Id";
-        //        lookUp.DisplayMember = "Nm";
+            using (var db = new ACE.Lib.DbHelper())
+            {
+                List<MdlIdName> lists = new List<MdlIdName>();
+                lists = db.GetCodeNm(new { Grp = pcode });
+                lookUp.DataSource = lists;
+                lookUp.ValueMember = "Id";
+                lookUp.DisplayMember = "Nm";
 
-        //        lookUp.ShowHeader = false;
-        //        lookUp.ForceInitialize();
-        //        lookUp.PopulateColumns();
-        //        lookUp.Columns["Id"].Visible = true;
-        //        lookUp.Columns["Nm"].Visible = true;
-        //        lookUp.DropDownRows = 15; //dsLook.Tables[0].Rows.Count;
-        //        lookUp.BestFitMode = DevExpress.XtraEditors.Controls.BestFitMode.BestFitResizePopup;
-        //        lookUp.AutoHeight = true;
-        //        lookUp.NullText = "";
-        //        lookUp.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
-        //        lookUp.AutoSearchColumnIndex = 1;
-        //        lookUp.SearchMode = DevExpress.XtraEditors.Controls.SearchMode.OnlyInPopup;
-        //        lookUp.HeaderClickMode = DevExpress.XtraEditors.Controls.HeaderClickMode.AutoSearch;
-        //        lookUp.CaseSensitiveSearch = false;
-        //    }
-        //    return lookUp;
-        //}
-        //private RepositoryItemLookUpEdit SetColumnLookup_Value(string pcode)
-        //{
-        //    RepositoryItemLookUpEdit lookUp = new RepositoryItemLookUpEdit();
+                lookUp.ShowHeader = false;
+                lookUp.ForceInitialize();
+                lookUp.PopulateColumns();
+                lookUp.Columns["Id"].Visible = true;
+                lookUp.Columns["Nm"].Visible = true;
+                lookUp.DropDownRows = 15; //dsLook.Tables[0].Rows.Count;
+                lookUp.BestFitMode = DevExpress.XtraEditors.Controls.BestFitMode.BestFitResizePopup;
+                lookUp.AutoHeight = true;
+                lookUp.NullText = "";
+                lookUp.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
+                lookUp.AutoSearchColumnIndex = 1;
+                lookUp.SearchMode = DevExpress.XtraEditors.Controls.SearchMode.OnlyInPopup;
+                lookUp.HeaderClickMode = DevExpress.XtraEditors.Controls.HeaderClickMode.AutoSearch;
+                lookUp.CaseSensitiveSearch = false;
+            }
+            return lookUp;
+        }
+        private RepositoryItemLookUpEdit SetColumnLookup_Value(string pcode)
+        {
+            RepositoryItemLookUpEdit lookUp = new RepositoryItemLookUpEdit();
 
-        //    using (var db = new ACE.Lib.DbHelper())
-        //    {
-        //        List<MdlIdName> lists = new List<MdlIdName>();
-        //        lists = db.GetNmNm(new { Grp = pcode });
-        //        lookUp.DataSource = lists;
-        //        lookUp.ValueMember = "Id";
-        //        lookUp.DisplayMember = "Nm";
+            using (var db = new ACE.Lib.DbHelper())
+            {
+                List<MdlIdName> lists = new List<MdlIdName>();
+                lists = db.GetNmNm(new { Grp = pcode });
+                lookUp.DataSource = lists;
+                lookUp.ValueMember = "Id";
+                lookUp.DisplayMember = "Nm";
 
-        //        lookUp.ShowHeader = false;
-        //        lookUp.ForceInitialize();
-        //        lookUp.PopulateColumns();
-        //        lookUp.Columns["Id"].Visible = false;
-        //        lookUp.Columns["Nm"].Visible = true;
-        //        lookUp.DropDownRows = 15; //dsLook.Tables[0].Rows.Count;
-        //        lookUp.BestFitMode = DevExpress.XtraEditors.Controls.BestFitMode.BestFitResizePopup;
-        //        lookUp.AutoHeight = true;
-        //        lookUp.NullText = "";
-        //        lookUp.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
-        //        lookUp.AutoSearchColumnIndex = 1;
-        //        lookUp.SearchMode = DevExpress.XtraEditors.Controls.SearchMode.OnlyInPopup;
-        //        lookUp.HeaderClickMode = DevExpress.XtraEditors.Controls.HeaderClickMode.AutoSearch;
-        //        lookUp.CaseSensitiveSearch = false;
-        //    }
-        //    return lookUp;
-        //}
+                lookUp.ShowHeader = false;
+                lookUp.ForceInitialize();
+                lookUp.PopulateColumns();
+                lookUp.Columns["Id"].Visible = false;
+                lookUp.Columns["Nm"].Visible = true;
+                lookUp.DropDownRows = 15; //dsLook.Tables[0].Rows.Count;
+                lookUp.BestFitMode = DevExpress.XtraEditors.Controls.BestFitMode.BestFitResizePopup;
+                lookUp.AutoHeight = true;
+                lookUp.NullText = "";
+                lookUp.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
+                lookUp.AutoSearchColumnIndex = 1;
+                lookUp.SearchMode = DevExpress.XtraEditors.Controls.SearchMode.OnlyInPopup;
+                lookUp.HeaderClickMode = DevExpress.XtraEditors.Controls.HeaderClickMode.AutoSearch;
+                lookUp.CaseSensitiveSearch = false;
+            }
+            return lookUp;
+        }
 
-        //private RepositoryItemLookUpEdit SetLookupCode(string grp, string opt)
-        //{
-        //    RepositoryItemLookUpEdit lookup = new RepositoryItemLookUpEdit();
-        //    using (var db = new ACE.Lib.DbHelper())
-        //    {
-        //        List<MdlIdName> lists;
+        private RepositoryItemLookUpEdit SetLookupCode(string grp, string opt)
+        {
+            RepositoryItemLookUpEdit lookup = new RepositoryItemLookUpEdit();
+            using (var db = new ACE.Lib.DbHelper())
+            {
+                List<MdlIdName> lists;
 
-        //        if (opt == "0")
-        //        {
-        //            lists = db.GetNmNm(new { Grp = grp }, "0"); //컬럼에서는 항상 ALL제외 
-        //        }
-        //        else
-        //        {
-        //            lists = db.GetCodeNm(new { Grp = grp }, "0"); //컬럼에서는 항상 ALL제외 
-        //        }
+                if (opt == "0")
+                {
+                    lists = db.GetNmNm(new { Grp = grp }, "0"); //컬럼에서는 항상 ALL제외 
+                }
+                else
+                {
+                    lists = db.GetCodeNm(new { Grp = grp }, "0"); //컬럼에서는 항상 ALL제외 
+                }
 
-        //        lookup.DataSource = lists;
-        //        lookup.ValueMember = "Id";
-        //        lookup.DisplayMember = "Nm";
-        //        lookup.ShowHeader = false;
-        //        lookup.ForceInitialize();
-        //        lookup.PopulateColumns();
-        //        lookup.Columns["Id"].Visible = true;
-        //        lookup.Columns["Nm"].Visible = true;
-        //        lookup.DropDownRows = 10; //lookup.count
-        //        lookup.BestFitMode = BestFitMode.BestFitResizePopup;
-        //        lookup.AutoHeight = true;
-        //        lookup.NullText = "";
-        //        lookup.TextEditStyle = TextEditStyles.Standard;
-        //        lookup.AutoSearchColumnIndex = 1;
-        //        lookup.SearchMode = SearchMode.OnlyInPopup;
-        //        lookup.HeaderClickMode = HeaderClickMode.AutoSearch;
-        //        lookup.CaseSensitiveSearch = false;
-        //    }
-        //    return lookup;
-        //}
+                lookup.DataSource = lists;
+                lookup.ValueMember = "Id";
+                lookup.DisplayMember = "Nm";
+                lookup.ShowHeader = false;
+                lookup.ForceInitialize();
+                lookup.PopulateColumns();
+                lookup.Columns["Id"].Visible = true;
+                lookup.Columns["Nm"].Visible = true;
+                lookup.DropDownRows = 10; //lookup.count
+                lookup.BestFitMode = BestFitMode.BestFitResizePopup;
+                lookup.AutoHeight = true;
+                lookup.NullText = "";
+                lookup.TextEditStyle = TextEditStyles.Standard;
+                lookup.AutoSearchColumnIndex = 1;
+                lookup.SearchMode = SearchMode.OnlyInPopup;
+                lookup.HeaderClickMode = HeaderClickMode.AutoSearch;
+                lookup.CaseSensitiveSearch = false;
+            }
+            return lookup;
+        }
 
-        //private RepositoryItemLookUpEdit SetLookupCombo(object pcode, int opt)
-        ////private RepositoryItem SetLookupCombo(object pcode, int opt)
-        //{
-        //    //String sql = "select sqltxt from sys240 where sqlid='" + pcode + "'";
-        //    //DataSet ds = AceTool.Common.SqlSelect(sql);
+        private RepositoryItemLookUpEdit SetLookupCombo(object pcode, int opt)
+        //private RepositoryItem SetLookupCombo(object pcode, int opt)
+        {
+            //String sql = "select sqltxt from sys240 where sqlid='" + pcode + "'";
+            //DataSet ds = AceTool.Common.SqlSelect(sql);
 
-        //    //foreach (DataRow dr in ds.Tables[0].Rows)
-        //    //    sql = dr["sqltxt"].ToString();
-        //    //DataSet dsLook = AceTool.Common.SqlSelect(sql);
+            //foreach (DataRow dr in ds.Tables[0].Rows)
+            //    sql = dr["sqltxt"].ToString();
+            //DataSet dsLook = AceTool.Common.SqlSelect(sql);
 
-        //    RepositoryItemLookUpEdit LookUp = new RepositoryItemLookUpEdit();
-        //    LookUp.DataSource = null;// dsLook.Tables[0];
-        //    LookUp.ValueMember = "Code";
-        //    LookUp.DisplayMember = "Code";
+            RepositoryItemLookUpEdit LookUp = new RepositoryItemLookUpEdit();
+            LookUp.DataSource = null;// dsLook.Tables[0];
+            LookUp.ValueMember = "Code";
+            LookUp.DisplayMember = "Code";
 
-        //    //if (opt == 1)
-        //    //    LookUp.DisplayMember = "Code";
-        //    //else
-        //    //    LookUp.DisplayMember = "CodeName";
+            //if (opt == 1)
+            //    LookUp.DisplayMember = "Code";
+            //else
+            //    LookUp.DisplayMember = "CodeName";
 
-        //    LookUp.ShowHeader = false;
-        //    LookUp.ForceInitialize();
-        //    LookUp.PopulateColumns();
-        //    LookUp.Columns["Code"].Visible = false;
+            LookUp.ShowHeader = false;
+            LookUp.ForceInitialize();
+            LookUp.PopulateColumns();
+            LookUp.Columns["Code"].Visible = false;
 
-        //    LookUp.DropDownRows = 10;// dsLook.Tables[0].Rows.Count;
-        //    LookUp.BestFitMode = DevExpress.XtraEditors.Controls.BestFitMode.BestFitResizePopup;
-        //    LookUp.AutoHeight = true;
-        //    LookUp.NullText = "";
-        //    LookUp.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
-        //    LookUp.AutoSearchColumnIndex = 1;
-        //    LookUp.SearchMode = DevExpress.XtraEditors.Controls.SearchMode.OnlyInPopup;
-        //    LookUp.HeaderClickMode = DevExpress.XtraEditors.Controls.HeaderClickMode.AutoSearch;
-        //    LookUp.CaseSensitiveSearch = false;
+            LookUp.DropDownRows = 10;// dsLook.Tables[0].Rows.Count;
+            LookUp.BestFitMode = DevExpress.XtraEditors.Controls.BestFitMode.BestFitResizePopup;
+            LookUp.AutoHeight = true;
+            LookUp.NullText = "";
+            LookUp.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
+            LookUp.AutoSearchColumnIndex = 1;
+            LookUp.SearchMode = DevExpress.XtraEditors.Controls.SearchMode.OnlyInPopup;
+            LookUp.HeaderClickMode = DevExpress.XtraEditors.Controls.HeaderClickMode.AutoSearch;
+            LookUp.CaseSensitiveSearch = false;
 
-        //    return LookUp;
-        //}
-        //private RepositoryItemCheckEdit SetCheckBox()
-        ////private RepositoryItem SetCheckBox()
-        //{
-        //    RepositoryItemCheckEdit chkbox = new RepositoryItemCheckEdit();
-        //    chkbox.NullText = "0";
-        //    chkbox.ValueChecked = "1";
-        //    chkbox.ValueUnchecked = "0";
-        //    chkbox.ValueGrayed = "0";
-        //    chkbox.NullStyle = StyleIndeterminate.Unchecked;
-        //    chkbox.CheckStyle = CheckStyles.Radio; // CheckStyles.Standard;
-        //    return chkbox;
-        //}
+            return LookUp;
+        }
 
         //#endregion
         //#region 1-4. 그리드 컬럼 추가하기 - AddGridColumn(gridView, gridColumn)
