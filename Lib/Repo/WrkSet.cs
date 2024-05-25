@@ -29,32 +29,39 @@ namespace Lib.Repo
             set => Set(ref _WrkId, value);
         }
 
-        private string _CtrlNm;
-        public string CtrlNm
+        private string _FldNm;
+        public string FldNm
         {
-            get => _CtrlNm;
-            set => Set(ref _CtrlNm, value);
+            get => _FldNm;
+            set => Set(ref _FldNm, value);
         }
 
-        private int _ParamWrk;
-        public int ParamWrk
+        private string _SetWrkId;
+        public string SetWrkId
         {
-            get => _ParamWrk;
-            set => Set(ref _ParamWrk, value);
+            get => _SetWrkId;
+            set => Set(ref _SetWrkId, value);
         }
 
-        private int _ParamName;
-        public int ParamName
+        private string _SetFldNm;
+        public string SetFldNm
         {
-            get => _ParamName;
-            set => Set(ref _ParamName, value);
+            get => _SetFldNm;
+            set => Set(ref _SetFldNm, value);
         }
 
-        private int _ParamValue;
-        public int ParamValue
+        private string _SetDefaultValue;
+        public string SetDefaultValue
         {
-            get => _ParamValue;
-            set => Set(ref _ParamValue, value);
+            get => _SetDefaultValue;
+            set => Set(ref _SetDefaultValue, value);
+        }
+
+        private string _SqlId;
+        public string SqlId
+        {
+            get => _SqlId;
+            set => Set(ref _SqlId, value);
         }
 
         private long _Id;
@@ -70,6 +77,15 @@ namespace Lib.Repo
             get => _Pid;
             set => Set(ref _Pid, value);
         }
+        //------------------------------
+        //FRMCTRL, WRKFLD
+        //------------------------------
+        private string _ToolNm;
+        public string ToolNm
+        {
+            get => _ToolNm;
+            set => Set(ref _ToolNm, value);
+        }
     }
     public interface IWrkSetRepo
     {
@@ -80,30 +96,15 @@ namespace Lib.Repo
     }
     public class WrkSetRepo : IWrkSetRepo
     {
-        //public List<MdlParam> PushParam(object param)
-        //{
-        //    string sql = @"
-        //    select a.Id, a.Sys_cd, a.Frm_id, a.Wkset_id, 
-        //           a.Ctrl_id, b.Ctrl_ty, 
-        //           a.Param_wkset, a.Param_name, a.Param_value, a.Pid
-        //      from ATZ31Push a
-        //      join ATZ310 b on a.Sys_cd=b.Sys_cd and a.Frm_id=b.Frm_id and a.Ctrl_id=b.Ctrl_id
-        //     where a.Sys_cd=@sys
-        //       and a.Frm_id=@frm
-        //       and a.Param_wkset=@wkset
-        //    ";
-
-        //    var result = SqlMapper.Query<MdlParam>(_conn, sql, param, _tran).ToList();
-        //    return result;
-        //}
-
         public List<WrkSet> GetPushFlds(string frwId, string frmId, string wrkId)
         {
             string sql = @"
-select a.FrwId, a.FrmId, a.WrkId, a.CtrlNm, a.ParamWrk,
-       a.ParamName, a.ParamValue, a.Id, a.Pid, a.CId,
-       a.CDt, a.MId, a.MDt
+select a.FrwId, a.FrmId, a.WrkId, a.FldNm, a.SetWrkId,
+       a.SetFldNm, a.SetDefaultValue, a.SqlId, a.Id, a.Pid,
+       a.CId, a.CDt, a.MId, a.MDt, 
+       b.ToolNm
   from WRKSET a
+  join WRKFLD b on a.FrwId=b.FrwId and a.FrmId=b.FrmId and a.FldNm=b.CtrlNm
  where 1=1
    and a.FrmId = @FrmId
    and a.FrwId = @FrwId
@@ -131,11 +132,11 @@ select a.FrwId, a.FrmId, a.WrkId, a.CtrlNm, a.ParamWrk,
         {
             string sql = @"
 insert into WRKSET
-      (FrwId, FrmId, WrkId, CtrlNm, ParamWrk,
-       ParamName, ParamValue, Id, Pid, CId,
-       CDt, MId, MDt)
-select @FrwId, @FrmId, @WrkId, @CtrlNm, @ParamWrk,
-       @ParamName, @ParamValue, @Id, @Pid, 
+      (FrwId, FrmId, WrkId, FldNm, SetWrkId,
+       SetFldNm, SetDefaultValue, SqlId, Id, Pid,
+       CId, CDt, MId, MDt)
+select @FrwId, @FrmId, @WrkId, @FldNm, @SetWrkId,
+       @SetFldNm, @SetDefaultValue, @SqlId, @Id, @Pid,
        @CId, getdate(), @MId, getdate()
 ";
             using (var db = new Lib.GaiaHelper())
@@ -150,10 +151,7 @@ select @FrwId, @FrmId, @WrkId, @CtrlNm, @ParamWrk,
 delete
   from WRKSET
  where 1=1
-   and FrmId = @FrmId
-   and FrwId = @FrwId
-   and WrkId = @WrkId
-   and CtrlNm = @CtrlNm
+   and Id = @Id
 ";
             using (var db = new Lib.GaiaHelper())
             {
@@ -166,13 +164,17 @@ delete
         {
             string sql = @"
 update a
-   set CtrlNm= @CtrlNm,
-       ParamWrk= @ParamWrk,
-       ParamName= @ParamName,
-       ParamValue= @ParamValue,
+   set FldNm= @FldNm,
+       SetWrkId= @SetWrkId,
+       SetFldNm= @SetFldNm,
+       SetDefaultValue= @SetDefaultValue,
+       SqlId= @SqlId,
+       Id= @Id,
        Pid= @Pid,
+       CId= @CId,
+       CDt= @CDt,
        MId= @MId,
-       MDt= getdate()
+       MDt= @MDt
   from WRKSET a
  where 1=1
    and Id = @Id

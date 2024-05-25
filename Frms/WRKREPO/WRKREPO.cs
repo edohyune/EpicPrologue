@@ -3,6 +3,8 @@ using DevExpress.XtraRichEdit;
 using Lib;
 using DevExpress.Office.Utils;
 using Lib.Repo;
+using System.Runtime.Intrinsics.Arm;
+using System.Data;
 
 namespace Frms
 {
@@ -171,49 +173,209 @@ namespace Frms
                 g10.DataSource = frmWrkRepo.GetByFrwFrm(Lib.Common.gFrameWorkId, "GridSet");
             }
         }
-        private FrwFrm selectedDoc { get; set; }
-        private void g10_FocusedViewChanged(object sender, DevExpress.XtraGrid.ViewFocusEventArgs e)
+        private FrmWrk selectedDoc { get; set; }
+        private void g10_UCFocusedRowChanged(object sender, int preIndex, int rowIndex, DevExpress.XtraGrid.Views.Base.FocusedRowChangedEventArgs e)
         {
-            //var view = sender as DevExpress.XtraGrid.Views.Grid.GridView;
-            //if (view == null) return;
+            //Common.gMsg = "g10_UCFocusedRowChanged";
+            var view = sender as DevExpress.XtraGrid.Views.Grid.GridView;
+            if (view == null) return;
 
-            //selectedDoc = view.GetFocusedRow() as FrwFrm;
+            selectedDoc = view.GetFocusedRow() as FrmWrk;
 
-            //if (selectedDoc != null)
-            //{
-            //    SetWrkForm();
-            //}
+            if (selectedDoc != null)
+            {
+                SetWrkForm();
+            }
         }
 
         private void SetWrkForm()
         {
-            throw new NotImplementedException();
-        }
-
-        private void pnlModel_CustomButtonClick(object sender, DevExpress.XtraBars.Docking2010.BaseButtonEventArgs e)
-        {
-            if (e.Button.Properties.Caption == "Save")
-            {
-
-                var frmWrkRepo = new FrmWrkRepo();
-                g10.DataSource = frmWrkRepo.GetByFrwFrm(Lib.Common.gFrameWorkId, "GridSet");
-            }
+            rtDelete.Text = GenFunc.GetSql(selectedDoc.FrwId, selectedDoc.FrmId, selectedDoc.WrkId, "D").Query;
+            rtInsert.Text = GenFunc.GetSql(selectedDoc.FrwId, selectedDoc.FrmId, selectedDoc.WrkId, "C").Query;
+            rtSelect.Text = GenFunc.GetSql(selectedDoc.FrwId, selectedDoc.FrmId, selectedDoc.WrkId, "R").Query;
+            rtModel.Text  = GenFunc.GetSql(selectedDoc.FrwId, selectedDoc.FrmId, selectedDoc.WrkId, "M").Query;
+            rtUpdate.Text = GenFunc.GetSql(selectedDoc.FrwId, selectedDoc.FrmId, selectedDoc.WrkId, "U").Query;
         }
 
         private void pnlSelect_CustomButtonClick(object sender, DevExpress.XtraBars.Docking2010.BaseButtonEventArgs e)
         {
+            var WrkSqlRepo = new WrkSqlRepo();
             if (e.Button.Properties.Caption == "Delete")
+            {
+                WrkSqlRepo.Delete(new WrkSql
+                {
+                    FrwId = selectedDoc.FrwId,
+                    FrmId = selectedDoc.FrmId,
+                    WrkId = selectedDoc.WrkId,
+                    CRUDM = "R",
+                    Query = rtSelect.Text
+                });
+            }
+            else if (e.Button.Properties.Caption == "Save")
+            {
+                WrkSqlRepo.Save(new WrkSql
+                {
+                    FrwId = selectedDoc.FrwId,
+                    FrmId = selectedDoc.FrmId,
+                    WrkId = selectedDoc.WrkId,
+                    CRUDM = "R",
+                    Query = rtSelect.Text
+                });
+            }
+            else if (e.Button.Properties.Caption == "Generate")
             {
 
             }
+            else if (e.Button.Properties.Caption == "Make Field")
+            {
+                using (var db = new GaiaHelper())
+                {
+                    DataSet dSet = db.GetGridColumns(new { FrwId = selectedDoc.FrwId, FrmId = selectedDoc.FrmId, WrkId = selectedDoc.WrkId, CRUDM = "R" });
+                    string deleteSql = @"delete from ATZ300 where Sys_cd=@sys and Frm_id=@frm and Wkset_id=@wkset and Ctrl_ty='Column'";
+                    db.OpenExecute(deleteSql, new { sys = OpenSys, frm = OpenFrm, wkset = OpenWk });
+                    string insert300Sql = @"insert into ATZ300 
+                                               (Sys_cd, Frm_id, Ctrl_id, Ctrl_ty, Title, Wkset_id, Wkset_ty)
+                                        select @Sys_cd, @Frm_id, @Ctrl_id, @Ctrl_ty, @Title, @Wkset_id, @Wkset_ty";
+                    foreach (DataColumn cols in dSet.Tables[0].Columns)
+                    {
+                        db.OpenExecute(insert300Sql, new
+                        {
+                            Sys_cd = OpenSys,
+                            Frm_id = OpenFrm,
+                            Ctrl_id = column.ColumnName,
+                            Ctrl_ty = "Column",
+                            Title = column.ColumnName,
+                            Wkset_id = OpenWk,
+                            Wkset_ty = "Field"
+                        });
+                    }
+                }
+                ucTab1.SelectedTabPageIndex = 1;
+            }
+        }
+        private void pnlInsert_CustomButtonClick(object sender, DevExpress.XtraBars.Docking2010.BaseButtonEventArgs e)
+        {
+            var WrkSqlRepo = new WrkSqlRepo();
+            if (e.Button.Properties.Caption == "Delete")
+            {
+                WrkSqlRepo.Delete(new WrkSql
+                {
+                    FrwId = selectedDoc.FrwId,
+                    FrmId = selectedDoc.FrmId,
+                    WrkId = selectedDoc.WrkId,
+                    CRUDM = "C",
+                    Query = rtInsert.Text
+                });
+            }
             else if (e.Button.Properties.Caption == "Save")
-            { 
+            {
+                WrkSqlRepo.Save(new WrkSql
+                {
+                    FrwId = selectedDoc.FrwId,
+                    FrmId = selectedDoc.FrmId,
+                    WrkId = selectedDoc.WrkId,
+                    CRUDM = "C",
+                    Query = rtInsert.Text
+                });
+            }
+            else if (e.Button.Properties.Caption == "Generate")
+            {
 
             }
-            else if (e.Button.Properties.Caption == "Generate") 
-            { 
+        }
+        private void pnlUpdate_CustomButtonClick(object sender, DevExpress.XtraBars.Docking2010.BaseButtonEventArgs e)
+        {
+            var WrkSqlRepo = new WrkSqlRepo();
+            if (e.Button.Properties.Caption == "Delete")
+            {
+                WrkSqlRepo.Delete(new WrkSql
+                {
+                    FrwId = selectedDoc.FrwId,
+                    FrmId = selectedDoc.FrmId,
+                    WrkId = selectedDoc.WrkId,
+                    CRUDM = "U",
+                    Query = rtUpdate.Text
+                });
+            }
+            else if (e.Button.Properties.Caption == "Save")
+            {
+                WrkSqlRepo.Save(new WrkSql
+                {
+                    FrwId = selectedDoc.FrwId,
+                    FrmId = selectedDoc.FrmId,
+                    WrkId = selectedDoc.WrkId,
+                    CRUDM = "U",
+                    Query = rtUpdate.Text
+                });
+            }
+            else if (e.Button.Properties.Caption == "Generate")
+            {
 
             }
+        }
+        private void pnlDelete_CustomButtonClick(object sender, DevExpress.XtraBars.Docking2010.BaseButtonEventArgs e)
+        {
+            var WrkSqlRepo = new WrkSqlRepo();
+            if (e.Button.Properties.Caption == "Delete")
+            {
+                WrkSqlRepo.Delete(new WrkSql
+                {
+                    FrwId = selectedDoc.FrwId,
+                    FrmId = selectedDoc.FrmId,
+                    WrkId = selectedDoc.WrkId,
+                    CRUDM = "D",
+                    Query = rtDelete.Text
+                });
+            }
+            else if (e.Button.Properties.Caption == "Save")
+            {
+                WrkSqlRepo.Save(new WrkSql
+                {
+                    FrwId = selectedDoc.FrwId,
+                    FrmId = selectedDoc.FrmId,
+                    WrkId = selectedDoc.WrkId,
+                    CRUDM = "D",
+                    Query = rtDelete.Text
+                });
+            }
+            else if (e.Button.Properties.Caption == "Generate")
+            {
+
+            }
+        }
+        private void pnlModel_CustomButtonClick(object sender, DevExpress.XtraBars.Docking2010.BaseButtonEventArgs e)
+        {
+            var WrkSqlRepo = new WrkSqlRepo();
+            if (e.Button.Properties.Caption == "Delete")
+            {
+                WrkSqlRepo.Delete(new WrkSql
+                {
+                    FrwId = selectedDoc.FrwId,
+                    FrmId = selectedDoc.FrmId,
+                    WrkId = selectedDoc.WrkId,
+                    CRUDM = "M",
+                    Query = rtModel.Text
+                });
+            }
+            else if (e.Button.Properties.Caption == "Save")
+            {
+                WrkSqlRepo.Save(new WrkSql
+                {
+                    FrwId = selectedDoc.FrwId,
+                    FrmId = selectedDoc.FrmId,
+                    WrkId = selectedDoc.WrkId,
+                    CRUDM = "M",
+                    Query = rtModel.Text
+                });
+            }
+            else if (e.Button.Properties.Caption == "Generate")
+            {
+
+            }
+        }
+        private void g10_UCSelectionChanged(object sender, DevExpress.Data.SelectionChangedEventArgs e)
+        {
+            Common.gMsg = "g10_UCSelectionChanged";
         }
     }
 }

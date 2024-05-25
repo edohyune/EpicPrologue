@@ -5,61 +5,59 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
-using DevExpress.XtraPrinting.Native;
 using Lib;
+using Lib.Repo;
+using static DevExpress.Accessibility.LookupPopupAccessibleObject;
 
 namespace Ctrls
 {
-    [System.ComponentModel.DefaultBindingProperty("BindText")]
-    public class UCMemo : DevExpress.XtraEditors.MemoEdit, INotifyPropertyChanged
+    public class UCCheckBox : DevExpress.XtraEditors.CheckEdit, INotifyPropertyChanged
     {
         [Browsable(false)]
         private string frwId { get; set; }
         private string frmId { get; set; }
         private string ctrlNm { get; set; }
 
-        [Category("A UserController Property"), Description("Default Text")] //chk
-        public override string Text
+        [Category("A UserController Property"), Description("Default Value")]
+        public override bool Checked
         {
             get
             {
-                string str = (this.memoCtrl.Text == null) ? string.Empty : this.memoCtrl.Text;
-                return str;
+                return this.checkCtrl.Checked;
             }
             set
             {
-                this.memoCtrl.Text = value;
-                this.BindText = value;  // Text가 업데이트 될 때 BindText도 업데이트
+                this.checkCtrl.Checked = value;
+                this.BindValue = value;
             }
         }
-        [Category("A UserController Property"), Description("Bind Text"), Browsable(false)]
-        public string BindText
+        [Category("A UserController Property"), Description("Bind Text")]
+        public bool BindValue
         {
             get
             {
-                string str = (this.memoCtrl.Text == null) ? string.Empty : this.memoCtrl.Text;
-                return str;
+                return this.checkCtrl.Checked;
             }
             set
             {
-                this.memoCtrl.Text = value;
-                OnPropertyChanged("BindText");
-                UCEditValueChanged?.Invoke(this, memoCtrl);
+                this.checkCtrl.Checked = value;
+                OnPropertyChanged("BindValue");
+                UCEditValueChanged?.Invoke(this, checkCtrl);
             }
         }
 
-        public DevExpress.XtraEditors.MemoEdit memoCtrl { get; set; }
-        public UCMemo()
+        public DevExpress.XtraEditors.CheckEdit checkCtrl { get; set; }
+        public UCCheckBox()
         {
-            memoCtrl = new DevExpress.XtraEditors.MemoEdit();
-            memoCtrl.Text = "UCMemo";
-            memoCtrl.EditValueChanged += memoCtrl_EditValueChanged;
-            memoCtrl.TextChanged += memoCtrl_TextChanged;
+            checkCtrl = new DevExpress.XtraEditors.CheckEdit();
+            checkCtrl.Text = "UCCheckBox";
+            checkCtrl.EditValueChanged += checkCtrl_EditValueChanged;
+            checkCtrl.TextChanged += checkCtrl_TextChanged;
 
-            HandleCreated += UCMemo_HandleCreated;
+            HandleCreated += UCCheckBox_HandleCreated;
         }
 
-        private void UCMemo_HandleCreated(object? sender, EventArgs e)
+        private void UCCheckBox_HandleCreated(object? sender, EventArgs e)
         {
             frwId = Common.gFrameWorkId;
 
@@ -83,14 +81,14 @@ namespace Ctrls
 
         private void ResetCtrl()
         {
-            Common.gMsg = "UCMemo_HandleCreated";
+            Common.gMsg = "UCCheckBox_HandleCreated";
             try
             {
 
             }
             catch (Exception ex)
             {
-                Common.gMsg = $"UCMemo_HandleCreated>>ResetCtrl{Environment.NewLine}Exception : {ex.Message}";
+                Lib.Common.gMsg = $"UCCheckBox_HandleCreated>>ResetCtrl{Environment.NewLine}Exception : {ex.Message}";
             }
         }
 
@@ -99,24 +97,25 @@ namespace Ctrls
         public event delEventEditValueChanged UCEditValueChanged;   // event 선언
         public event PropertyChangedEventHandler? PropertyChanged;
 
-        private void memoCtrl_EditValueChanged(object sender, EventArgs e)
+        private void checkCtrl_EditValueChanged(object sender, EventArgs e)
         {
-            string strDate = string.Empty;
-            strDate = memoCtrl.Text;
+            bool boolCheck = false;
+            boolCheck = checkCtrl.Checked;
             if (UCEditValueChanged != null)  // 부모가 Event를 생성하지 않았을 수 있으므로 생성 했을 경우에만 Delegate를 호출
             {
-                UCEditValueChanged(this, memoCtrl);
+                UCEditValueChanged(this, checkCtrl);
             }
         }
         public void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-        private void memoCtrl_TextChanged(object sender, EventArgs e)
+        private void checkCtrl_TextChanged(object sender, EventArgs e)
         {
-            BindText = memoCtrl.Text;
+            BindValue = checkCtrl.Checked;
         }
         #endregion
+
 
     }
 }

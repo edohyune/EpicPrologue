@@ -5,28 +5,25 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Repo
+namespace Lib.Repo
 {
-    public class IdValue
+    public class IdNm
     {
-        public string Txt { get; set; }
-        public string Val { get; set; }
+        public string Id { get; set; }
+        public string Nm { get; set; }
 
         public override string ToString()
         {
-            return Txt;
+            return Nm;
         }
     }
-    public class IdValueRepo
+    public class IdNmRepo
     {
-        public string Txt { get; set; }
-        public string Val { get; set; }
-
-        public List<IdValue> GetLookUp(string query)
+        public List<IdNm> GetLookUp(string query)
         {
             using (var db = new Lib.GaiaHelper())
             {
-                var result = db.Query<IdValue>(query).ToList();
+                var result = db.Query<IdNm>(query).ToList();
                 return result;
             }
         }

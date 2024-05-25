@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Lib.Repo;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,19 +7,65 @@ using System.Threading.Tasks;
 
 namespace Lib
 {
-    public class IdNm
-    {
-        public string Txt { get; set; }
-        public object Val { get; set; }
-
-        public override string ToString()
-        {
-            return Txt;
-        }
-    }
-
     public static class GenFunc
     {
+        public static bool IsNull(this string a) => string.IsNullOrWhiteSpace(a);
+        public static string IsNull(this string a, string b) => string.IsNullOrWhiteSpace(a) ? b : a;
+
+        public static WrkSql GetSql(string frwId, string frmId, string wrkId, string crudm)
+        {
+            string sql = @"
+select a.Query
+  from WRKSQL a
+ where 1=1
+   and a.FrmId = @FrmId
+   and a.FrwId = @FrwId
+   and a.WrkId = @WrkId
+   and a.CRUDM = @CRUDM
+";
+            using (var db = new Lib.GaiaHelper())
+            {
+                var result = db.Query<WrkSql>(sql, new { FrwId = frwId, FrmId = frmId, WrkId = wrkId, CRUDM = crudm }).SingleOrDefault();
+
+                if (result == null)
+                {
+                    result = new WrkSql();
+                    result.Query = "";
+                    return result;
+                }
+                else
+                {
+                    result.ChangedFlag = MdlState.None;
+                    return result;
+                }
+            }
+        }
+
+        public static string GetSql(object param)
+        {
+            string sql = @"
+select a.Query
+  from WRKSQL a
+ where 1=1
+   and a.FrmId = @FrmId
+   and a.FrwId = @FrwId
+   and a.WrkId = @WrkId
+   and a.CRUDM = @CRUDM
+";
+            using (var db = new Lib.GaiaHelper())
+            {
+                var result = db.OpenQuery(sql, param);
+                if (result == null)
+                {
+                    return "";
+                }
+                else
+                {
+                    return result;
+                }
+            }
+        }
+
         public static void SetIni(string key, string value = null)
         {
             string iniFilePath = Common.gIniFilePath;

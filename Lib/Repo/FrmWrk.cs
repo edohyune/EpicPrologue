@@ -81,7 +81,7 @@ insert into FRMWRK
       (WrkId, FrwId, FrmId, CtrlNm, WrkNm,
        WrkCd, UseYn, Memo, 
        CId, CDt, MId, MDt)
-select concat(@FrmId, @CtrlNm), @FrwId, @FrmId, @CtrlNm, @WrkNm,
+select concat(@FrmId, '_', @CtrlNm), @FrwId, @FrmId, @CtrlNm, @WrkNm,
        @WrkCd, @UseYn, @Memo, 
        @CId, getdate(), @MId, getdate()
 ";

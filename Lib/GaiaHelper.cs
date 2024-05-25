@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using Lib.Repo;
 using System.Data;
 using System.Data.SqlClient;
 
@@ -217,6 +218,43 @@ namespace Lib
             Lib.Common.gMsg = $"Exception : {ex}";
             Lib.Common.gMsg = $"Query : {sql}";
         }
+
+        public DataSet GetGridColumns(object param)
+        {
+            var pullFlds = new WrkGetRepo().GetPullFlds(param);
+            //WrkGetRepo wrkGetRepo = new WrkGetRepo();
+            //var paramlist = wrkGetRepo.GetPullFlds(prm);
+            string[] fld = (from a in pullFlds
+                            orderby a.Id
+                            select a.Id).ToArray();
+            string[] val = (from a in pullFlds
+                            orderby a.Id
+                            select a.Nm).ToArray();
+
+            DataSet dataSet = GetSelectSql(param, fld, val);
+
+            return dataSet;
+        }
+
+        private DataSet GetSelectSql(object prm, string[] param, string[] value)
+        {
+            DataSet dsSelect = new DataSet();
+
+            string sqltxt = GenFunc.GetSql(prm);
+
+            SqlConnection SqlCon = new SqlConnection(_connectionString);
+            SqlCommand SqlCmd = new SqlCommand(sqltxt, SqlCon);
+
+            for (int i = 0; i <= param.Length - 1; i++)
+            {
+                SqlCmd.Parameters.AddWithValue(param[i], value[i]);
+            }
+            SqlDataAdapter adapter = new SqlDataAdapter(SqlCmd);
+            adapter.SelectCommand = SqlCmd;
+            adapter.Fill(dsSelect);
+            return dsSelect;
+        }
+
         #endregion
     }
     public class BoolCharTypeHandler : SqlMapper.ITypeHandler

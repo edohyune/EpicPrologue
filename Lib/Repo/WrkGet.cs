@@ -29,32 +29,32 @@ namespace Lib.Repo
             set => Set(ref _WrkId, value);
         }
 
-        private string _CtrlNm;
-        public string CtrlNm
+        private string _FldNm;
+        public string FldNm
         {
-            get => _CtrlNm;
-            set => Set(ref _CtrlNm, value);
+            get => _FldNm;
+            set => Set(ref _FldNm, value);
         }
 
-        private string _ParamWrk;
-        public string ParamWrk
+        private string _GetWrkId;
+        public string GetWrkId
         {
-            get => _ParamWrk;
-            set => Set(ref _ParamWrk, value);
+            get => _GetWrkId;
+            set => Set(ref _GetWrkId, value);
         }
 
-        private string _ParamName;
-        public string ParamName
+        private string _GetFldNm;
+        public string GetFldNm
         {
-            get => _ParamName;
-            set => Set(ref _ParamName, value);
+            get => _GetFldNm;
+            set => Set(ref _GetFldNm, value);
         }
 
-        private string _ParamValue;
-        public string ParamValue
+        private string _GetDefalueValue;
+        public string GetDefalueValue
         {
-            get => _ParamValue;
-            set => Set(ref _ParamValue, value);
+            get => _GetDefalueValue;
+            set => Set(ref _GetDefalueValue, value);
         }
 
         private string _SqlId;
@@ -77,6 +77,7 @@ namespace Lib.Repo
             get => _PId;
             set => Set(ref _PId, value);
         }
+
     }
     public interface IWrkGetRepo
     {
@@ -90,8 +91,8 @@ namespace Lib.Repo
         public List<WrkGet> GetPullFlds(string frwId, string frmId, string wrkId)
         {
             string sql = @"
-select a.FrwId, a.FrmId, a.WrkId, a.CtrlNm, a.ParamWrk,
-       a.ParamName, a.ParamValue, a.SqlId, a.Id, a.PId,
+select a.FrwId, a.FrmId, a.WrkId, a.FldNm, a.GetWrkId,
+       a.GetFldNm, a.GetDefalueValue, a.SqlId, a.Id, a.PId,
        a.CId, a.CDt, a.MId, a.MDt
   from WRKGET a
  where 1=1
@@ -117,16 +118,33 @@ select a.FrwId, a.FrmId, a.WrkId, a.CtrlNm, a.ParamWrk,
                 }
             }
         }
+        public List<IdNm> GetPullFlds(object param)
+        {
+            string sql = @"
+select Id = a.GetFldNm, 
+       Nm = a.GetDefalueValue
+  from WRKGET a
+ where 1=1
+   and a.FrmId = @FrmId
+   and a.FrwId = @FrwId
+   and a.WrkId = @WrkId
+";
+            using (var db = new Lib.GaiaHelper())
+            {
+                var result = db.Query<IdNm>(sql, param).ToList();
+                return result;
+            }
+        }
 
         public void Add(WrkGet wrkGet)
         {
             string sql = @"
 insert into WRKGET
-      (FrwId, FrmId, WrkId, CtrlNm, ParamWrk,
-       ParamName, ParamValue, SqlId, PId,
+      (FrwId, FrmId, WrkId, FldNm, GetWrkId,
+       GetFldNm, GetDefalueValue, SqlId, Id, PId,
        CId, CDt, MId, MDt)
-select @FrwId, @FrmId, @WrkId, @CtrlNm, @ParamWrk,
-       @ParamName, @ParamValue, @SqlId, @PId,
+select @FrwId, @FrmId, @WrkId, @FldNm, @GetWrkId,
+       @GetFldNm, @GetDefalueValue, @SqlId, @Id, @PId,
        @CId, getdate(), @MId, getdate()
 ";
             using (var db = new Lib.GaiaHelper())
@@ -139,14 +157,17 @@ select @FrwId, @FrmId, @WrkId, @CtrlNm, @ParamWrk,
         {
             string sql = @"
 update a
-   set CtrlNm= @CtrlNm,
-       ParamWrk= @ParamWrk,
-       ParamName= @ParamName,
-       ParamValue= @ParamValue,
+   set FldNm= @FldNm,
+       GetWrkId= @GetWrkId,
+       GetFldNm= @GetFldNm,
+       GetDefalueValue= @GetDefalueValue,
        SqlId= @SqlId,
+       Id= @Id,
        PId= @PId,
+       CId= @CId,
+       CDt= @CDt,
        MId= @MId,
-       MDt= getdate()
+       MDt= @MDt
   from WRKGET a
  where 1=1
    and Id = @Id
@@ -163,10 +184,7 @@ update a
 delete
   from WRKGET
  where 1=1
-   and FrmId = @FrmId
-   and FrwId = @FrwId
-   and WrkId = @WrkId
-   and CtrlNm = @CtrlNm
+   and Id = @Id
 ";
             using (var db = new Lib.GaiaHelper())
             {

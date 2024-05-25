@@ -234,7 +234,8 @@ select a.FrwId, a.FrmId, a.CtrlNm, a.WrkId, a.CtrlCls,
 
                 if (result == null)
                 {
-                    throw new KeyNotFoundException($"A record with the code {frwId},{frmId},{tabPageNm} was not found.");
+                    return null;
+                    //throw new KeyNotFoundException($"A record with the code {frwId},{frmId},{tabPageNm} was not found.");
                 }
                 else
                 {
@@ -257,7 +258,7 @@ select a.FrwId, a.FrmId, a.CtrlNm, a.WrkId, a.CtrlCls,
  where 1=1
    and a.FrmId = @FrmId
    and a.FrwId = @FrwId
-   and a.CtrlNm = @CtrlNm
+   and a.WrkId = @WrkId
    and a.FldTy = 'Column'
 ";
             using (var db = new GaiaHelper())
@@ -266,7 +267,8 @@ select a.FrwId, a.FrmId, a.CtrlNm, a.WrkId, a.CtrlCls,
 
                 if (result == null)
                 {
-                    throw new KeyNotFoundException($"A record with the code {frwId},{frmId},{wrkId} was not found.");
+                    return null;
+                    //throw new KeyNotFoundException($"A record with the code {frwId},{frmId},{wrkId} was not found.");
                 }
                 else
                 {
@@ -301,7 +303,8 @@ select a.FrwId, a.FrmId, a.CtrlNm, a.WrkId, a.CtrlCls,
 
                 if (result == null)
                 {
-                    throw new KeyNotFoundException($"A record with the code {frwId},{frmId},{ctrlNm} was not found.");
+                    return null;
+                    //throw new KeyNotFoundException($"A record with the code {frwId},{frmId},{ctrlNm} was not found.");
                 }
                 else
                 {
@@ -333,7 +336,8 @@ select a.FrwId, a.FrmId, a.CtrlNm, a.WrkId, a.CtrlCls,
 
                 if (result == null)
                 {
-                    throw new KeyNotFoundException($"A record with the code {frwId},{frmId},{wrkId} was not found.");
+                    return null;
+                    //throw new KeyNotFoundException($"A record with the code {frwId},{frmId},{wrkId} was not found.");
                 }
                 else
                 {

@@ -66,7 +66,7 @@ namespace Lib.Repo
     }
     public interface IWrkSqlRepo
     {
-        WrkSql GetSql(string frwId, string frmId, string wrkId, string crudm);
+        //WrkSql GetSql(string frwId, string frmId, string wrkId, string crudm); GenFunc로 전환
         List<WrkSql> GetSqls(string frwId, string frmId, string wrkId);
         void Add(WrkSql wrkSql);
         void Save(WrkSql wrkSql);
@@ -75,34 +75,6 @@ namespace Lib.Repo
     }
     public class WrkSqlRepo : IWrkSqlRepo
     {
-        public WrkSql GetSql(string frwId, string frmId, string wrkId, string crudm)
-        {
-            string sql = @"
-select a.FrwId, a.FrmId, a.WrkId, a.CRUDM, a.Query,
-       a.Memo, a.Id, a.PId, a.CId, a.CDt,
-       a.MId, a.MDt
-  from WRKSQL a
- where 1=1
-   and a.FrmId = @FrmId
-   and a.FrwId = @FrwId
-   and a.WrkId = @WrkId
-   and a.CRUDM = @CRUDM
-";
-            using (var db = new Lib.GaiaHelper())
-            {
-                var result = db.Query<WrkSql>(sql, new { FrwId = frwId, FrmId = frmId, WrkId = wrkId, CRUDM = crudm }).SingleOrDefault();
-
-                if (result == null)
-                {
-                    throw new KeyNotFoundException($"A record with the code {frwId},{frmId},{wrkId},{crudm} was not found.");
-                }
-                else
-                {
-                    result.ChangedFlag = MdlState.None;
-                    return result;
-                }
-            }
-        }
         public List<WrkSql> GetSqls(string frwId, string frmId, string wrkId)
         {
             string sql = @"

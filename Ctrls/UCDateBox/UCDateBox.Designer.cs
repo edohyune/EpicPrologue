@@ -1,8 +1,6 @@
-﻿using DevExpress.XtraEditors;
-
-namespace Ctrls
+﻿namespace Ctrls
 {
-    partial class UCTextBox
+    partial class UCDateBox
     {
         /// <summary>
         /// Required designer variable.
@@ -31,13 +29,14 @@ namespace Ctrls
         private void InitializeComponent()
         {
             splitCtrl = new SplitContainer();
-            labelCtrl = new LabelControl();
-            textCtrl = new ButtonEdit();
+            labelCtrl = new DevExpress.XtraEditors.LabelControl();
+            dateCtrl = new DevExpress.XtraEditors.DateEdit();
             ((System.ComponentModel.ISupportInitialize)splitCtrl).BeginInit();
             splitCtrl.Panel1.SuspendLayout();
             splitCtrl.Panel2.SuspendLayout();
             splitCtrl.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)textCtrl.Properties).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dateCtrl.Properties).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dateCtrl.Properties.CalendarTimeProperties).BeginInit();
             SuspendLayout();
             // 
             // splitCtrl
@@ -54,53 +53,51 @@ namespace Ctrls
             // 
             // splitCtrl.Panel2
             // 
-            splitCtrl.Panel2.Controls.Add(textCtrl);
+            splitCtrl.Panel2.Controls.Add(dateCtrl);
             splitCtrl.Size = new Size(180, 21);
             splitCtrl.SplitterDistance = 80;
             splitCtrl.SplitterWidth = 1;
-            splitCtrl.TabIndex = 0;
+            splitCtrl.TabIndex = 1;
             // 
             // labelCtrl
             // 
             labelCtrl.Appearance.Options.UseFont = true;
             labelCtrl.Appearance.Options.UseTextOptions = true;
             labelCtrl.Appearance.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Center;
-            labelCtrl.AutoSizeMode = LabelAutoSizeMode.None;
+            labelCtrl.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
             labelCtrl.Dock = DockStyle.Fill;
             labelCtrl.Location = new Point(0, 0);
             labelCtrl.Name = "labelCtrl";
             labelCtrl.Size = new Size(80, 21);
-            labelCtrl.TabIndex = 0;
-            labelCtrl.Text = "UCTextBox";
+            labelCtrl.TabIndex = 1;
+            labelCtrl.Text = "UCDateBox";
             // 
-            // textCtrl
+            // dateCtrl
             // 
-            textCtrl.Dock = DockStyle.Fill;
-            textCtrl.Location = new Point(0, 0);
-            textCtrl.Name = "textCtrl";
-            textCtrl.Properties.Appearance.Options.UseFont = true;
-            textCtrl.Properties.Appearance.Options.UseTextOptions = true;
-            textCtrl.Properties.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Near;
-            textCtrl.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton() });
-            textCtrl.Size = new Size(99, 20);
-            textCtrl.TabIndex = 0;
-            textCtrl.ButtonClick += textCtrl_ButtonClick;
-            textCtrl.EditValueChanged += textCtrl_EditValueChanged;
-            textCtrl.TextChanged += textCtrl_TextChanged;
+            dateCtrl.Dock = DockStyle.Fill;
+            dateCtrl.EditValue = null;
+            dateCtrl.Location = new Point(0, 0);
+            dateCtrl.Name = "dateCtrl";
+            dateCtrl.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
+            dateCtrl.Properties.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
+            dateCtrl.Size = new Size(99, 20);
+            dateCtrl.TabIndex = 0;
+            dateCtrl.EditValueChanged += dateCtrl_EditValueChanged;
+            dateCtrl.TextChanged += dateCtrl_TextChanged;
             // 
-            // UCTextBox
+            // UCDateBox
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             Controls.Add(splitCtrl);
-            Name = "UCTextBox";
+            Name = "UCDateBox";
             Size = new Size(180, 21);
-            Load += UCTextBox_Load;
             splitCtrl.Panel1.ResumeLayout(false);
             splitCtrl.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)splitCtrl).EndInit();
             splitCtrl.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)textCtrl.Properties).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dateCtrl.Properties.CalendarTimeProperties).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dateCtrl.Properties).EndInit();
             ResumeLayout(false);
         }
 
@@ -108,6 +105,6 @@ namespace Ctrls
 
         private SplitContainer splitCtrl;
         private DevExpress.XtraEditors.LabelControl labelCtrl;
-        private DevExpress.XtraEditors.ButtonEdit textCtrl;
+        private DevExpress.XtraEditors.DateEdit dateCtrl;
     }
 }
