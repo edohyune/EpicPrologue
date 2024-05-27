@@ -5,6 +5,11 @@ using DevExpress.Office.Utils;
 using Lib.Repo;
 using System.Runtime.Intrinsics.Arm;
 using System.Data;
+using Frms.Models.WrkRepo;
+using DevExpress.XtraTreeList.Printing;
+using DevExpress.Data.Filtering.Helpers;
+using System.ComponentModel;
+using DevExpress.Pdf.Native;
 
 namespace Frms
 {
@@ -20,56 +25,16 @@ namespace Frms
         public WRKREPO()
         {
             InitializeComponent();
+
+            //Form List
+            List<FrwFrm> frwFrms = new FrwFrmRepo().GetAll();
+            foreach (var frwFrm in frwFrms)
+            {
+                cmbForm.Properties.Items.Add(frwFrm);
+            }
+
             InitializeRichTextEditor();
             ucTab2.SelectedTabPageIndex = 0;
-
-            //OpenRichTextFieldSelect(rtxtSelect, @"");
-            //            OpenRichTextFieldSelect(rtxtInsert, @"");
-            //            OpenRichTextFieldSelect(rtxtUpdate, @"");
-            //            OpenRichTextFieldSelect(rtxtDelete, @"");
-
-            //            OpenRichTextFieldSelect(rtxtModel, @"
-            //namespace Lib
-            //{
-            //    public class CustomSyntaxHighlightService : ISyntaxHighlightService
-            //    {
-            //        readonly Document document;
-
-            //        Regex _keywords;
-            //        Regex _strings;
-            //        Regex _comments;
-
-            //        public CustomSyntaxHighlightService(Document document)
-            //        {
-            //            this.document = document;
-
-            //            // C# Keywords
-            //            string[] keywords = { ""abstract"", ""as"", ""base"", ""bool"", ""break"", ""byte"", ""case"", ""catch"", ""char"", ""checked"", ""class"", ""const"", ""continue"", ""decimal"", ""default"", ""delegate"", ""do"", ""double"", ""else"", ""enum"", ""event"", ""explicit"", ""extern"", ""false"", ""finally"", ""fixed"", ""float"", ""for"", ""foreach"", ""goto"", ""if"", ""implicit"", ""in"", ""int"", ""interface"", ""internal"", ""is"", ""lock"", ""long"", ""namespace"", ""new"", ""null"", ""object"", ""operator"", ""out"", ""override"", ""params"", ""private"", ""protected"", ""public"", ""readonly"", ""ref"", ""return"", ""sbyte"", ""sealed"", ""short"", ""sizeof"", ""stackalloc"", ""static"", ""string"", ""struct"", ""switch"", ""this"", ""throw"", ""true"", ""try"", ""typeof"", ""uint"", ""ulong"", ""unchecked"", ""unsafe"", ""ushort"", ""using"", ""virtual"", ""void"", ""volatile"", ""while"" };
-            //            this._keywords = new Regex(@""\b("" + string.Join(""|"", keywords.Select(w => Regex.Escape(w))) + @"")\b"");
-
-            //            // Strings
-            //            this._strings = new Regex(@""@?""""([^""""\\]|\\.)*""""|'([^'\\]|\\.)*'"");
-
-            //            // Comments
-            //            this._comments = new Regex(@""//.*|/\*[\s\S]*?\*/"");
-            //        }
-
-            //        public void ForceExecute() => Execute();
-
-            //        public void Execute()
-            //        {
-            //            List<SyntaxHighlightToken> cSharpTokens = ParseTokens();
-            //            document.ApplySyntaxHighlight(cSharpTokens);
-            //        }
-
-            //        private List<SyntaxHighlightToken> ParseTokens()
-            //        {
-            //            // ... (ParseTokens, CombineWithPlainTextTokens, CreateToken, IsRangeInTokens, IsIntersect 메서드는 SQL 예제와 동일)
-            //        }
-            //    }
-            //}
-            //");
-
         }
 
         private void InitializeRichTextEditor()
@@ -87,9 +52,7 @@ namespace Frms
             rtSelect.Modified = true;
             rtSelect.LayoutUnit = DevExpress.XtraRichEdit.DocumentLayoutUnit.Pixel;
             rtSelect.Options.HorizontalRuler.Visibility = DevExpress.XtraRichEdit.RichEditRulerVisibility.Hidden;
-            rtSelect.Options.Search.RegExResultMaxGuaranteedLength = 500;
-            rtSelect.Document.DefaultCharacterProperties.FontName = "Consolas";
-            rtSelect.Document.DefaultCharacterProperties.FontSize = 16;
+            rtSelect.ReplaceService<ISyntaxHighlightService>(new SQL_Syntax(rtSelect.Document));
             rtSelect.Options.Search.RegExResultMaxGuaranteedLength = 500;
             rtSelect.Document.Sections[0].Page.Width = Units.InchesToDocumentsF(300f);
 
@@ -100,9 +63,7 @@ namespace Frms
             rtInsert.Modified = true;
             rtInsert.LayoutUnit = DevExpress.XtraRichEdit.DocumentLayoutUnit.Pixel;
             rtInsert.Options.HorizontalRuler.Visibility = DevExpress.XtraRichEdit.RichEditRulerVisibility.Hidden;
-            rtInsert.Options.Search.RegExResultMaxGuaranteedLength = 500;
-            rtInsert.Document.DefaultCharacterProperties.FontName = "Consolas";
-            rtInsert.Document.DefaultCharacterProperties.FontSize = 16;
+            rtInsert.ReplaceService<ISyntaxHighlightService>(new SQL_Syntax(rtInsert.Document));
             rtInsert.Options.Search.RegExResultMaxGuaranteedLength = 500;
             rtInsert.Document.Sections[0].Page.Width = Units.InchesToDocumentsF(300f);
 
@@ -113,9 +74,7 @@ namespace Frms
             rtUpdate.Modified = true;
             rtUpdate.LayoutUnit = DevExpress.XtraRichEdit.DocumentLayoutUnit.Pixel;
             rtUpdate.Options.HorizontalRuler.Visibility = DevExpress.XtraRichEdit.RichEditRulerVisibility.Hidden;
-            rtUpdate.Options.Search.RegExResultMaxGuaranteedLength = 500;
-            rtUpdate.Document.DefaultCharacterProperties.FontName = "Consolas";
-            rtUpdate.Document.DefaultCharacterProperties.FontSize = 16;
+            rtUpdate.ReplaceService<ISyntaxHighlightService>(new SQL_Syntax(rtUpdate.Document));
             rtUpdate.Options.Search.RegExResultMaxGuaranteedLength = 500;
             rtUpdate.Document.Sections[0].Page.Width = Units.InchesToDocumentsF(300f);
 
@@ -126,9 +85,7 @@ namespace Frms
             rtDelete.Modified = true;
             rtDelete.LayoutUnit = DevExpress.XtraRichEdit.DocumentLayoutUnit.Pixel;
             rtDelete.Options.HorizontalRuler.Visibility = DevExpress.XtraRichEdit.RichEditRulerVisibility.Hidden;
-            rtDelete.Options.Search.RegExResultMaxGuaranteedLength = 500;
-            rtDelete.Document.DefaultCharacterProperties.FontName = "Consolas";
-            rtDelete.Document.DefaultCharacterProperties.FontSize = 16;
+            rtDelete.ReplaceService<ISyntaxHighlightService>(new SQL_Syntax(rtDelete.Document));
             rtDelete.Options.Search.RegExResultMaxGuaranteedLength = 500;
             rtDelete.Document.Sections[0].Page.Width = Units.InchesToDocumentsF(300f);
 
@@ -139,9 +96,7 @@ namespace Frms
             rtModel.Modified = true;
             rtModel.LayoutUnit = DevExpress.XtraRichEdit.DocumentLayoutUnit.Pixel;
             rtModel.Options.HorizontalRuler.Visibility = DevExpress.XtraRichEdit.RichEditRulerVisibility.Hidden;
-            rtModel.Options.Search.RegExResultMaxGuaranteedLength = 500;
-            rtModel.Document.DefaultCharacterProperties.FontName = "Consolas";
-            rtModel.Document.DefaultCharacterProperties.FontSize = 16;
+            rtModel.ReplaceService<ISyntaxHighlightService>(new CS_Syntax(rtModel.Document));
             rtModel.Options.Search.RegExResultMaxGuaranteedLength = 500;
             rtModel.Document.Sections[0].Page.Width = Units.InchesToDocumentsF(300f);
 
@@ -152,31 +107,11 @@ namespace Frms
             pnlModel.Controls.Add(rtModel);
         }
 
-        private void OpenRichTextFieldSelect(RichEditControl rtxt, string query)
-        {
-            if (rtxt == rtModel)
-            {
-                rtxt.ReplaceService<ISyntaxHighlightService>(new CS_Syntax(rtxt.Document));
-            }
-            else
-            {
-                rtxt.ReplaceService<ISyntaxHighlightService>(new SQL_Syntax(rtxt.Document));
-            }
-            rtxt.Text = query;
-        }
-
-        private void ucPanel1_CustomButtonClick(object sender, DevExpress.XtraBars.Docking2010.BaseButtonEventArgs e)
-        {
-            if (e.Button.Properties.Caption == "Open")
-            {
-                var frmWrkRepo = new FrmWrkRepo();
-                g10.DataSource = frmWrkRepo.GetByFrwFrm(Lib.Common.gFrameWorkId, "GridSet");
-            }
-        }
         private FrmWrk selectedDoc { get; set; }
+        private BindingList<WrkFld> wrkFldbs { get; set; }
         private void g10_UCFocusedRowChanged(object sender, int preIndex, int rowIndex, DevExpress.XtraGrid.Views.Base.FocusedRowChangedEventArgs e)
         {
-            //Common.gMsg = "g10_UCFocusedRowChanged";
+            Common.gMsg = "g10_UCFocusedRowChanged";
             var view = sender as DevExpress.XtraGrid.Views.Grid.GridView;
             if (view == null) return;
 
@@ -184,7 +119,9 @@ namespace Frms
 
             if (selectedDoc != null)
             {
+                g20OpenGrid(selectedDoc);
                 SetWrkForm();
+                t10OpenGrid(selectedDoc);
             }
         }
 
@@ -193,10 +130,24 @@ namespace Frms
             rtDelete.Text = GenFunc.GetSql(selectedDoc.FrwId, selectedDoc.FrmId, selectedDoc.WrkId, "D").Query;
             rtInsert.Text = GenFunc.GetSql(selectedDoc.FrwId, selectedDoc.FrmId, selectedDoc.WrkId, "C").Query;
             rtSelect.Text = GenFunc.GetSql(selectedDoc.FrwId, selectedDoc.FrmId, selectedDoc.WrkId, "R").Query;
-            rtModel.Text  = GenFunc.GetSql(selectedDoc.FrwId, selectedDoc.FrmId, selectedDoc.WrkId, "M").Query;
+            rtModel.Text = GenFunc.GetSql(selectedDoc.FrwId, selectedDoc.FrmId, selectedDoc.WrkId, "M").Query;
             rtUpdate.Text = GenFunc.GetSql(selectedDoc.FrwId, selectedDoc.FrmId, selectedDoc.WrkId, "U").Query;
         }
 
+        #region CustomButtonClick
+
+        private void ucPanel1_CustomButtonClick(object sender, DevExpress.XtraBars.Docking2010.BaseButtonEventArgs e)
+        {
+            if (e.Button.Properties.Caption == "Open")
+            {
+                if (selectedDoc != null)
+                {
+                    g20OpenGrid(selectedDoc);
+                    SetWrkForm();
+                    t10OpenGrid(selectedDoc);
+                }
+            }
+        }
         private void pnlSelect_CustomButtonClick(object sender, DevExpress.XtraBars.Docking2010.BaseButtonEventArgs e)
         {
             var WrkSqlRepo = new WrkSqlRepo();
@@ -228,31 +179,73 @@ namespace Frms
             }
             else if (e.Button.Properties.Caption == "Make Field")
             {
+                t10.Clear();
+                wrkFldbs = new WrkFldRepo().GetColumnBindingProperties(selectedDoc.FrwId, selectedDoc.FrmId, selectedDoc.WrkId);
+                t10.DataSource = wrkFldbs;
+
                 using (var db = new GaiaHelper())
                 {
                     DataSet dSet = db.GetGridColumns(new { FrwId = selectedDoc.FrwId, FrmId = selectedDoc.FrmId, WrkId = selectedDoc.WrkId, CRUDM = "R" });
-                    string deleteSql = @"delete from ATZ300 where Sys_cd=@sys and Frm_id=@frm and Wkset_id=@wkset and Ctrl_ty='Column'";
-                    db.OpenExecute(deleteSql, new { sys = OpenSys, frm = OpenFrm, wkset = OpenWk });
-                    string insert300Sql = @"insert into ATZ300 
-                                               (Sys_cd, Frm_id, Ctrl_id, Ctrl_ty, Title, Wkset_id, Wkset_ty)
-                                        select @Sys_cd, @Frm_id, @Ctrl_id, @Ctrl_ty, @Title, @Wkset_id, @Wkset_ty";
-                    foreach (DataColumn cols in dSet.Tables[0].Columns)
+                    //목적 Select 쿼리를 이용하여 컬럼을 생성한다.
+                    if (dSet != null)
                     {
-                        db.OpenExecute(insert300Sql, new
+                        //List<WrkFld> wrkFlds에 컬럼정보를 저장한다.
+                        List<WrkFld> wrkFlds = new List<WrkFld>();
+                        foreach (DataColumn cols in dSet.Tables[0].Columns)
                         {
-                            Sys_cd = OpenSys,
-                            Frm_id = OpenFrm,
-                            Ctrl_id = column.ColumnName,
-                            Ctrl_ty = "Column",
-                            Title = column.ColumnName,
-                            Wkset_id = OpenWk,
-                            Wkset_ty = "Field"
-                        });
+                            Common.gMsg = (cols.ColumnName + " / " + cols.DataType.ToString());
+                            //wrkFldbs에 있으면 Update 없으면 Insert
+                            var wrkFld = wrkFldbs.Where(x => x.FldNm == cols.ColumnName).FirstOrDefault();
+                            if (wrkFld != null)
+                            {
+                                wrkFld.FrwId = selectedDoc.FrwId;
+                                wrkFld.FrmId = selectedDoc.FrmId;
+                                wrkFld.WrkId = selectedDoc.WrkId;
+                                wrkFld.CtrlCls = "Column";
+                                wrkFld.CtrlNm = selectedDoc.CtrlNm;
+                                wrkFld.FldNm = selectedDoc.CtrlNm + "." + cols.ColumnName;
+                                wrkFld.FldTy = GetFieldType(cols.DataType);
+                                wrkFld.FldTitle = cols.ColumnName;
+                                wrkFld.ChangedFlag = MdlState.Updated;
+                            }
+                            else
+                            {
+                                wrkFlds.Add(new WrkFld
+                                {
+                                    FrwId = selectedDoc.FrwId,
+                                    FrmId = selectedDoc.FrmId,
+                                    WrkId = selectedDoc.WrkId,
+                                    CtrlCls = "Column",
+                                    CtrlNm = selectedDoc.CtrlNm,
+                                    FldNm = selectedDoc.CtrlNm + "." + cols.ColumnName,
+                                    FldTy = GetFieldType(cols.DataType),
+                                    FldTitle = cols.ColumnName,
+                                    ChangedFlag = MdlState.Inserted
+                                });
+                            }
+                        }
+                        t10.DataSource = wrkFlds;
                     }
                 }
                 ucTab1.SelectedTabPageIndex = 1;
             }
         }
+
+        private string GetFieldType(Type dataType)
+        {
+            return dataType.Name switch
+            {
+                "Int32" => "Int",
+                "String" => "Text",
+                "DateTime" => "DateTime",
+                "Date" => "Date",
+                "Decimal" => "Decimal",
+                "Double" => "Decimal",
+                "Boolean" => "bool",
+                _ => "Text",
+            };
+        }
+
         private void pnlInsert_CustomButtonClick(object sender, DevExpress.XtraBars.Docking2010.BaseButtonEventArgs e)
         {
             var WrkSqlRepo = new WrkSqlRepo();
@@ -373,9 +366,78 @@ namespace Frms
 
             }
         }
-        private void g10_UCSelectionChanged(object sender, DevExpress.Data.SelectionChangedEventArgs e)
+        #endregion
+
+        private void cmbForm_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Common.gMsg = "g10_UCSelectionChanged";
+            Common.gMsg = "cmbForm_SelectedIndexChanged";
+
+            FrwFrm frwFrm = cmbForm.SelectedItem as FrwFrm;
+            if (frwFrm != null)
+            {
+                g10OpenGrid(frwFrm);
+            }
         }
+
+        private void g10OpenGrid(FrwFrm frwFrm)
+        {
+            Common.gMsg = "g10OpenGrid";
+
+            g10.Clear();
+            var frmWrkRepo = new FrmWrkRepo();
+            var frmWrks = frmWrkRepo.GetByFrwFrm(Lib.Common.gFrameWorkId, frwFrm.FrmId);
+            g10.DataSource = frmWrks;
+        }
+        private void g20OpenGrid(FrmWrk selectedDoc)
+        {
+            Common.gMsg = "g20OpenGrid";
+
+            g20.Clear();
+            var frmCtrlRepo = new FrmCtrlRepo();
+            var frmCtrls = frmCtrlRepo.GetByFrwFrm(Lib.Common.gFrameWorkId, selectedDoc.FrmId);
+            g20.DataSource = frmCtrls;
+        }
+        private void t10OpenGrid(FrmWrk selectedDoc)
+        {
+            Common.gMsg = "t10OpenGrid";
+            t10.Clear();
+            wrkFldbs = new WrkFldRepo().GetColumnBindingProperties(selectedDoc.FrwId, selectedDoc.FrmId, selectedDoc.WrkId);
+            t10.DataSource = wrkFldbs;
+        }
+
+        private void ucPanel3_UCCustomButtonClick(object Sender, DevExpress.XtraBars.Docking2010.BaseButtonEventArgs e)
+        {
+            var wrkFldRepo = new WrkFldRepo();
+            if (e.Button.Properties.Caption=="Save")
+            {
+                Common.gMsg = "Save-----------------------------------";
+                foreach (var wrkFld in wrkFldbs)
+                {
+                    if (wrkFld.ChangedFlag == MdlState.Inserted)
+                    {
+                        wrkFldRepo.Add(wrkFld);
+                    }
+                    else if (wrkFld.ChangedFlag == MdlState.Updated)
+                    {
+                        wrkFldRepo.Update(wrkFld);
+                    }
+                    else if (wrkFld.ChangedFlag == MdlState.None)
+                    {
+                        continue;
+                    }
+                }
+
+
+            }
+        }
+    }
+}
+namespace Frms.Models.WrkRepo
+{
+    public class wrkList
+    {
+        public string WrkId { get; set; }
+        public string FrwId { get; set; }
+        public string FrmId { get; set; }
     }
 }

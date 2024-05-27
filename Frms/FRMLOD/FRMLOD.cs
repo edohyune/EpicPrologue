@@ -251,7 +251,6 @@ namespace Frms
 
             // 3. WorkSet 등록 (UCField, UCGrid)
             Common.gMsg = "3. WorkSet 등록 (UCField, UCGrid, UCGridSet)";
-            frmWrkbs = new BindingList<FrmWrk>();
             foreach (var item in frmCtrlbs)
             {
                 if (item.ToolNm == "UCField")

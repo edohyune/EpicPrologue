@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -34,6 +35,13 @@ namespace Lib.Repo
         {
             get => _WrkId;
             set => Set(ref _WrkId, value);
+        }
+
+        private string _CtrlCls;
+        public string CtrlCls
+        {
+            get => _CtrlCls;
+            set => Set(ref _CtrlCls, value);
         }
 
         private string _FldNm;
@@ -190,6 +198,13 @@ namespace Lib.Repo
             set => Set(ref _ColorBg, value);
         }
 
+        private string _ToolNm;
+        public string ToolNm
+        {
+            get => _ToolNm;
+            set => Set(ref _ToolNm, value);
+        }
+
         private int _Seq;
         public int Seq
         {
@@ -202,6 +217,12 @@ namespace Lib.Repo
         {
             get => _Id;
             set => Set(ref _Id, value);
+        }
+        //----------------------------------------
+        //----------------------------------------
+        public override string ToString()
+        {
+            return $"{FldNm} / {FldTitle} / {CtrlCls} / {ToolNm}";
         }
     }
     public interface IWrkFldRepo
@@ -244,6 +265,44 @@ select a.FrwId, a.FrmId, a.CtrlNm, a.WrkId, a.CtrlCls,
                 }
             }
         }
+
+        public BindingList<WrkFld> GetColumnBindingProperties(string frwId, string frmId, string wrkId)
+        {
+            string sql = @"
+select a.FrwId, a.FrmId, a.CtrlNm, a.WrkId, a.CtrlCls,
+       a.FldNm, a.FldTy, a.FldX, a.FldY, a.FldWidth,
+       a.FldTitleWidth, a.FldTitle, a.TitleAlign, a.Popup, a.DefaultText,
+       a.TextAlign, a.FixYn, a.GroupYn, a.ShowYn, a.NeedYn,
+       a.EditYn, a.Band1, a.Band2, a.FuncStr, a.FormatStr,
+       a.ColorFont, a.ColorBg, a.ToolNm, a.Seq, a.Id,
+       a.CId, a.CDt, a.MId, a.MDt
+  from WRKFLD a
+ where 1=1
+   and a.FrmId = @FrmId
+   and a.FrwId = @FrwId
+   and a.WrkId = @WrkId
+   and a.CtrlCls = 'Column'
+";
+            using (var db = new GaiaHelper())
+            {
+                var result = db.Query<WrkFld>(sql, new { FrwId = frwId, FrmId = frmId, WrkId = wrkId }).ToList();
+
+                if (result == null)
+                {
+                    return null;
+                    //throw new KeyNotFoundException($"A record with the code {frwId},{frmId},{wrkId} was not found.");
+                }
+                else
+                {
+                    foreach (var item in result)
+                    {
+                        item.ChangedFlag = MdlState.None;
+                    }
+                    return new BindingList<WrkFld>(result);
+                }
+            }
+        }
+
         public List<WrkFld> GetColumnProperties(string frwId, string frmId, string wrkId)
         {
             string sql = @"
@@ -259,7 +318,7 @@ select a.FrwId, a.FrmId, a.CtrlNm, a.WrkId, a.CtrlCls,
    and a.FrmId = @FrmId
    and a.FrwId = @FrwId
    and a.WrkId = @WrkId
-   and a.FldTy = 'Column'
+   and a.CtrlCls = 'Column'
 ";
             using (var db = new GaiaHelper())
             {

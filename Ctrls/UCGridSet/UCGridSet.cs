@@ -562,8 +562,12 @@ select a.SysCd, a.MenuId, a.MenuNm, a.FrmId, a.HideYn, a.CId, a.CDt
         #endregion
 
         #region Grid Open
-
         // Open<T> Pull Param을 이용한 Open
+        public void Open<T>()
+        {
+            OpenForm<T>();
+        }
+
         //public void Open<T>()
         //{
         //    Common.gLog = $"{Environment.NewLine}-- {FldID} Open<T>()";
@@ -590,7 +594,7 @@ select a.SysCd, a.MenuId, a.MenuNm, a.FrmId, a.HideYn, a.CId, a.CDt
         //    OpenObj = p2;
         //    OpenForm<T>();
         //}
-
+        
         // Open<T> Search Param을 이용한 Open
         //public void Open<T>(string containfrom, string wkset, object search)
         //{
@@ -600,19 +604,12 @@ select a.SysCd, a.MenuId, a.MenuNm, a.FrmId, a.HideYn, a.CId, a.CDt
         //    Common.gLog = $"{Environment.NewLine}-- {FldID} Open<T>(string containfrom, string wkset, object search)";
         //    OpenForm<T>();
         //}
-        public void Open<T>()
-        {
-            OpenForm<T>();
-        }
 
         private void OpenForm<T>()
         {
             this.DataSource = null;
             gvCtrl.Columns.Clear();
-
-            //기본적인 Grid 설정을 다시한다. 
             GridDefine();
-
             try
             {
                 WrkFldRepo wrkFldRepo = new WrkFldRepo();

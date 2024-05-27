@@ -73,6 +73,12 @@ namespace Lib
 
             // fill in gaps in document coverage
             tokens = CombineWithPlainTextTokens(tokens);
+
+            document.BeginUpdate();
+            document.DefaultCharacterProperties.FontName = "Cascadia Code Light"; // "Courier New";
+            document.DefaultCharacterProperties.FontSize = 10;
+            document.EndUpdate();
+
             return tokens;
         }
 

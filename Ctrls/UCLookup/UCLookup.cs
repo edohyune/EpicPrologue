@@ -1,6 +1,8 @@
 ﻿using DevExpress.XtraEditors;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using Lib;
+using Lib.Repo;
 
 namespace Ctrls
 {
@@ -8,9 +10,10 @@ namespace Ctrls
     [System.ComponentModel.DefaultEvent("UCTextChanged")]
     public class UCLookUp : DevExpress.XtraEditors.XtraUserControl, INotifyPropertyChanged
     {
-        private string frwId { get; }
+        #region Properties
+        private string frwId { get; set; }
         private string frmId { get; set; }
-        private string fldId { get; set; }
+        private string ctrlNm { get; set; }
 
         [Category("A UserController Property"), Description("ReadOnly")]
         public bool Readonly
@@ -164,12 +167,11 @@ namespace Ctrls
                 this.lookupCtrl.Properties.ValueMember = value;
             }
         }
+        #endregion
 
         public DevExpress.XtraEditors.LookUpEdit lookupCtrl;
         public DevExpress.XtraEditors.LabelControl labelCtrl;
         public SplitContainer splitCtrl;
-
-        
 
         public UCLookUp()
         {
@@ -192,6 +194,7 @@ namespace Ctrls
             labelCtrl.Dock = DockStyle.Fill;
             labelCtrl.Appearance.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Center;
             labelCtrl.Appearance.Font = new System.Drawing.Font("Tahoma", 9);
+            labelCtrl.Appearance.Options.UseFont = true;
             labelCtrl.Text = "UCLookUpEdit";
 
 
@@ -200,7 +203,8 @@ namespace Ctrls
             lookupCtrl = new DevExpress.XtraEditors.LookUpEdit();
             lookupCtrl.Dock = DockStyle.Fill;
             lookupCtrl.Properties.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Near;
-            lookupCtrl.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 9);
+            lookupCtrl.Properties.Appearance.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lookupCtrl.Properties.Appearance.Options.UseFont = true;
             lookupCtrl.Properties.Buttons[0].Visible = false;
             lookupCtrl.Properties.NullText = "";
             lookupCtrl.EditValueChanged += lookupCtrl_EditValueChanged;
@@ -213,53 +217,73 @@ namespace Ctrls
 
         private void UCLookUp_Load(object? sender, EventArgs e)
         {
+            frwId = Common.gFrameWorkId;
+
+            Form? form = this.FindForm();
+            if (form != null)
+            {
+                frmId = form.Name;
+            }
+            else
+            {
+                frmId = "Unknown";
+            }
+
+            ctrlNm = this.Name;
+
+            if (frwId != string.Empty)
+            {
+                ResetCtrl();
+            }
+        }
+
+        private void ResetCtrl()
+        {
             try
             {
-                frmId = this.FindForm().Name;
-                fldId = this.Name;
+                var wrkFldRepo = new WrkFldRepo();
+                var wrkFld = wrkFldRepo.GetFldProperties(frwId, frmId, ctrlNm);
+                if (wrkFld != null)
+                {
+                    labelCtrl.Text = wrkFld.FldTitle;
+                    this.Visible = wrkFld.ShowYn;
+                    this.TitleWidth = wrkFld.FldTitleWidth;
+                    //if (wrkFld.Popup != "")
+                    //{
+                    //    //콤보 종류 지정
+                    //    //code, combo, popup 등을 구분하여 사용
+                    //    //if (ucInfo.field_type=="Code")
+                    //    //......
 
-                //    using (var db = new ACE.Lib.DbHelper())
-                //    {
-                //        var ucInfo = db.GetUc(new { sys = SysCode, frm = FrmID, ctrl = FldID }).SingleOrDefault();
-                //        if (ucInfo != null)
-                //        {
-                //            labelCtrl.Text = ucInfo.Title;
-                //            if (ucInfo.Popup != "")
-                //            {
-                //                //콤보 종류 지정
-                //                //code, combo, popup 등을 구분하여 사용
-                //                //if (ucInfo.field_type=="Code")
-                //                //......
+                    //    List<IdNm> lists = db.GetCodeNm(new { Grp = wrkFld.Popup }, "1");
 
-                //                List<MdlIdName> lists = db.GetCodeNm(new { Grp = ucInfo.Popup }, "1");
-                //                //List<UcCombo> lists = db.GetUcCombo(new { gcode = ucInfo.Pop }, "1");
-                //                //var bindingLists = new BindingList<MdlIdName>(lists);
-                //                this.comboCtrl.Properties.DataSource = lists;
-                //                this.comboCtrl.Properties.ValueMember = "Id";
-                //                this.comboCtrl.Properties.DisplayMember = "Nm";
-                //                this.comboCtrl.Properties.BestFitMode = DevExpress.XtraEditors.Controls.BestFitMode.BestFitResizePopup;
-                //                //if (ucInfo.ShowCode != "1")
-                //                if ("1" != "1")
-                //                {
-                //                    this.comboCtrl.Properties.PopulateColumns();
-                //                    this.comboCtrl.Properties.Columns["Id"].Visible = false;
-                //                }
-                //            }
-                //            this.TitleWidth = ucInfo.TitleW;
-                //            this.labelCtrl.Visible = (ucInfo.Show_chk == "0" ? false : true);
-                //            this.labelCtrl.Properties.Appearance.TextOptions.HAlignment = GenFunc.StrToAlign(ucInfo.TitleAlign);
-                //            this.Text = ucInfo.Txt;
-                //            this.comboCtrl.Visible = (ucInfo.Show_chk == "0" ? false : true);
-                //            this.comboCtrl.Properties.Appearance.TextOptions.HAlignment = GenFunc.StrToAlign(ucInfo.TxtAlign);
-                //            this.comboCtrl.ReadOnly = (ucInfo.Edit_chk == "1" ? false : true);
-                //            this.comboCtrl.Properties.NullText = "";
-                //        }
-                //    }
+                    //    //List<UcCombo> lists = db.GetUcCombo(new { gcode = ucInfo.Pop }, "1");
+                    //    //var bindingLists = new BindingList<MdlIdName>(lists);
+                    //    this.comboCtrl.Properties.DataSource = lists;
+                    //    this.comboCtrl.Properties.ValueMember = "Id";
+                    //    this.comboCtrl.Properties.DisplayMember = "Nm";
+                    //    this.comboCtrl.Properties.BestFitMode = DevExpress.XtraEditors.Controls.BestFitMode.BestFitResizePopup;
+                    //    //if (ucInfo.ShowCode != "1")
+                    //    if ("1" != "1")
+                    //    {
+                    //        this.comboCtrl.Properties.PopulateColumns();
+                    //        this.comboCtrl.Properties.Columns["Id"].Visible = false;
+                    //    }
+                    //}
+                    this.labelCtrl.Appearance.TextOptions.HAlignment = GenFunc.StrToAlign(wrkFld.TitleAlign);
+                    this.Text = wrkFld.DefaultText;
+                    this.lookupCtrl.Properties.Appearance.TextOptions.HAlignment = GenFunc.StrToAlign(wrkFld.TextAlign);
+                    this.lookupCtrl.ReadOnly = wrkFld.EditYn;
+                    this.lookupCtrl.Properties.NullText = "";
+                }
+                else
+                { 
+
+                }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                string str = $"UCLookUp Exception {Environment.NewLine}";
-                Lib.Common.gMsg = str;
+                Lib.Common.gMsg = $"UCLookUp_Load>>ResetCtrl{Environment.NewLine}Exception : {ex.Message}";
             }
         }
 
@@ -278,6 +302,7 @@ namespace Ctrls
             }
             return str;
         }
+
         #region INotifyPropertyChanged
         public delegate void delEventEditValueChanged(object Sender, Control control);   // delegate 선언
         public event delEventEditValueChanged UCEditValueChanged;   // event 선언

@@ -90,6 +90,12 @@ namespace Lib.Repo
             get => _Memo;
             set => Set(ref _Memo, value);
         }
+        //-------------------------------------------
+        //-------------------------------------------
+        public override string ToString()
+        {
+            return FrmNm;
+        }
     }
     public interface IFrwFrmRepo
     {

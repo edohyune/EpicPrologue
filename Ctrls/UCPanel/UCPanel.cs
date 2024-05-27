@@ -1,8 +1,11 @@
-﻿using Lib.Repo;
+﻿using DevExpress.XtraBars.Docking2010;
+using DevExpress.XtraPrinting.Native;
+using Lib.Repo;
 using System.ComponentModel;
 
 namespace Ctrls
 {
+    [System.ComponentModel.DefaultEvent("UCCustomButtonClick")]
     public class UCPanel : DevExpress.XtraEditors.GroupControl
     {
         [Browsable(false)]
@@ -47,6 +50,17 @@ namespace Ctrls
                 panelCtrl.Visible = value;
             }
         }
+
+        public delegate void delEventCustomButtonClick(object Sender, BaseButtonEventArgs e);   // delegate 선언
+        public event delEventCustomButtonClick UCCustomButtonClick;   // event 선언
+        private void UCPanel_CustomButtonClick(object sender, BaseButtonEventArgs e)
+        {
+            if (UCCustomButtonClick != null)  // 부모가 Event를 생성하지 않았을 수 있으므로 생성 했을 경우에만 Delegate를 호출
+            {
+                UCCustomButtonClick(this, e);
+            }
+        }
+
         public DevExpress.XtraEditors.GroupControl panelCtrl { get; set; }
         public UCPanel()
         {
@@ -54,6 +68,7 @@ namespace Ctrls
             panelCtrl.CustomHeaderButtonsLocation = DevExpress.Utils.GroupElementLocation.AfterText;
             panelCtrl.Text = "UCPanel";
             HandleCreated += UCPanel_HandleCreated;
+            CustomButtonClick += UCPanel_CustomButtonClick;
         }
 
         private void UCPanel_HandleCreated(object? sender, EventArgs e)

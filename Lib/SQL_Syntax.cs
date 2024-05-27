@@ -10,28 +10,29 @@ namespace Lib
         readonly Document document;
 
         Regex _keywords;
-        Regex _quotedString;
-        Regex _commentedString;
+        Regex _quotedString = new Regex(@"'([^']|'')*'");
+        Regex _commentedString = new Regex(@"(/\*([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*\*+/)");
+        //Regex _customPattern = new Regex(@"<\$[^>]+>");  // <$로 시작해서 >로 끝나는 패턴
+        Regex _customPattern = new Regex(@"@_\w+"); // @_로 시작하는 단어 패턴
 
         public SQL_Syntax(Document document)
         {
             this.document = document;
-            string[] keywords = { "INSERT", "SELECT", "CREATE", "TABLE", "USE", "IDENTITY", "ON", "OFF", "NOT", "NULL", "WITH", "SET", "GO", "DECLARE", "EXECUTE", "NVARCHAR", "FROM", "INTO", "VALUES", "WHERE", "AND" };
-            this._keywords = new Regex(@"\b(" + string.Join("|", keywords.Select(w => Regex.Escape(w))) + @")\b");
-            // Strings
-            this._quotedString = new Regex(@"'([^']|'')*'");
-
-            // Comments
-            this._commentedString = new Regex(@"(/\*([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*\*+/)");
+            string[] keywords = { "INSERT", "SELECT", "UPDATE", "DELETE", "CREATE", 
+                                  "TABLE", "USE", "IDENTITY", "ON", "OFF", 
+                                  "NOT", "NULL", "WITH", "SET", "GO", 
+                                  "DECLARE", "EXECUTE", "EXEC", "NVARCHAR", "FROM", 
+                                  "INTO", "VALUES", "WHERE", "AND" };
+            this._keywords = new Regex(@"\b(" + string.Join("|", keywords.Select(w => Regex.Escape(w))) + @")\b", RegexOptions.IgnoreCase);
+        }
+        public void ForceExecute()
+        {
+            Execute();
         }
         public void Execute()
         {
             List<SyntaxHighlightToken> tSqltokens = ParseTokens();
             document.ApplySyntaxHighlight(tSqltokens);
-        }
-        public void ForceExecute()
-        {
-            Execute();
         }
 
         private List<SyntaxHighlightToken> ParseTokens()
@@ -61,11 +62,25 @@ namespace Lib
                     tokens.Add(CreateToken(ranges[j].Start.ToInt(), ranges[j].End.ToInt(), Color.Green));
             }
 
+            //Find all custom patterns
+            ranges = document.FindAll(_customPattern).GetAsFrozen() as DocumentRange[];
+            for (int j = 0; j < ranges.Length; j++)
+            {
+                if (!IsRangeInTokens(ranges[j], tokens))
+                    tokens.Add(CreateToken(ranges[j].Start.ToInt(), ranges[j].End.ToInt(), Color.Magenta)); // 원하는 색상으로 변경
+            }
+
             // order tokens by their start position
             tokens.Sort(new SyntaxHighlightTokenComparer());
 
             // fill in gaps in document coverage
             tokens = CombineWithPlainTextTokens(tokens);
+
+            document.BeginUpdate();
+            document.DefaultCharacterProperties.FontName = "Cascadia Code Light"; // "Courier New";
+            document.DefaultCharacterProperties.FontSize = 10;  
+            document.EndUpdate();
+
             return tokens;
         }
 
