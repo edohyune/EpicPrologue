@@ -16,6 +16,8 @@ using DevExpress.XtraGrid;
 using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraEditors;
 using Dapper;
+using System.Windows.Forms;
+using DevExpress.Data.Filtering.Helpers;
 
 namespace Ctrls
 {
@@ -27,6 +29,10 @@ namespace Ctrls
         private string thisNm { get; set; }
         public string openFrm { get; set; }
         public string openFld { get; set; }
+
+        private object OSearchParam;
+        private DynamicParameters DSearchParam;
+
         public long RowCount { get { return gvCtrl.RowCount; } }
         public int FocuseRowIndex
         {
@@ -266,7 +272,7 @@ select a.FrwId, a.FrmId, a.WrkId, a.FldNm, b.ToolNm, a.ParamWrk,
    and a.WrkId = @WrkId
 
                  */
-                List<WrkSet> ctrls = new WrkSetRepo().GetPushFlds(frwId, frmId, thisNm);
+                List<WrkSet> ctrls = new WrkSetRepo().SetPushFlds(frwId, frmId, thisNm);
                 if (ctrls != null)
                 {
                     foreach (var ctrl in ctrls)
@@ -337,11 +343,12 @@ select a.FrwId, a.FrmId, a.WrkId, a.FldNm, b.ToolNm, a.ParamWrk,
             gvCtrl = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.MainView = gvCtrl;
             this.ViewCollection.Add(gvCtrl);
-            HandleCreated += ucGridSet_HandleCreated;
+            Load += ucGridSet_Load;
+            //HandleCreated += ucGridSet_HandleCreated;
             gvCtrl.FocusedRowChanged += gvCtrl_FocusedRowChanged;
         }
 
-        private void ucGridSet_HandleCreated(object? sender, EventArgs e)
+        private void ucGridSet_Load(object? sender, EventArgs e)
         {
             frwId = Common.gFrameWorkId;
 
@@ -375,25 +382,26 @@ select a.FrwId, a.FrmId, a.WrkId, a.FldNm, b.ToolNm, a.ParamWrk,
                 {
                     foreach (var colproperty in colProperties)
                     {
-                        AddGridColumn(gvCtrl, SetGridProperties(colproperty.FldNm,     // Column ID
-                                                                colproperty.FldTy,     // Text, Int, Date, Decimal, Code(Lookup)
-                                                                colproperty.FldTitle,       // Title
-                                                                colproperty.TitleAlign,  // Title Alignment DevExpress.Utils.HorzAlignment TitleAlign
-                                                                colproperty.FldTitleWidth,      // Title Width
-                                                                colproperty.Popup,       // Lookup
-                                                                colproperty.DefaultText,         // Default Text
-                                                                colproperty.TextAlign,    // Text Alignment DevExpress.Utils.HorzAlignment TxtAlign
-                                                                colproperty.FixYn,     // Freeze Column
-                                                                colproperty.GroupYn,   // Grouping
-                                                                colproperty.ShowYn,    // Hide
-                                                                colproperty.NeedYn,    // Necessary Field
-                                                                colproperty.EditYn,    // ReadOnly
-                                                                colproperty.Band1,       // Title Band 2nd
-                                                                colproperty.Band2,       // Title Band 1st
-                                                                colproperty.FuncStr,      // sum, avg, max, min
-                                                                colproperty.FormatStr,   // #.##, #,##0.00
-                                                                colproperty.ColorBg,    // Column Background Color
-                                                                colproperty.ColorFont));// Text Color
+                        GridColumn column = SetGridProperties(colproperty.FldNm,     // Column ID
+                                                              colproperty.FldTy,     // Text, Int, Date, Decimal, Code(Lookup)
+                                                              colproperty.FldTitle,       // Title
+                                                              colproperty.TitleAlign,  // Title Alignment DevExpress.Utils.HorzAlignment TitleAlign
+                                                              colproperty.FldTitleWidth,      // Title Width
+                                                              colproperty.Popup,       // Lookup
+                                                              colproperty.DefaultText,         // Default Text
+                                                              colproperty.TextAlign,    // Text Alignment DevExpress.Utils.HorzAlignment TxtAlign
+                                                              colproperty.FixYn,     // Freeze Column
+                                                              colproperty.GroupYn,   // Grouping
+                                                              colproperty.ShowYn,    // Hide
+                                                              colproperty.NeedYn,    // Necessary Field
+                                                              colproperty.EditYn,    // ReadOnly
+                                                              colproperty.Band1,       // Title Band 2nd
+                                                              colproperty.Band2,       // Title Band 1st
+                                                              colproperty.FuncStr,      // sum, avg, max, min
+                                                              colproperty.FormatStr,   // #.##, #,##0.00
+                                                              colproperty.ColorBg,    // Column Background Color
+                                                              colproperty.ColorFont);// Text Color
+                        AddGridColumn(gvCtrl, column);
                     }
                 }
                 gvCtrl.RefreshData();
@@ -404,9 +412,12 @@ select a.FrwId, a.FrmId, a.WrkId, a.FldNm, b.ToolNm, a.ParamWrk,
             }
         }
 
-        private void AddGridColumn(GridView gvCtrl, GridColumn gridColumn)
+        private void AddGridColumn(GridView gridV, GridColumn gridC)
         {
-            gvCtrl.Columns.Add(gridColumn);
+            if (gridC != null)
+            {
+                gridV.Columns.Add(gridC);
+            }
             //====================================================================================
             //여기서 그리트 컬럼 컬렉션에 그리드 컬럼을 추가하면 다음번에는 컬럼을 다시 그리지 않아도 된다. 
             //====================================================================================
@@ -426,7 +437,7 @@ select a.FrwId, a.FrmId, a.WrkId, a.FldNm, b.ToolNm, a.ParamWrk,
             // 여기서부터는 컬럼 타입에 따른 ColumnEdit 설정 예시입니다.
             // 실제 ColumnEdit 설정은 컨트롤 타입에 따라 다양하게 구현될 수 있습니다.
             // 예를 들어 RepositoryItemTextEdit, RepositoryItemDateEdit, RepositoryItemCheckEdit 등이 있습니다.
-            column.ColumnEdit = null;  // Make Function fn(ctrl_ty) to set column.ColumnEdit
+            //column.ColumnEdit = null;  // Make Function fn(ctrl_ty) to set column.ColumnEdit
             switch (fldTy)
             {
                 case "Text":
@@ -563,28 +574,28 @@ select a.SysCd, a.MenuId, a.MenuNm, a.FrmId, a.HideYn, a.CId, a.CDt
 
         #region Grid Open
         // Open<T> Pull Param을 이용한 Open
-        public void Open<T>()
-        {
-            OpenForm<T>();
-        }
-
         //public void Open<T>()
         //{
-        //    Common.gLog = $"{Environment.NewLine}-- {FldID} Open<T>()";
-        //    using (var db = new ACE.Lib.DbHelper())
-        //    {
-        //        var rows = db.PullParam(new { sys = SysCode, frm = FrmID, wkset = FldID });
-
-        //        DynamicParam = new DynamicParameters();
-        //        foreach (var item in rows)
-        //        {
-        //            string tmp = GetParamValue(this.FindForm().Controls, item.Param_name, item.Wkset_id, item.Ctrl_id);
-        //            DynamicParam.Add(item.Param_name, tmp);
-        //            Common.gLog = $"Declare @{item.Param_name} varchar(100) ='{tmp}'";
-        //        }
-        //    }
         //    OpenForm<T>();
         //}
+
+        public void Open<T>()
+        {
+            Common.gLog = $"{Environment.NewLine}-- {thisNm} Open<T>()";
+
+            WrkGetRepo wrkGetRepo = new WrkGetRepo();
+            List<WrkGet> wrkGets = wrkGetRepo.GetPullFlds(frwId, frmId, thisNm);
+            DSearchParam = new DynamicParameters();
+
+            foreach (var wrkGet in wrkGets)
+            {
+                //string tmp = GetParamValue(this.FindForm().Controls, wrkGet.GetFldNm, wrkGet.GetWrkId, wrkGet.FldNm);
+                string tmp = GetParamValue(this.FindForm().Controls, wrkGet);
+                DSearchParam.Add(wrkGet.GetFldNm, tmp);
+                Common.gLog = $"Declare @{wrkGet.GetFldNm} varchar(100) ='{tmp}'";
+            }
+            OpenForm<T>();
+        }
 
         // Open<T> Push Param을 이용한 Open
         //public void Open<T>(object p1, object p2)
@@ -594,7 +605,7 @@ select a.SysCd, a.MenuId, a.MenuNm, a.FrmId, a.HideYn, a.CId, a.CDt
         //    OpenObj = p2;
         //    OpenForm<T>();
         //}
-        
+
         // Open<T> Search Param을 이용한 Open
         //public void Open<T>(string containfrom, string wkset, object search)
         //{
@@ -640,38 +651,37 @@ select a.SysCd, a.MenuId, a.MenuNm, a.FrmId, a.HideYn, a.CId, a.CDt
                                                             column.ColorBg,    // Column Background Color
                                                             column.ColorFont));// Text Color
                     }
-                    //var sql = db.GetCRUDQuery(new { sys = SysCode, frm = FrmID, wkset = FldID, CRUD = "R" });
+                    gvCtrl.RefreshData();
 
-                    //Common.gLog = sql;
 
-                    //List<T> lists;
-                    //if (DynamicParam != null)
-                    //{
-                    //    lists = db.Query<T>(sql, DynamicParam);
-                    //}
-                    //else if (SearchParam != null)
-                    //{
-                    //    lists = db.Query<T>(sql, SearchParam);
-                    //}
-                    //else
-                    //{
-                    //    lists = db.Query<T>(sql, new { sys = SysCode, frm = FrmID, wkset = FldID });
-                    //}
+                    var sql = GenFunc.GetSql(new { FrwId = frwId, FrmId = frmId, WrkId = thisNm, CRUDM = "R" });
+                    Common.gMsg = sql;
 
-                    //var bindingLists = new BindingList<T>(lists);
-                    //foreach (dynamic item in bindingLists)
-                    //{
-                    //    item.ChangedFlag = ChangedFlagEnum.None;
-                    //}
-                    //gcCtrl.DataSource = bindingLists;
-                    //Common.gLog = $"-- End Select{Environment.NewLine}";
+                    List<T> lists;
+                    using (var db = new GaiaHelper())
+                    {
+                        if (DSearchParam != null)
+                        {
+                            lists = db.Query<T>(sql, DSearchParam);
+                        }
+                        else if (OSearchParam != null)
+                        {
+                            lists = db.Query<T>(sql, OSearchParam);
+                        }
+                        else
+                        {
+                            lists = db.Query<T>(sql, new { FrwId = frwId, FrmId = frmId, WrkId = thisNm });
+                        }
+                    }
+
+                    var bindingLists = new BindingList<T>(lists);
+
+                    foreach (dynamic item in bindingLists)
+                    {
+                        item.ChangedFlag = MdlState.None;
+                    }
+                    this.DataSource = bindingLists;
                 }
-
-                    //using (var db = new GaiaHelper())
-                    //{
-                    //    var columns = db.GetColumn(new { sys = SysCode, frm = FrmID, wkset = FldID });
-                
-                //}
             }
             catch (Exception e)
             {
@@ -1125,5 +1135,28 @@ select a.SysCd, a.MenuId, a.MenuNm, a.FrmId, a.HideYn, a.CId, a.CDt
         //    return frm;
         //}
         #endregion
+
+        private string GetParamValue(ControlCollection frm, WrkGet wrkGet)
+        {
+            string str = string.Empty;
+            //아마도 이부분은 수정이 필요할듯 컨트롤러에 따라 BindText가 다르니까 처리방법을 고려할것 
+            if (string.IsNullOrEmpty(wrkGet.WrkId))
+            {
+                dynamic tbx = frm.Find(wrkGet.FldNm, true).FirstOrDefault();
+                str = tbx.BindText;
+            }
+            else
+            {
+                dynamic tbx = frm.Find(wrkGet.WrkId, true).FirstOrDefault();
+                str = tbx.GetText(wrkGet.FldNm);
+            }
+
+            if (string.IsNullOrEmpty(wrkGet.WrkId))
+            {
+                str = wrkGet.GetDefalueValue;
+            }
+
+            return str;
+        }
     }
 }

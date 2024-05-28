@@ -41,11 +41,10 @@
             ucPanel1.Dock = DockStyle.Fill;
             ucPanel1.Location = new Point(0, 0);
             ucPanel1.Name = "ucPanel1";
-            ucPanel1.Readonly = false;
+            ucPanel1.ShowYn = true;
             ucPanel1.Size = new Size(488, 432);
             ucPanel1.TabIndex = 0;
             ucPanel1.Text = "ucPanel1";
-            ucPanel1.TitleAlignment = DevExpress.Utils.HorzAlignment.Default;
             // 
             // g10
             // 
@@ -53,7 +52,7 @@
             g10.gvCtrl = null;
             g10.Location = new Point(2, 23);
             g10.Name = "g10";
-            g10.Readonly = false;
+            g10.ShowYn = true;
             g10.Size = new Size(484, 407);
             g10.TabIndex = 0;
             g10.UseEmbeddedNavigator = true;

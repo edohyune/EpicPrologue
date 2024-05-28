@@ -10,6 +10,7 @@ using DevExpress.XtraTreeList.Printing;
 using DevExpress.Data.Filtering.Helpers;
 using System.ComponentModel;
 using DevExpress.Pdf.Native;
+using DevExpress.XtraGrid.Views.Grid;
 
 namespace Frms
 {
@@ -21,12 +22,27 @@ namespace Frms
         private DevExpress.XtraRichEdit.RichEditControl rtDelete;
         private DevExpress.XtraRichEdit.RichEditControl rtModel;
 
+        public FrwFrm frwFrm { get; set; }
+        private FrmCtrlRepo frmCtrlRepo { get; set; }
+        public BindingList<FrmCtrl> frmCtrls { get; set; }
+        private FrmWrk selectedDoc { get; set; }
+        private FrmWrkRepo frmWrkRepo { get; set; }
+        private BindingList<FrmWrk> frmWrks { get; set; }
+        public WrkFld wrkFld { get; set; }
+        private WrkFldRepo wrkFldRepo { get; set; }
+        private BindingList<WrkFld> wrkFldbs { get; set; }
+
+        private WrkGetRepo wrkGetRepo { get; set; }
+        private BindingList<WrkGet> wrkGetbs { get; set; }
+        private WrkSetRepo wrkSetRepo { get; set; }
+        private BindingList<WrkSet> wrkSetbs { get; set; }
+        private WrkRefRepo wrkRefRepo { get; set; }
+        private BindingList<WrkRef> wrkRefbs { get; set; }
 
         public WRKREPO()
         {
             InitializeComponent();
 
-            //Form List
             List<FrwFrm> frwFrms = new FrwFrmRepo().GetAll();
             foreach (var frwFrm in frwFrms)
             {
@@ -34,7 +50,10 @@ namespace Frms
             }
 
             InitializeRichTextEditor();
+            ucTab1.SelectedTabPageIndex = 0;
             ucTab2.SelectedTabPageIndex = 0;
+            ucTab3.SelectedTabPageIndex = 0;
+            ucTab4.SelectedTabPageIndex = 0;
         }
 
         private void InitializeRichTextEditor()
@@ -106,9 +125,18 @@ namespace Frms
             pnlDelete.Controls.Add(rtDelete);
             pnlModel.Controls.Add(rtModel);
         }
+        private void cmbForm_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            frwFrm = cmbForm.SelectedItem as FrwFrm;
 
-        private FrmWrk selectedDoc { get; set; }
-        private BindingList<WrkFld> wrkFldbs { get; set; }
+            frmWrkRepo = new FrmWrkRepo();
+            frmWrks = new BindingList<FrmWrk>(frmWrkRepo.GetByFrwFrm(frwFrm.FrwId, frwFrm.FrmId));
+
+            if (frwFrm != null)
+            {
+                g10OpenGrid();
+            }
+        }
         private void g10_UCFocusedRowChanged(object sender, int preIndex, int rowIndex, DevExpress.XtraGrid.Views.Base.FocusedRowChangedEventArgs e)
         {
             Common.gMsg = "g10_UCFocusedRowChanged";
@@ -117,12 +145,62 @@ namespace Frms
 
             selectedDoc = view.GetFocusedRow() as FrmWrk;
 
+            wrkFldRepo = new WrkFldRepo();
+            wrkFldbs = new BindingList<WrkFld>(wrkFldRepo.GetColumnProperties(selectedDoc.FrwId, selectedDoc.FrmId, selectedDoc.WrkId));
+
+            frmCtrlRepo = new FrmCtrlRepo();
+            frmCtrls = new BindingList<FrmCtrl>(frmCtrlRepo.GetByFrwFrm(selectedDoc.FrwId, selectedDoc.FrmId));
+
+            wrkGetRepo = new WrkGetRepo();
+            wrkGetbs = new BindingList<WrkGet>(wrkGetRepo.GetPullFlds(selectedDoc.FrwId, selectedDoc.FrmId, selectedDoc.WrkId));
+
+            wrkSetRepo = new WrkSetRepo();
+            wrkSetbs = new BindingList<WrkSet>(wrkSetRepo.SetPushFlds(selectedDoc.FrwId, selectedDoc.FrmId, selectedDoc.WrkId));
+
+            wrkRefRepo = new WrkRefRepo();
+            wrkRefbs = new BindingList<WrkRef>(wrkRefRepo.RefDataFlds(selectedDoc.FrwId, selectedDoc.FrmId, selectedDoc.WrkId));
+
             if (selectedDoc != null)
             {
-                g20OpenGrid(selectedDoc);
+                g20OpenGrid();
                 SetWrkForm();
-                t10OpenGrid(selectedDoc);
+                t10OpenGrid();
+                grdGetParamGrid();
+                grdSetparamGrid();
+                grdRefDataGrid();
             }
+        }
+
+        private void g10OpenGrid()
+        {
+            Common.gMsg = "g10OpenGrid";
+            //g10.Clear();
+            g10.DataSource = frmWrks;
+        }
+        private void g20OpenGrid()
+        {
+            Common.gMsg = "g20OpenGrid";
+            //g20.Clear();
+            g20.DataSource = frmCtrls;
+        }
+        private void t10OpenGrid()
+        {
+            Common.gMsg = "t10OpenGrid";
+            //t10.Clear();
+            t10.DataSource = wrkFldbs;
+        }
+        private void grdGetParamGrid()
+        {
+            grdGetParam.DataSource = wrkGetbs;
+        }
+
+        private void grdSetparamGrid()
+        {
+            grdSetParam.DataSource = wrkSetbs;
+        }
+        private void grdRefDataGrid()
+        {
+            grdRefData.DataSource = wrkRefbs;
         }
 
         private void SetWrkForm()
@@ -142,9 +220,12 @@ namespace Frms
             {
                 if (selectedDoc != null)
                 {
-                    g20OpenGrid(selectedDoc);
+                    g20OpenGrid();
                     SetWrkForm();
-                    t10OpenGrid(selectedDoc);
+                    t10OpenGrid();
+                    grdGetParamGrid();
+                    grdSetparamGrid();
+                    grdRefDataGrid();
                 }
             }
         }
@@ -179,55 +260,49 @@ namespace Frms
             }
             else if (e.Button.Properties.Caption == "Make Field")
             {
-                t10.Clear();
-                wrkFldbs = new WrkFldRepo().GetColumnBindingProperties(selectedDoc.FrwId, selectedDoc.FrmId, selectedDoc.WrkId);
-                t10.DataSource = wrkFldbs;
-
                 using (var db = new GaiaHelper())
                 {
                     DataSet dSet = db.GetGridColumns(new { FrwId = selectedDoc.FrwId, FrmId = selectedDoc.FrmId, WrkId = selectedDoc.WrkId, CRUDM = "R" });
                     //목적 Select 쿼리를 이용하여 컬럼을 생성한다.
                     if (dSet != null)
                     {
-                        //List<WrkFld> wrkFlds에 컬럼정보를 저장한다.
-                        List<WrkFld> wrkFlds = new List<WrkFld>();
                         foreach (DataColumn cols in dSet.Tables[0].Columns)
                         {
-                            Common.gMsg = (cols.ColumnName + " / " + cols.DataType.ToString());
-                            //wrkFldbs에 있으면 Update 없으면 Insert
-                            var wrkFld = wrkFldbs.Where(x => x.FldNm == cols.ColumnName).FirstOrDefault();
+                            var wrkFld = wrkFldbs.Where(x => x.CtrlNm == $"{selectedDoc.CtrlNm}.{cols.ColumnName}").FirstOrDefault();
+
                             if (wrkFld != null)
                             {
                                 wrkFld.FrwId = selectedDoc.FrwId;
                                 wrkFld.FrmId = selectedDoc.FrmId;
                                 wrkFld.WrkId = selectedDoc.WrkId;
                                 wrkFld.CtrlCls = "Column";
-                                wrkFld.CtrlNm = selectedDoc.CtrlNm;
-                                wrkFld.FldNm = selectedDoc.CtrlNm + "." + cols.ColumnName;
+                                wrkFld.CtrlNm = $"{selectedDoc.CtrlNm}.{cols.ColumnName}";
+                                wrkFld.FldNm = cols.ColumnName;
                                 wrkFld.FldTy = GetFieldType(cols.DataType);
-                                wrkFld.FldTitle = cols.ColumnName;
+                                //wrkFld.FldTitle = cols.ColumnName;
                                 wrkFld.ChangedFlag = MdlState.Updated;
                             }
                             else
                             {
-                                wrkFlds.Add(new WrkFld
+                                wrkFldbs.Add(new WrkFld
                                 {
                                     FrwId = selectedDoc.FrwId,
                                     FrmId = selectedDoc.FrmId,
                                     WrkId = selectedDoc.WrkId,
                                     CtrlCls = "Column",
-                                    CtrlNm = selectedDoc.CtrlNm,
-                                    FldNm = selectedDoc.CtrlNm + "." + cols.ColumnName,
+                                    CtrlNm = $"{selectedDoc.CtrlNm}.{cols.ColumnName}",
+                                    FldNm = cols.ColumnName,
                                     FldTy = GetFieldType(cols.DataType),
                                     FldTitle = cols.ColumnName,
                                     ChangedFlag = MdlState.Inserted
                                 });
                             }
                         }
-                        t10.DataSource = wrkFlds;
+                        t10.DataSource = wrkFldbs;
                     }
                 }
                 ucTab1.SelectedTabPageIndex = 1;
+                ucTab2.SelectedTabPageIndex = 1;
             }
         }
 
@@ -366,51 +441,10 @@ namespace Frms
 
             }
         }
-        #endregion
-
-        private void cmbForm_SelectedIndexChanged(object sender, EventArgs e)
+        private void ucPanel3_CustomButtonClick(object Sender, DevExpress.XtraBars.Docking2010.BaseButtonEventArgs e)
         {
-            Common.gMsg = "cmbForm_SelectedIndexChanged";
-
-            FrwFrm frwFrm = cmbForm.SelectedItem as FrwFrm;
-            if (frwFrm != null)
+            if (e.Button.Properties.Caption == "Save")
             {
-                g10OpenGrid(frwFrm);
-            }
-        }
-
-        private void g10OpenGrid(FrwFrm frwFrm)
-        {
-            Common.gMsg = "g10OpenGrid";
-
-            g10.Clear();
-            var frmWrkRepo = new FrmWrkRepo();
-            var frmWrks = frmWrkRepo.GetByFrwFrm(Lib.Common.gFrameWorkId, frwFrm.FrmId);
-            g10.DataSource = frmWrks;
-        }
-        private void g20OpenGrid(FrmWrk selectedDoc)
-        {
-            Common.gMsg = "g20OpenGrid";
-
-            g20.Clear();
-            var frmCtrlRepo = new FrmCtrlRepo();
-            var frmCtrls = frmCtrlRepo.GetByFrwFrm(Lib.Common.gFrameWorkId, selectedDoc.FrmId);
-            g20.DataSource = frmCtrls;
-        }
-        private void t10OpenGrid(FrmWrk selectedDoc)
-        {
-            Common.gMsg = "t10OpenGrid";
-            t10.Clear();
-            wrkFldbs = new WrkFldRepo().GetColumnBindingProperties(selectedDoc.FrwId, selectedDoc.FrmId, selectedDoc.WrkId);
-            t10.DataSource = wrkFldbs;
-        }
-
-        private void ucPanel3_UCCustomButtonClick(object Sender, DevExpress.XtraBars.Docking2010.BaseButtonEventArgs e)
-        {
-            var wrkFldRepo = new WrkFldRepo();
-            if (e.Button.Properties.Caption=="Save")
-            {
-                Common.gMsg = "Save-----------------------------------";
                 foreach (var wrkFld in wrkFldbs)
                 {
                     if (wrkFld.ChangedFlag == MdlState.Inserted)
@@ -426,10 +460,162 @@ namespace Frms
                         continue;
                     }
                 }
+            }
+            else if (e.Button.Properties.Caption == "Delete")
+            {
+                GridView view = t10.MainView as GridView;
+                if (view != null)
+                {
+                    var selectedRows = view.GetFocusedRow() as WrkFld;
+                    Common.gMsg = selectedRows.Id.ToString();
 
-
+                    if (selectedRows != null)
+                    {
+                        wrkFldbs.Remove(selectedRows);
+                        wrkFldRepo.Delete(selectedRows);
+                    }
+                }
             }
         }
+
+        private void pnlGet_CustomButtonClick(object sender, DevExpress.XtraBars.Docking2010.BaseButtonEventArgs e)
+        {
+            if (e.Button.Properties.Caption == "New")
+            {
+                wrkGetbs.Add(new WrkGet
+                {
+                    FrwId = selectedDoc.FrwId,
+                    FrmId = selectedDoc.FrmId,
+                    WrkId = selectedDoc.WrkId,
+                    ChangedFlag = MdlState.Inserted
+                });
+            }
+            else if (e.Button.Properties.Caption == "Save")
+            {
+                foreach (var wrkGet in wrkGetbs)
+                {
+                    if (wrkGet.ChangedFlag == MdlState.Inserted)
+                    {
+                        wrkGetRepo.Add(wrkGet);
+                    }
+                    else if (wrkGet.ChangedFlag == MdlState.Updated)
+                    {
+                        wrkGetRepo.Update(wrkGet);
+                    }
+                    else if (wrkGet.ChangedFlag == MdlState.None)
+                    {
+                        continue;
+                    }
+                }
+            }
+            else if (e.Button.Properties.Caption == "Delete")
+            {
+                GridView view = grdGetParam.MainView as GridView;
+                if (view != null)
+                {
+                    var selectedRows = view.GetFocusedRow() as WrkGet;
+                    if (selectedRows != null)
+                    {
+                        wrkGetbs.Remove(selectedRows);
+                        wrkGetRepo.Delete(selectedRows);
+                    }
+                }
+            }
+        }
+
+        private void pnlSet_CustomButtonClick(object sender, DevExpress.XtraBars.Docking2010.BaseButtonEventArgs e)
+        {
+            if (e.Button.Properties.Caption == "New")
+            {
+                wrkSetbs.Add(new WrkSet
+                {
+                    FrwId = selectedDoc.FrwId,
+                    FrmId = selectedDoc.FrmId,
+                    WrkId = selectedDoc.WrkId,
+                    ChangedFlag = MdlState.Inserted
+                });
+            }
+            else if (e.Button.Properties.Caption == "Save")
+            {
+                foreach (var wrkSet in wrkSetbs)
+                {
+                    if (wrkSet.ChangedFlag == MdlState.Inserted)
+                    {
+                        wrkSetRepo.Add(wrkSet);
+                    }
+                    else if (wrkSet.ChangedFlag == MdlState.Updated)
+                    {
+                        wrkSetRepo.Update(wrkSet);
+                    }
+                    else if (wrkSet.ChangedFlag == MdlState.None)
+                    {
+                        continue;
+                    }
+                }
+            }
+            else if (e.Button.Properties.Caption == "Delete")
+            {
+                GridView view = grdSetParam.MainView as GridView;
+                if (view != null)
+                {
+                    var selectedRows = view.GetFocusedRow() as WrkSet;
+                    if (selectedRows != null)
+                    {
+                        wrkSetbs.Remove(selectedRows);
+                        wrkSetRepo.Delete(selectedRows);
+                    }
+                }
+            }
+        }
+
+        private void pnlRef_CustomButtonClick(object sender, DevExpress.XtraBars.Docking2010.BaseButtonEventArgs e)
+        {
+            if (e.Button.Properties.Caption == "New")
+            {
+                wrkRefbs.Add(new WrkRef
+                {
+                    FrwId = selectedDoc.FrwId,
+                    FrmId = selectedDoc.FrmId,
+                    WrkId = selectedDoc.WrkId,
+                    FldNm = "RefFldNm",
+                    ChangedFlag = MdlState.Inserted
+                });
+            }
+            else if (e.Button.Properties.Caption == "Save")
+            {
+                foreach (var wrkRef in wrkRefbs)
+                {
+                    if (wrkRef.ChangedFlag == MdlState.Inserted)
+                    {
+                        wrkRefRepo.Add(wrkRef);
+                    }
+                    else if (wrkRef.ChangedFlag == MdlState.Updated)
+                    {
+                        wrkRefRepo.Update(wrkRef);
+                    }
+                    else if (wrkRef.ChangedFlag == MdlState.None)
+                    {
+                        continue;
+                    }
+                }
+            }
+            else if (e.Button.Properties.Caption == "Delete")
+            {
+                GridView view = grdRefData.MainView as GridView;
+                if (view != null)
+                {
+                    var selectedRows = view.GetFocusedRow() as WrkRef;
+                    if (selectedRows != null)
+                    {
+                        wrkRefbs.Remove(selectedRows);
+                        wrkRefRepo.Delete(selectedRows);
+                    }
+                }
+            }
+        }
+
+
+        #endregion
     }
 }
 namespace Frms.Models.WrkRepo

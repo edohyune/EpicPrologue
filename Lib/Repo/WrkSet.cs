@@ -89,14 +89,14 @@ namespace Lib.Repo
     }
     public interface IWrkSetRepo
     {
-        List<WrkSet> GetPushFlds(string frwId, string frmId, string wrkId);
+        List<WrkSet> SetPushFlds(string frwId, string frmId, string wrkId);
         void Add(WrkSet wrkSet);
         void Update(WrkSet wrkSet);
         void Delete(WrkSet wrkSet);
     }
     public class WrkSetRepo : IWrkSetRepo
     {
-        public List<WrkSet> GetPushFlds(string frwId, string frmId, string wrkId)
+        public List<WrkSet> SetPushFlds(string frwId, string frmId, string wrkId)
         {
             string sql = @"
 select a.FrwId, a.FrmId, a.WrkId, a.FldNm, a.SetWrkId,
@@ -133,10 +133,10 @@ select a.FrwId, a.FrmId, a.WrkId, a.FldNm, a.SetWrkId,
             string sql = @"
 insert into WRKSET
       (FrwId, FrmId, WrkId, FldNm, SetWrkId,
-       SetFldNm, SetDefaultValue, SqlId, Id, Pid,
+       SetFldNm, SetDefaultValue, SqlId, Pid,
        CId, CDt, MId, MDt)
 select @FrwId, @FrmId, @WrkId, @FldNm, @SetWrkId,
-       @SetFldNm, @SetDefaultValue, @SqlId, @Id, @Pid,
+       @SetFldNm, @SetDefaultValue, @SqlId, @Pid,
        @CId, getdate(), @MId, getdate()
 ";
             using (var db = new Lib.GaiaHelper())
@@ -169,12 +169,9 @@ update a
        SetFldNm= @SetFldNm,
        SetDefaultValue= @SetDefaultValue,
        SqlId= @SqlId,
-       Id= @Id,
        Pid= @Pid,
-       CId= @CId,
-       CDt= @CDt,
        MId= @MId,
-       MDt= @MDt
+       MDt= getdate()
   from WRKSET a
  where 1=1
    and Id = @Id

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Lib.Repo
 {
-    public class WrkGet : MdlBase
+    public class WrkRef : MdlBase
     {
         private string _FrwId;
         public string FrwId
@@ -36,25 +36,25 @@ namespace Lib.Repo
             set => Set(ref _FldNm, value);
         }
 
-        private string _GetWrkId;
-        public string GetWrkId
+        private string _RefWrkId;
+        public string RefWrkId
         {
-            get => _GetWrkId;
-            set => Set(ref _GetWrkId, value);
+            get => _RefWrkId;
+            set => Set(ref _RefWrkId, value);
         }
 
-        private string _GetFldNm;
-        public string GetFldNm
+        private string _RefFldNm;
+        public string RefFldNm
         {
-            get => _GetFldNm;
-            set => Set(ref _GetFldNm, value);
+            get => _RefFldNm;
+            set => Set(ref _RefFldNm, value);
         }
 
-        private string _GetDefalueValue;
-        public string GetDefalueValue
+        private string _RefDefalueValue;
+        public string RefDefalueValue
         {
-            get => _GetDefalueValue;
-            set => Set(ref _GetDefalueValue, value);
+            get => _RefDefalueValue;
+            set => Set(ref _RefDefalueValue, value);
         }
 
         private string _SqlId;
@@ -79,22 +79,22 @@ namespace Lib.Repo
         }
 
     }
-    public interface IWrkGetRepo
+    public interface IWrkRefRepo
     {
-        List<WrkGet> GetPullFlds(string frwId, string frmId, string wrkId);
-        void Add(WrkGet wrkGet);
-        void Update(WrkGet wrkGet);
-        void Delete(WrkGet wrkGet);
+        List<WrkRef> RefDataFlds(string frwId, string frmId, string wrkId);
+        void Add(WrkRef wrkRef);
+        void Update(WrkRef wrkRef);
+        void Delete(WrkRef wrkRef);
     }
-    public class WrkGetRepo : IWrkGetRepo
+    public class WrkRefRepo : IWrkRefRepo
     {
-        public List<WrkGet> GetPullFlds(string frwId, string frmId, string wrkId)
+        public List<WrkRef> RefDataFlds(string frwId, string frmId, string wrkId)
         {
             string sql = @"
-select a.FrwId, a.FrmId, a.WrkId, a.FldNm, a.GetWrkId,
-       a.GetFldNm, a.GetDefalueValue, a.SqlId, a.Id, a.PId,
+select a.FrwId, a.FrmId, a.WrkId, a.FldNm, a.RefWrkId,
+       a.RefFldNm, a.RefDefalueValue, a.SqlId, a.Id, a.PId,
        a.CId, a.CDt, a.MId, a.MDt
-  from WRKGET a
+  from WRKREF a
  where 1=1
    and a.FrmId = @FrmId
    and a.FrwId = @FrwId
@@ -102,7 +102,7 @@ select a.FrwId, a.FrmId, a.WrkId, a.FldNm, a.GetWrkId,
 ";
             using (var db = new Lib.GaiaHelper())
             {
-                var result = db.Query<WrkGet>(sql, new { FrwId = frwId, FrmId = frmId, WrkId = wrkId }).ToList();
+                var result = db.Query<WrkRef>(sql, new { FrwId = frwId, FrmId = frmId, WrkId = wrkId }).ToList();
 
                 if (result == null)
                 {
@@ -118,12 +118,12 @@ select a.FrwId, a.FrmId, a.WrkId, a.FldNm, a.GetWrkId,
                 }
             }
         }
-        public List<IdNm> GetPullFlds(object param)
+        public List<IdNm> RefFlds(object param)
         {
             string sql = @"
-select Id = a.GetFldNm, 
-       Nm = a.GetDefalueValue
-  from WRKGET a
+select Id = a.RefFldNm, 
+       Nm = a.RefDefalueValue
+  from WRKREF a
  where 1=1
    and a.FrmId = @FrmId
    and a.FrwId = @FrwId
@@ -136,56 +136,56 @@ select Id = a.GetFldNm,
             }
         }
 
-        public void Add(WrkGet wrkGet)
+        public void Add(WrkRef wrkRef)
         {
             string sql = @"
-insert into WRKGET
-      (FrwId, FrmId, WrkId, FldNm, GetWrkId,
-       GetFldNm, GetDefalueValue, SqlId, PId,
+insert into WRKREF
+      (FrwId, FrmId, WrkId, FldNm, RefWrkId,
+       RefFldNm, RefDefalueValue, SqlId, PId,
        CId, CDt, MId, MDt)
-select @FrwId, @FrmId, @WrkId, @FldNm, @GetWrkId,
-       @GetFldNm, @GetDefalueValue, @SqlId, @PId,
+select @FrwId, @FrmId, @WrkId, @FldNm, @RefWrkId,
+       @RefFldNm, @RefDefalueValue, @SqlId, @PId,
        @CId, getdate(), @MId, getdate()
 ";
             using (var db = new Lib.GaiaHelper())
             {
-                db.OpenExecute(sql, wrkGet);
+                db.OpenExecute(sql, wrkRef);
             }
         }
 
-        public void Update(WrkGet wrkGet)
+        public void Update(WrkRef wrkRef)
         {
             string sql = @"
 update a
    set FldNm= @FldNm,
-       GetWrkId= @GetWrkId,
-       GetFldNm= @GetFldNm,
-       GetDefalueValue= @GetDefalueValue,
+       RefWrkId= @RefWrkId,
+       RefFldNm= @RefFldNm,
+       RefDefalueValue= @RefDefalueValue,
        SqlId= @SqlId,
        PId= @PId,
        MId= @MId,
        MDt= getdate()
-  from WRKGET a
+  from WRKREF a
  where 1=1
    and Id = @Id
 ";
             using (var db = new Lib.GaiaHelper())
             {
-                db.OpenExecute(sql, wrkGet);
+                db.OpenExecute(sql, wrkRef);
             }
         }
 
-        public void Delete(WrkGet wrkGet)
+        public void Delete(WrkRef wrkRef)
         {
             string sql = @"
 delete
-  from WRKGET
+  from WRKREF
  where 1=1
    and Id = @Id
 ";
             using (var db = new Lib.GaiaHelper())
             {
-                db.OpenExecute(sql, wrkGet);
+                db.OpenExecute(sql, wrkRef);
             }
         }
     }

@@ -266,43 +266,6 @@ select a.FrwId, a.FrmId, a.CtrlNm, a.WrkId, a.CtrlCls,
             }
         }
 
-        public BindingList<WrkFld> GetColumnBindingProperties(string frwId, string frmId, string wrkId)
-        {
-            string sql = @"
-select a.FrwId, a.FrmId, a.CtrlNm, a.WrkId, a.CtrlCls,
-       a.FldNm, a.FldTy, a.FldX, a.FldY, a.FldWidth,
-       a.FldTitleWidth, a.FldTitle, a.TitleAlign, a.Popup, a.DefaultText,
-       a.TextAlign, a.FixYn, a.GroupYn, a.ShowYn, a.NeedYn,
-       a.EditYn, a.Band1, a.Band2, a.FuncStr, a.FormatStr,
-       a.ColorFont, a.ColorBg, a.ToolNm, a.Seq, a.Id,
-       a.CId, a.CDt, a.MId, a.MDt
-  from WRKFLD a
- where 1=1
-   and a.FrmId = @FrmId
-   and a.FrwId = @FrwId
-   and a.WrkId = @WrkId
-   and a.CtrlCls = 'Column'
-";
-            using (var db = new GaiaHelper())
-            {
-                var result = db.Query<WrkFld>(sql, new { FrwId = frwId, FrmId = frmId, WrkId = wrkId }).ToList();
-
-                if (result == null)
-                {
-                    return null;
-                    //throw new KeyNotFoundException($"A record with the code {frwId},{frmId},{wrkId} was not found.");
-                }
-                else
-                {
-                    foreach (var item in result)
-                    {
-                        item.ChangedFlag = MdlState.None;
-                    }
-                    return new BindingList<WrkFld>(result);
-                }
-            }
-        }
-
         public List<WrkFld> GetColumnProperties(string frwId, string frmId, string wrkId)
         {
             string sql = @"
@@ -418,14 +381,14 @@ insert into WRKFLD
        FldTitleWidth, FldTitle, TitleAlign, Popup, DefaultText,
        TextAlign, FixYn, GroupYn, ShowYn, NeedYn,
        EditYn, Band1, Band2, FuncStr, FormatStr,
-       ColorFont, ColorBg, ToolNm, Seq, Id,
+       ColorFont, ColorBg, ToolNm, Seq,
        CId, CDt, MId, MDt)
 select @FrwId, @FrmId, @CtrlNm, @WrkId, @CtrlCls,
        @FldNm, @FldTy, @FldX, @FldY, @FldWidth,
        @FldTitleWidth, @FldTitle, @TitleAlign, @Popup, @DefaultText,
        @TextAlign, @FixYn, @GroupYn, @ShowYn, @NeedYn,
        @EditYn, @Band1, @Band2, @FuncStr, @FormatStr,
-       @ColorFont, @ColorBg, @ToolNm, @Seq, @Id,
+       @ColorFont, @ColorBg, @ToolNm, @Seq,
        @CId, getdate(), @MId, getdate()
 ";
             using (var db = new Lib.GaiaHelper())
@@ -467,15 +430,11 @@ update a
        ColorBg= @ColorBg,
        ToolNm= @ToolNm,
        Seq= @Seq,
-       Id= @Id,
        MId= @MId,
        MDt= getdate()
   from WRKFLD a
  where 1=1
-   and FrmId = @FrmId
-   and FrwId = @FrwId
-   and WrkId = @WrkId
-   and CtrlNm = @CtrlNm
+   and Id = @Id
 ";
             using (var db = new Lib.GaiaHelper())
             {
@@ -489,10 +448,7 @@ update a
 delete
   from WRKFLD
  where 1=1
-   and FrmId = @FrmId
-   and FrwId = @FrwId
-   and WrkId = @WrkId
-   and CtrlNm = @CtrlNm
+   and Id = @Id
 ";
             using (var db = new Lib.GaiaHelper())
             {

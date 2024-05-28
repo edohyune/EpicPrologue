@@ -40,7 +40,7 @@
             custId.ControlWidth = 180;
             custId.Location = new Point(51, 35);
             custId.Name = "custId";
-            custId.Readonly = false;
+            custId.EditYn = false;
             custId.ShowYn = true;
             custId.Size = new Size(180, 20);
             custId.TabIndex = 0;
@@ -55,7 +55,7 @@
             custNm.ControlWidth = 180;
             custNm.Location = new Point(51, 61);
             custNm.Name = "custNm";
-            custNm.Readonly = false;
+            custNm.EditYn = true;
             custNm.ShowYn = true;
             custNm.Size = new Size(180, 20);
             custNm.TabIndex = 1;
@@ -70,7 +70,7 @@
             custAge.ControlWidth = 180;
             custAge.Location = new Point(51, 87);
             custAge.Name = "custAge";
-            custAge.Readonly = false;
+            custAge.EditYn = true;
             custAge.ShowYn = true;
             custAge.Size = new Size(180, 20);
             custAge.TabIndex = 2;

@@ -47,6 +47,15 @@
             DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions buttonImageOptions17 = new DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions();
             DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions buttonImageOptions18 = new DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions();
             DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions buttonImageOptions19 = new DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions();
+            DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions buttonImageOptions20 = new DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions();
+            DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions buttonImageOptions21 = new DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions();
+            DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions buttonImageOptions22 = new DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions();
+            DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions buttonImageOptions23 = new DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions();
+            DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions buttonImageOptions24 = new DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions();
+            DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions buttonImageOptions25 = new DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions();
+            DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions buttonImageOptions26 = new DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions();
+            DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions buttonImageOptions27 = new DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions();
+            DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions buttonImageOptions28 = new DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions();
             ucSplit1 = new Ctrls.UCSplit();
             ucPanel2 = new Ctrls.UCPanel();
             cmbForm = new DevExpress.XtraEditors.ComboBoxEdit();
@@ -71,8 +80,23 @@
             tpD = new DevExpress.XtraTab.XtraTabPage();
             pnlDelete = new Ctrls.UCPanel();
             xtraTabPage2 = new DevExpress.XtraTab.XtraTabPage();
+            ucSplit3 = new Ctrls.UCSplit();
             ucPanel3 = new Ctrls.UCPanel();
-            t10 = new Ctrls.UCGridSet();
+            t10 = new DevExpress.XtraGrid.GridControl();
+            gridView1 = new DevExpress.XtraGrid.Views.Grid.GridView();
+            ucTab4 = new Ctrls.UCTab();
+            xtraTabPage5 = new DevExpress.XtraTab.XtraTabPage();
+            pnlGet = new Ctrls.UCPanel();
+            grdGetParam = new DevExpress.XtraGrid.GridControl();
+            gridView2 = new DevExpress.XtraGrid.Views.Grid.GridView();
+            xtraTabPage6 = new DevExpress.XtraTab.XtraTabPage();
+            pnlSet = new Ctrls.UCPanel();
+            grdSetParam = new DevExpress.XtraGrid.GridControl();
+            gridView3 = new DevExpress.XtraGrid.Views.Grid.GridView();
+            xtraTabPage7 = new DevExpress.XtraTab.XtraTabPage();
+            pnlRef = new Ctrls.UCPanel();
+            grdRefData = new DevExpress.XtraGrid.GridControl();
+            gridView4 = new DevExpress.XtraGrid.Views.Grid.GridView();
             ((System.ComponentModel.ISupportInitialize)ucSplit1).BeginInit();
             ucSplit1.Panel1.SuspendLayout();
             ucSplit1.Panel2.SuspendLayout();
@@ -108,9 +132,31 @@
             tpD.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pnlDelete).BeginInit();
             xtraTabPage2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)ucSplit3).BeginInit();
+            ucSplit3.Panel1.SuspendLayout();
+            ucSplit3.Panel2.SuspendLayout();
+            ucSplit3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)ucPanel3).BeginInit();
             ucPanel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)t10).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)gridView1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)ucTab4).BeginInit();
+            ucTab4.SuspendLayout();
+            xtraTabPage5.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pnlGet).BeginInit();
+            pnlGet.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)grdGetParam).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)gridView2).BeginInit();
+            xtraTabPage6.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pnlSet).BeginInit();
+            pnlSet.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)grdSetParam).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)gridView3).BeginInit();
+            xtraTabPage7.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pnlRef).BeginInit();
+            pnlRef.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)grdRefData).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)gridView4).BeginInit();
             SuspendLayout();
             // 
             // ucSplit1
@@ -204,7 +250,8 @@
             xtraTabPage3.Controls.Add(g10);
             xtraTabPage3.Name = "xtraTabPage3";
             xtraTabPage3.Size = new Size(179, 493);
-            xtraTabPage3.Text = "xtraTabPage3";
+            xtraTabPage3.TabPageWidth = 70;
+            xtraTabPage3.Text = "WorkSet List";
             // 
             // g10
             // 
@@ -229,7 +276,8 @@
             xtraTabPage4.Controls.Add(g20);
             xtraTabPage4.Name = "xtraTabPage4";
             xtraTabPage4.Size = new Size(179, 493);
-            xtraTabPage4.Text = "xtraTabPage4";
+            xtraTabPage4.TabPageWidth = 70;
+            xtraTabPage4.Text = "Controllers";
             // 
             // g20
             // 
@@ -384,11 +432,30 @@
             // 
             // xtraTabPage2
             // 
-            xtraTabPage2.Controls.Add(ucPanel3);
+            xtraTabPage2.Controls.Add(ucSplit3);
             xtraTabPage2.Name = "xtraTabPage2";
             xtraTabPage2.Size = new Size(609, 518);
             xtraTabPage2.TabPageWidth = 120;
-            xtraTabPage2.Text = "Binding";
+            xtraTabPage2.Text = "Column Properties";
+            // 
+            // ucSplit3
+            // 
+            ucSplit3.Dock = DockStyle.Fill;
+            ucSplit3.Location = new Point(0, 0);
+            ucSplit3.Name = "ucSplit3";
+            ucSplit3.Orientation = Orientation.Horizontal;
+            // 
+            // ucSplit3.Panel1
+            // 
+            ucSplit3.Panel1.Controls.Add(ucPanel3);
+            // 
+            // ucSplit3.Panel2
+            // 
+            ucSplit3.Panel2.Controls.Add(ucTab4);
+            ucSplit3.Size = new Size(609, 518);
+            ucSplit3.SplitterDistance = 259;
+            ucSplit3.TabIndex = 2;
+            ucSplit3.TitleWidth = 50;
             // 
             // ucPanel3
             // 
@@ -400,27 +467,148 @@
             ucPanel3.Location = new Point(0, 0);
             ucPanel3.Name = "ucPanel3";
             ucPanel3.ShowYn = true;
-            ucPanel3.Size = new Size(609, 518);
-            ucPanel3.TabIndex = 1;
+            ucPanel3.Size = new Size(609, 259);
+            ucPanel3.TabIndex = 2;
             ucPanel3.Title = null;
-            ucPanel3.UCCustomButtonClick += ucPanel3_UCCustomButtonClick;
             // 
             // t10
             // 
-            t10.ColumnAutoWidth = true;
             t10.Dock = DockStyle.Fill;
-            t10.FocuseRowIndex = int.MinValue;
             t10.Location = new Point(2, 23);
-            t10.MultiSelect = false;
-            t10.MultiSelectMode = DevExpress.XtraGrid.Views.Grid.GridMultiSelectMode.RowSelect;
+            t10.MainView = gridView1;
             t10.Name = "t10";
-            t10.openFld = null;
-            t10.openFrm = null;
-            t10.RowAutoHeigh = false;
-            t10.ShowFindPanel = false;
-            t10.ShowGroupPanel = true;
-            t10.Size = new Size(605, 493);
+            t10.Size = new Size(605, 234);
             t10.TabIndex = 0;
+            t10.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] { gridView1 });
+            // 
+            // gridView1
+            // 
+            gridView1.GridControl = t10;
+            gridView1.Name = "gridView1";
+            // 
+            // ucTab4
+            // 
+            ucTab4.Dock = DockStyle.Fill;
+            ucTab4.Location = new Point(0, 0);
+            ucTab4.Name = "ucTab4";
+            ucTab4.SelectedTabPage = xtraTabPage5;
+            ucTab4.Size = new Size(609, 255);
+            ucTab4.TabIndex = 0;
+            ucTab4.TabPages.AddRange(new DevExpress.XtraTab.XtraTabPage[] { xtraTabPage5, xtraTabPage6, xtraTabPage7 });
+            // 
+            // xtraTabPage5
+            // 
+            xtraTabPage5.Controls.Add(pnlGet);
+            xtraTabPage5.Name = "xtraTabPage5";
+            xtraTabPage5.Size = new Size(607, 230);
+            xtraTabPage5.TabPageWidth = 120;
+            xtraTabPage5.Text = "Get Parameters(Pull)";
+            // 
+            // pnlGet
+            // 
+            pnlGet.Controls.Add(grdGetParam);
+            pnlGet.CustomHeaderButtons.AddRange(new DevExpress.XtraEditors.ButtonPanel.IBaseButton[] { new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("New", true, buttonImageOptions20, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1), new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Save", true, buttonImageOptions21, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1), new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Delete", true, buttonImageOptions22, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1) });
+            pnlGet.CustomHeaderButtonsLocation = DevExpress.Utils.GroupElementLocation.BeforeText;
+            pnlGet.Dock = DockStyle.Fill;
+            pnlGet.EditYn = true;
+            pnlGet.Location = new Point(0, 0);
+            pnlGet.Name = "pnlGet";
+            pnlGet.ShowYn = true;
+            pnlGet.Size = new Size(607, 230);
+            pnlGet.TabIndex = 2;
+            pnlGet.Title = null;
+            pnlGet.CustomButtonClick += pnlGet_CustomButtonClick;
+            // 
+            // grdGetParam
+            // 
+            grdGetParam.Dock = DockStyle.Fill;
+            grdGetParam.Location = new Point(2, 23);
+            grdGetParam.MainView = gridView2;
+            grdGetParam.Name = "grdGetParam";
+            grdGetParam.Size = new Size(603, 205);
+            grdGetParam.TabIndex = 0;
+            grdGetParam.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] { gridView2 });
+            // 
+            // gridView2
+            // 
+            gridView2.GridControl = grdGetParam;
+            gridView2.Name = "gridView2";
+            // 
+            // xtraTabPage6
+            // 
+            xtraTabPage6.Controls.Add(pnlSet);
+            xtraTabPage6.Name = "xtraTabPage6";
+            xtraTabPage6.Size = new Size(607, 230);
+            xtraTabPage6.TabPageWidth = 120;
+            xtraTabPage6.Text = "Set Parameters(Push)";
+            // 
+            // pnlSet
+            // 
+            pnlSet.Controls.Add(grdSetParam);
+            pnlSet.CustomHeaderButtons.AddRange(new DevExpress.XtraEditors.ButtonPanel.IBaseButton[] { new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("New", true, buttonImageOptions23, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1), new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Save", true, buttonImageOptions24, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1), new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Delete", true, buttonImageOptions25, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1) });
+            pnlSet.CustomHeaderButtonsLocation = DevExpress.Utils.GroupElementLocation.BeforeText;
+            pnlSet.Dock = DockStyle.Fill;
+            pnlSet.EditYn = true;
+            pnlSet.Location = new Point(0, 0);
+            pnlSet.Name = "pnlSet";
+            pnlSet.ShowYn = true;
+            pnlSet.Size = new Size(607, 230);
+            pnlSet.TabIndex = 2;
+            pnlSet.Title = null;
+            pnlSet.CustomButtonClick += pnlSet_CustomButtonClick;
+            // 
+            // grdSetParam
+            // 
+            grdSetParam.Dock = DockStyle.Fill;
+            grdSetParam.Location = new Point(2, 23);
+            grdSetParam.MainView = gridView3;
+            grdSetParam.Name = "grdSetParam";
+            grdSetParam.Size = new Size(603, 205);
+            grdSetParam.TabIndex = 0;
+            grdSetParam.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] { gridView3 });
+            // 
+            // gridView3
+            // 
+            gridView3.GridControl = grdSetParam;
+            gridView3.Name = "gridView3";
+            // 
+            // xtraTabPage7
+            // 
+            xtraTabPage7.Controls.Add(pnlRef);
+            xtraTabPage7.Name = "xtraTabPage7";
+            xtraTabPage7.Size = new Size(607, 230);
+            xtraTabPage7.TabPageWidth = 120;
+            xtraTabPage7.Text = "Reference Data";
+            // 
+            // pnlRef
+            // 
+            pnlRef.Controls.Add(grdRefData);
+            pnlRef.CustomHeaderButtons.AddRange(new DevExpress.XtraEditors.ButtonPanel.IBaseButton[] { new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("New", true, buttonImageOptions26, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1), new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Save", true, buttonImageOptions27, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1), new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Delete", true, buttonImageOptions28, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1) });
+            pnlRef.CustomHeaderButtonsLocation = DevExpress.Utils.GroupElementLocation.BeforeText;
+            pnlRef.Dock = DockStyle.Fill;
+            pnlRef.EditYn = true;
+            pnlRef.Location = new Point(0, 0);
+            pnlRef.Name = "pnlRef";
+            pnlRef.ShowYn = true;
+            pnlRef.Size = new Size(607, 230);
+            pnlRef.TabIndex = 3;
+            pnlRef.Title = null;
+            pnlRef.CustomButtonClick += pnlRef_CustomButtonClick;
+            // 
+            // grdRefData
+            // 
+            grdRefData.Dock = DockStyle.Fill;
+            grdRefData.Location = new Point(2, 23);
+            grdRefData.MainView = gridView4;
+            grdRefData.Name = "grdRefData";
+            grdRefData.Size = new Size(603, 205);
+            grdRefData.TabIndex = 0;
+            grdRefData.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] { gridView4 });
+            // 
+            // gridView4
+            // 
+            gridView4.GridControl = grdRefData;
+            gridView4.Name = "gridView4";
             // 
             // WRKREPO
             // 
@@ -464,9 +652,31 @@
             tpD.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)pnlDelete).EndInit();
             xtraTabPage2.ResumeLayout(false);
+            ucSplit3.Panel1.ResumeLayout(false);
+            ucSplit3.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)ucSplit3).EndInit();
+            ucSplit3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)ucPanel3).EndInit();
             ucPanel3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)t10).EndInit();
+            ((System.ComponentModel.ISupportInitialize)gridView1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)ucTab4).EndInit();
+            ucTab4.ResumeLayout(false);
+            xtraTabPage5.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)pnlGet).EndInit();
+            pnlGet.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)grdGetParam).EndInit();
+            ((System.ComponentModel.ISupportInitialize)gridView2).EndInit();
+            xtraTabPage6.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)pnlSet).EndInit();
+            pnlSet.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)grdSetParam).EndInit();
+            ((System.ComponentModel.ISupportInitialize)gridView3).EndInit();
+            xtraTabPage7.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)pnlRef).EndInit();
+            pnlRef.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)grdRefData).EndInit();
+            ((System.ComponentModel.ISupportInitialize)gridView4).EndInit();
             ResumeLayout(false);
         }
 
@@ -495,8 +705,23 @@
         private DevExpress.XtraTab.XtraTabPage xtraTabPage3;
         private DevExpress.XtraTab.XtraTabPage xtraTabPage4;
         private Ctrls.UCGridSet g20;
-        private Ctrls.UCGridSet t10;
         private DevExpress.XtraEditors.ComboBoxEdit cmbForm;
+        private Ctrls.UCSplit ucSplit3;
         private Ctrls.UCPanel ucPanel3;
+        private DevExpress.XtraGrid.GridControl t10;
+        public DevExpress.XtraGrid.Views.Grid.GridView gridView1;
+        private Ctrls.UCTab ucTab4;
+        private DevExpress.XtraTab.XtraTabPage xtraTabPage5;
+        private Ctrls.UCPanel pnlGet;
+        private DevExpress.XtraGrid.GridControl grdGetParam;
+        public DevExpress.XtraGrid.Views.Grid.GridView gridView2;
+        private DevExpress.XtraTab.XtraTabPage xtraTabPage6;
+        private Ctrls.UCPanel pnlSet;
+        private DevExpress.XtraGrid.GridControl grdSetParam;
+        public DevExpress.XtraGrid.Views.Grid.GridView gridView3;
+        private DevExpress.XtraTab.XtraTabPage xtraTabPage7;
+        private Ctrls.UCPanel pnlRef;
+        private DevExpress.XtraGrid.GridControl grdRefData;
+        public DevExpress.XtraGrid.Views.Grid.GridView gridView4;
     }
 }

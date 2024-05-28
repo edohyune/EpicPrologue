@@ -619,7 +619,7 @@ namespace Frms
                     frmWrkRepo.Delete(frmWrk.WrkId);
                 }
             }
-            else if (e.Button.Properties.Caption == "Add")
+            else if (e.Button.Properties.Caption == "New")
             {
                 //입력을 위한 새로운 line을 준비한다. 저장은 Save 버튼을 눌러야 한다.
                 frmWrkbs.Add(new FrmWrk
