@@ -71,7 +71,7 @@ namespace Frms
             rtSelect.Modified = true;
             rtSelect.LayoutUnit = DevExpress.XtraRichEdit.DocumentLayoutUnit.Pixel;
             rtSelect.Options.HorizontalRuler.Visibility = DevExpress.XtraRichEdit.RichEditRulerVisibility.Hidden;
-            rtSelect.ReplaceService<ISyntaxHighlightService>(new SQL_Syntax(rtSelect.Document));
+            rtSelect.ReplaceService<ISyntaxHighlightService>(new  Lib.Syntax.SQL_Syntax(rtSelect.Document));
             rtSelect.Options.Search.RegExResultMaxGuaranteedLength = 500;
             rtSelect.Document.Sections[0].Page.Width = Units.InchesToDocumentsF(300f);
 
@@ -82,7 +82,7 @@ namespace Frms
             rtInsert.Modified = true;
             rtInsert.LayoutUnit = DevExpress.XtraRichEdit.DocumentLayoutUnit.Pixel;
             rtInsert.Options.HorizontalRuler.Visibility = DevExpress.XtraRichEdit.RichEditRulerVisibility.Hidden;
-            rtInsert.ReplaceService<ISyntaxHighlightService>(new SQL_Syntax(rtInsert.Document));
+            rtInsert.ReplaceService<ISyntaxHighlightService>(new Lib.Syntax.SQL_Syntax(rtInsert.Document));
             rtInsert.Options.Search.RegExResultMaxGuaranteedLength = 500;
             rtInsert.Document.Sections[0].Page.Width = Units.InchesToDocumentsF(300f);
 
@@ -93,7 +93,7 @@ namespace Frms
             rtUpdate.Modified = true;
             rtUpdate.LayoutUnit = DevExpress.XtraRichEdit.DocumentLayoutUnit.Pixel;
             rtUpdate.Options.HorizontalRuler.Visibility = DevExpress.XtraRichEdit.RichEditRulerVisibility.Hidden;
-            rtUpdate.ReplaceService<ISyntaxHighlightService>(new SQL_Syntax(rtUpdate.Document));
+            rtUpdate.ReplaceService<ISyntaxHighlightService>(new Lib.Syntax.SQL_Syntax(rtUpdate.Document));
             rtUpdate.Options.Search.RegExResultMaxGuaranteedLength = 500;
             rtUpdate.Document.Sections[0].Page.Width = Units.InchesToDocumentsF(300f);
 
@@ -104,7 +104,7 @@ namespace Frms
             rtDelete.Modified = true;
             rtDelete.LayoutUnit = DevExpress.XtraRichEdit.DocumentLayoutUnit.Pixel;
             rtDelete.Options.HorizontalRuler.Visibility = DevExpress.XtraRichEdit.RichEditRulerVisibility.Hidden;
-            rtDelete.ReplaceService<ISyntaxHighlightService>(new SQL_Syntax(rtDelete.Document));
+            rtDelete.ReplaceService<ISyntaxHighlightService>(new Lib.Syntax.SQL_Syntax(rtDelete.Document));
             rtDelete.Options.Search.RegExResultMaxGuaranteedLength = 500;
             rtDelete.Document.Sections[0].Page.Width = Units.InchesToDocumentsF(300f);
 
@@ -115,7 +115,7 @@ namespace Frms
             rtModel.Modified = true;
             rtModel.LayoutUnit = DevExpress.XtraRichEdit.DocumentLayoutUnit.Pixel;
             rtModel.Options.HorizontalRuler.Visibility = DevExpress.XtraRichEdit.RichEditRulerVisibility.Hidden;
-            rtModel.ReplaceService<ISyntaxHighlightService>(new CS_Syntax(rtModel.Document));
+            rtModel.ReplaceService<ISyntaxHighlightService>(new Lib.Syntax.CS_Syntax(rtModel.Document));
             rtModel.Options.Search.RegExResultMaxGuaranteedLength = 500;
             rtModel.Document.Sections[0].Page.Width = Units.InchesToDocumentsF(300f);
 
@@ -135,6 +135,7 @@ namespace Frms
             if (frwFrm != null)
             {
                 g10OpenGrid();
+                g10_UCFocusedRowChanged(g10, 0, 0, null);
             }
         }
         private void g10_UCFocusedRowChanged(object sender, int preIndex, int rowIndex, DevExpress.XtraGrid.Views.Base.FocusedRowChangedEventArgs e)

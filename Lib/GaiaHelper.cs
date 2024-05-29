@@ -1,7 +1,12 @@
 ﻿using Dapper;
+using DevExpress.CodeParser;
+using DevExpress.Data.Filtering.Helpers;
 using Lib.Repo;
+using Lib.Syntax;
 using System.Data;
 using System.Data.SqlClient;
+using System.Reflection;
+using System.Text.RegularExpressions;
 
 namespace Lib
 {
@@ -90,11 +95,12 @@ namespace Lib
         {
             try
             {
+                sql = ProcessQuery(sql, param);
                 return SqlMapper.Query(_conn, sql, param, _tran).Select(x => x as IDictionary<string, object>).ToList().FirstOrDefault();
             }
             catch (Exception ex)
             {
-                LogException(ex);
+                LogException(ex, sql);
                 throw;
             }
         }
@@ -105,11 +111,12 @@ namespace Lib
         {
             try
             {
+                sql = ProcessQuery(sql, param);
                 return SqlMapper.Query(_conn, sql, param, _tran);
             }
             catch (Exception ex)
             {
-                LogException(ex);
+                LogException(ex, sql);
                 throw;
             }
         }
@@ -119,11 +126,12 @@ namespace Lib
         {
             try
             {
+                sql = ProcessQuery(sql, null);
                 return SqlMapper.Query<T>(_conn, sql, null, _tran).ToList();
             }
             catch (Exception ex)
             {
-                LogException(ex);
+                LogException(ex, sql);
                 throw;
             }
         }
@@ -132,11 +140,12 @@ namespace Lib
         {
             try
             {
+                sql = ProcessQuery(sql, param);
                 return SqlMapper.Query<T>(_conn, sql, param, _tran).ToList();
             }
             catch (Exception ex)
             {
-                LogException(ex);
+                LogException(ex, sql);
                 throw;
             }
         }
@@ -145,12 +154,13 @@ namespace Lib
         {
             try
             {
+                sql = ProcessQuery(sql, param);
                 return SqlMapper.Query<T>(_conn, sql, param, _tran).ToList();
 
             }
             catch (Exception ex)
             {
-                LogException(ex);
+                LogException(ex, sql);
                 throw;
             }
         }
@@ -161,11 +171,12 @@ namespace Lib
         {
             try
             {
+                sql = ProcessQuery(sql, null);
                 return SqlMapper.Execute(_conn, sql, null, _tran);
             }
             catch (Exception ex)
             {
-                LogException(ex);
+                LogException(ex, sql);
                 throw;
             }
 
@@ -175,12 +186,13 @@ namespace Lib
         {
             try
             {
+                sql = ProcessQuery(sql, param);
                 return SqlMapper.Execute(_conn, sql, param, _tran);
 
             }
             catch (Exception ex)
             {
-                LogException(ex);
+                LogException(ex, sql);
                 throw;
             }
         }
@@ -191,6 +203,7 @@ namespace Lib
         {
             try
             {
+                sql = ProcessQuery(sql, param);
                 return _conn.ExecuteScalar<string>(sql, param, _tran);
             }
             catch (Exception ex)
@@ -204,19 +217,14 @@ namespace Lib
         {
             try
             {
+                sql = ProcessQuery(sql, null);
                 return _conn.ExecuteScalar<T>(sql, param, _tran);
             }
             catch (Exception ex)
             {
-                LogException(ex);
+                LogException(ex, sql);
                 throw;
             }
-        }
-
-        private void LogException(Exception ex, string sql=null)
-        {
-            Lib.Common.gMsg = $"Exception : {ex}";
-            Lib.Common.gMsg = $"Query : {sql}";
         }
 
         public DataSet GetGridColumns(object param)
@@ -240,7 +248,7 @@ namespace Lib
         {
             DataSet dsSelect = new DataSet();
 
-            string sqltxt = GenFunc.GetSql(prm);
+            string sqltxt = RemoveConditionalClauses(ReplaceAtVariables(GenFunc.GetSql(prm)));
 
             SqlConnection SqlCon = new SqlConnection(_connectionString);
             SqlCommand SqlCmd = new SqlCommand(sqltxt, SqlCon);
@@ -254,7 +262,111 @@ namespace Lib
             adapter.Fill(dsSelect);
             return dsSelect;
         }
+        #endregion
+        #region About Log
+        private void LogException(Exception ex, string sql = null)
+        {
+            Lib.Common.gMsg = $"Exception : {ex}";
+            Lib.Common.gMsg = $"Query : {sql}";
+        }
+        private void LogParameters(object param)
+        {
+            if (param is DynamicParameters dynamicParams)
+            {
+                foreach (var paramName in dynamicParams.ParameterNames)
+                {
+                    var paramValue = dynamicParams.Get<object>(paramName);
+                    Common.gMsg += $"\nParam: {paramName}, Value: {paramValue}";
+                }
+            }
+            else
+            {
+                foreach (PropertyInfo prop in param.GetType().GetProperties())
+                {
+                    var propName = prop.Name;
+                    var propValue = prop.GetValue(param);
+                    Common.gMsg += $"\nParam: {propName}, Value: {propValue}";
+                }
+            }
+        }
+        #endregion
+        #region SQL Query Replace
+        private string ProcessQuery(string sql, object param)
+        {
+            if (param != null)
+            {
+                LogParameters(param);
+                sql = ReplaceConditionalClauses(sql, param);
+            }
+            sql = ReplaceGVariables(sql);
+            Common.gMsg = sql;
+            return sql;
+        }
 
+
+        private string ReplaceGVariables(string sql)
+        {
+            var gVariables = GetGVariables();
+            foreach (var variable in gVariables)
+            {
+                sql = Regex.Replace(sql, Regex.Escape(variable.Key), variable.Value, RegexOptions.IgnoreCase);
+            }
+            return sql;
+        }
+        private string ReplaceAtVariables(string sql)
+        {
+            SQLVariableExtractor extractor = new SQLVariableExtractor();
+            SQLSyntaxMatch variables = extractor.ExtractVariables(sql);
+
+            foreach (var kvp in variables.OPatternMatch)
+            {
+                string val = GenFunc.IsNull(kvp.Value,"''");
+                //sql = sql.Replace(kvp.Key, "");
+                sql = Regex.Replace(sql, Regex.Escape(kvp.Key), val, RegexOptions.IgnoreCase);
+            }
+            return sql;
+        }
+        private string RemoveConditionalClauses(string sql)
+        {
+            var conditionalPattern = new Regex(@"andif\s+(.+?)\s+endif", RegexOptions.IgnoreCase);
+            return conditionalPattern.Replace(sql, string.Empty);
+        }
+
+        private Dictionary<string, string> GetGVariables()
+        {
+            var globalVariables = new Dictionary<string, string>();
+            var fields = typeof(Common).GetFields(BindingFlags.Public | BindingFlags.Static);
+
+            foreach (var field in fields)
+            {
+                var value = field.GetValue(null)?.ToString();
+                if (value != null)
+                {
+                    globalVariables.Add($"<${field.Name}>", value);
+                }
+            }
+            return globalVariables;
+        }
+        private string ReplaceConditionalClauses(string sql, object param)
+        {
+            var conditionalPattern = new Regex(@"andif\s+(.+?)\s+endif", RegexOptions.IgnoreCase);
+            var dynamicParams = param as DynamicParameters;
+            var paramNames = dynamicParams?.ParameterNames.ToHashSet(StringComparer.OrdinalIgnoreCase)
+                             ?? param.GetType().GetProperties().Select(p => p.Name).ToHashSet(StringComparer.OrdinalIgnoreCase);
+
+            return conditionalPattern.Replace(sql, match =>
+            {
+                var condition = match.Groups[1].Value;
+                var paramName = Regex.Match(condition, @"@\w+").Value;
+
+                if (paramNames.Contains(paramName.Trim('@')))
+                {
+                    return $"AND {condition}";
+                }
+
+                return string.Empty;
+            });
+        }
         #endregion
     }
     public class BoolCharTypeHandler : SqlMapper.ITypeHandler

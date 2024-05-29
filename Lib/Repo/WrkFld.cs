@@ -389,7 +389,7 @@ select @FrwId, @FrmId, @CtrlNm, @WrkId, @CtrlCls,
        @TextAlign, @FixYn, @GroupYn, @ShowYn, @NeedYn,
        @EditYn, @Band1, @Band2, @FuncStr, @FormatStr,
        @ColorFont, @ColorBg, @ToolNm, @Seq,
-       @CId, getdate(), @MId, getdate()
+       <$gRegId>, getdate(), <$gRegId>, getdate()
 ";
             using (var db = new Lib.GaiaHelper())
             {
@@ -430,7 +430,7 @@ update a
        ColorBg= @ColorBg,
        ToolNm= @ToolNm,
        Seq= @Seq,
-       MId= @MId,
+       MId= <$gRegId>,
        MDt= getdate()
   from WRKFLD a
  where 1=1

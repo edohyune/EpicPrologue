@@ -23,7 +23,6 @@ namespace Frms.TST
         public Syntax()
         {
             InitializeComponent();
-
         }
 
 

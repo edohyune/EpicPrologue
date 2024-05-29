@@ -14,7 +14,7 @@ namespace Lib
         //GAIA 개발자 - 모든 시스템의 프레임워크를 개발한다. 
         //프레임워크는 프로젝트별로 생성된다. 
         public static string gId = string.Empty;           //로그인 ID - varchar
-        public static int? gRegId = null;           //로그인 ID - int
+        public static int? gRegId = null;                  //로그인 ID - int
         public static string gNm = string.Empty;           //로그인 이름
         public static string gCls = string.Empty;          //사용자 구분
 

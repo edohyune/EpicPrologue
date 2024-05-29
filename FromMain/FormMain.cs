@@ -7,6 +7,7 @@ using Lib;
 using Lib.Repo;
 using System.IO;
 using Repo;
+using DevExpress.XtraEditors.ButtonsPanelControl;
 
 namespace GAIA
 {
@@ -37,12 +38,16 @@ namespace GAIA
         {
             InitializeComponent();
 
-            menuCtrl.VisibleChanged += new EventHandler(menuCtrl_VisibleChanged);
-            msgCtrl.VisibleChanged += new EventHandler(msgCtrl_VisibleChanged);
+            //menuCtrl.VisibleChanged += new EventHandler(menuCtrl_VisibleChanged);
+            //msgCtrl.VisibleChanged += new EventHandler(msgCtrl_VisibleChanged);
+            ucTab1.VisibleChanged += new EventHandler(ucTab1_VisibleChanged);
             Common.gMsgChanged += new EventHandler(AddGAIAMsg);
 
-            msgCtrl.Visible = false;
-            menuCtrl.Visible = false;
+            ucTab1.Visible = false;
+            ucTab1.SelectedTabPageIndex = 0;
+
+            //msgCtrl.Visible = false;
+            //menuCtrl.Visible = false;
 
             //FrameWork List
             List<PrjFrw> frmwrks = new PrjFrwRepo().GetAll();
@@ -56,6 +61,11 @@ namespace GAIA
             xtraTabbedMdiManager.AppearancePage.HeaderActive.BorderColor = System.Drawing.Color.Black;
             xtraTabbedMdiManager.AppearancePage.HeaderActive.Font = new System.Drawing.Font(xtraTabbedMdiManager.AppearancePage.HeaderActive.Font, System.Drawing.FontStyle.Bold);
             xtraTabbedMdiManager.ClosePageButtonShowMode = DevExpress.XtraTab.ClosePageButtonShowMode.InAllTabPageHeaders;
+        }
+
+        private void ucTab1_VisibleChanged(object sender, EventArgs e)
+        {
+            simpleButton1.Text = ucTab1.Visible ? "Hide" : "Show";
         }
 
         private void xtraTabbedMdiManager_SelectedPageChanged(object sender, EventArgs e)
@@ -196,25 +206,62 @@ namespace GAIA
         }
 
 
-        private void menuCtrl_VisibleChanged(object sender, EventArgs e)
-        {
-            simpleButton1.Text = menuCtrl.Visible ? "Hide Menu": "Show Menu";
-        }
-        private void msgCtrl_VisibleChanged(object sender, EventArgs e)
-        {
-            barButtonShowMsg.Caption = msgCtrl.Visible ? "Hide Message": "Show Message";
-        }
         private void simpleButton1_Click(object sender, EventArgs e)
         {
-            menuCtrl.Visible = !(menuCtrl.Visible);
+            ucTab1.Visible = !(ucTab1.Visible);
+            //menuCtrl.Visible = !(menuCtrl.Visible);
         }
-        private void barButtonShowMsg_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
-        {
-            msgCtrl.Visible = !(msgCtrl.Visible);
-        }
+        //private void menuCtrl_VisibleChanged(object sender, EventArgs e)
+        //{
+        //    //simpleButton1.Text = menuCtrl.Visible ? "Hide Menu": "Show Menu";
+        //    simpleButton1.Text = ucTab1.Visible ? "Hide" : "Show";
+        //}
+        //private void msgCtrl_VisibleChanged(object sender, EventArgs e)
+        //{
+        //    barButtonShowMsg.Caption = msgCtrl.Visible ? "Hide Message": "Show Message";
+        //}
+        //private void barButtonShowMsg_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        //{
+        //    msgCtrl.Visible = !(msgCtrl.Visible);
+        //}
         private void AddGAIAMsg(object sender, EventArgs e)
         {
-            msgCtrl.Text += sender.ToString() + Environment.NewLine;
+            if (Common.gTrackMsg)
+            {
+                msgCtrl.Text += sender.ToString() + Environment.NewLine;
+            }
         }
+
+        private void ucPanel1_CustomButtonChecked(object sender, DevExpress.XtraBars.Docking2010.BaseButtonEventArgs e)
+        {
+            Common.gTrackMsg = true;
+            (e.Button as GroupBoxButton).Caption = "Stop tracking";
+        }
+
+        private void ucPanel1_CustomButtonUnchecked(object sender, DevExpress.XtraBars.Docking2010.BaseButtonEventArgs e)
+        {
+            Common.gTrackMsg = false;
+            (e.Button as GroupBoxButton).Caption = "Tracking";
+        }
+        private void ucPanel1_CustomButtonClick(object sender, DevExpress.XtraBars.Docking2010.BaseButtonEventArgs e)
+        {
+            switch (e.Button.Properties.Caption.Trim())
+            {
+                case "Clear":
+                    msgCtrl.Text = string.Empty;
+                    break;
+                case "Copy":
+                    Clipboard.SetText(msgCtrl.Text);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        private void barSubItem1_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            Common.gMsg = "SubItem1 Clicked";
+        }
+
     }
 }

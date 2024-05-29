@@ -29,6 +29,9 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
+            DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions buttonImageOptions1 = new DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions();
+            DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions buttonImageOptions2 = new DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions();
+            DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions buttonImageOptions3 = new DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions();
             barManager1 = new DevExpress.XtraBars.BarManager(components);
             bar1 = new DevExpress.XtraBars.Bar();
             barButtonItem1 = new DevExpress.XtraBars.BarButtonItem();
@@ -49,11 +52,21 @@
             simpleButton1 = new DevExpress.XtraEditors.SimpleButton();
             menuCtrl = new DevExpress.XtraEditors.ListBoxControl();
             xtraTabbedMdiManager = new DevExpress.XtraTabbedMdi.XtraTabbedMdiManager(components);
+            ucPanel1 = new Ctrls.UCPanel();
+            ucTab1 = new Ctrls.UCTab();
+            xtraTabPage1 = new DevExpress.XtraTab.XtraTabPage();
+            xtraTabPage2 = new DevExpress.XtraTab.XtraTabPage();
             ((System.ComponentModel.ISupportInitialize)barManager1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)cmbForm.Properties).BeginInit();
             ((System.ComponentModel.ISupportInitialize)msgCtrl.Properties).BeginInit();
             ((System.ComponentModel.ISupportInitialize)menuCtrl).BeginInit();
             ((System.ComponentModel.ISupportInitialize)xtraTabbedMdiManager).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)ucPanel1).BeginInit();
+            ucPanel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)ucTab1).BeginInit();
+            ucTab1.SuspendLayout();
+            xtraTabPage1.SuspendLayout();
+            xtraTabPage2.SuspendLayout();
             SuspendLayout();
             // 
             // barManager1
@@ -76,7 +89,7 @@
             bar1.DockStyle = DevExpress.XtraBars.BarDockStyle.Top;
             bar1.FloatLocation = new System.Drawing.Point(537, 134);
             bar1.LinksPersistInfo.AddRange(new DevExpress.XtraBars.LinkPersistInfo[] { new DevExpress.XtraBars.LinkPersistInfo(barButtonItem1), new DevExpress.XtraBars.LinkPersistInfo(barButtonItem2), new DevExpress.XtraBars.LinkPersistInfo(barButtonShowMsg), new DevExpress.XtraBars.LinkPersistInfo(barSubItem1), new DevExpress.XtraBars.LinkPersistInfo(barButtonItem3) });
-            bar1.Offset = 325;
+            bar1.Offset = 273;
             bar1.Text = "Tools";
             // 
             // barButtonItem1
@@ -96,13 +109,13 @@
             barButtonShowMsg.Caption = "Show Message";
             barButtonShowMsg.Id = 4;
             barButtonShowMsg.Name = "barButtonShowMsg";
-            barButtonShowMsg.ItemClick += barButtonShowMsg_ItemClick;
             // 
             // barSubItem1
             // 
             barSubItem1.Caption = "barSubItem1";
             barSubItem1.Id = 5;
             barSubItem1.Name = "barSubItem1";
+            barSubItem1.ItemClick += barSubItem1_ItemClick;
             // 
             // barButtonItem3
             // 
@@ -171,6 +184,8 @@
             cmbForm.Location = new System.Drawing.Point(92, 0);
             cmbForm.MenuManager = barManager1;
             cmbForm.Name = "cmbForm";
+            cmbForm.Properties.Appearance.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
+            cmbForm.Properties.Appearance.Options.UseFont = true;
             cmbForm.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
             cmbForm.Size = new System.Drawing.Size(178, 20);
             cmbForm.TabIndex = 4;
@@ -178,11 +193,11 @@
             // 
             // msgCtrl
             // 
-            msgCtrl.Dock = System.Windows.Forms.DockStyle.Left;
-            msgCtrl.Location = new System.Drawing.Point(0, 21);
+            msgCtrl.Dock = System.Windows.Forms.DockStyle.Fill;
+            msgCtrl.Location = new System.Drawing.Point(2, 23);
             msgCtrl.MenuManager = barManager1;
             msgCtrl.Name = "msgCtrl";
-            msgCtrl.Size = new System.Drawing.Size(383, 824);
+            msgCtrl.Size = new System.Drawing.Size(264, 774);
             msgCtrl.TabIndex = 10;
             // 
             // bar2
@@ -206,10 +221,10 @@
             // 
             // menuCtrl
             // 
-            menuCtrl.Dock = System.Windows.Forms.DockStyle.Left;
-            menuCtrl.Location = new System.Drawing.Point(383, 21);
+            menuCtrl.Dock = System.Windows.Forms.DockStyle.Fill;
+            menuCtrl.Location = new System.Drawing.Point(0, 0);
             menuCtrl.Name = "menuCtrl";
-            menuCtrl.Size = new System.Drawing.Size(216, 824);
+            menuCtrl.Size = new System.Drawing.Size(268, 799);
             menuCtrl.TabIndex = 26;
             menuCtrl.DoubleClick += menuCtrl_DoubleClick;
             // 
@@ -218,14 +233,56 @@
             xtraTabbedMdiManager.MdiParent = this;
             xtraTabbedMdiManager.SelectedPageChanged += xtraTabbedMdiManager_SelectedPageChanged;
             // 
+            // ucPanel1
+            // 
+            ucPanel1.Controls.Add(msgCtrl);
+            ucPanel1.CustomHeaderButtons.AddRange(new DevExpress.XtraEditors.ButtonPanel.IBaseButton[] { new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("    Tracking    ", true, buttonImageOptions1, DevExpress.XtraBars.Docking2010.ButtonStyle.CheckButton, "", -1, true, null, true, false, true, null, -1), new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("  Clear  ", true, buttonImageOptions2, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1), new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("  Copy  ", true, buttonImageOptions3, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1) });
+            ucPanel1.CustomHeaderButtonsLocation = DevExpress.Utils.GroupElementLocation.AfterText;
+            ucPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            ucPanel1.EditYn = true;
+            ucPanel1.Location = new System.Drawing.Point(0, 0);
+            ucPanel1.Name = "ucPanel1";
+            ucPanel1.ShowYn = true;
+            ucPanel1.Size = new System.Drawing.Size(268, 799);
+            ucPanel1.TabIndex = 31;
+            ucPanel1.Title = null;
+            ucPanel1.CustomButtonClick += ucPanel1_CustomButtonClick;
+            ucPanel1.CustomButtonUnchecked += ucPanel1_CustomButtonUnchecked;
+            ucPanel1.CustomButtonChecked += ucPanel1_CustomButtonChecked;
+            // 
+            // ucTab1
+            // 
+            ucTab1.Dock = System.Windows.Forms.DockStyle.Left;
+            ucTab1.Location = new System.Drawing.Point(0, 21);
+            ucTab1.Name = "ucTab1";
+            ucTab1.SelectedTabPage = xtraTabPage1;
+            ucTab1.Size = new System.Drawing.Size(270, 824);
+            ucTab1.TabIndex = 32;
+            ucTab1.TabPages.AddRange(new DevExpress.XtraTab.XtraTabPage[] { xtraTabPage1, xtraTabPage2 });
+            // 
+            // xtraTabPage1
+            // 
+            xtraTabPage1.Controls.Add(menuCtrl);
+            xtraTabPage1.Name = "xtraTabPage1";
+            xtraTabPage1.Size = new System.Drawing.Size(268, 799);
+            xtraTabPage1.TabPageWidth = 120;
+            xtraTabPage1.Text = "Menu";
+            // 
+            // xtraTabPage2
+            // 
+            xtraTabPage2.Controls.Add(ucPanel1);
+            xtraTabPage2.Name = "xtraTabPage2";
+            xtraTabPage2.Size = new System.Drawing.Size(268, 799);
+            xtraTabPage2.TabPageWidth = 120;
+            xtraTabPage2.Text = "Message";
+            // 
             // FormMain
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             ClientSize = new System.Drawing.Size(1438, 868);
-            Controls.Add(menuCtrl);
+            Controls.Add(ucTab1);
             Controls.Add(simpleButton1);
-            Controls.Add(msgCtrl);
             Controls.Add(cmbForm);
             Controls.Add(barDockControlLeft);
             Controls.Add(barDockControlRight);
@@ -240,6 +297,12 @@
             ((System.ComponentModel.ISupportInitialize)msgCtrl.Properties).EndInit();
             ((System.ComponentModel.ISupportInitialize)menuCtrl).EndInit();
             ((System.ComponentModel.ISupportInitialize)xtraTabbedMdiManager).EndInit();
+            ((System.ComponentModel.ISupportInitialize)ucPanel1).EndInit();
+            ucPanel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)ucTab1).EndInit();
+            ucTab1.ResumeLayout(false);
+            xtraTabPage1.ResumeLayout(false);
+            xtraTabPage2.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
         }
@@ -266,6 +329,10 @@
         private DevExpress.XtraEditors.ListBoxControl menuCtrl;
         private DevExpress.XtraBars.BarButtonItem barButtonItem3;
         private DevExpress.XtraTabbedMdi.XtraTabbedMdiManager xtraTabbedMdiManager;
+        private Ctrls.UCPanel ucPanel1;
+        private Ctrls.UCTab ucTab1;
+        private DevExpress.XtraTab.XtraTabPage xtraTabPage1;
+        private DevExpress.XtraTab.XtraTabPage xtraTabPage2;
     }
 }
 
