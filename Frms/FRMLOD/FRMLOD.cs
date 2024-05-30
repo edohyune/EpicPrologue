@@ -586,7 +586,8 @@ namespace Frms
             {
                 var frmCtrl = gvControls.GetFocusedRow() as FrmCtrl;
                 if (frmCtrl != null)
-                {   
+                {
+                    frmCtrlbs.Remove(frmCtrl);  
                     frmCtrlRepo.Delete(frmCtrl.FrwId, frmCtrl.FrmId, frmCtrl.CtrlNm);
                 }
             }
@@ -616,6 +617,7 @@ namespace Frms
                 var frmWrk = gvWorkset.GetFocusedRow() as FrmWrk;
                 if (frmWrk != null)
                 {
+                    frmWrkbs.Remove(frmWrk);
                     frmWrkRepo.Delete(frmWrk.WrkId);
                 }
             }

@@ -31,5 +31,10 @@ namespace Frms.TST
         {
             throw new NotImplementedException();
         }
+
+        private void g10_UCFocusedRowChanged(object sender, int preIndex, int rowIndex, DevExpress.XtraGrid.Views.Base.FocusedRowChangedEventArgs e)
+        {
+
+        }
     }
 }

@@ -75,6 +75,30 @@ namespace Lib.Repo
     }
     public class WrkSqlRepo : IWrkSqlRepo
     {
+//        public WrkSql GetSql(string frwId, string frmId, string wrkId)
+//        {
+//            string sql = @"
+//select a.FrwId, a.FrmId, a.WrkId, a.CRUDM, a.Query,
+//       a.Memo, a.Id, a.PId, a.CId, a.CDt,
+//       a.MId, a.MDt
+//  from WRKSQL a
+// where 1=1
+//   and a.FrwId = @FrwId
+//   and a.FrmId = @FrmId
+//   and a.WrkId = @WrkId
+//";
+//            using (var db = new Lib.GaiaHelper())
+//            {
+//                var result = db.Query<WrkSql>(sql, new { FrwId = frwId, FrmId = frmId, WrkId = wrkId }).FirstOrDefault();
+
+//                if (result != null)
+//                {
+//                    result.ChangedFlag = MdlState.None;
+//                    return result;
+//                }
+//            }
+//        }
+
         public List<WrkSql> GetSqls(string frwId, string frmId, string wrkId)
         {
             string sql = @"
@@ -83,10 +107,10 @@ select a.FrwId, a.FrmId, a.WrkId, a.CRUDM, a.Query,
        a.MId, a.MDt
   from WRKSQL a
  where 1=1
-   and a.CRUDM = @CRUDM
-   and a.FrmId = @FrmId
    and a.FrwId = @FrwId
+   and a.FrmId = @FrmId
    and a.WrkId = @WrkId
+   and a.CRUDM = @CRUDM
 ";
             using (var db = new Lib.GaiaHelper())
             {

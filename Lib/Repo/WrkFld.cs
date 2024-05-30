@@ -282,6 +282,7 @@ select a.FrwId, a.FrmId, a.CtrlNm, a.WrkId, a.CtrlCls,
    and a.FrwId = @FrwId
    and a.WrkId = @WrkId
    and a.CtrlCls = 'Column'
+ order by a.Seq, a.Id
 ";
             using (var db = new GaiaHelper())
             {

@@ -251,27 +251,6 @@ namespace Ctrls
         {
             if ((UCFocusedRowChanged != null) && (e.FocusedRowHandle >= 0))
             {
-                /*
-select a.Id, a.Sys_cd, a.Frm_id, a.Wkset_id, 
-       a.Ctrl_id, b.Ctrl_ty, 
-       a.Param_wkset, a.Param_name, a.Param_value, a.Pid
-  from ATZ31Push a
-  join ATZ310 b on a.Sys_cd=b.Sys_cd and a.Frm_id=b.Frm_id and a.Ctrl_id=b.Ctrl_id
- where a.Sys_cd=@sys
-   and a.Frm_id=@frm
-   and a.Param_wkset=@wkset
-
-select a.FrwId, a.FrmId, a.WrkId, a.FldNm, b.ToolNm, a.ParamWrk,
-       a.ParamName, a.ParamValue, a.Id, a.Pid, a.CId,
-       a.CDt, a.MId, a.MDt
-  from WRKSET a
-  join WRKFLD b on a.FrwId=b.FrwId and a.FrmId=b.FrmId and a.FldNm=b.CtrlNm
- where 1=1
-   and a.FrmId = @FrmId
-   and a.FrwId = @FrwId
-   and a.WrkId = @WrkId
-
-                 */
                 List<WrkSet> ctrls = new WrkSetRepo().SetPushFlds(frwId, frmId, thisNm);
                 if (ctrls != null)
                 {
@@ -336,6 +315,19 @@ select a.FrwId, a.FrmId, a.WrkId, a.FldNm, b.ToolNm, a.ParamWrk,
         {
             CellValueChanging?.Invoke(sender, e);
         }
+        public delegate void delEventMouseDown(object sender, MouseEventArgs e);
+        public event delEventMouseDown UCMouseDown;
+        private void gvCtrl_MouseDown(object? sender, MouseEventArgs e)
+        {
+            UCMouseDown?.Invoke(sender, e);
+        }
+        public delegate void delEventMouseMove(object sender, MouseEventArgs e);
+        public event delEventMouseMove UCMouseMove;
+        private void gvCtrl_MouseMove(object? sender, MouseEventArgs e)
+        {
+            UCMouseMove?.Invoke(sender, e);
+        }
+
         #endregion
 
         public UCGridSet()
@@ -346,6 +338,14 @@ select a.FrwId, a.FrmId, a.WrkId, a.FldNm, b.ToolNm, a.ParamWrk,
             Load += ucGridSet_Load;
             //HandleCreated += ucGridSet_HandleCreated;
             gvCtrl.FocusedRowChanged += gvCtrl_FocusedRowChanged;
+            gvCtrl.BeforeLeaveRow += gvCtrl_BeforeLeaveRow;
+            gvCtrl.SelectionChanged += gvCtrl_SelectionChanged;
+            gvCtrl.InitNewRow += gvCtrl_InitNewRow;
+            gvCtrl.RowDeleting += gvCtrl_RowDeleting;
+            gvCtrl.CellValueChanged += gvCtrl_CellValueChanged;
+            gvCtrl.CellValueChanging += gvCtrl_CellValueChanging;
+            gvCtrl.MouseDown += gvCtrl_MouseDown;
+            gvCtrl.MouseMove += gvCtrl_MouseMove;
         }
 
         private void ucGridSet_Load(object? sender, EventArgs e)
@@ -591,8 +591,8 @@ select a.SysCd, a.MenuId, a.MenuNm, a.FrmId, a.HideYn, a.CId, a.CDt
             {
                 //string tmp = GetParamValue(this.FindForm().Controls, wrkGet.GetFldNm, wrkGet.GetWrkId, wrkGet.FldNm);
                 string tmp = GetParamValue(this.FindForm().Controls, wrkGet);
-                DSearchParam.Add(wrkGet.GetFldNm, tmp);
-                Common.gLog = $"Declare @{wrkGet.GetFldNm} varchar(100) ='{tmp}'";
+                DSearchParam.Add(wrkGet.FldNm, tmp);
+                Common.gLog = $"Declare {wrkGet.FldNm} varchar ='{tmp}'";
             }
             OpenForm<T>();
         }
@@ -1140,21 +1140,28 @@ select a.SysCd, a.MenuId, a.MenuNm, a.FrmId, a.HideYn, a.CId, a.CDt
         {
             string str = string.Empty;
             //아마도 이부분은 수정이 필요할듯 컨트롤러에 따라 BindText가 다르니까 처리방법을 고려할것 
-            if (string.IsNullOrEmpty(wrkGet.WrkId))
+            if (string.IsNullOrEmpty(wrkGet.GetWrkId))
             {
-                dynamic tbx = frm.Find(wrkGet.FldNm, true).FirstOrDefault();
-                str = tbx.BindText;
+                if (string.IsNullOrEmpty(wrkGet.GetFldNm))
+                {
+                    str = wrkGet.GetDefalueValue;
+                }
+                else
+                {
+                    dynamic tbx = frm.Find(wrkGet.GetFldNm, true).FirstOrDefault();
+                    str = tbx.Text;
+                }
             }
             else
             {
-                dynamic tbx = frm.Find(wrkGet.WrkId, true).FirstOrDefault();
-                str = tbx.GetText(wrkGet.FldNm);
+                dynamic tbx = frm.Find(wrkGet.GetWrkId, true).FirstOrDefault();
+                str = tbx.GetText(wrkGet.GetFldNm);
             }
 
-            if (string.IsNullOrEmpty(wrkGet.WrkId))
-            {
-                str = wrkGet.GetDefalueValue;
-            }
+            //if (string.IsNullOrEmpty(wrkGet.WrkId))
+            //{
+                
+            //}
 
             return str;
         }

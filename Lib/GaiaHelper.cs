@@ -248,14 +248,24 @@ namespace Lib
         {
             DataSet dsSelect = new DataSet();
 
-            string sqltxt = RemoveConditionalClauses(ReplaceAtVariables(GenFunc.GetSql(prm)));
+            string sqltxt = GenFunc.GetSql(prm);
+            sqltxt = ReplaceAtVariables(sqltxt, param, value);
+            sqltxt = RemoveConditionalClauses(sqltxt);
 
             SqlConnection SqlCon = new SqlConnection(_connectionString);
             SqlCommand SqlCmd = new SqlCommand(sqltxt, SqlCon);
 
             for (int i = 0; i <= param.Length - 1; i++)
             {
-                SqlCmd.Parameters.AddWithValue(param[i], value[i]);
+                if (param[i] != null && value[i] != null)
+                {
+                    SqlCmd.Parameters.AddWithValue(param[i], value[i]);
+                }
+                else
+                {
+                    throw new ArgumentException($"Parameter {param[i]} or its value is null");
+                }
+                //SqlCmd.Parameters.AddWithValue(param[i], value[i]);
             }
             SqlDataAdapter adapter = new SqlDataAdapter(SqlCmd);
             adapter.SelectCommand = SqlCmd;
@@ -309,26 +319,36 @@ namespace Lib
             var gVariables = GetGVariables();
             foreach (var variable in gVariables)
             {
-                sql = Regex.Replace(sql, Regex.Escape(variable.Key), variable.Value, RegexOptions.IgnoreCase);
+                sql = sql.Replace(variable.Key, variable.Value);
+                //sql = Regex.Replace(sql, Regex.Escape(variable.Key), variable.Value, RegexOptions.IgnoreCase);
             }
             return sql;
         }
-        private string ReplaceAtVariables(string sql)
+        private string ReplaceAtVariables(string sql, string[] param, string[] value)
         {
             SQLVariableExtractor extractor = new SQLVariableExtractor();
             SQLSyntaxMatch variables = extractor.ExtractVariables(sql);
 
-            foreach (var kvp in variables.OPatternMatch)
+            //OPatternMatch에 있는 변수에 value값을 넣는다.
+            for (int i = 0; i <= param.Length - 1; i++)
             {
-                string val = GenFunc.IsNull(kvp.Value,"''");
-                //sql = sql.Replace(kvp.Key, "");
-                sql = Regex.Replace(sql, Regex.Escape(kvp.Key), val, RegexOptions.IgnoreCase);
+                if (variables.OPatternMatch.ContainsKey(param[i]))
+                {
+                    sql = sql.Replace(param[i], string.IsNullOrWhiteSpace(value[i]) ? "''" : $"'{value[i]}'");
+                }
             }
+            //OPatternMatch중에서 value가 null인 경우 sql에서 ''으로 대체
+            foreach (var item in variables.OPatternMatch)
+            {
+                sql = sql.Replace(item.Key, string.IsNullOrWhiteSpace(item.Value) ? "''" : $"'{item.Value}'");
+            }
+            
             return sql;
         }
         private string RemoveConditionalClauses(string sql)
         {
-            var conditionalPattern = new Regex(@"andif\s+(.+?)\s+endif", RegexOptions.IgnoreCase);
+            var conditionalPattern = new Regex(@"andif\s+(.+?)\s+endif");
+            //var conditionalPattern = new Regex(@"andif\s+(.+?)\s+endif", RegexOptions.IgnoreCase);
             return conditionalPattern.Replace(sql, string.Empty);
         }
 
@@ -349,7 +369,8 @@ namespace Lib
         }
         private string ReplaceConditionalClauses(string sql, object param)
         {
-            var conditionalPattern = new Regex(@"andif\s+(.+?)\s+endif", RegexOptions.IgnoreCase);
+            var conditionalPattern = new Regex(@"andif\s+(.+?)\s+endif");
+            //var conditionalPattern = new Regex(@"andif\s+(.+?)\s+endif", RegexOptions.IgnoreCase);
             var dynamicParams = param as DynamicParameters;
             var paramNames = dynamicParams?.ParameterNames.ToHashSet(StringComparer.OrdinalIgnoreCase)
                              ?? param.GetType().GetProperties().Select(p => p.Name).ToHashSet(StringComparer.OrdinalIgnoreCase);

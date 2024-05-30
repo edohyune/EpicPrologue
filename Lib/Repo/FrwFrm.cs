@@ -118,6 +118,7 @@ select a.FrmId, a.FrmNm, a.UsrRegId, a.FrwId, a.FilePath,
   from FRWFRM a
  where 1=1
    and a.FrmId = @FrmId
+ order by FrmNm
 ";
             using (var db = new GaiaHelper())
             {
@@ -135,6 +136,7 @@ select a.FrmId, a.FrmNm, a.UsrRegId, a.FrwId, a.FilePath,
  where 1=1
    and a.UsrRegId = @UsrRegId
    and a.FrwId = @FrwId
+ order by FrmNm
 ";
             using (var db = new GaiaHelper())
             {

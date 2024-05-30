@@ -47,6 +47,11 @@ namespace Frms.TST
             txtId = new Ctrls.UCTextBox();
             ucPanel3 = new Ctrls.UCPanel();
             g20 = new Ctrls.UCGridSet();
+            ucSplit3 = new Ctrls.UCSplit();
+            ucPanel4 = new Ctrls.UCPanel();
+            sAge = new Ctrls.UCTextBox();
+            sNm = new Ctrls.UCTextBox();
+            sId = new Ctrls.UCTextBox();
             ((System.ComponentModel.ISupportInitialize)ucSplit1).BeginInit();
             ucSplit1.Panel1.SuspendLayout();
             ucSplit1.Panel2.SuspendLayout();
@@ -63,6 +68,12 @@ namespace Frms.TST
             ((System.ComponentModel.ISupportInitialize)ucPanel3).BeginInit();
             ucPanel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)g20).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)ucSplit3).BeginInit();
+            ucSplit3.Panel1.SuspendLayout();
+            ucSplit3.Panel2.SuspendLayout();
+            ucSplit3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)ucPanel4).BeginInit();
+            ucPanel4.SuspendLayout();
             SuspendLayout();
             // 
             // ucSplit1
@@ -73,7 +84,7 @@ namespace Frms.TST
             // 
             // ucSplit1.Panel1
             // 
-            ucSplit1.Panel1.Controls.Add(ucPanel1);
+            ucSplit1.Panel1.Controls.Add(ucSplit3);
             // 
             // ucSplit1.Panel2
             // 
@@ -93,7 +104,7 @@ namespace Frms.TST
             ucPanel1.Location = new Point(0, 0);
             ucPanel1.Name = "ucPanel1";
             ucPanel1.ShowYn = true;
-            ucPanel1.Size = new Size(266, 450);
+            ucPanel1.Size = new Size(266, 338);
             ucPanel1.TabIndex = 0;
             ucPanel1.Text = "People";
             ucPanel1.Title = "People";
@@ -101,11 +112,21 @@ namespace Frms.TST
             // 
             // g10
             // 
+            g10.ColumnAutoWidth = true;
             g10.Dock = DockStyle.Fill;
+            g10.FocuseRowIndex = int.MinValue;
             g10.Location = new Point(2, 23);
+            g10.MultiSelect = false;
+            g10.MultiSelectMode = DevExpress.XtraGrid.Views.Grid.GridMultiSelectMode.RowSelect;
             g10.Name = "g10";
-            g10.Size = new Size(262, 425);
+            g10.openFld = null;
+            g10.openFrm = null;
+            g10.RowAutoHeigh = false;
+            g10.ShowFindPanel = false;
+            g10.ShowGroupPanel = true;
+            g10.Size = new Size(262, 313);
             g10.TabIndex = 0;
+            g10.UCFocusedRowChanged += g10_UCFocusedRowChanged;
             // 
             // ucSplit2
             // 
@@ -210,11 +231,103 @@ namespace Frms.TST
             // 
             // g20
             // 
+            g20.ColumnAutoWidth = true;
             g20.Dock = DockStyle.Fill;
+            g20.FocuseRowIndex = int.MinValue;
             g20.Location = new Point(2, 23);
+            g20.MultiSelect = false;
+            g20.MultiSelectMode = DevExpress.XtraGrid.Views.Grid.GridMultiSelectMode.RowSelect;
             g20.Name = "g20";
+            g20.openFld = null;
+            g20.openFrm = null;
+            g20.RowAutoHeigh = false;
+            g20.ShowFindPanel = false;
+            g20.ShowGroupPanel = true;
             g20.Size = new Size(526, 311);
             g20.TabIndex = 0;
+            // 
+            // ucSplit3
+            // 
+            ucSplit3.Dock = DockStyle.Fill;
+            ucSplit3.Location = new Point(0, 0);
+            ucSplit3.Name = "ucSplit3";
+            ucSplit3.Orientation = Orientation.Horizontal;
+            // 
+            // ucSplit3.Panel1
+            // 
+            ucSplit3.Panel1.Controls.Add(ucPanel4);
+            // 
+            // ucSplit3.Panel2
+            // 
+            ucSplit3.Panel2.Controls.Add(ucPanel1);
+            ucSplit3.Size = new Size(266, 450);
+            ucSplit3.SplitterDistance = 108;
+            ucSplit3.TabIndex = 1;
+            ucSplit3.TitleWidth = 50;
+            // 
+            // ucPanel4
+            // 
+            ucPanel4.Controls.Add(sAge);
+            ucPanel4.Controls.Add(sNm);
+            ucPanel4.Controls.Add(sId);
+            ucPanel4.CustomHeaderButtonsLocation = DevExpress.Utils.GroupElementLocation.AfterText;
+            ucPanel4.Dock = DockStyle.Fill;
+            ucPanel4.EditYn = true;
+            ucPanel4.Location = new Point(0, 0);
+            ucPanel4.Name = "ucPanel4";
+            ucPanel4.ShowYn = true;
+            ucPanel4.Size = new Size(266, 108);
+            ucPanel4.TabIndex = 1;
+            ucPanel4.Text = "Search";
+            ucPanel4.Title = "Search";
+            // 
+            // sAge
+            // 
+            sAge.BindText = "";
+            sAge.btnVisiable = false;
+            sAge.ControlWidth = 180;
+            sAge.EditYn = false;
+            sAge.Location = new Point(10, 83);
+            sAge.Name = "sAge";
+            sAge.ShowYn = true;
+            sAge.Size = new Size(180, 20);
+            sAge.TabIndex = 2;
+            sAge.TextAlignment = DevExpress.Utils.HorzAlignment.Far;
+            sAge.Title = "AGE";
+            sAge.TitleAlignment = DevExpress.Utils.HorzAlignment.Far;
+            sAge.TitleWidth = 80;
+            // 
+            // sNm
+            // 
+            sNm.BindText = "";
+            sNm.btnVisiable = false;
+            sNm.ControlWidth = 180;
+            sNm.EditYn = false;
+            sNm.Location = new Point(10, 57);
+            sNm.Name = "sNm";
+            sNm.ShowYn = true;
+            sNm.Size = new Size(180, 20);
+            sNm.TabIndex = 1;
+            sNm.TextAlignment = DevExpress.Utils.HorzAlignment.Center;
+            sNm.Title = "Name";
+            sNm.TitleAlignment = DevExpress.Utils.HorzAlignment.Center;
+            sNm.TitleWidth = 80;
+            // 
+            // sId
+            // 
+            sId.BindText = "";
+            sId.btnVisiable = false;
+            sId.ControlWidth = 180;
+            sId.EditYn = false;
+            sId.Location = new Point(10, 31);
+            sId.Name = "sId";
+            sId.ShowYn = true;
+            sId.Size = new Size(180, 20);
+            sId.TabIndex = 0;
+            sId.TextAlignment = DevExpress.Utils.HorzAlignment.Default;
+            sId.Title = "ID";
+            sId.TitleAlignment = DevExpress.Utils.HorzAlignment.Default;
+            sId.TitleWidth = 80;
             // 
             // GridSet
             // 
@@ -240,6 +353,12 @@ namespace Frms.TST
             ((System.ComponentModel.ISupportInitialize)ucPanel3).EndInit();
             ucPanel3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)g20).EndInit();
+            ucSplit3.Panel1.ResumeLayout(false);
+            ucSplit3.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)ucSplit3).EndInit();
+            ucSplit3.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)ucPanel4).EndInit();
+            ucPanel4.ResumeLayout(false);
             ResumeLayout(false);
         }
         #endregion
@@ -254,5 +373,10 @@ namespace Frms.TST
         private Ctrls.UCTextBox txtId;
         private Ctrls.UCPanel ucPanel3;
         private Ctrls.UCGridSet g20;
+        private Ctrls.UCSplit ucSplit3;
+        private Ctrls.UCPanel ucPanel4;
+        private Ctrls.UCTextBox sAge;
+        private Ctrls.UCTextBox sNm;
+        private Ctrls.UCTextBox sId;
     }
 }

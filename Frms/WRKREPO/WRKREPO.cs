@@ -11,6 +11,7 @@ using DevExpress.Data.Filtering.Helpers;
 using System.ComponentModel;
 using DevExpress.Pdf.Native;
 using DevExpress.XtraGrid.Views.Grid;
+using Lib.Syntax;
 
 namespace Frms
 {
@@ -38,6 +39,10 @@ namespace Frms
         private BindingList<WrkSet> wrkSetbs { get; set; }
         private WrkRefRepo wrkRefRepo { get; set; }
         private BindingList<WrkRef> wrkRefbs { get; set; }
+
+        private WrkSqlRepo wrkSqlRepo { get; set; }
+        public WrkSql wrkSql { get; set; }
+
 
         public WRKREPO()
         {
@@ -71,7 +76,7 @@ namespace Frms
             rtSelect.Modified = true;
             rtSelect.LayoutUnit = DevExpress.XtraRichEdit.DocumentLayoutUnit.Pixel;
             rtSelect.Options.HorizontalRuler.Visibility = DevExpress.XtraRichEdit.RichEditRulerVisibility.Hidden;
-            rtSelect.ReplaceService<ISyntaxHighlightService>(new  Lib.Syntax.SQL_Syntax(rtSelect.Document));
+            rtSelect.ReplaceService<ISyntaxHighlightService>(new Lib.Syntax.SQL_Syntax(rtSelect.Document));
             rtSelect.Options.Search.RegExResultMaxGuaranteedLength = 500;
             rtSelect.Document.Sections[0].Page.Width = Units.InchesToDocumentsF(300f);
 
@@ -146,11 +151,11 @@ namespace Frms
 
             selectedDoc = view.GetFocusedRow() as FrmWrk;
 
-            wrkFldRepo = new WrkFldRepo();
-            wrkFldbs = new BindingList<WrkFld>(wrkFldRepo.GetColumnProperties(selectedDoc.FrwId, selectedDoc.FrmId, selectedDoc.WrkId));
-
             frmCtrlRepo = new FrmCtrlRepo();
             frmCtrls = new BindingList<FrmCtrl>(frmCtrlRepo.GetByFrwFrm(selectedDoc.FrwId, selectedDoc.FrmId));
+
+            wrkFldRepo = new WrkFldRepo();
+            wrkFldbs = new BindingList<WrkFld>(wrkFldRepo.GetColumnProperties(selectedDoc.FrwId, selectedDoc.FrmId, selectedDoc.WrkId));
 
             wrkGetRepo = new WrkGetRepo();
             wrkGetbs = new BindingList<WrkGet>(wrkGetRepo.GetPullFlds(selectedDoc.FrwId, selectedDoc.FrmId, selectedDoc.WrkId));
@@ -164,7 +169,7 @@ namespace Frms
             if (selectedDoc != null)
             {
                 g20OpenGrid();
-                SetWrkForm();
+                SetWrkSQL();
                 t10OpenGrid();
                 grdGetParamGrid();
                 grdSetparamGrid();
@@ -204,7 +209,7 @@ namespace Frms
             grdRefData.DataSource = wrkRefbs;
         }
 
-        private void SetWrkForm()
+        private void SetWrkSQL()
         {
             rtDelete.Text = GenFunc.GetSql(selectedDoc.FrwId, selectedDoc.FrmId, selectedDoc.WrkId, "D").Query;
             rtInsert.Text = GenFunc.GetSql(selectedDoc.FrwId, selectedDoc.FrmId, selectedDoc.WrkId, "C").Query;
@@ -222,7 +227,7 @@ namespace Frms
                 if (selectedDoc != null)
                 {
                     g20OpenGrid();
-                    SetWrkForm();
+                    SetWrkSQL();
                     t10OpenGrid();
                     grdGetParamGrid();
                     grdSetparamGrid();
@@ -232,10 +237,10 @@ namespace Frms
         }
         private void pnlSelect_CustomButtonClick(object sender, DevExpress.XtraBars.Docking2010.BaseButtonEventArgs e)
         {
-            var WrkSqlRepo = new WrkSqlRepo();
+            var wrkSqlRepo = new WrkSqlRepo();
             if (e.Button.Properties.Caption == "Delete")
             {
-                WrkSqlRepo.Delete(new WrkSql
+                wrkSqlRepo.Delete(new WrkSql
                 {
                     FrwId = selectedDoc.FrwId,
                     FrmId = selectedDoc.FrmId,
@@ -246,7 +251,7 @@ namespace Frms
             }
             else if (e.Button.Properties.Caption == "Save")
             {
-                WrkSqlRepo.Save(new WrkSql
+                wrkSqlRepo.Save(new WrkSql
                 {
                     FrwId = selectedDoc.FrwId,
                     FrmId = selectedDoc.FrmId,
@@ -261,6 +266,15 @@ namespace Frms
             }
             else if (e.Button.Properties.Caption == "Make Field")
             {
+                wrkSqlRepo.Save(new WrkSql
+                {
+                    FrwId = selectedDoc.FrwId,
+                    FrmId = selectedDoc.FrmId,
+                    WrkId = selectedDoc.WrkId,
+                    CRUDM = "R",
+                    Query = rtSelect.Text
+                });
+
                 using (var db = new GaiaHelper())
                 {
                     DataSet dSet = db.GetGridColumns(new { FrwId = selectedDoc.FrwId, FrmId = selectedDoc.FrmId, WrkId = selectedDoc.WrkId, CRUDM = "R" });
@@ -295,6 +309,8 @@ namespace Frms
                                     FldNm = cols.ColumnName,
                                     FldTy = GetFieldType(cols.DataType),
                                     FldTitle = cols.ColumnName,
+                                    ShowYn = true,
+                                    EditYn = true,
                                     ChangedFlag = MdlState.Inserted
                                 });
                             }
@@ -303,7 +319,41 @@ namespace Frms
                     }
                 }
                 ucTab1.SelectedTabPageIndex = 1;
-                ucTab2.SelectedTabPageIndex = 1;
+                ucTab3.SelectedTabPageIndex = 1;
+                ucTab4.SelectedTabPageIndex = 0;
+
+                SQLVariableExtractor extractor = new SQLVariableExtractor();
+                SQLSyntaxMatch variables = extractor.ExtractVariables(rtSelect.Text);
+
+                foreach (var kvp in variables.OPatternMatch)
+                {
+                    //wrkGets에 있으면 update 없으면 insert
+                    var wrkGet = wrkGetbs.Where(x => x.FldNm == kvp.Key).FirstOrDefault();
+                    if (wrkGet == null)
+                    {
+                        //x.FldNm와 kvp.Key대소문자구분없이 한번더 찾아야함 
+                        wrkGet = wrkGetbs.Where(x => x.FldNm.ToLower() == kvp.Key.ToLower()).FirstOrDefault();
+                        if (wrkGet != null)
+                        {
+                            wrkGet.FldNm = kvp.Key;
+                            wrkGet.ChangedFlag = MdlState.Updated;
+                        }
+                        else
+                        {
+                            wrkGetbs.Add(new WrkGet
+                            {
+                                FrwId = selectedDoc.FrwId,
+                                FrmId = selectedDoc.FrmId,
+                                WrkId = selectedDoc.WrkId,
+                                FldNm = kvp.Key,
+                                ChangedFlag = MdlState.Inserted
+                            });
+                        }
+
+
+                    }
+
+                }
             }
         }
 
@@ -324,10 +374,10 @@ namespace Frms
 
         private void pnlInsert_CustomButtonClick(object sender, DevExpress.XtraBars.Docking2010.BaseButtonEventArgs e)
         {
-            var WrkSqlRepo = new WrkSqlRepo();
+            var wrkSqlRepo = new WrkSqlRepo();
             if (e.Button.Properties.Caption == "Delete")
             {
-                WrkSqlRepo.Delete(new WrkSql
+                wrkSqlRepo.Delete(new WrkSql
                 {
                     FrwId = selectedDoc.FrwId,
                     FrmId = selectedDoc.FrmId,
@@ -338,7 +388,7 @@ namespace Frms
             }
             else if (e.Button.Properties.Caption == "Save")
             {
-                WrkSqlRepo.Save(new WrkSql
+                wrkSqlRepo.Save(new WrkSql
                 {
                     FrwId = selectedDoc.FrwId,
                     FrmId = selectedDoc.FrmId,
@@ -354,10 +404,10 @@ namespace Frms
         }
         private void pnlUpdate_CustomButtonClick(object sender, DevExpress.XtraBars.Docking2010.BaseButtonEventArgs e)
         {
-            var WrkSqlRepo = new WrkSqlRepo();
+            var wrkSqlRepo = new WrkSqlRepo();
             if (e.Button.Properties.Caption == "Delete")
             {
-                WrkSqlRepo.Delete(new WrkSql
+                wrkSqlRepo.Delete(new WrkSql
                 {
                     FrwId = selectedDoc.FrwId,
                     FrmId = selectedDoc.FrmId,
@@ -368,7 +418,7 @@ namespace Frms
             }
             else if (e.Button.Properties.Caption == "Save")
             {
-                WrkSqlRepo.Save(new WrkSql
+                wrkSqlRepo.Save(new WrkSql
                 {
                     FrwId = selectedDoc.FrwId,
                     FrmId = selectedDoc.FrmId,
@@ -384,10 +434,10 @@ namespace Frms
         }
         private void pnlDelete_CustomButtonClick(object sender, DevExpress.XtraBars.Docking2010.BaseButtonEventArgs e)
         {
-            var WrkSqlRepo = new WrkSqlRepo();
+            var wrkSqlRepo = new WrkSqlRepo();
             if (e.Button.Properties.Caption == "Delete")
             {
-                WrkSqlRepo.Delete(new WrkSql
+                wrkSqlRepo.Delete(new WrkSql
                 {
                     FrwId = selectedDoc.FrwId,
                     FrmId = selectedDoc.FrmId,
@@ -398,7 +448,7 @@ namespace Frms
             }
             else if (e.Button.Properties.Caption == "Save")
             {
-                WrkSqlRepo.Save(new WrkSql
+                wrkSqlRepo.Save(new WrkSql
                 {
                     FrwId = selectedDoc.FrwId,
                     FrmId = selectedDoc.FrmId,
@@ -414,10 +464,10 @@ namespace Frms
         }
         private void pnlModel_CustomButtonClick(object sender, DevExpress.XtraBars.Docking2010.BaseButtonEventArgs e)
         {
-            var WrkSqlRepo = new WrkSqlRepo();
+            var wrkSqlRepo = new WrkSqlRepo();
             if (e.Button.Properties.Caption == "Delete")
             {
-                WrkSqlRepo.Delete(new WrkSql
+                wrkSqlRepo.Delete(new WrkSql
                 {
                     FrwId = selectedDoc.FrwId,
                     FrmId = selectedDoc.FrmId,
@@ -428,7 +478,7 @@ namespace Frms
             }
             else if (e.Button.Properties.Caption == "Save")
             {
-                WrkSqlRepo.Save(new WrkSql
+                wrkSqlRepo.Save(new WrkSql
                 {
                     FrwId = selectedDoc.FrwId,
                     FrmId = selectedDoc.FrmId,
@@ -475,6 +525,15 @@ namespace Frms
                         wrkFldbs.Remove(selectedRows);
                         wrkFldRepo.Delete(selectedRows);
                     }
+                }
+            }
+            else if (e.Button.Properties.Caption == "Numbering")
+            { 
+                int i = 1;
+                foreach (var wrkFld in wrkFldbs)
+                {
+                    wrkFld.Seq = i*10;
+                    i++;
                 }
             }
         }
@@ -617,6 +676,20 @@ namespace Frms
 
 
         #endregion
+
+        private void ucTab4_CustomHeaderButtonClick(object sender, DevExpress.XtraTab.ViewInfo.CustomHeaderButtonEventArgs e)
+        {
+            Common.gMsg = sender.ToString();
+            Common.gMsg = e.Button.ToString();
+            if (e.Button.Kind==DevExpress.XtraEditors.Controls.ButtonPredefines.SpinDown)
+            {
+                Common.gMsg = "SpinDown";
+            }
+            if (e.Button.Kind == DevExpress.XtraEditors.Controls.ButtonPredefines.SpinUp)
+            {
+                Common.gMsg = "SpinUp";
+            }
+        }
     }
 }
 namespace Frms.Models.WrkRepo

@@ -121,8 +121,8 @@ select a.FrwId, a.FrmId, a.WrkId, a.FldNm, a.GetWrkId,
         public List<IdNm> GetPullFlds(object param)
         {
             string sql = @"
-select Id = a.GetFldNm, 
-       Nm = a.GetDefalueValue
+select Id = a.FldNm, 
+       Nm = isnull(a.GetFldNm,isnull(a.GetDefalueValue,''))
   from WRKGET a
  where 1=1
    and a.FrmId = @FrmId
