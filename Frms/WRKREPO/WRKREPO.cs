@@ -12,6 +12,9 @@ using System.ComponentModel;
 using DevExpress.Pdf.Native;
 using DevExpress.XtraGrid.Views.Grid;
 using Lib.Syntax;
+using DevExpress.PivotGrid.Criteria;
+using DevExpress.XtraGrid;
+using DevExpress.XtraGrid.Views.Base;
 
 namespace Frms
 {
@@ -32,14 +35,12 @@ namespace Frms
         public WrkFld wrkFld { get; set; }
         private WrkFldRepo wrkFldRepo { get; set; }
         private BindingList<WrkFld> wrkFldbs { get; set; }
-
         private WrkGetRepo wrkGetRepo { get; set; }
         private BindingList<WrkGet> wrkGetbs { get; set; }
         private WrkSetRepo wrkSetRepo { get; set; }
         private BindingList<WrkSet> wrkSetbs { get; set; }
         private WrkRefRepo wrkRefRepo { get; set; }
         private BindingList<WrkRef> wrkRefbs { get; set; }
-
         private WrkSqlRepo wrkSqlRepo { get; set; }
         public WrkSql wrkSql { get; set; }
 
@@ -55,10 +56,18 @@ namespace Frms
             }
 
             InitializeRichTextEditor();
-            ucTab1.SelectedTabPageIndex = 0;
-            ucTab2.SelectedTabPageIndex = 0;
-            ucTab3.SelectedTabPageIndex = 0;
-            ucTab4.SelectedTabPageIndex = 0;
+            //tabQueryField.SelectedTabPageIndex = 1;
+            //tabQueryField.SelectedTabPageIndex = 0;
+            //tabCRUDM.SelectedTabPageIndex = 4;
+            //tabCRUDM.SelectedTabPageIndex = 3;
+            //tabCRUDM.SelectedTabPageIndex = 2;
+            //tabCRUDM.SelectedTabPageIndex = 1;
+            //tabCRUDM.SelectedTabPageIndex = 0;
+            //tabWrk.SelectedTabPageIndex = 1;
+            //tabWrk.SelectedTabPageIndex = 0;
+            //tabParam.SelectedTabPageIndex = 2;
+            //tabParam.SelectedTabPageIndex = 1;
+            //tabParam.SelectedTabPageIndex = 0;
         }
 
         private void InitializeRichTextEditor()
@@ -145,7 +154,6 @@ namespace Frms
         }
         private void g10_UCFocusedRowChanged(object sender, int preIndex, int rowIndex, DevExpress.XtraGrid.Views.Base.FocusedRowChangedEventArgs e)
         {
-            Common.gMsg = "g10_UCFocusedRowChanged";
             var view = sender as DevExpress.XtraGrid.Views.Grid.GridView;
             if (view == null) return;
 
@@ -177,6 +185,7 @@ namespace Frms
             }
         }
 
+        #region OPEN ------------------------------------------------------>>
         private void g10OpenGrid()
         {
             Common.gMsg = "g10OpenGrid";
@@ -187,7 +196,9 @@ namespace Frms
         {
             Common.gMsg = "g20OpenGrid";
             //g20.Clear();
+            tabWrk.SelectedTabPageIndex = 1;
             g20.DataSource = frmCtrls;
+            tabWrk.SelectedTabPageIndex = 0;
         }
         private void t10OpenGrid()
         {
@@ -199,7 +210,6 @@ namespace Frms
         {
             grdGetParam.DataSource = wrkGetbs;
         }
-
         private void grdSetparamGrid()
         {
             grdSetParam.DataSource = wrkSetbs;
@@ -208,7 +218,6 @@ namespace Frms
         {
             grdRefData.DataSource = wrkRefbs;
         }
-
         private void SetWrkSQL()
         {
             rtDelete.Text = GenFunc.GetSql(selectedDoc.FrwId, selectedDoc.FrmId, selectedDoc.WrkId, "D").Query;
@@ -217,10 +226,10 @@ namespace Frms
             rtModel.Text = GenFunc.GetSql(selectedDoc.FrwId, selectedDoc.FrmId, selectedDoc.WrkId, "M").Query;
             rtUpdate.Text = GenFunc.GetSql(selectedDoc.FrwId, selectedDoc.FrmId, selectedDoc.WrkId, "U").Query;
         }
+        #endregion
 
-        #region CustomButtonClick
-
-        private void ucPanel1_CustomButtonClick(object sender, DevExpress.XtraBars.Docking2010.BaseButtonEventArgs e)
+        #region CustomButtonClick -------------------------------------------------->>
+        private void pnlWorkSet_CustomButtonClick(object sender, DevExpress.XtraBars.Docking2010.BaseButtonEventArgs e)
         {
             if (e.Button.Properties.Caption == "Open")
             {
@@ -264,99 +273,7 @@ namespace Frms
             {
 
             }
-            else if (e.Button.Properties.Caption == "Make Field")
-            {
-                wrkSqlRepo.Save(new WrkSql
-                {
-                    FrwId = selectedDoc.FrwId,
-                    FrmId = selectedDoc.FrmId,
-                    WrkId = selectedDoc.WrkId,
-                    CRUDM = "R",
-                    Query = rtSelect.Text
-                });
-
-                using (var db = new GaiaHelper())
-                {
-                    DataSet dSet = db.GetGridColumns(new { FrwId = selectedDoc.FrwId, FrmId = selectedDoc.FrmId, WrkId = selectedDoc.WrkId, CRUDM = "R" });
-                    //목적 Select 쿼리를 이용하여 컬럼을 생성한다.
-                    if (dSet != null)
-                    {
-                        foreach (DataColumn cols in dSet.Tables[0].Columns)
-                        {
-                            var wrkFld = wrkFldbs.Where(x => x.CtrlNm == $"{selectedDoc.CtrlNm}.{cols.ColumnName}").FirstOrDefault();
-
-                            if (wrkFld != null)
-                            {
-                                wrkFld.FrwId = selectedDoc.FrwId;
-                                wrkFld.FrmId = selectedDoc.FrmId;
-                                wrkFld.WrkId = selectedDoc.WrkId;
-                                wrkFld.CtrlCls = "Column";
-                                wrkFld.CtrlNm = $"{selectedDoc.CtrlNm}.{cols.ColumnName}";
-                                wrkFld.FldNm = cols.ColumnName;
-                                wrkFld.FldTy = GetFieldType(cols.DataType);
-                                //wrkFld.FldTitle = cols.ColumnName;
-                                wrkFld.ChangedFlag = MdlState.Updated;
-                            }
-                            else
-                            {
-                                wrkFldbs.Add(new WrkFld
-                                {
-                                    FrwId = selectedDoc.FrwId,
-                                    FrmId = selectedDoc.FrmId,
-                                    WrkId = selectedDoc.WrkId,
-                                    CtrlCls = "Column",
-                                    CtrlNm = $"{selectedDoc.CtrlNm}.{cols.ColumnName}",
-                                    FldNm = cols.ColumnName,
-                                    FldTy = GetFieldType(cols.DataType),
-                                    FldTitle = cols.ColumnName,
-                                    ShowYn = true,
-                                    EditYn = true,
-                                    ChangedFlag = MdlState.Inserted
-                                });
-                            }
-                        }
-                        t10.DataSource = wrkFldbs;
-                    }
-                }
-                ucTab1.SelectedTabPageIndex = 1;
-                ucTab3.SelectedTabPageIndex = 1;
-                ucTab4.SelectedTabPageIndex = 0;
-
-                SQLVariableExtractor extractor = new SQLVariableExtractor();
-                SQLSyntaxMatch variables = extractor.ExtractVariables(rtSelect.Text);
-
-                foreach (var kvp in variables.OPatternMatch)
-                {
-                    //wrkGets에 있으면 update 없으면 insert
-                    var wrkGet = wrkGetbs.Where(x => x.FldNm == kvp.Key).FirstOrDefault();
-                    if (wrkGet == null)
-                    {
-                        //x.FldNm와 kvp.Key대소문자구분없이 한번더 찾아야함 
-                        wrkGet = wrkGetbs.Where(x => x.FldNm.ToLower() == kvp.Key.ToLower()).FirstOrDefault();
-                        if (wrkGet != null)
-                        {
-                            wrkGet.FldNm = kvp.Key;
-                            wrkGet.ChangedFlag = MdlState.Updated;
-                        }
-                        else
-                        {
-                            wrkGetbs.Add(new WrkGet
-                            {
-                                FrwId = selectedDoc.FrwId,
-                                FrmId = selectedDoc.FrmId,
-                                WrkId = selectedDoc.WrkId,
-                                FldNm = kvp.Key,
-                                ChangedFlag = MdlState.Inserted
-                            });
-                        }
-
-
-                    }
-
-                }
-            }
         }
-
         private string GetFieldType(Type dataType)
         {
             return dataType.Name switch
@@ -371,7 +288,6 @@ namespace Frms
                 _ => "Text",
             };
         }
-
         private void pnlInsert_CustomButtonClick(object sender, DevExpress.XtraBars.Docking2010.BaseButtonEventArgs e)
         {
             var wrkSqlRepo = new WrkSqlRepo();
@@ -396,10 +312,6 @@ namespace Frms
                     CRUDM = "C",
                     Query = rtInsert.Text
                 });
-            }
-            else if (e.Button.Properties.Caption == "Generate")
-            {
-
             }
         }
         private void pnlUpdate_CustomButtonClick(object sender, DevExpress.XtraBars.Docking2010.BaseButtonEventArgs e)
@@ -427,9 +339,16 @@ namespace Frms
                     Query = rtUpdate.Text
                 });
             }
-            else if (e.Button.Properties.Caption == "Generate")
+            else if (e.Button.Properties.Caption == "Make Reference Data")
             {
-
+                wrkSqlRepo.Save(new WrkSql
+                {
+                    FrwId = selectedDoc.FrwId,
+                    FrmId = selectedDoc.FrmId,
+                    WrkId = selectedDoc.WrkId,
+                    CRUDM = "U",
+                    Query = rtUpdate.Text
+                });
             }
         }
         private void pnlDelete_CustomButtonClick(object sender, DevExpress.XtraBars.Docking2010.BaseButtonEventArgs e)
@@ -492,7 +411,7 @@ namespace Frms
 
             }
         }
-        private void ucPanel3_CustomButtonClick(object Sender, DevExpress.XtraBars.Docking2010.BaseButtonEventArgs e)
+        private void pnlColumn_CustomButtonClick(object Sender, DevExpress.XtraBars.Docking2010.BaseButtonEventArgs e)
         {
             if (e.Button.Properties.Caption == "Save")
             {
@@ -528,16 +447,66 @@ namespace Frms
                 }
             }
             else if (e.Button.Properties.Caption == "Numbering")
-            { 
+            {
                 int i = 1;
                 foreach (var wrkFld in wrkFldbs)
                 {
-                    wrkFld.Seq = i*10;
+                    wrkFld.Seq = i * 10;
                     i++;
                 }
             }
-        }
+            else if (e.Button.Properties.Caption == "Make Columns")
+            {
+                if (string.IsNullOrWhiteSpace(GenFunc.GetSql(new { FrwId = selectedDoc.FrwId, FrmId = selectedDoc.FrmId, WrkId = selectedDoc.WrkId, CRUDM = "R" })))
+                {
+                    MessageBox.Show("Select 쿼리를 먼저 입력하세요.");
+                    return;
+                }
 
+                using (var db = new GaiaHelper())
+                {
+                    DataSet dSet = db.GetGridColumns(new { FrwId = selectedDoc.FrwId, FrmId = selectedDoc.FrmId, WrkId = selectedDoc.WrkId, CRUDM = "R" });
+                    if (dSet != null)
+                    {
+                        foreach (DataColumn cols in dSet.Tables[0].Columns)
+                        {
+                            var wrkFld = wrkFldbs.Where(x => x.CtrlNm == $"{selectedDoc.CtrlNm}.{cols.ColumnName}").FirstOrDefault();
+
+                            if (wrkFld != null)
+                            {
+                                wrkFld.FrwId = selectedDoc.FrwId;
+                                wrkFld.FrmId = selectedDoc.FrmId;
+                                wrkFld.WrkId = selectedDoc.WrkId;
+                                wrkFld.CtrlCls = "Column";
+                                wrkFld.CtrlNm = $"{selectedDoc.CtrlNm}.{cols.ColumnName}";
+                                wrkFld.FldNm = cols.ColumnName;
+                                wrkFld.FldTy = GetFieldType(cols.DataType);
+                                //wrkFld.FldTitle = cols.ColumnName;
+                                wrkFld.ChangedFlag = MdlState.Updated;
+                            }
+                            else
+                            {
+                                wrkFldbs.Add(new WrkFld
+                                {
+                                    FrwId = selectedDoc.FrwId,
+                                    FrmId = selectedDoc.FrmId,
+                                    WrkId = selectedDoc.WrkId,
+                                    CtrlCls = "Column",
+                                    CtrlNm = $"{selectedDoc.CtrlNm}.{cols.ColumnName}",
+                                    FldNm = cols.ColumnName,
+                                    FldTy = GetFieldType(cols.DataType),
+                                    FldTitle = cols.ColumnName,
+                                    ShowYn = true,
+                                    EditYn = true,
+                                    ChangedFlag = MdlState.Inserted
+                                });
+                            }
+                        }
+                        t10.DataSource = wrkFldbs;
+                    }
+                }
+            }
+        }
         private void pnlGet_CustomButtonClick(object sender, DevExpress.XtraBars.Docking2010.BaseButtonEventArgs e)
         {
             if (e.Button.Properties.Caption == "New")
@@ -554,6 +523,10 @@ namespace Frms
             {
                 foreach (var wrkGet in wrkGetbs)
                 {
+                    if (string.IsNullOrWhiteSpace(wrkGet.GetWrkId) && string.IsNullOrWhiteSpace(wrkGet.GetFldNm) && string.IsNullOrWhiteSpace(wrkGet.GetDefalueValue))
+                    {
+                        continue;
+                    }
                     if (wrkGet.ChangedFlag == MdlState.Inserted)
                     {
                         wrkGetRepo.Add(wrkGet);
@@ -581,8 +554,38 @@ namespace Frms
                     }
                 }
             }
-        }
+            else if (e.Button.Properties.Caption == "Make GetParameters Data")
+            {
+                SQLVariableExtractor extractor = new SQLVariableExtractor();
+                SQLSyntaxMatch cvariables = extractor.ExtractVariables(rtSelect.Text);
 
+                foreach (var kvp in cvariables.OPatternMatch)
+                {
+                    //wrkGets에 있으면 update 없으면 insert
+                    var wrkGet = wrkGetbs.Where(x => x.FldNm == kvp.Key).FirstOrDefault();
+                    if (wrkGet == null)
+                    {
+                        wrkGet = wrkGetbs.Where(x => x.FldNm.ToLower() == kvp.Key.ToLower()).FirstOrDefault();
+                        if (wrkGet != null)
+                        {
+                            wrkGet.FldNm = kvp.Key;
+                            wrkGet.ChangedFlag = MdlState.Updated;
+                        }
+                        else
+                        {
+                            wrkGetbs.Add(new WrkGet
+                            {
+                                FrwId = selectedDoc.FrwId,
+                                FrmId = selectedDoc.FrmId,
+                                WrkId = selectedDoc.WrkId,
+                                FldNm = kvp.Key,
+                                ChangedFlag = MdlState.Inserted
+                            });
+                        }
+                    }
+                }
+            }
+        }
         private void pnlSet_CustomButtonClick(object sender, DevExpress.XtraBars.Docking2010.BaseButtonEventArgs e)
         {
             if (e.Button.Properties.Caption == "New")
@@ -599,6 +602,10 @@ namespace Frms
             {
                 foreach (var wrkSet in wrkSetbs)
                 {
+                    if (string.IsNullOrWhiteSpace(wrkSet.WrkId) && string.IsNullOrWhiteSpace(wrkSet.FldNm))
+                    {
+                        continue;
+                    }
                     if (wrkSet.ChangedFlag == MdlState.Inserted)
                     {
                         wrkSetRepo.Add(wrkSet);
@@ -618,16 +625,34 @@ namespace Frms
                 GridView view = grdSetParam.MainView as GridView;
                 if (view != null)
                 {
-                    var selectedRows = view.GetFocusedRow() as WrkSet;
-                    if (selectedRows != null)
+                    var selectedRows = view.GetSelectedRows();
+                    foreach (var rowHandle in selectedRows)
                     {
-                        wrkSetbs.Remove(selectedRows);
-                        wrkSetRepo.Delete(selectedRows);
+                        var selectedRow = view.GetRow(rowHandle) as WrkSet;
+                        if (selectedRow != null)
+                        {
+                            wrkSetbs.Remove(selectedRow);
+                            wrkSetRepo.Delete(selectedRow);
+                        }
                     }
                 }
             }
+            else if (e.Button.Properties.Caption == "Import Target List")
+            {
+                var addSetbs = new WrkSetRepo().GetTargetList(selectedDoc.FrwId, selectedDoc.FrmId);
+                foreach (var wrkSet in addSetbs)
+                {
+                    wrkSetbs.Add(new WrkSet
+                    {
+                        FrwId = wrkSet.FrwId,
+                        FrmId = wrkSet.FrmId,
+                        SetWrkId = wrkSet.SetWrkId,
+                        SetFldNm = wrkSet.SetFldNm,
+                        ChangedFlag = MdlState.Inserted
+                    });
+                }
+            }
         }
-
         private void pnlRef_CustomButtonClick(object sender, DevExpress.XtraBars.Docking2010.BaseButtonEventArgs e)
         {
             if (e.Button.Properties.Caption == "New")
@@ -645,6 +670,11 @@ namespace Frms
             {
                 foreach (var wrkRef in wrkRefbs)
                 {
+                    //만일 wrkRef.RefWrkId, wrkRef.RefFldNm, wrkRef.RefDefalueValue가 공백이거나 null이면 저장에서 제외한다.
+                    if (string.IsNullOrWhiteSpace(wrkRef.RefWrkId) && string.IsNullOrWhiteSpace(wrkRef.RefFldNm) && string.IsNullOrWhiteSpace(wrkRef.RefDefalueValue))
+                    {
+                        continue;
+                    }
                     if (wrkRef.ChangedFlag == MdlState.Inserted)
                     {
                         wrkRefRepo.Add(wrkRef);
@@ -664,32 +694,78 @@ namespace Frms
                 GridView view = grdRefData.MainView as GridView;
                 if (view != null)
                 {
-                    var selectedRows = view.GetFocusedRow() as WrkRef;
-                    if (selectedRows != null)
+                    var selectedRows = view.GetSelectedRows();
+                    foreach (var rowHandle in selectedRows)
                     {
-                        wrkRefbs.Remove(selectedRows);
-                        wrkRefRepo.Delete(selectedRows);
+                        var selectedRow = view.GetRow(rowHandle) as WrkRef;
+                        if (selectedRow != null)
+                        {
+                            wrkRefbs.Remove(selectedRow);
+                            wrkRefRepo.Delete(selectedRow);
+                        }
+                    }
+                }
+            }
+            else if (e.Button.Properties.Caption == "Make Reference Data")
+            {
+                SQLVariableExtractor extractor = new SQLVariableExtractor();
+                SQLSyntaxMatch cvariables = extractor.ExtractVariables(rtUpdate.Text);
+
+                foreach (var kvp in cvariables.OPatternMatch)
+                {
+                    //wrkRefs에 있으면 update 없으면 insert
+                    var wrkRef = wrkRefbs.Where(x => x.FldNm == kvp.Key).FirstOrDefault();
+                    if (wrkRef == null)
+                    {
+                        wrkRef = wrkRefbs.Where(x => x.FldNm.ToLower() == kvp.Key.ToLower()).FirstOrDefault();
+                        if (wrkRef != null)
+                        {
+                            wrkRef.FldNm = kvp.Key;
+                            wrkRef.ChangedFlag = MdlState.Updated;
+                        }
+                        else
+                        {
+                            wrkRefbs.Add(new WrkRef
+                            {
+                                FrwId = selectedDoc.FrwId,
+                                FrmId = selectedDoc.FrmId,
+                                WrkId = selectedDoc.WrkId,
+                                FldNm = kvp.Key,
+                                ChangedFlag = MdlState.Inserted
+                            });
+                        }
+                    }
+                }
+
+                cvariables = extractor.ExtractVariables(rtInsert.Text);
+
+                foreach (var kvp in cvariables.OPatternMatch)
+                {
+                    var wrkRef = wrkRefbs.Where(x => x.FldNm == kvp.Key).FirstOrDefault();
+                    if (wrkRef == null)
+                    {
+                        wrkRef = wrkRefbs.Where(x => x.FldNm.ToLower() == kvp.Key.ToLower()).FirstOrDefault();
+                        if (wrkRef != null)
+                        {
+                            wrkRef.FldNm = kvp.Key;
+                            wrkRef.ChangedFlag = MdlState.Updated;
+                        }
+                        else
+                        {
+                            wrkRefbs.Add(new WrkRef
+                            {
+                                FrwId = selectedDoc.FrwId,
+                                FrmId = selectedDoc.FrmId,
+                                WrkId = selectedDoc.WrkId,
+                                FldNm = kvp.Key,
+                                ChangedFlag = MdlState.Inserted
+                            });
+                        }
                     }
                 }
             }
         }
-
-
         #endregion
-
-        private void ucTab4_CustomHeaderButtonClick(object sender, DevExpress.XtraTab.ViewInfo.CustomHeaderButtonEventArgs e)
-        {
-            Common.gMsg = sender.ToString();
-            Common.gMsg = e.Button.ToString();
-            if (e.Button.Kind==DevExpress.XtraEditors.Controls.ButtonPredefines.SpinDown)
-            {
-                Common.gMsg = "SpinDown";
-            }
-            if (e.Button.Kind == DevExpress.XtraEditors.Controls.ButtonPredefines.SpinUp)
-            {
-                Common.gMsg = "SpinUp";
-            }
-        }
     }
 }
 namespace Frms.Models.WrkRepo

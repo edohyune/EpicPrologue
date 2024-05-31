@@ -18,6 +18,7 @@ using DevExpress.XtraEditors;
 using Dapper;
 using System.Windows.Forms;
 using DevExpress.Data.Filtering.Helpers;
+using System.Windows.Controls;
 
 namespace Ctrls
 {
@@ -222,12 +223,19 @@ namespace Ctrls
         {
             UCBeforeLeaveRow?.Invoke(sender, e);
         }
-        public delegate void delEventSelectionChanged(object sender, SelectionChangedEventArgs e);   // delegate 선언
+        public delegate void delEventSelectionChanged(object sender, DevExpress.Data.SelectionChangedEventArgs e);   // delegate 선언
         public event delEventSelectionChanged UCSelectionChanged;
-        private void gvCtrl_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void gvCtrl_SelectionChanged(object sender, DevExpress.Data.SelectionChangedEventArgs e)
         {
             UCSelectionChanged?.Invoke(sender, e);
         }
+        /*
+        gvCtrl.SelectionChanged += gvForms_SelectionChanged;
+        private void gvForms_SelectionChanged(object sender, DevExpress.Data.SelectionChangedEventArgs e)
+        {
+
+        }
+         */
         public delegate void delEventInitNewRow(object sender, InitNewRowEventArgs e);   // delegate 선언
         public event delEventInitNewRow UCInitNewRow;
         private void gvCtrl_InitNewRow(object sender, InitNewRowEventArgs e)
@@ -242,78 +250,131 @@ namespace Ctrls
             UCRowDeleting?.Invoke(sender, e);
         }
 
-        //ForcuseRow가 변경이 되면 발생하는 이벤트
-        //컬럼과 특정 컨트롤러를 연결하여 해당 컨트롤러에 
-
         public delegate void delEventFocusedRowChanged(object sender, int preIndex, int rowIndex, FocusedRowChangedEventArgs e);   // delegate 선언
         public event delEventFocusedRowChanged UCFocusedRowChanged;
         public void gvCtrl_FocusedRowChanged(object sender, FocusedRowChangedEventArgs e)
         {
-            if ((UCFocusedRowChanged != null) && (e.FocusedRowHandle >= 0))
+            if (UCFocusedRowChanged != null && e.FocusedRowHandle >= 0)
             {
                 List<WrkSet> ctrls = new WrkSetRepo().SetPushFlds(frwId, frmId, thisNm);
                 if (ctrls != null)
                 {
-                    foreach (var ctrl in ctrls)
-                    {
-                        var fieldInfo = ctrls.ToDictionary(x => x.FldNm, x => x.ToolNm);
-                        var mapping = ctrls.ToDictionary(x => x.FldNm, x => x.SetFldNm);
-                        dynamic rtn = null;
+                    var fieldInfo = ctrls.ToDictionary(x => x.FldNm, x => x.ToolNm);
+                    var mapping = ctrls.ToDictionary(x => x.FldNm, x => x.SetFldNm);
 
-                        foreach (var item in fieldInfo)
+                    foreach (var item in fieldInfo)
+                    {
+                        // item.Key에 해당하는 매핑된 컬럼 이름을 가져옴
+                        string columnName = mapping.ContainsKey(item.Key) ? item.Key : null;
+                        if (columnName != null)
                         {
-                            if (gvCtrl.GetFocusedRowCellValue(mapping[item.Key]) != null)
+                            // GetText 메서드를 사용하여 값을 가져옴
+                            var fieldValue = this.GetText(columnName);
+                            if (fieldValue != null)
                             {
-                                rtn = gvCtrl.GetFocusedRowCellValue(mapping[item.Key]);
+                                Common.gLog = $"Enter Value({fieldValue}) into Control({mapping[item.Key]})";
+                                InitBinding(this.FindForm(), mapping[item.Key], item.Value, fieldValue);
                             }
-                            Common.gLog = $"Enter Value({rtn}) into Control({item.Key})";
-                            InitBinding(this.FindForm(), item.Key, item.Value, rtn);
+                            else
+                            {
+                                Common.gLog = $"Value for column {columnName} is null.";
+                            }
+                        }
+                        else
+                        {
+                            Common.gLog = $"Column name for key {item.Key} is null.";
                         }
                     }
                 }
                 UCFocusedRowChanged(sender, e.PrevFocusedRowHandle, e.FocusedRowHandle, e);
             }
+
+            //if ((UCFocusedRowChanged != null) && (e.FocusedRowHandle >= 0))
+            //{
+            //    List<WrkSet> ctrls = new WrkSetRepo().SetPushFlds(frwId, frmId, thisNm);
+            //    if (ctrls != null)
+            //    {
+            //        foreach (var ctrl in ctrls)
+            //        {
+            //            var fieldInfo = ctrls.ToDictionary(x => x.FldNm, x => x.SetFldNm);
+            //            var mapping = ctrls.ToDictionary(x => x.FldNm, x => x.ToolNm);
+            //            dynamic rtn = null;
+
+            //            foreach (var item in fieldInfo)
+            //            {
+            //                if (gvCtrl.GetFocusedRowCellValue(mapping[item.Key]) != null)
+            //                {
+            //                    rtn = gvCtrl.GetFocusedRowCellValue(mapping[item.Key]);
+            //                }
+            //                Common.gLog = $"Enter Value({rtn}) into Control({item.Key})";
+            //                InitBinding(this.FindForm(), item.Key, item.Value, rtn);
+            //            }
+            //        }
+            //    }
+            //    UCFocusedRowChanged(sender, e.PrevFocusedRowHandle, e.FocusedRowHandle, e);
+            //}
         }
-        private void InitBinding(Form uc, string ctrlID, string ctrlTY, dynamic map)
+        private void InitBinding(Form uc, string ctrlID, string ctrlTY, dynamic value)
         {
-            switch (ctrlTY.ToLower())
+            var ctrl = uc.Controls.Find(ctrlID, true).FirstOrDefault();
+            if (ctrl != null)
             {
-                case "uctext":
-                    UCTextBox uctext = uc.Controls.Find(ctrlID, true).FirstOrDefault() as UCTextBox;
-                    uctext.BindText = map.ToString();
-                    break;
-                case "ucdate":
-                    UCDateBox ucdate = uc.Controls.Find(ctrlID, true).FirstOrDefault() as UCDateBox;
-                    ucdate.BindText = map.ToString();
-                    break;
-                case "uccombo":
-                    UCLookUp uccombo = uc.Controls.Find(ctrlID, true).FirstOrDefault() as UCLookUp;
-                    uccombo.BindText = map.ToString();
-                    break;
-                case "uccheckbox":
-                    UCCheckBox uccheckbox = uc.Controls.Find(ctrlID, true).FirstOrDefault() as UCCheckBox;
-                    uccheckbox.BindValue = map;
-                    break;
-                case "ucmemo":
-                    UCMemo ucmemo = uc.Controls.Find(ctrlID, true).FirstOrDefault() as UCMemo;
-                    ucmemo.BindText = map.ToString();
-                    break;
-                default:
-                    break;
+                switch (ctrlTY.ToLower())
+                {
+                    case "uctextbox":
+                    case "uctext":
+                        UCTextBox uctxt = ctrl as UCTextBox;
+                        if (uctxt != null)
+                        {
+                            uctxt.BindText = value.ToString();
+                        }
+                        break;
+                    case "ucdatebox":
+                    case "ucdate":
+                        UCDateBox ucdate = ctrl as UCDateBox;
+                        if (ucdate != null)
+                        {
+                            ucdate.BindText = value.ToString();
+                        }
+                        break;
+                    case "uccombo":
+                        UCLookUp uccombo = ctrl as UCLookUp;
+                        if (uccombo != null)
+                        {
+                            uccombo.BindText = value.ToString();
+                        }
+                        break;
+                    case "uccheckbox":
+                        UCCheckBox uccheckbox = ctrl as UCCheckBox;
+                        if (uccheckbox != null)
+                        {
+                            uccheckbox.BindValue = value;
+                        }
+                        break;
+                    case "ucmemo":
+                        UCMemo ucmemo = ctrl as UCMemo;
+                        if (ucmemo != null)
+                        {
+                            ucmemo.BindText = value.ToString();
+                        }
+                        break;
+                    default:
+                        break;
+                }
             }
         }
 
         public delegate void delEventCellValueChanged(object sender, CellValueChangedEventArgs e);
-        public event delEventCellValueChanged CellValueChanged;
+        public event delEventCellValueChanged UCCellValueChanged;
         private void gvCtrl_CellValueChanged(object sender, CellValueChangedEventArgs e)
         {
-            CellValueChanged?.Invoke(sender, e);
+            UCCellValueChanged?.Invoke(sender, e);
         }
         public delegate void delEventCellValueChanging(object sender, CellValueChangedEventArgs e);
-        public event delEventCellValueChanging CellValueChanging;
+        public event delEventCellValueChanging UCCellValueChanging;
         private void gvCtrl_CellValueChanging(object sender, CellValueChangedEventArgs e)
         {
-            CellValueChanging?.Invoke(sender, e);
+            UCCellValueChanging?.Invoke(sender, e);
         }
         public delegate void delEventMouseDown(object sender, MouseEventArgs e);
         public event delEventMouseDown UCMouseDown;
@@ -412,7 +473,7 @@ namespace Ctrls
             }
         }
 
-        private void AddGridColumn(GridView gridV, GridColumn gridC)
+        private void AddGridColumn(DevExpress.XtraGrid.Views.Grid.GridView gridV, GridColumn gridC)
         {
             if (gridC != null)
             {
@@ -691,6 +752,66 @@ select a.SysCd, a.MenuId, a.MenuNm, a.FrmId, a.HideYn, a.CId, a.CDt
 
         #endregion
         #region Grid Save
+        public void Save<T>()
+        {
+            if (gvCtrl.IsEditing)
+            {
+                gvCtrl.CloseEditor();
+            }
+            if (gvCtrl.FocusedRowModified)
+            {
+                gvCtrl.UpdateCurrentRow();
+            }
+
+            var list = (BindingList<T>)this.DataSource;
+
+            if (list != null)
+            {
+                using (var db = new GaiaHelper())
+                {
+                    foreach (dynamic item in list)
+                    {
+                        WrkRefRepo wrkRefRepo = new WrkRefRepo();
+                        List<WrkRef> wrkRefs = wrkRefRepo.RefDataFlds(frwId, frmId, thisNm);
+
+                        string sql = string.Empty;
+                        int ii = 0;
+
+                        //List<WrkRef> rows = db.RefParam(new { sys = SysCode, frm = FrmID, wkset = FldID });
+                        //string sql = string.Empty;
+                        //int ii = 0;
+
+                        switch (item.ChangedFlag)
+                        {
+                            case MdlState.Inserted:
+                                sql = GenFunc.GetSql(new { FrwId = frwId, FrmId = frmId, WrkId = thisNm, CRUDM = "C" });
+                                foreach (var wrkRef in wrkRefs)
+                                {
+                                    sql = sql.Replace($"{wrkRef.FldNm}", $"'{GetParamValue(this.FindForm().Controls, wrkRef)}'");
+                                }
+                                ii = db.OpenExecute(sql, item);
+                                break;
+                            case MdlState.Updated:
+                                sql = GenFunc.GetSql(new { FrwId = frwId, FrmId = frmId, WrkId = thisNm, CRUDM = "U" });
+                                foreach (var wrkRef in wrkRefs)
+                                {
+                                    sql = sql.Replace($"{wrkRef.FldNm}", $"'{GetParamValue(this.FindForm().Controls, wrkRef)}'");
+                                }
+                                ii = db.OpenExecute(sql, item);
+                                break;
+                            case MdlState.Deleted:
+                                sql = GenFunc.GetSql(new { FrwId = frwId, FrmId = frmId, WrkId = thisNm, CRUDM = "D" });
+                                foreach (var wrkRef in wrkRefs)
+                                {
+                                    sql = sql.Replace($"{wrkRef.FldNm}", $"'{GetParamValue(this.FindForm().Controls, wrkRef)}'");
+                                }
+                                ii = db.OpenExecute(sql, item);
+                                break;
+                        }
+                    }
+                }
+            }
+        }
         #endregion
         #region Grid New
         public void New<T>()
@@ -1139,7 +1260,7 @@ select a.SysCd, a.MenuId, a.MenuNm, a.FrmId, a.HideYn, a.CId, a.CDt
         private string GetParamValue(ControlCollection frm, WrkGet wrkGet)
         {
             string str = string.Empty;
-            //아마도 이부분은 수정이 필요할듯 컨트롤러에 따라 BindText가 다르니까 처리방법을 고려할것 
+
             if (string.IsNullOrEmpty(wrkGet.GetWrkId))
             {
                 if (string.IsNullOrEmpty(wrkGet.GetFldNm))
@@ -1157,13 +1278,30 @@ select a.SysCd, a.MenuId, a.MenuNm, a.FrmId, a.HideYn, a.CId, a.CDt
                 dynamic tbx = frm.Find(wrkGet.GetWrkId, true).FirstOrDefault();
                 str = tbx.GetText(wrkGet.GetFldNm);
             }
-
-            //if (string.IsNullOrEmpty(wrkGet.WrkId))
-            //{
-                
-            //}
-
             return str;
         }
+        private string GetParamValue(ControlCollection frm, WrkRef wrkRef)
+        {
+            string str = string.Empty;
+            if (string.IsNullOrEmpty(wrkRef.RefWrkId))
+            {
+                if (string.IsNullOrEmpty(wrkRef.RefFldNm))
+                {
+                    str = wrkRef.RefDefalueValue;
+                }
+                else
+                {
+                    dynamic tbx = frm.Find(wrkRef.RefFldNm, true).FirstOrDefault();
+                    str = tbx.Text;
+                }
+            }
+            else
+            {
+                dynamic tbx = frm.Find(wrkRef.RefWrkId, true).FirstOrDefault();
+                str = tbx.GetText(wrkRef.RefFldNm);
+            }
+            return str;
+        }
+
     }
 }

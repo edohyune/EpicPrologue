@@ -579,7 +579,7 @@ namespace Frms
                     else if (frmCtrl.ChangedFlag == MdlState.None)
                     {
                         continue;
-                    }   
+                    }
                 }
             }
             else if (e.Button.Properties.Caption == "Delete")
@@ -587,7 +587,7 @@ namespace Frms
                 var frmCtrl = gvControls.GetFocusedRow() as FrmCtrl;
                 if (frmCtrl != null)
                 {
-                    frmCtrlbs.Remove(frmCtrl);  
+                    frmCtrlbs.Remove(frmCtrl);
                     frmCtrlRepo.Delete(frmCtrl.FrwId, frmCtrl.FrmId, frmCtrl.CtrlNm);
                 }
             }

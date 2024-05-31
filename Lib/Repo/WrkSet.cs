@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DevExpress.Pdf.Native.BouncyCastle.Asn1.Ocsp;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -96,15 +97,41 @@ namespace Lib.Repo
     }
     public class WrkSetRepo : IWrkSetRepo
     {
+        public List<WrkSet> GetTargetList(string frwId, string frmId) 
+        {
+            string sql = @"
+select a.FrwId, a.FrmId, WrkId=null, FldNm=null, SetWrkId=WrkId,
+       SetFldNm=FldNm, SetDefaultValue=null, SqlId=null, Pid=null, 
+       ToolNm
+  from WRKFLD a
+ where 1=1
+   and FrwId = @FrwId
+   and FrmId = @FrmId
+   and ToolNm in (select CtrlNm from CTRLMST where CtrlGrpCd='Bind')
+";
+            using (var db = new Lib.GaiaHelper())
+            {
+                var result = db.Query<WrkSet>(sql, new { FrwId = frwId, FrmId = frmId }).ToList();
+
+                if (result != null)
+                {
+                    foreach (var item in result)
+                    {
+                        item.ChangedFlag = MdlState.None;
+                    }
+                    return result;
+                }
+                else { return null; }
+            }
+        }
         public List<WrkSet> SetPushFlds(string frwId, string frmId, string wrkId)
         {
             string sql = @"
 select a.FrwId, a.FrmId, a.WrkId, a.FldNm, a.SetWrkId,
-       a.SetFldNm, a.SetDefaultValue, a.SqlId, a.Id, a.Pid,
-       a.CId, a.CDt, a.MId, a.MDt, 
-       b.ToolNm
+       a.SetFldNm, a.SetDefaultValue, a.SqlId, a.Id, a.Pid, 
+       ToolNm = 'UCTextBox',
+       a.CId, a.CDt, a.MId, a.MDt
   from WRKSET a
-  join WRKFLD b on a.FrwId=b.FrwId and a.FrmId=b.FrmId and a.FldNm=b.CtrlNm
  where 1=1
    and a.FrmId = @FrmId
    and a.FrwId = @FrwId
@@ -116,7 +143,8 @@ select a.FrwId, a.FrmId, a.WrkId, a.FldNm, a.SetWrkId,
 
                 if (result == null)
                 {
-                    throw new KeyNotFoundException($"A record with the code {frwId},{frmId},{wrkId} was not found.");
+                    //throw new KeyNotFoundException($"A record with the code {frwId},{frmId},{wrkId} was not found.");
+                    return null;
                 }
                 else
                 {

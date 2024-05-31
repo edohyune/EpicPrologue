@@ -212,6 +212,13 @@ namespace Lib.Repo
             set => Set(ref _Seq, value);
         }
 
+        private string _Memo;
+        public string Memo
+        {
+            get => _Memo;
+            set => Set(ref _Memo, value);
+        }
+
         private long _Id;
         public long Id
         {
