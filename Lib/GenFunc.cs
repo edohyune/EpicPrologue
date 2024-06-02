@@ -65,7 +65,54 @@ select a.Query
                 }
             }
         }
-
+        public static string GetPopSql(object param)
+        {
+            string sql = @"
+select a.Query
+  from POPSQL a
+ where 1=1
+   and a.FrmId = @FrmId
+   and a.FrwId = @FrwId
+   and a.PopId = @PopId
+";
+            using (var db = new Lib.GaiaHelper())
+            {
+                var result = db.OpenQuery(sql, param);
+                if (result == null)
+                {
+                    //return "";
+                    //                    result = @"
+                    //select FldId='TEST01', FldNm='TEST11', Dt='A1', Col01='B1', Col02='C1' union
+                    //select FldId='TEST02', FldNm='TEST12', Dt='A2', Col01='B2', Col02='C2' union
+                    //select FldId='TEST03', FldNm='TEST13', Dt='A3', Col01='B3', Col02='C3' union
+                    //select FldId='TEST04', FldNm='TEST14', Dt='A4', Col01='B4', Col02='C4' union
+                    //select FldId='TEST05', FldNm='TEST15', Dt='A5', Col01='B5', Col02='C5' union
+                    //select FldId='TEST06', FldNm='TEST16', Dt='A6', Col01='B6', Col02='C6' 
+                    //";
+                    result = @"
+select FldId='TEST01' union
+select FldId='TEST02' union
+select FldId='TEST03' union
+select FldId='TEST04' union
+select FldId='TEST05' union
+select FldId='TEST06' 
+";
+                    return result;
+                }
+                else
+                {
+                    result = @"
+select FldId='TEST01' union
+select FldId='TEST02' union
+select FldId='TEST03' union
+select FldId='TEST04' union
+select FldId='TEST05' union
+select FldId='TEST06' 
+";
+                    return result;
+                }
+            }
+        }
         public static void SetIni(string key, string value = null)
         {
             string iniFilePath = Common.gIniFilePath;

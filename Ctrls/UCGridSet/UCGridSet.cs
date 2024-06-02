@@ -24,6 +24,7 @@ namespace Ctrls
 {
     public class UCGridSet : DevExpress.XtraGrid.GridControl
     {
+        #region Properties Browseable(false)
         [Browsable(false)]
         private string frwId { get; set; }
         private string frmId { get; set; }
@@ -44,8 +45,8 @@ namespace Ctrls
 
         public DataRow GetForcuseDataRow { get { return gvCtrl.GetFocusedDataRow(); } }
         public DataRow GetDataRow(int rowHandle) { return gvCtrl.GetDataRow(rowHandle); }
-
-        #region Properties
+        #endregion
+        #region Properties Browseable(true)
         [Category("A UserController Property"), Description("RowAutoHeigh")]
         public bool RowAutoHeigh
         {
@@ -106,6 +107,7 @@ namespace Ctrls
         {
             this.DataSource = null;
         }
+
         public void FindRow(string col, string val)
         {
             int rowHandle = gvCtrl.LocateByValue(col, val);
@@ -161,6 +163,7 @@ namespace Ctrls
                 return rtn;
             }
         }
+
         public string GetText(int columnIndex, int rowIndex)
         {
             if (rowIndex < 0)
@@ -314,12 +317,12 @@ namespace Ctrls
             //    UCFocusedRowChanged(sender, e.PrevFocusedRowHandle, e.FocusedRowHandle, e);
             //}
         }
-        private void InitBinding(Form uc, string ctrlID, string ctrlTY, dynamic value)
+        private void InitBinding(Form uc, string ctrlNm, string toolNm, dynamic value)
         {
-            var ctrl = uc.Controls.Find(ctrlID, true).FirstOrDefault();
+            var ctrl = uc.Controls.Find(ctrlNm, true).FirstOrDefault();
             if (ctrl != null)
             {
-                switch (ctrlTY.ToLower())
+                switch (toolNm.ToLower())
                 {
                     case "uctextbox":
                     case "uctext":
@@ -390,7 +393,6 @@ namespace Ctrls
         }
 
         #endregion
-
         public UCGridSet()
         {
             gvCtrl = new DevExpress.XtraGrid.Views.Grid.GridView();

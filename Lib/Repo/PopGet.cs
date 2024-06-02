@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DevExpress.Pdf.Native.BouncyCastle.Asn1.Ocsp;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Lib.Repo
 {
-    public class WrkGet : MdlBase
+    public class PopGet : MdlBase
     {
         private string _FrwId;
         public string FrwId
@@ -22,11 +23,11 @@ namespace Lib.Repo
             set => Set(ref _FrmId, value);
         }
 
-        private string _WrkId;
-        public string WrkId
+        private string _PopId;
+        public string PopId
         {
-            get => _WrkId;
-            set => Set(ref _WrkId, value);
+            get => _PopId;
+            set => Set(ref _PopId, value);
         }
 
         private string _FldNm;
@@ -79,34 +80,35 @@ namespace Lib.Repo
         }
 
     }
-    public interface IWrkGetRepo
+    public interface IPopGetRepo
     {
-        List<WrkGet> GetPullFlds(string frwId, string frmId, string wrkId);
-        void Add(WrkGet wrkGet);
-        void Update(WrkGet wrkGet);
-        void Delete(WrkGet wrkGet);
+        List<PopGet> GetPullFlds(string frwId, string frmId, string popId);
+        void Add(PopGet popGet);
+        void Update(PopGet popGet);
+        void Delete(PopGet popGet);
     }
-    public class WrkGetRepo : IWrkGetRepo
+    public class PopGetRepo : IPopGetRepo
     {
-        public List<WrkGet> GetPullFlds(string frwId, string frmId, string wrkId)
+        public List<PopGet> GetPullFlds(string frwId, string frmId, string popId)
         {
             string sql = @"
-select a.FrwId, a.FrmId, a.WrkId, a.FldNm, a.GetWrkId,
+select a.FrwId, a.FrmId, a.PopId, a.FldNm, a.GetWrkId,
        a.GetFldNm, a.GetDefalueValue, a.SqlId, a.Id, a.PId,
        a.CId, a.CDt, a.MId, a.MDt
-  from WRKGET a
+  from POPGET a
  where 1=1
-   and a.FrmId = @FrmId
    and a.FrwId = @FrwId
-   and a.WrkId = @WrkId
+   and a.FrmId = @FrmId
+   and a.PopId = @PopId
 ";
             using (var db = new Lib.GaiaHelper())
             {
-                var result = db.Query<WrkGet>(sql, new { FrwId = frwId, FrmId = frmId, WrkId = wrkId }).ToList();
+                var result = db.Query<PopGet>(sql, new { FrwId = frwId, FrmId = frmId, PopId = popId }).ToList();
 
                 if (result == null)
                 {
-                    throw new KeyNotFoundException($"A record with the code {frwId},{frmId},{wrkId} was not found.");
+                    return null;
+                    //throw new KeyNotFoundException($"A record with the code {frwId},{frmId},{popId} was not found.");
                 }
                 else
                 {
@@ -118,75 +120,61 @@ select a.FrwId, a.FrmId, a.WrkId, a.FldNm, a.GetWrkId,
                 }
             }
         }
-        public List<IdNm> GetPullFlds(object param)
+        public void Add(PopGet popGet)
         {
             string sql = @"
-select Id = a.FldNm, 
-       Nm = isnull(a.GetFldNm,isnull(a.GetDefalueValue,''))
-  from WRKGET a
- where 1=1
-   and a.FrmId = @FrmId
-   and a.FrwId = @FrwId
-   and a.WrkId = @WrkId
-";
-            using (var db = new Lib.GaiaHelper())
-            {
-                var result = db.Query<IdNm>(sql, param).ToList();
-                return result;
-            }
-        }
-
-        public void Add(WrkGet wrkGet)
-        {
-            string sql = @"
-insert into WRKGET
-      (FrwId, FrmId, WrkId, FldNm, GetWrkId,
-       GetFldNm, GetDefalueValue, SqlId, PId,
+insert into POPGET
+      (FrwId, FrmId, PopId, FldNm, GetWrkId,
+       GetFldNm, GetDefalueValue, SqlId, Id, PId,
        CId, CDt, MId, MDt)
-select @FrwId, @FrmId, @WrkId, @FldNm, @GetWrkId,
-       @GetFldNm, @GetDefalueValue, @SqlId, @PId,
+select @FrwId, @FrmId, @PopId, @FldNm, @GetPopId,
+       @GetFldNm, @GetDefalueValue, @SqlId, @Id, @PId,
        " + Common.gRegId + @", getdate(), " + Common.gRegId + @", getdate()
 ";
+
             using (var db = new Lib.GaiaHelper())
             {
-                db.OpenExecute(sql, wrkGet);
+                db.OpenExecute(sql, popGet);
             }
         }
-
-        public void Update(WrkGet wrkGet)
+        public void Delete(PopGet popGet)
         {
             string sql = @"
 update a
-   set FldNm= @FldNm,
+   set PopId= @PopId,
+       FldNm= @FldNm,
        GetWrkId= @GetWrkId,
        GetFldNm= @GetFldNm,
        GetDefalueValue= @GetDefalueValue,
        SqlId= @SqlId,
+       Id= @Id,
        PId= @PId,
        MId= " + Common.gRegId + @",
        MDt= getdate()
-  from WRKGET a
+  from POPGET a
  where 1=1
    and Id = @Id
 ";
+
             using (var db = new Lib.GaiaHelper())
             {
-                db.OpenExecute(sql, wrkGet);
+                db.OpenExecute(sql, popGet);
             }
         }
-
-        public void Delete(WrkGet wrkGet)
+        public void Update(PopGet popGet)
         {
             string sql = @"
 delete
-  from WRKGET
+  from POPGET
  where 1=1
    and Id = @Id
 ";
+
             using (var db = new Lib.GaiaHelper())
             {
-                db.OpenExecute(sql, wrkGet);
+                db.OpenExecute(sql, popGet);
             }
         }
     }
+
 }

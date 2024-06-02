@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Lib.Repo
 {
-    internal class WrkRepo
+    internal class PopSql
     {
     }
 }
