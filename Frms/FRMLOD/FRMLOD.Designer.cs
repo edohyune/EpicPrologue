@@ -151,7 +151,6 @@ namespace Frms
             ucPanel1.Size = new System.Drawing.Size(531, 70);
             ucPanel1.TabIndex = 0;
             ucPanel1.Text = "Search Condition";
-            ucPanel1.Title = "Search Condition";
             // 
             // s_txt
             // 
@@ -182,7 +181,6 @@ namespace Frms
             ucPanel2.Size = new System.Drawing.Size(531, 661);
             ucPanel2.TabIndex = 1;
             ucPanel2.Text = "Forms - FrwFrm";
-            ucPanel2.Title = "Forms - FrwFrm";
             ucPanel2.CustomButtonClick += ucPenel2_CustomButtonClick;
             // 
             // gcForms
@@ -259,7 +257,6 @@ namespace Frms
             ucPanel3.Size = new System.Drawing.Size(620, 168);
             ucPanel3.TabIndex = 1;
             ucPanel3.Text = "Form Registration - FrwFrm";
-            ucPanel3.Title = "Form Registration - FrwFrm";
             ucPanel3.CustomButtonClick += ucPanel3_CustomButtonClick;
             // 
             // btnFTPUpload
@@ -451,7 +448,6 @@ namespace Frms
             ucPanel4.Size = new System.Drawing.Size(618, 538);
             ucPanel4.TabIndex = 1;
             ucPanel4.Text = "Controller included in Form - FrmCtrl";
-            ucPanel4.Title = "Controller included in Form - FrmCtrl";
             ucPanel4.CustomButtonClick += ucPanel4_CustomButtonClick;
             // 
             // gridControls
@@ -495,7 +491,6 @@ namespace Frms
             ucPanel5.Size = new System.Drawing.Size(618, 538);
             ucPanel5.TabIndex = 2;
             ucPanel5.Text = "Workset in Form - FRMWRK";
-            ucPanel5.Title = "Workset in Form - FRMWRK";
             ucPanel5.CustomButtonClick += ucPanel5_CustomButtonClick;
             // 
             // gridWorkset

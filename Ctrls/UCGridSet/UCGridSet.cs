@@ -19,6 +19,7 @@ using Dapper;
 using System.Windows.Forms;
 using DevExpress.Data.Filtering.Helpers;
 using System.Windows.Controls;
+using DevExpress.Utils.DirectXPaint;
 
 namespace Ctrls
 {
@@ -243,7 +244,6 @@ namespace Ctrls
         public event delEventInitNewRow UCInitNewRow;
         private void gvCtrl_InitNewRow(object sender, InitNewRowEventArgs e)
         {
-
             UCInitNewRow?.Invoke(sender, e);
         }
         public delegate void delEvent4(object sender, RowDeletingEventArgs e);
@@ -789,25 +789,37 @@ select a.SysCd, a.MenuId, a.MenuNm, a.FrmId, a.HideYn, a.CId, a.CDt
                                 sql = GenFunc.GetSql(new { FrwId = frwId, FrmId = frmId, WrkId = thisNm, CRUDM = "C" });
                                 foreach (var wrkRef in wrkRefs)
                                 {
+                                    Common.gMsg = $"--[{thisNm}] Insert--------------------";
+                                    Common.gMsg = $"--Grid Save As Parameters--------------";
                                     sql = sql.Replace($"{wrkRef.FldNm}", $"'{GetParamValue(this.FindForm().Controls, wrkRef)}'");
                                 }
+                                Common.gMsg = sql;
                                 ii = db.OpenExecute(sql, item);
+                                Common.gMsg = $"--[{thisNm}] END Insert--------------------{Environment.NewLine}";
                                 break;
                             case MdlState.Updated:
                                 sql = GenFunc.GetSql(new { FrwId = frwId, FrmId = frmId, WrkId = thisNm, CRUDM = "U" });
                                 foreach (var wrkRef in wrkRefs)
                                 {
+                                    Common.gMsg = $"--[{thisNm}] Update--------------------";
+                                    Common.gMsg = $"--Grid Save As Parameters--------------";
                                     sql = sql.Replace($"{wrkRef.FldNm}", $"'{GetParamValue(this.FindForm().Controls, wrkRef)}'");
                                 }
+                                Common.gMsg = sql;
                                 ii = db.OpenExecute(sql, item);
+                                Common.gMsg = $"--[{thisNm}] END Update--------------------{Environment.NewLine}";
                                 break;
                             case MdlState.Deleted:
                                 sql = GenFunc.GetSql(new { FrwId = frwId, FrmId = frmId, WrkId = thisNm, CRUDM = "D" });
                                 foreach (var wrkRef in wrkRefs)
                                 {
+                                    Common.gMsg = $"--[{thisNm}] Delete--------------------";
+                                    Common.gMsg = $"--Grid Delete As Parameters------------";
                                     sql = sql.Replace($"{wrkRef.FldNm}", $"'{GetParamValue(this.FindForm().Controls, wrkRef)}'");
                                 }
+                                Common.gMsg = sql;
                                 ii = db.OpenExecute(sql, item);
+                                Common.gMsg = $"--[{thisNm}] END Delete--------------------{Environment.NewLine}";
                                 break;
                         }
                     }

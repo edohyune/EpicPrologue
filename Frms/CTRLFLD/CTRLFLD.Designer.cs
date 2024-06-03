@@ -83,7 +83,6 @@
             pnlFrmCtrl.Size = new Size(796, 212);
             pnlFrmCtrl.TabIndex = 2;
             pnlFrmCtrl.Text = "FRMCTRL";
-            pnlFrmCtrl.Title = "FRMCTRL";
             // 
             // grdFrmCtrl
             // 
@@ -119,7 +118,6 @@
             pnlWrkFld.Size = new Size(796, 209);
             pnlWrkFld.TabIndex = 1;
             pnlWrkFld.Text = "WRKFLD";
-            pnlWrkFld.Title = "WRKFLD";
             pnlWrkFld.CustomButtonClick += pnlWrkFld_CustomButtonClick;
             // 
             // grdWrkFld
@@ -153,7 +151,7 @@
             pnlMain.ShowYn = true;
             pnlMain.Size = new Size(800, 450);
             pnlMain.TabIndex = 1;
-            pnlMain.Title = null;
+            pnlMain.Text = null;
             pnlMain.CustomButtonClick += pnlMain_CustomButtonClick;
             // 
             // CTRLFLD

@@ -31,6 +31,8 @@
             ucLookUp1 = new Ctrls.UCLookUp();
             ucLookUp2 = new Ctrls.UCLookUp();
             ucLookUp3 = new Ctrls.UCLookUp();
+            lookUpEdit1 = new DevExpress.XtraEditors.LookUpEdit();
+            ((System.ComponentModel.ISupportInitialize)lookUpEdit1.Properties).BeginInit();
             SuspendLayout();
             // 
             // ucLookUp1
@@ -78,15 +80,25 @@
             ucLookUp3.TitleAlignment = DevExpress.Utils.HorzAlignment.Default;
             ucLookUp3.TitleWidth = 50;
             // 
+            // lookUpEdit1
+            // 
+            lookUpEdit1.Location = new Point(278, 366);
+            lookUpEdit1.Name = "lookUpEdit1";
+            lookUpEdit1.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.DropDown) });
+            lookUpEdit1.Size = new Size(100, 20);
+            lookUpEdit1.TabIndex = 3;
+            // 
             // LookUp
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            Controls.Add(lookUpEdit1);
             Controls.Add(ucLookUp3);
             Controls.Add(ucLookUp2);
             Controls.Add(ucLookUp1);
             Name = "LookUp";
             Size = new Size(800, 450);
+            ((System.ComponentModel.ISupportInitialize)lookUpEdit1.Properties).EndInit();
             ResumeLayout(false);
         }
 
@@ -95,5 +107,6 @@
         private Ctrls.UCLookUp ucLookUp1;
         private Ctrls.UCLookUp ucLookUp2;
         private Ctrls.UCLookUp ucLookUp3;
+        private DevExpress.XtraEditors.LookUpEdit lookUpEdit1;
     }
 }

@@ -81,7 +81,6 @@
             ucPanel3.Size = new Size(729, 282);
             ucPanel3.TabIndex = 1;
             ucPanel3.Text = "ucPanel3";
-            ucPanel3.Title = "UCPanel";
             // 
             // ucGrid1
             // 
@@ -122,7 +121,6 @@
             ucPanel1.Size = new Size(235, 101);
             ucPanel1.TabIndex = 0;
             ucPanel1.Text = "ucPanel1";
-            ucPanel1.Title = "UCPanel";
             // 
             // ucPanel2
             // 
@@ -134,7 +132,6 @@
             ucPanel2.Size = new Size(490, 101);
             ucPanel2.TabIndex = 1;
             ucPanel2.Text = "ucPanel2";
-            ucPanel2.Title = "UCPanel";
             // 
             // ucField1
             // 

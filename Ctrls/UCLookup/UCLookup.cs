@@ -229,8 +229,9 @@ namespace Ctrls
             lookupCtrl.Properties.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Near;
             lookupCtrl.Properties.Appearance.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             lookupCtrl.Properties.Appearance.Options.UseFont = true;
-            lookupCtrl.Properties.Buttons[0].Visible = false;
+            lookupCtrl.Properties.Buttons[0].Visible = true;
             lookupCtrl.Properties.NullText = "";
+            lookupCtrl.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ComboCtrl_KeyDown);
             lookupCtrl.EditValueChanged += lookupCtrl_EditValueChanged;
             lookupCtrl.TextChanged += lookupCtrl_TextChanged;
 
@@ -266,8 +267,6 @@ namespace Ctrls
                     this.Width = wrkFld.FldWidth;
                     this.TitleWidth = wrkFld.FldTitleWidth;
                     this.Location = new System.Drawing.Point(wrkFld.FldX, wrkFld.FldY);
-
-                    
 
                     if (!string.IsNullOrEmpty(wrkFld.Popup))
                     {
@@ -338,6 +337,7 @@ namespace Ctrls
                 DSearchParam.Add(popGet.FldNm, tmp);
                 Common.gLog = $"Declare {popGet.FldNm} varchar ='{tmp}'";
             }
+
             //Lookup 쿼리 정보를 가져온다.
             var sql = GenFunc.GetPopSql(new { FrwId=frwId, FrmId=frmId, PopId=popId});
             using (var db = new GaiaHelper())
@@ -356,16 +356,48 @@ namespace Ctrls
                     var firstRow = lists[0] as IDictionary<string, object>;
                     if (firstRow != null)
                     {
-                        foreach (var key in firstRow.Keys)
-                        {
-                            lookupCtrl.Properties.Columns.Add(new LookUpColumnInfo(key, key));
-                        }
+                        List<PopFld> popFlds = new PopFldRepo().GetPopColumnProperties(frwId, frmId, popId);
 
+                        if (popFlds != null)
+                        {
+                            foreach (var popFld in popFlds)
+                            {
+                                if (firstRow.ContainsKey(popFld.FldNm))
+                                {
+                                    LookUpColumnInfo column = CreateLookUpColumn(popFld);
+                                    lookupCtrl.Properties.Columns.Add(column);
+                                }
+                            }
+
+                        }
+                        else
+                        {
+                            if (firstRow != null)
+                            {
+                                foreach (var key in firstRow.Keys)
+                                {
+                                    lookupCtrl.Properties.Columns.Add(new LookUpColumnInfo(key, key));
+                                }
+                            }
+                        }
                         lookupCtrl.Properties.DisplayMember = firstRow.Keys.First();
                         lookupCtrl.Properties.ValueMember = firstRow.Keys.First();
                     }
                 }
             }
+        }
+        private LookUpColumnInfo CreateLookUpColumn(PopFld popFld)
+        {
+            LookUpColumnInfo column = new LookUpColumnInfo(popFld.FldNm, popFld.FldTitle);
+            //column.FormatType = DevExpress.Utils.FormatType.Custom;
+            //column.FormatString = popFld.FormatString;
+            //column.Alignment = popFld.Alignment;
+            column.Width = popFld.FldTitleWidth;
+            column.Visible = popFld.ShowYn;
+            column.Alignment = GenFunc.StrToAlign(popFld.TextAlign);
+            //column.Caption Title의 alignment
+
+            return column;
         }
 
         private string GetParamValue(ControlCollection frm, PopGet popGet)
@@ -391,7 +423,11 @@ namespace Ctrls
             }
             return str;
         }
-
+        private void ComboCtrl_KeyDown(object? sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == System.Windows.Forms.Keys.Delete)
+                lookupCtrl.EditValue = "";
+        }
         #region INotifyPropertyChanged
         public delegate void delEventEditValueChanged(object Sender, Control control);   // delegate 선언
         public event delEventEditValueChanged UCEditValueChanged;   // event 선언

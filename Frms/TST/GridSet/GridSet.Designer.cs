@@ -107,7 +107,6 @@ namespace Frms.TST
             ucPanel1.Size = new Size(266, 338);
             ucPanel1.TabIndex = 0;
             ucPanel1.Text = "People";
-            ucPanel1.Title = "People";
             ucPanel1.CustomButtonClick += ucPanel1_CustomButtonClick;
             // 
             // g10
@@ -162,7 +161,6 @@ namespace Frms.TST
             ucPanel2.Size = new Size(530, 110);
             ucPanel2.TabIndex = 0;
             ucPanel2.Text = "Person";
-            ucPanel2.Title = "Person";
             ucPanel2.CustomButtonClick += ucPanel2_CustomButtonClick;
             // 
             // txtAge
@@ -226,7 +224,6 @@ namespace Frms.TST
             ucPanel3.Size = new Size(530, 336);
             ucPanel3.TabIndex = 1;
             ucPanel3.Text = "Detail";
-            ucPanel3.Title = "Detail";
             ucPanel3.CustomButtonClick += ucPanel3_CustomButtonClick;
             // 
             // g20
@@ -279,7 +276,6 @@ namespace Frms.TST
             ucPanel4.Size = new Size(266, 108);
             ucPanel4.TabIndex = 1;
             ucPanel4.Text = "Search";
-            ucPanel4.Title = "Search";
             // 
             // sAge
             // 

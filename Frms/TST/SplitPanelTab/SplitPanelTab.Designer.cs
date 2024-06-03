@@ -84,7 +84,6 @@
             ucPanel1.Size = new Size(800, 149);
             ucPanel1.TabIndex = 0;
             ucPanel1.Text = "ucPanel1";
-            ucPanel1.Title = "UCPanel";
             ucPanel1.DoubleClick += ucPanel1_DoubleClick;
             // 
             // ucSplit2
@@ -114,7 +113,6 @@
             ucPanel2.Size = new Size(398, 297);
             ucPanel2.TabIndex = 1;
             ucPanel2.Text = "ucPanel2";
-            ucPanel2.Title = "UCPanel";
             ucPanel2.DoubleClick += ucPanel2_DoubleClick;
             // 
             // ucPanel3
@@ -130,7 +128,6 @@
             ucPanel3.Size = new Size(398, 297);
             ucPanel3.TabIndex = 1;
             ucPanel3.Text = "ucPanel3";
-            ucPanel3.Title = "UCPanel";
             ucPanel3.CustomButtonClick += ucPanel3_CustomButtonClick;
             // 
             // ucTab1

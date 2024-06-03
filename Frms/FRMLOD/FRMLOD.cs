@@ -510,7 +510,7 @@ namespace Frms
             else if (ctrl is Ctrls.UCLookUp ucLookUp)
                 return ucLookUp.Title;
             else if (ctrl is Ctrls.UCPanel ucPanel)
-                return ucPanel.Title;
+                return ucPanel.Text;
             else if (ctrl is Ctrls.UCSplit ucSplit)
                 return ucSplit.Text;
             else if (ctrl is Ctrls.UCTextBox ucTextBox)

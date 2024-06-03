@@ -245,7 +245,7 @@
             ucPanel1.ShowYn = true;
             ucPanel1.Size = new System.Drawing.Size(268, 799);
             ucPanel1.TabIndex = 31;
-            ucPanel1.Title = null;
+            ucPanel1.Text = null;
             ucPanel1.CustomButtonClick += ucPanel1_CustomButtonClick;
             ucPanel1.CustomButtonUnchecked += ucPanel1_CustomButtonUnchecked;
             ucPanel1.CustomButtonChecked += ucPanel1_CustomButtonChecked;

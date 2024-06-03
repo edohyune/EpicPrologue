@@ -13,17 +13,9 @@ namespace Ctrls
         private string frmId { get; set; }
         private string ctrlNm { get; set; }
 
-        private string _title;
-        [Category("A UserController Property"), Description("Title")]
-        public string Title
-        {
-            get { return _title; }
-            set 
-            { 
-                _title = value; 
-                this.Text = value;
-            }
-        }
+
+        [Category("A UserController Property"), Description("Text")]
+        public override string Text { get => base.Text; set => base.Text = value; }
 
         [Category("A UserController Property"), Description("Editable=Enable=Not ReadOnly")]
         public bool EditYn

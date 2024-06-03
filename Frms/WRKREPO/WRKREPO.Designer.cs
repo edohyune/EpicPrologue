@@ -198,7 +198,6 @@ namespace Frms
             ucPanel2.Size = new Size(800, 53);
             ucPanel2.TabIndex = 0;
             ucPanel2.Text = "Form Select";
-            ucPanel2.Title = "Form Select";
             // 
             // cmbForm
             // 
@@ -241,7 +240,6 @@ namespace Frms
             ucPanel1.Size = new Size(185, 543);
             ucPanel1.TabIndex = 0;
             ucPanel1.Text = "WrkSet List - FRMWRK";
-            ucPanel1.Title = "WrkSet List - FRMWRK";
             ucPanel1.CustomButtonClick += pnlWorkSet_CustomButtonClick;
             // 
             // tabWrk
@@ -352,7 +350,6 @@ namespace Frms
             pnlModel.ShowYn = true;
             pnlModel.Size = new Size(607, 493);
             pnlModel.TabIndex = 3;
-            pnlModel.Title = "";
             pnlModel.CustomButtonClick += pnlModel_CustomButtonClick;
             // 
             // tpR
@@ -373,7 +370,7 @@ namespace Frms
             pnlSelect.ShowYn = true;
             pnlSelect.Size = new Size(607, 493);
             pnlSelect.TabIndex = 1;
-            pnlSelect.Title = "";
+            pnlSelect.Text = "";
             pnlSelect.CustomButtonClick += pnlSelect_CustomButtonClick;
             // 
             // tpC
@@ -394,7 +391,7 @@ namespace Frms
             pnlInsert.ShowYn = true;
             pnlInsert.Size = new Size(607, 493);
             pnlInsert.TabIndex = 0;
-            pnlInsert.Title = "";
+            pnlInsert.Text = "";
             pnlInsert.CustomButtonClick += pnlInsert_CustomButtonClick;
             // 
             // tpU
@@ -415,7 +412,7 @@ namespace Frms
             pnlUpdate.ShowYn = true;
             pnlUpdate.Size = new Size(607, 493);
             pnlUpdate.TabIndex = 2;
-            pnlUpdate.Title = "";
+            pnlUpdate.Text = "";
             pnlUpdate.CustomButtonClick += pnlUpdate_CustomButtonClick;
             // 
             // tpD
@@ -436,7 +433,7 @@ namespace Frms
             pnlDelete.ShowYn = true;
             pnlDelete.Size = new Size(607, 493);
             pnlDelete.TabIndex = 2;
-            pnlDelete.Title = "";
+            pnlDelete.Text = "";
             pnlDelete.CustomButtonClick += pnlDelete_CustomButtonClick;
             // 
             // xtraTabPage2
@@ -478,7 +475,7 @@ namespace Frms
             pnlColumn.ShowYn = true;
             pnlColumn.Size = new Size(609, 259);
             pnlColumn.TabIndex = 2;
-            pnlColumn.Title = null;
+            pnlColumn.Text = null;
             pnlColumn.CustomButtonClick += pnlColumn_CustomButtonClick;
             // 
             // t10
@@ -527,7 +524,7 @@ namespace Frms
             pnlGet.ShowYn = true;
             pnlGet.Size = new Size(607, 230);
             pnlGet.TabIndex = 2;
-            pnlGet.Title = null;
+            pnlGet.Text = null;
             pnlGet.CustomButtonClick += pnlGet_CustomButtonClick;
             // 
             // grdGetParam
@@ -565,7 +562,7 @@ namespace Frms
             pnlSet.ShowYn = true;
             pnlSet.Size = new Size(607, 230);
             pnlSet.TabIndex = 2;
-            pnlSet.Title = null;
+            pnlSet.Text = null;
             pnlSet.CustomButtonClick += pnlSet_CustomButtonClick;
             // 
             // grdSetParam
@@ -603,7 +600,7 @@ namespace Frms
             pnlRef.ShowYn = true;
             pnlRef.Size = new Size(607, 230);
             pnlRef.TabIndex = 3;
-            pnlRef.Title = null;
+            pnlRef.Text = null;
             pnlRef.CustomButtonClick += pnlRef_CustomButtonClick;
             // 
             // grdRefData

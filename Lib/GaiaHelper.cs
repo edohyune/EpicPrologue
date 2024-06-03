@@ -286,7 +286,6 @@ namespace Lib
                 foreach (var paramName in dynamicParams.ParameterNames)
                 {
                     var paramValue = dynamicParams.Get<object>(paramName);
-                    Common.gMsg += $"\nParam: {paramName}, Value: {paramValue}";
                 }
             }
             else
@@ -295,7 +294,6 @@ namespace Lib
                 {
                     var propName = prop.Name;
                     var propValue = prop.GetValue(param);
-                    Common.gMsg += $"\nParam: {propName}, Value: {propValue}";
                 }
             }
         }
@@ -305,11 +303,9 @@ namespace Lib
         {
             if (param != null)
             {
-                LogParameters(param);
                 sql = ReplaceConditionalClauses(sql, param);
             }
             sql = ReplaceGVariables(sql);
-            Common.gMsg = sql;
             return sql;
         }
 
