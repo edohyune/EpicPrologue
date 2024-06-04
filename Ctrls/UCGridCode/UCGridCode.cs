@@ -8,14 +8,14 @@ using DevExpress.XtraGrid;
 using DevExpress.XtraGrid.Columns;
 using DevExpress.XtraGrid.Views.Base;
 using DevExpress.XtraGrid.Views.Grid;
-using System.Data;
-using System.ComponentModel;
 using Lib;
 using Lib.Repo;
+using System.ComponentModel;
+using System.Data;
 
 namespace Ctrls
 {
-    public class UCGridSet : DevExpress.XtraGrid.GridControl
+    public class UCGridCode : DevExpress.XtraGrid.GridControl
     {
         #region Properties Browseable(false) ----------------------------------------------------------
         [EditorBrowsable(EditorBrowsableState.Always)]
@@ -309,23 +309,24 @@ namespace Ctrls
                             var fieldValue = this.GetText(columnName);
                             if (fieldValue != null)
                             {
-                                Common.gMsg = $"Enter Value({fieldValue}) into Control({mapping[item.Key]})";
+                                Common.gLog = $"Enter Value({fieldValue}) into Control({mapping[item.Key]})";
                                 InitBinding(this.FindForm(), mapping[item.Key], item.Value, fieldValue);
                             }
                             else
                             {
-                                Common.gMsg = $"Value for column {columnName} is null.";
+                                Common.gLog = $"Value for column {columnName} is null.";
                             }
                         }
                         else
                         {
-                            Common.gMsg = $"Column name for key {item.Key} is null.";
+                            Common.gLog = $"Column name for key {item.Key} is null.";
                         }
                     }
                 }
                 UCFocusedRowChanged(sender, e.PrevFocusedRowHandle, e.FocusedRowHandle, e);
             }
         }
+
         private void InitBinding(Form uc, string ctrlNm, string toolNm, dynamic value)
         {
             var ctrl = uc.Controls.Find(ctrlNm, true).FirstOrDefault();
@@ -401,26 +402,17 @@ namespace Ctrls
             UCMouseMove?.Invoke(sender, e);
         }
         #endregion
-
-        public UCGridSet()
+        public UCGridCode()
         {
             gvCtrl = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.MainView = gvCtrl;
             this.ViewCollection.Add(gvCtrl);
-            Load += ucGridSet_Load;
-            //HandleCreated += ucGridSet_HandleCreated;
-            gvCtrl.FocusedRowChanged += gvCtrl_FocusedRowChanged;
-            gvCtrl.BeforeLeaveRow += gvCtrl_BeforeLeaveRow;
-            gvCtrl.SelectionChanged += gvCtrl_SelectionChanged;
-            gvCtrl.InitNewRow += gvCtrl_InitNewRow;
-            gvCtrl.RowDeleting += gvCtrl_RowDeleting;
-            gvCtrl.CellValueChanged += gvCtrl_CellValueChanged;
-            gvCtrl.CellValueChanging += gvCtrl_CellValueChanging;
-            gvCtrl.MouseDown += gvCtrl_MouseDown;
-            gvCtrl.MouseMove += gvCtrl_MouseMove;
+            this.UseEmbeddedNavigator = true;
+
+            Load += UCGridCode_Load;
         }
 
-        private void ucGridSet_Load(object? sender, EventArgs e)
+        private void UCGridCode_Load(object? sender, EventArgs e)
         {
             frwId = Common.gFrameWorkId;
 
@@ -435,11 +427,12 @@ namespace Ctrls
             }
 
             thisNm = this.Name;
-
+            
             if (frwId != string.Empty)
             {
                 ResetColumns();
             }
+
         }
         #region PreView<T>() - Preview Form -----------------------------------------------------------
         private void ResetColumns()
@@ -482,7 +475,7 @@ namespace Ctrls
         }
         #endregion
         #region Open<T>() - Open Form -----------------------------------------------------------------
-        public void Open<T>()
+        public void Open<T>(string codeId=null)
         {
             Common.gMsg = $"{Environment.NewLine}-- {thisNm}.Open<T>() ------------------------>>";
 
@@ -496,10 +489,10 @@ namespace Ctrls
                 DSearchParam.Add(wrkGet.FldNm, tmp);
                 Common.gMsg = $"Declare {wrkGet.FldNm} varchar ='{tmp}'";
             }
-            OpenForm<T>();
+            OpenForm<T>(codeId);
         }
 
-        private void OpenForm<T>()
+        private void OpenForm<T>(string codeId=null)
         {
             this.DataSource = null;
             gvCtrl.Columns.Clear();
@@ -509,7 +502,7 @@ namespace Ctrls
             try
             {
                 WrkFldRepo wrkFldRepo = new WrkFldRepo();
-                List<WrkFld> colProperties = wrkFldRepo.GetColumnProperties(frwId, frmId, thisNm);
+                List<WrkFld> colProperties = wrkFldRepo.GetCdeProperties(frwId, frmId, thisNm, codeId);
                 gvCtrl.Columns.Clear();
                 if (colProperties != null)
                 {
@@ -787,7 +780,7 @@ namespace Ctrls
             return LookUp;
         }
 
-        private void AddGridColumn(DevExpress.XtraGrid.Views.Grid.GridView gridV, GridColumn gridC)
+        private void AddGridColumn(GridView gridV, GridColumn gridC)
         {
             if (gridC != null)
             {
@@ -850,18 +843,18 @@ namespace Ctrls
                 gvCtrl.OptionsMenu.ShowSplitItem = true;
 
                 gvCtrl.OptionsNavigation.AutoFocusNewRow = true;
-                gvCtrl.Appearance.FocusedRow.BackColor = Color.FromArgb(255, 255, 192);
-                gvCtrl.Appearance.SelectedRow.BackColor = Color.FromArgb(255, 255, 192);
+                gvCtrl.Appearance.FocusedRow.BackColor = default;
+                gvCtrl.Appearance.SelectedRow.BackColor = default;
                 gvCtrl.Appearance.SelectedRow.Options.UseBackColor = true;
 
                 ///아래 Default Setting
-                gvCtrl.Appearance.FocusedRow.BackColor = System.Drawing.Color.Gold;
+                gvCtrl.Appearance.FocusedRow.BackColor = default;
                 gvCtrl.Appearance.HeaderPanel.Options.UseTextOptions = true;
                 gvCtrl.Appearance.HeaderPanel.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-                gvCtrl.Appearance.SelectedRow.BackColor = System.Drawing.Color.Aquamarine;
+                gvCtrl.Appearance.SelectedRow.BackColor = default;//System.Drawing.Color.Aquamarine;
                 gvCtrl.Appearance.SelectedRow.Options.UseBackColor = true;
                 gvCtrl.DetailHeight = 300;
-                gvCtrl.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+                gvCtrl.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.CellFocus;//DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
                 gvCtrl.OptionsClipboard.CopyColumnHeaders = DevExpress.Utils.DefaultBoolean.False;
                 gvCtrl.OptionsFilter.DefaultFilterEditorView = DevExpress.XtraEditors.FilterEditorViewMode.VisualAndText;
                 gvCtrl.OptionsFilter.ShowAllTableValuesInFilterPopup = true;
@@ -878,6 +871,15 @@ namespace Ctrls
             navigator.Buttons.BeginUpdate();
             try
             {
+                chkAppend = false;
+                chkRemove = false;
+                navigator.Buttons.PrevPage.Visible = true;
+                navigator.Buttons.Prev.Visible = true;
+                navigator.Buttons.Next.Visible = true;
+                navigator.Buttons.NextPage.Visible = true;
+                navigator.Buttons.Last.Visible = true;
+                navigator.Buttons.First.Visible = true;
+
                 navigator.Buttons.Append.Visible = chkAppend;
                 navigator.Buttons.Remove.Visible = chkRemove;
                 navigator.Buttons.Edit.Visible = false;

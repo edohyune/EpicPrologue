@@ -263,9 +263,8 @@ namespace Lib
                 }
                 else
                 {
-                    throw new ArgumentException($"Parameter {param[i]} or its value is null");
+                    Common.gMsg = $"Parameter {param[i]} or its value is null";
                 }
-                //SqlCmd.Parameters.AddWithValue(param[i], value[i]);
             }
             SqlDataAdapter adapter = new SqlDataAdapter(SqlCmd);
             adapter.SelectCommand = SqlCmd;
@@ -309,8 +308,7 @@ namespace Lib
             return sql;
         }
 
-
-        private string ReplaceGVariables(string sql)
+        public string ReplaceGVariables(string sql)
         {
             var gVariables = GetGVariables();
             foreach (var variable in gVariables)

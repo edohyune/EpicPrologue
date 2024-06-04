@@ -269,8 +269,6 @@ namespace Frms
             g10.MultiSelect = false;
             g10.MultiSelectMode = DevExpress.XtraGrid.Views.Grid.GridMultiSelectMode.RowSelect;
             g10.Name = "g10";
-            g10.openFld = null;
-            g10.openFrm = null;
             g10.RowAutoHeigh = false;
             g10.ShowFindPanel = false;
             g10.ShowGroupPanel = true;
@@ -295,8 +293,6 @@ namespace Frms
             g20.MultiSelect = false;
             g20.MultiSelectMode = DevExpress.XtraGrid.Views.Grid.GridMultiSelectMode.RowSelect;
             g20.Name = "g20";
-            g20.openFld = null;
-            g20.openFrm = null;
             g20.RowAutoHeigh = false;
             g20.ShowFindPanel = false;
             g20.ShowGroupPanel = true;

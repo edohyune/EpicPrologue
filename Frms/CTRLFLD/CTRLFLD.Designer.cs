@@ -94,8 +94,6 @@
             grdFrmCtrl.MultiSelect = false;
             grdFrmCtrl.MultiSelectMode = DevExpress.XtraGrid.Views.Grid.GridMultiSelectMode.RowSelect;
             grdFrmCtrl.Name = "grdFrmCtrl";
-            grdFrmCtrl.openFld = null;
-            grdFrmCtrl.openFrm = null;
             grdFrmCtrl.RowAutoHeigh = false;
             grdFrmCtrl.ShowFindPanel = false;
             grdFrmCtrl.ShowGroupPanel = true;
@@ -130,8 +128,6 @@
             grdWrkFld.MultiSelect = false;
             grdWrkFld.MultiSelectMode = DevExpress.XtraGrid.Views.Grid.GridMultiSelectMode.RowSelect;
             grdWrkFld.Name = "grdWrkFld";
-            grdWrkFld.openFld = null;
-            grdWrkFld.openFrm = null;
             grdWrkFld.RowAutoHeigh = false;
             grdWrkFld.ShowFindPanel = false;
             grdWrkFld.ShowGroupPanel = true;

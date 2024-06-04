@@ -272,7 +272,56 @@ select a.FrwId, a.FrmId, a.CtrlNm, a.WrkId, a.CtrlCls,
                 }
             }
         }
+        public List<WrkFld> GetCdeProperties(string frwId, string frmId, string wrkId, string cd)
+        {
+            string sql = @"
+select a.FrwId, a.FrmId, a.CtrlNm, a.WrkId, a.FldNm,
+       a.CtrlCls, a.FldTy, a.FldX, a.FldY, a.FldWidth,
+       a.FldTitleWidth, a.FldTitle, a.TitleAlign, a.Popup, a.DefaultText,
+       a.TextAlign, a.FixYn, a.GroupYn, a.ShowYn, a.NeedYn,
+       a.EditYn, a.Band1, a.Band2, a.FuncStr, a.FormatStr,
+       a.ColorFont, a.ColorBg, a.ToolNm, a.Seq, a.Id,
+       a.Memo, a.CId, a.CDt, a.MId, a.MDt
+  from WRKFLD a
+ where FrwId = @FrwId
+   and FrmId = @FrmId
+   and WrkId = @WrkId
+   and CtrlNm not like 'grdDtl.Ref%'
+ union all
+select FrwId, FrmId=@FrmId, CtrlNm=concat(@WrkId,'.',RefNo), WrkId=@WrkId, FldNm=RefNo,
+       CtrlCls='Column', FldTy, FldX=0, FldY=0, FldWidth=0,
+       FldTitleWidth=120, FldTitle, TitleAlign=null, Popup, DefaultText=null,
+       TextAlign=null, FixYn='0', GroupYn='0', ShowYn='1', NeedYn='0',
+       EditYn='1', Band1=null, Band2=null, FuncStr=null, FormatStr=null,
+       ColorFont=null, ColorBg=null, ToolNm=null, 
+       Seq=(ROW_NUMBER() over(order by RefNo))+10000, 
+       Id=null,
+       Memo, CId, CDt, MId, MDt
+  from CDEREF a
+ where 1=1
+   and a.FrwId = @FrwId
+   and a.Cd = @Cd
+ order by seq
+";
+            using (var db = new GaiaHelper())
+            {
+                var result = db.Query<WrkFld>(sql, new { FrwId = frwId, FrmId = frmId, WrkId = wrkId, Cd = cd }).ToList();
 
+                if (result == null)
+                {
+                    return null;
+                    //throw new KeyNotFoundException($"A record with the code {frwId},{frmId},{wrkId} was not found.");
+                }
+                else
+                {
+                    foreach (var item in result)
+                    {
+                        item.ChangedFlag = MdlState.None;
+                    }
+                    return result;
+                }
+            }
+        }
         public List<WrkFld> GetColumnProperties(string frwId, string frmId, string wrkId)
         {
             string sql = @"

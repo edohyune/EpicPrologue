@@ -58,4 +58,8 @@ namespace Lib.Repo
             set => Set(ref _Memo, value);
         }
     }
+    public class CdeRefRepo
+    {
+ 
+    }
 }

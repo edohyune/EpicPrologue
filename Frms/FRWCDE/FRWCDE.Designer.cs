@@ -43,7 +43,7 @@ namespace Frms
             pnlReference = new Ctrls.UCPanel();
             grdRef = new Ctrls.UCGridSet();
             pnlCodeDetail = new Ctrls.UCPanel();
-            grdDtl = new Ctrls.UCGridSet();
+            grdDtl = new Ctrls.UCGridCode();
             ((System.ComponentModel.ISupportInitialize)ucSplit1).BeginInit();
             ucSplit1.Panel1.SuspendLayout();
             ucSplit1.Panel2.SuspendLayout();
@@ -124,14 +124,11 @@ namespace Frms
             grdCde.MultiSelect = false;
             grdCde.MultiSelectMode = DevExpress.XtraGrid.Views.Grid.GridMultiSelectMode.RowSelect;
             grdCde.Name = "grdCde";
-            grdCde.openFld = null;
-            grdCde.openFrm = null;
             grdCde.RowAutoHeigh = false;
             grdCde.ShowFindPanel = false;
             grdCde.ShowGroupPanel = true;
             grdCde.Size = new Size(540, 172);
             grdCde.TabIndex = 0;
-            grdCde.UCInitNewRow += grdCde_UCInitNewRow;
             grdCde.UCFocusedRowChanged += grdCde_UCFocusedRowChanged;
             // 
             // pnlReference
@@ -158,8 +155,6 @@ namespace Frms
             grdRef.MultiSelect = false;
             grdRef.MultiSelectMode = DevExpress.XtraGrid.Views.Grid.GridMultiSelectMode.RowSelect;
             grdRef.Name = "grdRef";
-            grdRef.openFld = null;
-            grdRef.openFrm = null;
             grdRef.RowAutoHeigh = false;
             grdRef.ShowFindPanel = false;
             grdRef.ShowGroupPanel = true;
@@ -190,13 +185,12 @@ namespace Frms
             grdDtl.MultiSelect = false;
             grdDtl.MultiSelectMode = DevExpress.XtraGrid.Views.Grid.GridMultiSelectMode.RowSelect;
             grdDtl.Name = "grdDtl";
-            grdDtl.openFld = null;
-            grdDtl.openFrm = null;
             grdDtl.RowAutoHeigh = false;
             grdDtl.ShowFindPanel = false;
             grdDtl.ShowGroupPanel = true;
             grdDtl.Size = new Size(796, 224);
-            grdDtl.TabIndex = 1;
+            grdDtl.TabIndex = 0;
+            grdDtl.UseEmbeddedNavigator = true;
             // 
             // FRWCDE
             // 
@@ -233,6 +227,6 @@ namespace Frms
         private Ctrls.UCPanel pnlCodeDetail;
         private Ctrls.UCGridSet grdCde;
         private Ctrls.UCGridSet grdRef;
-        private Ctrls.UCGridSet grdDtl;
+        private Ctrls.UCGridCode grdDtl;
     }
 }
