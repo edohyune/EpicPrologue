@@ -97,17 +97,17 @@ namespace Ctrls
             }
         }
         [Category("A UserController Property"), Description("Necessary")] //chk
-        private bool Necessary { get; set; }
+        private bool NeedYn { get; set; }
         [Category("A UserController Property"), Description("Editable=Enable=Not ReadOnly")] //chk
         public bool EditYn
         {
             get
             {
-                return textCtrl.ReadOnly;
+                return !(textCtrl.ReadOnly);
             }
             set
             {
-                textCtrl.ReadOnly = value;
+                textCtrl.ReadOnly = !value;
             }
         }
         [Category("A UserController Property"), Description("Text Button Visiable")]
@@ -165,7 +165,6 @@ namespace Ctrls
         #region Event Delegate
         public delegate void delEventButtonClick(object Sender, Control control);
         public event delEventButtonClick UCButtonClick;
-        public event PropertyChangedEventHandler? PropertyChanged;
         private void textCtrl_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
         {
             try
@@ -193,18 +192,10 @@ namespace Ctrls
             frwId = Common.gFrameWorkId;
 
             Form? form = this.FindForm();
-            if (form != null)
-            {
-                frmId = form.Name;
-            }
-            else
-            {
-                frmId = "Unknown";
-            }
-
+            frmId = form != null ? form.Name : "Unknown";
             ctrlNm = this.Name;
 
-            if (frwId != string.Empty)
+            if (!string.IsNullOrEmpty(frwId))
             {
                 ResetCtrl();
             }
@@ -231,9 +222,10 @@ namespace Ctrls
                     this.TextAlignment = GenFunc.StrToAlign(wrkFld.TextAlign);
                     //this. = wrkFld.FixYn;
                     //this. = wrkFld.GroupYn;
-                    this.Visible = wrkFld.ShowYn;
-                    this.Necessary = wrkFld.NeedYn;
-                    this.EditYn = wrkFld.EditYn ? false : true;
+                    this.ShowYn = wrkFld.ShowYn;
+                    this.NeedYn = wrkFld.NeedYn;
+                    this.EditYn = wrkFld.EditYn;
+                    this.btnVisiable = wrkFld.EditYn;
                     //this. = wrkFld.Band1;
                     //this. = wrkFld.Band2;
                     //this. = wrkFld.FuncStr;
@@ -264,12 +256,12 @@ namespace Ctrls
 
         private void SetFormatStr(string funcStr)
         {
-            throw new NotImplementedException();
+            Lib.Common.gMsg = $"SetFormatStr";
         }
 
         private void SetFuncStr(string funcStr)
         {
-            throw new NotImplementedException();
+            Lib.Common.gMsg = $"SetFuncStr";
         }
 
         #region FrameWork Value 전달을 위한 함수
@@ -291,12 +283,12 @@ namespace Ctrls
         #endregion
 
         #region INotifyPropertyChanged
+        public event PropertyChangedEventHandler? PropertyChanged;
+
         public delegate void delEventEditValueChanged(object Sender, Control control);   // delegate 선언
         public event delEventEditValueChanged UCEditValueChanged;   // event 선언
         private void textCtrl_EditValueChanged(object sender, EventArgs e)
         {
-            string strText = string.Empty;
-            strText = textCtrl.Text;
             if (UCEditValueChanged != null)  // 부모가 Event를 생성하지 않았을 수 있으므로 생성 했을 경우에만 Delegate를 호출
             {
                 UCEditValueChanged(this, textCtrl);

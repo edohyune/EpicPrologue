@@ -20,6 +20,7 @@
     <ProjectReference Include="..\..\Ctrls\UCLookup\UCLookUp.csproj" />
     <ProjectReference Include="..\..\Ctrls\UCMemo\UCMemo.csproj" />
     <ProjectReference Include="..\..\Ctrls\UCPanel\UCPanel.csproj" />
+    <ProjectReference Include="..\..\Ctrls\UCRichText\UCRichText.csproj" />
     <ProjectReference Include="..\..\Ctrls\UCSplit\UCSplit.csproj" />
     <ProjectReference Include="..\..\Ctrls\UCTab\UCTab.csproj" />
     <ProjectReference Include="..\..\Ctrls\UCTextBox\UCTextBox.csproj" />

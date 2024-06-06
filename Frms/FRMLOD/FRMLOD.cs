@@ -550,7 +550,7 @@ namespace Frms
                 else
                     return false; // or throw new Exception("gvCtrl is not initialized");
             else if (ctrl is Ctrls.UCLookUp ucLookUp)
-                return ucLookUp.Readonly;
+                return ucLookUp.EditYn;
             else if (ctrl is Ctrls.UCPanel ucPanel)
                 return ucPanel.EditYn;
             //else if (ctrl is Ctrls.UCSplit ucSplit)

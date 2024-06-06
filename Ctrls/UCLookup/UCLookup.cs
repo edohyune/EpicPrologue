@@ -7,6 +7,7 @@ using System.Data;
 using Dapper;
 using DevExpress.XtraEditors.Controls;
 using System.Reflection;
+using DevExpress.XtraPrinting.Native;
 
 namespace Ctrls
 {
@@ -41,19 +42,32 @@ namespace Ctrls
         #endregion
 
         #region Properties Browseable(true) ------------------------------------------------>>
-        [Category("A UserController Property"), Description("ReadOnly")]
-        public bool Readonly
+        [Category("A UserController Property"), Description("Necessary")] //chk
+        private bool NeedYn { get; set; }
+        [Category("A UserController Property"), Description("Editable=Enable=Not ReadOnly")] //chk
+        public bool EditYn
         {
             get
             {
-                return this.lookupCtrl.ReadOnly;
+                return !(this.lookupCtrl.ReadOnly);
             }
             set
             {
-                this.lookupCtrl.ReadOnly = value;
+                lookupCtrl.ReadOnly = !value;
             }
         }
-
+        [Category("A UserController Property"), Description("Visiable")] //chk
+        public bool ShowYn
+        {
+            get
+            {
+                return this.Visible;
+            }
+            set
+            {
+                this.Visible = value;
+            }
+        }
         [Category("A UserController Property"), Description("Title")]
         public string Title
         {
@@ -203,9 +217,6 @@ namespace Ctrls
             this.Height = 21;
 
             splitCtrl = new SplitContainer();
-            lookupCtrl = new LookUpEdit();
-            labelCtrl = new LabelControl();
-
             splitCtrl.Dock = DockStyle.Fill;
             splitCtrl.Orientation = Orientation.Vertical;
             splitCtrl.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
@@ -220,7 +231,6 @@ namespace Ctrls
             labelCtrl.Appearance.Font = new System.Drawing.Font("Tahoma", 9);
             labelCtrl.Appearance.Options.UseFont = true;
             labelCtrl.Text = "UCLookUpEdit";
-
 
             splitCtrl.Panel1.Controls.Add(labelCtrl);
 
@@ -263,7 +273,11 @@ namespace Ctrls
                 if (wrkFld != null)
                 {
                     labelCtrl.Text = wrkFld.FldTitle;
-                    this.Visible = wrkFld.ShowYn;
+
+                    this.ShowYn = wrkFld.ShowYn;
+                    this.NeedYn = wrkFld.NeedYn;
+                    this.EditYn = wrkFld.EditYn;
+
                     this.Width = wrkFld.FldWidth;
                     this.TitleWidth = wrkFld.FldTitleWidth;
                     this.Location = new System.Drawing.Point(wrkFld.FldX, wrkFld.FldY);
@@ -298,7 +312,6 @@ namespace Ctrls
                     this.labelCtrl.Appearance.TextOptions.HAlignment = GenFunc.StrToAlign(wrkFld.TitleAlign);
                     this.Text = wrkFld.DefaultText;
                     this.lookupCtrl.Properties.Appearance.TextOptions.HAlignment = GenFunc.StrToAlign(wrkFld.TextAlign);
-                    this.lookupCtrl.ReadOnly = wrkFld.EditYn;
                     this.lookupCtrl.Properties.NullText = "";
 
                     ////// LookUpEdit 컬럼 설정

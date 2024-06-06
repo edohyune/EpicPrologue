@@ -35,6 +35,7 @@
             ucSplit1 = new Ctrls.UCSplit();
             ucSplit2 = new Ctrls.UCSplit();
             txtUCMemo = new Ctrls.UCMemo();
+            richEditControl1 = new DevExpress.XtraRichEdit.RichEditControl();
             ((System.ComponentModel.ISupportInitialize)txtMemo.Properties).BeginInit();
             ((System.ComponentModel.ISupportInitialize)ucSplit1).BeginInit();
             ucSplit1.Panel1.SuspendLayout();
@@ -44,7 +45,6 @@
             ucSplit2.Panel1.SuspendLayout();
             ucSplit2.Panel2.SuspendLayout();
             ucSplit2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)txtUCMemo.Properties).BeginInit();
             SuspendLayout();
             // 
             // txtMemo
@@ -101,6 +101,7 @@
             // ucSplit1.Panel1
             // 
             ucSplit1.Panel1.Controls.Add(txtMemo);
+            ucSplit1.Panel1MinSize = 0;
             // 
             // ucSplit1.Panel2
             // 
@@ -118,6 +119,7 @@
             // 
             // ucSplit2.Panel1
             // 
+            ucSplit2.Panel1.Controls.Add(richEditControl1);
             ucSplit2.Panel1.Controls.Add(btnTEST03);
             ucSplit2.Panel1.Controls.Add(btnTEST01);
             ucSplit2.Panel1.Controls.Add(btnTEST02);
@@ -133,11 +135,28 @@
             // txtUCMemo
             // 
             txtUCMemo.BindText = "ucMemo1";
+            txtUCMemo.ControlWidth = 338;
             txtUCMemo.Dock = DockStyle.Fill;
+            txtUCMemo.EditYn = false;
             txtUCMemo.Location = new Point(0, 0);
             txtUCMemo.Name = "txtUCMemo";
+            txtUCMemo.ShowYn = true;
             txtUCMemo.Size = new Size(338, 532);
             txtUCMemo.TabIndex = 0;
+            txtUCMemo.TextAlignment = DevExpress.Utils.HorzAlignment.Near;
+            txtUCMemo.Title = "UCMemo";
+            txtUCMemo.TitleAlignment = DevExpress.Utils.HorzAlignment.Default;
+            txtUCMemo.TitleWidth = 0;
+            // 
+            // richEditControl1
+            // 
+            richEditControl1.Location = new Point(2, 123);
+            richEditControl1.Name = "richEditControl1";
+            richEditControl1.Options.DocumentSaveOptions.CurrentFormat = DevExpress.XtraRichEdit.DocumentFormat.PlainText;
+            richEditControl1.Size = new Size(165, 398);
+            richEditControl1.TabIndex = 4;
+            richEditControl1.RtfTextChanged += richEditControl1_RtfTextChanged;
+            richEditControl1.TextChanged += richEditControl1_TextChanged;
             // 
             // Syntax
             // 
@@ -155,7 +174,6 @@
             ucSplit2.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)ucSplit2).EndInit();
             ucSplit2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)txtUCMemo.Properties).EndInit();
             ResumeLayout(false);
         }
 
@@ -168,5 +186,6 @@
         private Ctrls.UCSplit ucSplit1;
         private Ctrls.UCSplit ucSplit2;
         private Ctrls.UCMemo txtUCMemo;
+        private DevExpress.XtraRichEdit.RichEditControl richEditControl1;
     }
 }

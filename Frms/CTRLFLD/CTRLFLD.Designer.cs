@@ -99,7 +99,7 @@
             grdFrmCtrl.ShowGroupPanel = true;
             grdFrmCtrl.Size = new Size(792, 187);
             grdFrmCtrl.TabIndex = 0;
-            grdFrmCtrl.UCMouseDown += grdFrmCtrl_UCMouseDown;
+            //grdFrmCtrl.UCMouseDown += grdFrmCtrl_UCMouseDown;
             // 
             // pnlWrkFld
             // 

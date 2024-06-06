@@ -12,6 +12,13 @@ using System.Data;
 using System.ComponentModel;
 using Lib;
 using Lib.Repo;
+using DevExpress.XtraGrid.Views.Grid.ViewInfo;
+using DevExpress.Charts.Native;
+using DevExpress.XtraRichEdit.Model;
+using System.Windows.Documents;
+using DevExpress.XtraVerticalGrid;
+using System.Windows.Forms;
+using DevExpress.XtraEditors.Senders;
 
 namespace Ctrls
 {
@@ -19,8 +26,9 @@ namespace Ctrls
     {
         #region Properties Browseable(false) ----------------------------------------------------------
         [EditorBrowsable(EditorBrowsableState.Always)]
-        [Browsable(false)]
-        public DevExpress.XtraGrid.Views.Grid.GridView gvCtrl { get; set; }
+        [Browsable(true)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
+        public DevExpress.XtraGrid.Views.Grid.GridView gvCtrl { get; private set; }
         [Browsable(false)]
         private string frwId { get; set; }
         [Browsable(false)]
@@ -42,10 +50,19 @@ namespace Ctrls
             get => gvCtrl.FocusedRowHandle;
             set => gvCtrl.FocusedRowHandle = value;
         }
-        [EditorBrowsable(EditorBrowsableState.Always)]
-        public DataRow GetForcuseDataRow { get { return gvCtrl.GetFocusedDataRow(); } }
-        [EditorBrowsable(EditorBrowsableState.Always)]
-        public DataRow GetDataRow(int rowHandle) { return gvCtrl.GetDataRow(rowHandle); }
+        //[EditorBrowsable(EditorBrowsableState.Always)]
+        //public DataRow GetForcuseDataRow 
+        //{ 
+        //    get 
+        //    {
+        //        return this.gvCtrl.GetFocusedDataRow(); 
+        //    } 
+        //}
+        //[EditorBrowsable(EditorBrowsableState.Always)]
+        //public DataRow GetDataRow(int rowHandle) 
+        //{ 
+        //    return this.gvCtrl.GetDataRow(rowHandle); 
+        //}
         [Category("A UserController Property"), Description("RowAutoHeigh")]
         public bool RowAutoHeigh
         {
@@ -326,6 +343,7 @@ namespace Ctrls
                 UCFocusedRowChanged(sender, e.PrevFocusedRowHandle, e.FocusedRowHandle, e);
             }
         }
+
         private void InitBinding(Form uc, string ctrlNm, string toolNm, dynamic value)
         {
             var ctrl = uc.Controls.Find(ctrlNm, true).FirstOrDefault();
@@ -388,38 +406,32 @@ namespace Ctrls
         {
             UCCellValueChanging?.Invoke(sender, e);
         }
-        public delegate void delEventMouseDown(object sender, MouseEventArgs e);
-        public event delEventMouseDown UCMouseDown;
-        private void gvCtrl_MouseDown(object? sender, MouseEventArgs e)
-        {
-            UCMouseDown?.Invoke(sender, e);
-        }
-        public delegate void delEventMouseMove(object sender, MouseEventArgs e);
-        public event delEventMouseMove UCMouseMove;
-        private void gvCtrl_MouseMove(object? sender, MouseEventArgs e)
-        {
-            UCMouseMove?.Invoke(sender, e);
-        }
         #endregion
 
         public UCGridSet()
         {
-            gvCtrl = new DevExpress.XtraGrid.Views.Grid.GridView();
-            this.MainView = gvCtrl;
-            this.ViewCollection.Add(gvCtrl);
-            Load += ucGridSet_Load;
-            //HandleCreated += ucGridSet_HandleCreated;
-            gvCtrl.FocusedRowChanged += gvCtrl_FocusedRowChanged;
-            gvCtrl.BeforeLeaveRow += gvCtrl_BeforeLeaveRow;
-            gvCtrl.SelectionChanged += gvCtrl_SelectionChanged;
-            gvCtrl.InitNewRow += gvCtrl_InitNewRow;
-            gvCtrl.RowDeleting += gvCtrl_RowDeleting;
-            gvCtrl.CellValueChanged += gvCtrl_CellValueChanged;
-            gvCtrl.CellValueChanging += gvCtrl_CellValueChanging;
-            gvCtrl.MouseDown += gvCtrl_MouseDown;
-            gvCtrl.MouseMove += gvCtrl_MouseMove;
-        }
+            this.gvCtrl = new DevExpress.XtraGrid.Views.Grid.GridView(this);
+            this.MainView = this.gvCtrl;
+            this.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] { this.gvCtrl });
+            this.gvCtrl.GridControl = this;
+            this.gvCtrl.Name = "gvCtrl";
 
+
+            this.Load += ucGridSet_Load;
+
+            this.gvCtrl.FocusedRowChanged += gvCtrl_FocusedRowChanged;
+            this.gvCtrl.BeforeLeaveRow += gvCtrl_BeforeLeaveRow;
+            this.gvCtrl.SelectionChanged += gvCtrl_SelectionChanged;
+            this.gvCtrl.InitNewRow += gvCtrl_InitNewRow;
+            this.gvCtrl.RowDeleting += gvCtrl_RowDeleting;
+            this.gvCtrl.CellValueChanged += gvCtrl_CellValueChanged;
+            this.gvCtrl.CellValueChanging += gvCtrl_CellValueChanging;
+            //this.gvCtrl.MouseDown += gvCtrl_MouseDown;
+            //this.gvCtrl.MouseMove += gvCtrl_MouseMove;
+            //this.DragDrop += gcGrid_DragDrop;
+            //this.DragEnter += gcGrid_DragEnter;
+
+        }
         private void ucGridSet_Load(object? sender, EventArgs e)
         {
             frwId = Common.gFrameWorkId;
@@ -482,6 +494,20 @@ namespace Ctrls
         }
         #endregion
         #region Open<T>() - Open Form -----------------------------------------------------------------
+        public void Open(DataTable dataTable)
+        {
+            if (dataTable != null)
+            {
+                this.DataSource = dataTable;
+                this.MainView.PopulateColumns();
+                Common.gMsg = $"Data bound with {dataTable.Rows.Count} rows.";
+            }
+            else
+            {
+                Common.gMsg = "Failed to bind data: DataTable is null.";
+            }
+        }
+
         public void Open<T>()
         {
             Common.gMsg = $"{Environment.NewLine}-- {thisNm}.Open<T>() ------------------------>>";
@@ -516,8 +542,10 @@ namespace Ctrls
                     foreach (var column in colProperties)
                     {
                         AddGridColumn(gvCtrl, GetGridColumn(column) as GridColumn);// Text Color
+                        Common.gMsg = $"Added column: {column.FldNm}";
                     }
                     gvCtrl.RefreshData();
+                    Common.gMsg = "Columns refreshed.";
 
                     //3. Data Source Binding
                     Common.gMsg = $"-- {thisNm}.Select Query ------------------------>>";
@@ -525,7 +553,7 @@ namespace Ctrls
                     Common.gMsg = sql;
                     Common.gMsg = $"-- {thisNm}.End Select Query -------------------->>";
 
-                    List<T> lists;
+                    List<T> lists = new List<T>();
 
                     using (var db = new GaiaHelper())
                     {
@@ -543,13 +571,22 @@ namespace Ctrls
                         }
                     }
 
-                    var bindingLists = new BindingList<T>(lists);
-
-                    foreach (dynamic item in bindingLists)
+                    foreach (dynamic item in lists)
                     {
                         item.ChangedFlag = MdlState.None;
                     }
-                    this.DataSource = bindingLists;
+
+                    this.DataSource = new BindingList<T>(lists);
+
+
+                    //var bindingLists = new BindingList<T>(lists);
+
+                    //foreach (dynamic item in bindingLists)
+                    //{
+                    //    item.ChangedFlag = MdlState.None;
+                    //}
+                    //this.DataSource = bindingLists;
+                    this.MainView.PopulateColumns();
                 }
             }
             catch (Exception e)
@@ -1050,5 +1087,17 @@ namespace Ctrls
             return str;
         }
         #endregion
+    }
+
+    public class RowsDropEventArgs : EventArgs
+    {
+        public int SourceRowHandle { get; }
+        public int TargetRowHandle { get; }
+
+        public RowsDropEventArgs(int sourceRowHandle, int targetRowHandle)
+        {
+            SourceRowHandle = sourceRowHandle;
+            TargetRowHandle = targetRowHandle;
+        }
     }
 }

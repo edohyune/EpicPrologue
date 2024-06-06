@@ -1,24 +1,15 @@
-﻿using DevExpress.XtraRichEdit.Services;
-using DevExpress.XtraRichEdit;
-using Lib;
-using DevExpress.Office.Utils;
-using Lib.Repo;
-using System.Runtime.Intrinsics.Arm;
-using System.Data;
-using Frms.Models.WrkRepo;
-using DevExpress.XtraTreeList.Printing;
-using DevExpress.Data.Filtering.Helpers;
-using System.ComponentModel;
-using DevExpress.Pdf.Native;
+﻿using DevExpress.Office.Utils;
 using DevExpress.XtraGrid.Views.Grid;
+using DevExpress.XtraRichEdit.Services;
+using Lib;
+using Lib.Repo;
 using Lib.Syntax;
-using DevExpress.PivotGrid.Criteria;
-using DevExpress.XtraGrid;
-using DevExpress.XtraGrid.Views.Base;
+using System.ComponentModel;
+using System.Data;
 
 namespace Frms
 {
-    public partial class WRKREPO : UserControl
+    public partial class WRKFLD : UserControl
     {
         private DevExpress.XtraRichEdit.RichEditControl rtSelect;
         private DevExpress.XtraRichEdit.RichEditControl rtInsert;
@@ -44,8 +35,7 @@ namespace Frms
         private WrkSqlRepo wrkSqlRepo { get; set; }
         public WrkSql wrkSql { get; set; }
 
-
-        public WRKREPO()
+        public WRKFLD()
         {
             InitializeComponent();
 
@@ -56,18 +46,6 @@ namespace Frms
             }
 
             InitializeRichTextEditor();
-            //tabQueryField.SelectedTabPageIndex = 1;
-            //tabQueryField.SelectedTabPageIndex = 0;
-            //tabCRUDM.SelectedTabPageIndex = 4;
-            //tabCRUDM.SelectedTabPageIndex = 3;
-            //tabCRUDM.SelectedTabPageIndex = 2;
-            //tabCRUDM.SelectedTabPageIndex = 1;
-            //tabCRUDM.SelectedTabPageIndex = 0;
-            //tabWrk.SelectedTabPageIndex = 1;
-            //tabWrk.SelectedTabPageIndex = 0;
-            //tabParam.SelectedTabPageIndex = 2;
-            //tabParam.SelectedTabPageIndex = 1;
-            //tabParam.SelectedTabPageIndex = 0;
         }
 
         private void InitializeRichTextEditor()
@@ -149,7 +127,7 @@ namespace Frms
             if (frwFrm != null)
             {
                 g10OpenGrid();
-                g10_UCFocusedRowChanged(g10, 0, 0, null);
+                g10_UCFocusedRowChanged(grdFrmWrk, 0, 0, null);
             }
         }
         private void g10_UCFocusedRowChanged(object sender, int preIndex, int rowIndex, DevExpress.XtraGrid.Views.Base.FocusedRowChangedEventArgs e)
@@ -190,14 +168,14 @@ namespace Frms
         {
             Common.gMsg = "g10OpenGrid";
             //g10.Clear();
-            g10.DataSource = frmWrks;
+            grdFrmWrk.DataSource = frmWrks;
         }
         private void g20OpenGrid()
         {
             Common.gMsg = "g20OpenGrid";
             //g20.Clear();
             tabWrk.SelectedTabPageIndex = 1;
-            g20.DataSource = frmCtrls;
+            grdFrmCtrl.DataSource = frmCtrls;
             tabWrk.SelectedTabPageIndex = 0;
         }
         private void t10OpenGrid()
@@ -766,14 +744,5 @@ namespace Frms
             }
         }
         #endregion
-    }
-}
-namespace Frms.Models.WrkRepo
-{
-    public class wrkList
-    {
-        public string WrkId { get; set; }
-        public string FrwId { get; set; }
-        public string FrmId { get; set; }
     }
 }

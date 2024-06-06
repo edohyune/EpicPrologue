@@ -78,6 +78,7 @@ namespace Ctrls
             textCtrl.Dock = DockStyle.Fill;
             textCtrl.Location = new Point(0, 0);
             textCtrl.Name = "textCtrl";
+            textCtrl.Properties.Appearance.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             textCtrl.Properties.Appearance.Options.UseFont = true;
             textCtrl.Properties.Appearance.Options.UseTextOptions = true;
             textCtrl.Properties.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Near;

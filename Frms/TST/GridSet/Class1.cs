@@ -29,5 +29,19 @@ namespace Frms.Models.GridSet
             set => Set(ref _Age, value);
         }
 
+        private int _PID;
+        public int PID
+        {
+            get => _PID;
+            set => Set(ref _PID, value);
+        }
+    }
+
+    public class G20
+    {
+        public int ID { get; set; }
+        public string Name { get; set; }
+        public int Age { get; set; }
+        public int PID { get; set; }
     }
 }

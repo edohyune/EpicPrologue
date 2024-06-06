@@ -4,7 +4,7 @@ using System.Data;
 
 namespace Frms
 {
-    partial class WRKREPO
+    partial class WRKGRD
     {
         /// <summary> 
         /// Required designer variable.

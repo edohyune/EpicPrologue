@@ -59,5 +59,15 @@ namespace Frms.TST
                 Lib.Common.gMsg = ($"Key: {kvp.Key}, Value: {kvp.Value}");
             }
         }
+
+        private void richEditControl1_RtfTextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void richEditControl1_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

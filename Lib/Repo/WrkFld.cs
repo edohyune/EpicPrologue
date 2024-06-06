@@ -79,6 +79,13 @@ namespace Lib.Repo
             set => Set(ref _FldWidth, value);
         }
 
+        private int _FldHeight;
+        public int FldHeight
+        {
+            get => _FldHeight;
+            set => Set(ref _FldHeight, value);
+        }
+
         private int _FldTitleWidth;
         public int FldTitleWidth
         {
@@ -244,7 +251,7 @@ namespace Lib.Repo
         {
             string sql = @"
 select a.FrwId, a.FrmId, a.CtrlNm, a.WrkId, a.CtrlCls,
-       a.FldNm, a.FldTy, a.FldX, a.FldY, a.FldWidth,
+       a.FldNm, a.FldTy, a.FldX, a.FldY, a.FldWidth, a.FldHeight,
        a.FldTitleWidth, a.FldTitle, a.TitleAlign, a.Popup, a.DefaultText,
        a.TextAlign, a.FixYn, a.GroupYn, a.ShowYn, a.NeedYn,
        a.EditYn, a.Band1, a.Band2, a.FuncStr, a.FormatStr,
@@ -276,7 +283,7 @@ select a.FrwId, a.FrmId, a.CtrlNm, a.WrkId, a.CtrlCls,
         {
             string sql = @"
 select a.FrwId, a.FrmId, a.CtrlNm, a.WrkId, a.FldNm,
-       a.CtrlCls, a.FldTy, a.FldX, a.FldY, a.FldWidth,
+       a.CtrlCls, a.FldTy, a.FldX, a.FldY, a.FldWidth, a.FldHeight,
        a.FldTitleWidth, a.FldTitle, a.TitleAlign, a.Popup, a.DefaultText,
        a.TextAlign, a.FixYn, a.GroupYn, a.ShowYn, a.NeedYn,
        a.EditYn, a.Band1, a.Band2, a.FuncStr, a.FormatStr,
@@ -289,7 +296,7 @@ select a.FrwId, a.FrmId, a.CtrlNm, a.WrkId, a.FldNm,
    and CtrlNm not like 'grdDtl.Ref%'
  union all
 select FrwId, FrmId=@FrmId, CtrlNm=concat(@WrkId,'.',RefNo), WrkId=@WrkId, FldNm=RefNo,
-       CtrlCls='Column', FldTy, FldX=0, FldY=0, FldWidth=0,
+       CtrlCls='Column', FldTy, FldX=0, FldY=0, FldWidth=0, FldHeight=0,
        FldTitleWidth=120, FldTitle, TitleAlign=null, Popup, DefaultText=null,
        TextAlign=null, FixYn='0', GroupYn='0', ShowYn='1', NeedYn='0',
        EditYn='1', Band1=null, Band2=null, FuncStr=null, FormatStr=null,
@@ -326,7 +333,7 @@ select FrwId, FrmId=@FrmId, CtrlNm=concat(@WrkId,'.',RefNo), WrkId=@WrkId, FldNm
         {
             string sql = @"
 select a.FrwId, a.FrmId, a.CtrlNm, a.WrkId, a.CtrlCls,
-       a.FldNm, a.FldTy, a.FldX, a.FldY, a.FldWidth,
+       a.FldNm, a.FldTy, a.FldX, a.FldY, a.FldWidth, a.FldHeight,
        a.FldTitleWidth, a.FldTitle, a.TitleAlign, a.Popup, a.DefaultText,
        a.TextAlign, a.FixYn, a.GroupYn, a.ShowYn, a.NeedYn,
        a.EditYn, a.Band1, a.Band2, a.FuncStr, a.FormatStr,
@@ -364,7 +371,7 @@ select a.FrwId, a.FrmId, a.CtrlNm, a.WrkId, a.CtrlCls,
         {
             string sql = @"
 select a.FrwId, a.FrmId, a.CtrlNm, a.WrkId, a.CtrlCls,
-       a.FldNm, a.FldTy, a.FldX, a.FldY, a.FldWidth,
+       a.FldNm, a.FldTy, a.FldX, a.FldY, a.FldWidth, a.FldHeight,
        a.FldTitleWidth, a.FldTitle, a.TitleAlign, a.Popup, a.DefaultText,
        a.TextAlign, a.FixYn, a.GroupYn, a.ShowYn, a.NeedYn,
        a.EditYn, a.Band1, a.Band2, a.FuncStr, a.FormatStr,
@@ -397,7 +404,7 @@ select a.FrwId, a.FrmId, a.CtrlNm, a.WrkId, a.CtrlCls,
         {
             string sql = @"
 select a.FrwId, a.FrmId, a.CtrlNm, a.WrkId, a.CtrlCls,
-       a.FldNm, a.FldTy, a.FldX, a.FldY, a.FldWidth,
+       a.FldNm, a.FldTy, a.FldX, a.FldY, a.FldWidth, a.FldHeight, 
        a.FldTitleWidth, a.FldTitle, a.TitleAlign, a.Popup, a.DefaultText,
        a.TextAlign, a.FixYn, a.GroupYn, a.ShowYn, a.NeedYn,
        a.EditYn, a.Band1, a.Band2, a.FuncStr, a.FormatStr,
@@ -434,14 +441,14 @@ select a.FrwId, a.FrmId, a.CtrlNm, a.WrkId, a.CtrlCls,
             string sql = @"
 insert into WRKFLD
       (FrwId, FrmId, CtrlNm, WrkId, CtrlCls,
-       FldNm, FldTy, FldX, FldY, FldWidth,
+       FldNm, FldTy, FldX, FldY, FldWidth, FldHeight, 
        FldTitleWidth, FldTitle, TitleAlign, Popup, DefaultText,
        TextAlign, FixYn, GroupYn, ShowYn, NeedYn,
        EditYn, Band1, Band2, FuncStr, FormatStr,
        ColorFont, ColorBg, ToolNm, Seq,
        CId, CDt, MId, MDt)
 select @FrwId, @FrmId, @CtrlNm, @WrkId, @CtrlCls,
-       @FldNm, @FldTy, @FldX, @FldY, @FldWidth,
+       @FldNm, @FldTy, @FldX, @FldY, @FldWidth, @FldHeight, 
        @FldTitleWidth, @FldTitle, @TitleAlign, @Popup, @DefaultText,
        @TextAlign, @FixYn, @GroupYn, @ShowYn, @NeedYn,
        @EditYn, @Band1, @Band2, @FuncStr, @FormatStr,
@@ -468,6 +475,7 @@ update a
        FldX= @FldX,
        FldY= @FldY,
        FldWidth= @FldWidth,
+       FldHeight= @FldHeight,
        FldTitleWidth= @FldTitleWidth,
        FldTitle= @FldTitle,
        TitleAlign= @TitleAlign,

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Dynamic;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -11,16 +12,18 @@ namespace Lib
 {
     public class MdlBase : INotifyPropertyChanged
     {
+        //[Display(AutoGenerateField = false)]
         public MdlState ChangedFlag { get; set; } = MdlState.Inserted;
 
         private int _CId;
+        //[Display(AutoGenerateField = false)]
         public int CId
         {
             get => _CId;
             set => Set(ref _CId, value);
         }
-
         private DateTime _CDt;
+        //[Display(AutoGenerateField = false)]
         public DateTime CDt
         {
             get => _CDt;
@@ -32,7 +35,9 @@ namespace Lib
             }
         }
 
+
         private int _MId;
+        //[Display(AutoGenerateField = false)]
         public int MId
         {
             get => _MId;
@@ -40,6 +45,7 @@ namespace Lib
         }
 
         private DateTime _MDt;
+        //[Display(AutoGenerateField = false)]
         public DateTime MDt
         {
             get => _MDt;
