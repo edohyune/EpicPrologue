@@ -135,6 +135,37 @@ select a.WrkId, a.FrwId, a.FrmId, a.CtrlNm, a.WrkNm,
             }
         }
 
+        public List<FrmWrk> GetByWorkSets(string frwId, string frmId)
+        {
+            string sql = @"
+select a.WrkId, a.FrwId, a.FrmId, a.CtrlNm, a.WrkNm,
+       a.WrkCd, a.UseYn, a.Memo, a.CId, a.CDt,
+       a.MId, a.MDt
+  from FRMWRK a
+ where 1=1
+   and a.FrwId = @FrwId
+   and a.FrmId = @FrmId
+ order by a.Seq
+";
+            using (var db = new Lib.GaiaHelper())
+            {
+                var result = db.Query<FrmWrk>(sql, new { FrwId = frwId, FrmId = frmId }).ToList();
+
+                if (result == null)
+                {
+                    throw new KeyNotFoundException($"A record with the code {frwId},{frmId} was not found.");
+                }
+                else
+                {
+                    foreach (var item in result)
+                    {
+                        item.ChangedFlag = MdlState.None;
+                    }
+                    return result;
+                }
+            }
+        }
+
         public FrmWrk GetByWrk(string frwId, string frmId, string ctrlNm)
         {
             string sql = @"

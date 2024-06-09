@@ -132,7 +132,7 @@ namespace Frms.TST
             // sAge
             // 
             sAge.BindText = "";
-            sAge.btnVisiable = false;
+            sAge.ButtonVisiable = false;
             sAge.ControlWidth = 180;
             sAge.EditYn = false;
             sAge.Location = new Point(10, 83);
@@ -148,7 +148,7 @@ namespace Frms.TST
             // sNm
             // 
             sNm.BindText = "";
-            sNm.btnVisiable = false;
+            sNm.ButtonVisiable = false;
             sNm.ControlWidth = 180;
             sNm.EditYn = false;
             sNm.Location = new Point(10, 57);
@@ -164,7 +164,7 @@ namespace Frms.TST
             // sId
             // 
             sId.BindText = "";
-            sId.btnVisiable = false;
+            sId.ButtonVisiable = false;
             sId.ControlWidth = 180;
             sId.EditYn = false;
             sId.Location = new Point(10, 31);
@@ -247,7 +247,7 @@ namespace Frms.TST
             // txtAge
             // 
             txtAge.BindText = "";
-            txtAge.btnVisiable = false;
+            txtAge.ButtonVisiable = false;
             txtAge.ControlWidth = 180;
             txtAge.EditYn = false;
             txtAge.Location = new Point(10, 83);
@@ -263,7 +263,7 @@ namespace Frms.TST
             // txtNm
             // 
             txtNm.BindText = "";
-            txtNm.btnVisiable = false;
+            txtNm.ButtonVisiable = false;
             txtNm.ControlWidth = 180;
             txtNm.EditYn = false;
             txtNm.Location = new Point(10, 57);
@@ -279,7 +279,7 @@ namespace Frms.TST
             // txtId
             // 
             txtId.BindText = "";
-            txtId.btnVisiable = false;
+            txtId.ButtonVisiable = false;
             txtId.ControlWidth = 180;
             txtId.EditYn = false;
             txtId.Location = new Point(10, 31);

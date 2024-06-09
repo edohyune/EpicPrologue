@@ -367,6 +367,41 @@ select a.FrwId, a.FrmId, a.CtrlNm, a.WrkId, a.CtrlCls,
             }
         }
 
+        public List<WrkFld> GetFldsProperties(string frwId, string frmId, string wrkId)
+        {
+            string sql = @"
+select a.FrwId, a.FrmId, a.CtrlNm, a.WrkId, a.CtrlCls,
+       a.FldNm, a.FldTy, a.FldX, a.FldY, a.FldWidth, a.FldHeight,
+       a.FldTitleWidth, a.FldTitle, a.TitleAlign, a.Popup, a.DefaultText,
+       a.TextAlign, a.FixYn, a.GroupYn, a.ShowYn, a.NeedYn,
+       a.EditYn, a.Band1, a.Band2, a.FuncStr, a.FormatStr,
+       a.ColorFont, a.ColorBg, a.ToolNm, a.Seq, a.Id,
+       a.CId, a.CDt, a.MId, a.MDt
+  from WRKFLD a
+ where 1=1
+   and a.FrmId = @FrmId
+   and a.FrwId = @FrwId
+   and a.WrkId = @WrkId
+";
+            using (var db = new GaiaHelper())
+            {
+                var result = db.Query<WrkFld>(sql, new { FrwId = frwId, FrmId = frmId, WrkId = wrkId }).ToList();
+
+                if (result == null)
+                {
+                    return null;
+                }
+                else
+                {
+                    foreach (var item in result)
+                    {
+                        item.ChangedFlag = MdlState.None;
+                    }
+                    return result;
+                }
+            }
+        }
+
         public WrkFld GetFldProperties(string frwId, string frmId, string ctrlNm)
         {
             string sql = @"

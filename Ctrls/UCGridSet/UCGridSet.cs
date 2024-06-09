@@ -19,6 +19,7 @@ using System.Windows.Documents;
 using DevExpress.XtraVerticalGrid;
 using System.Windows.Forms;
 using DevExpress.XtraEditors.Senders;
+using System.Reflection;
 
 namespace Ctrls
 {
@@ -39,7 +40,6 @@ namespace Ctrls
         private object OSearchParam;
         [Browsable(false)]
         private DynamicParameters DSearchParam;
-
         #endregion
         #region Properties Browseable(true) -----------------------------------------------------------
         [EditorBrowsable(EditorBrowsableState.Always)]
@@ -327,7 +327,7 @@ namespace Ctrls
                             if (fieldValue != null)
                             {
                                 Common.gMsg = $"Enter Value({fieldValue}) into Control({mapping[item.Key]})";
-                                InitBinding(this.FindForm(), mapping[item.Key], item.Value, fieldValue);
+                                SetControlValue(this.FindForm(), mapping[item.Key], item.Value, fieldValue);
                             }
                             else
                             {
@@ -344,7 +344,7 @@ namespace Ctrls
             }
         }
 
-        private void InitBinding(Form uc, string ctrlNm, string toolNm, dynamic value)
+        private void SetControlValue(Form uc, string ctrlNm, string toolNm, dynamic value)
         {
             var ctrl = uc.Controls.Find(ctrlNm, true).FirstOrDefault();
             if (ctrl != null)
@@ -410,6 +410,7 @@ namespace Ctrls
 
         public UCGridSet()
         {
+            this.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.gvCtrl = new DevExpress.XtraGrid.Views.Grid.GridView(this);
             this.MainView = this.gvCtrl;
             this.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] { this.gvCtrl });
@@ -494,6 +495,29 @@ namespace Ctrls
         }
         #endregion
         #region Open<T>() - Open Form -----------------------------------------------------------------
+        public void Open()
+        {
+            string modelName = $"Frms.Models.{frmId}.{thisNm.ToUpper()}";
+
+            // 모델 타입을 동적으로 설정
+            Type modelType = Type.GetType(modelName);
+            if (modelType == null)
+            {
+                throw new InvalidOperationException($"Model type '{modelName}' not found.");
+            }
+
+            // 제네릭 Open<T> 메서드를 리플렉션을 사용하여 호출
+            //MethodInfo method = this.GetType().GetMethod("Open", BindingFlags.Instance | BindingFlags.Public);
+            //MethodInfo genericMethod = method.MakeGenericMethod(modelType);
+            //genericMethod.Invoke(this, null);
+
+            MethodInfo method = this.GetType().GetMethods().First(m => m.Name == "Open" && m.IsGenericMethod);
+            MethodInfo genericMethod = method.MakeGenericMethod(modelType);
+            genericMethod.Invoke(this, null);
+
+
+        }
+
         public void Open(DataTable dataTable)
         {
             if (dataTable != null)
@@ -522,10 +546,10 @@ namespace Ctrls
                 DSearchParam.Add(wrkGet.FldNm, tmp);
                 Common.gMsg = $"Declare {wrkGet.FldNm} varchar ='{tmp}'";
             }
-            OpenForm<T>();
+            OpenWrk<T>();
         }
 
-        private void OpenForm<T>()
+        private void OpenWrk<T>()
         {
             this.DataSource = null;
             gvCtrl.Columns.Clear();

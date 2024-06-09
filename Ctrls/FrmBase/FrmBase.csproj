@@ -13,14 +13,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Lib\Lib.csproj" />
-    <ProjectReference Include="..\UCCheckBox\UCCheckBox.csproj" />
-    <ProjectReference Include="..\UCDateBox\UCDateBox.csproj" />
     <ProjectReference Include="..\UCField\UCFieldSet.csproj" />
     <ProjectReference Include="..\UCGridSet\UCGridSet.csproj" />
-    <ProjectReference Include="..\UCGrid\UCGrid.csproj" />
-    <ProjectReference Include="..\UCLookup\UCLookUp.csproj" />
-    <ProjectReference Include="..\UCMemo\UCMemo.csproj" />
-    <ProjectReference Include="..\UCTextBox\UCTextBox.csproj" />
   </ItemGroup>
 
 </Project>

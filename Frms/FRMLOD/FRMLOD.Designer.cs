@@ -155,7 +155,7 @@ namespace Frms
             // s_txt
             // 
             s_txt.BindText = "";
-            s_txt.btnVisiable = false;
+            s_txt.ButtonVisiable = false;
             s_txt.ControlWidth = 297;
             s_txt.EditYn = true;
             s_txt.Location = new System.Drawing.Point(5, 35);
@@ -273,7 +273,7 @@ namespace Frms
             // txtFileNm
             // 
             txtFileNm.BindText = "";
-            txtFileNm.btnVisiable = false;
+            txtFileNm.ButtonVisiable = false;
             txtFileNm.ControlWidth = 297;
             txtFileNm.EditYn = true;
             txtFileNm.Location = new System.Drawing.Point(10, 58);
@@ -322,7 +322,7 @@ namespace Frms
             // txtNmSpace
             // 
             txtNmSpace.BindText = "";
-            txtNmSpace.btnVisiable = false;
+            txtNmSpace.ButtonVisiable = false;
             txtNmSpace.ControlWidth = 297;
             txtNmSpace.EditYn = true;
             txtNmSpace.Location = new System.Drawing.Point(10, 111);
@@ -338,7 +338,7 @@ namespace Frms
             // txtUsrRegId
             // 
             txtUsrRegId.BindText = "";
-            txtUsrRegId.btnVisiable = false;
+            txtUsrRegId.ButtonVisiable = false;
             txtUsrRegId.ControlWidth = 297;
             txtUsrRegId.EditYn = true;
             txtUsrRegId.Location = new System.Drawing.Point(313, 57);
@@ -354,7 +354,7 @@ namespace Frms
             // txtFrmId
             // 
             txtFrmId.BindText = "";
-            txtFrmId.btnVisiable = false;
+            txtFrmId.ButtonVisiable = false;
             txtFrmId.ControlWidth = 297;
             txtFrmId.EditYn = true;
             txtFrmId.Location = new System.Drawing.Point(10, 84);
@@ -371,7 +371,7 @@ namespace Frms
             // txtFilePath
             // 
             txtFilePath.BindText = "";
-            txtFilePath.btnVisiable = true;
+            txtFilePath.ButtonVisiable = true;
             txtFilePath.ControlWidth = 600;
             txtFilePath.EditYn = true;
             txtFilePath.Location = new System.Drawing.Point(10, 30);
@@ -388,7 +388,7 @@ namespace Frms
             // txtFrwId
             // 
             txtFrwId.BindText = "";
-            txtFrwId.btnVisiable = false;
+            txtFrwId.ButtonVisiable = false;
             txtFrwId.ControlWidth = 297;
             txtFrwId.EditYn = true;
             txtFrwId.Location = new System.Drawing.Point(313, 84);
@@ -404,7 +404,7 @@ namespace Frms
             // txtFrmNm
             // 
             txtFrmNm.BindText = "";
-            txtFrmNm.btnVisiable = false;
+            txtFrmNm.ButtonVisiable = false;
             txtFrmNm.ControlWidth = 297;
             txtFrmNm.EditYn = true;
             txtFrmNm.Location = new System.Drawing.Point(10, 138);

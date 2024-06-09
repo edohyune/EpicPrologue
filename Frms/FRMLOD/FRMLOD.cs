@@ -44,7 +44,7 @@ namespace Frms
         public FRMLOD()
         {
             InitializeComponent();
-            txtFilePath.btnVisiable = true;
+            txtFilePath.ButtonVisiable = true;
             cmbStatus.DataSource = Enum.GetValues(typeof(MdlState));
         }
 

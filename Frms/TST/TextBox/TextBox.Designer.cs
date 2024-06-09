@@ -36,7 +36,7 @@
             // custId
             // 
             custId.BindText = "";
-            custId.btnVisiable = true;
+            custId.ButtonVisiable = true;
             custId.ControlWidth = 180;
             custId.Location = new Point(51, 35);
             custId.Name = "custId";
@@ -51,7 +51,7 @@
             // custNm
             // 
             custNm.BindText = "";
-            custNm.btnVisiable = true;
+            custNm.ButtonVisiable = true;
             custNm.ControlWidth = 180;
             custNm.Location = new Point(51, 61);
             custNm.Name = "custNm";
@@ -66,7 +66,7 @@
             // custAge
             // 
             custAge.BindText = "";
-            custAge.btnVisiable = true;
+            custAge.ButtonVisiable = true;
             custAge.ControlWidth = 180;
             custAge.Location = new Point(51, 87);
             custAge.Name = "custAge";

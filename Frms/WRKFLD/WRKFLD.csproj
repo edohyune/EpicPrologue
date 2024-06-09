@@ -11,7 +11,7 @@
     <ProjectReference Include="..\..\Ctrls\UCButton\UCButton.csproj" />
     <ProjectReference Include="..\..\Ctrls\UCCheckBox\UCCheckBox.csproj" />
     <ProjectReference Include="..\..\Ctrls\UCDateBox\UCDateBox.csproj" />
-    <ProjectReference Include="..\..\Ctrls\UCField\UCField.csproj" />
+    <ProjectReference Include="..\..\Ctrls\UCField\UCFieldSet.csproj" />
     <ProjectReference Include="..\..\Ctrls\UCGridCode\UCGridCode.csproj" />
     <ProjectReference Include="..\..\Ctrls\UCGridSet\UCGridSet.csproj" />
     <ProjectReference Include="..\..\Ctrls\UCGrid\UCGrid.csproj" />

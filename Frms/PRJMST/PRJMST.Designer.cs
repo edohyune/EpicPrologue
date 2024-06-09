@@ -34,8 +34,8 @@
             ucSplit2 = new Ctrls.UCSplit();
             ucPanel1 = new Ctrls.UCPanel();
             ucPanel2 = new Ctrls.UCPanel();
-            ucField1 = new Ctrls.UCField();
-            ucField2 = new Ctrls.UCField();
+            ucField1 = new Ctrls.UCFieldSet();
+            ucField2 = new Ctrls.UCFieldSet();
             ((System.ComponentModel.ISupportInitialize)ucSplit1).BeginInit();
             ucSplit1.Panel1.SuspendLayout();
             ucSplit1.Panel2.SuspendLayout();
@@ -182,7 +182,7 @@
         private Ctrls.UCPanel ucPanel3;
         private Ctrls.UCPanel ucPanel2;
         private Ctrls.UCGrid ucGrid1;
-        private Ctrls.UCField ucField1;
-        private Ctrls.UCField ucField2;
+        private Ctrls.UCFieldSet ucField1;
+        private Ctrls.UCFieldSet ucField2;
     }
 }

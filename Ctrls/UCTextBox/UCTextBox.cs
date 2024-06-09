@@ -70,7 +70,7 @@ namespace Ctrls
                 this.labelCtrl.Appearance.TextOptions.HAlignment = value;
             }
         }
-        [Category("A UserController Property"), Description("Default Text")] //chk
+        [Category("A UserController Property"), Description("Default Text"), Browsable(true), DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public override string Text
         {
             get
@@ -82,6 +82,33 @@ namespace Ctrls
             {
                 this.textCtrl.Text = value;
                 this.BindText = value;  // Text가 업데이트 될 때 BindText도 업데이트
+            }
+        }
+        //fontFace랑 fontSize 추가
+        [Category("A UserController Property"), Description("Font Face")] //chk
+        public string FontFace
+        {
+            get
+            {
+                return this.textCtrl.Font.Name;
+            }
+            set
+            {
+                this.labelCtrl.Font = new Font(value, this.textCtrl.Font.Size);
+                this.textCtrl.Font = new Font(value, this.textCtrl.Font.Size);
+            }
+        }
+        [Category("A UserController Property"), Description("Font Size")] //chk
+        public float FontSize
+        {
+            get
+            {
+                return this.textCtrl.Font.Size;
+            }
+            set
+            {
+                this.textCtrl.Font = new Font(this.textCtrl.Font.Name, value);
+                this.labelCtrl.Font = new Font(this.labelCtrl.Font.Name, value);
             }
         }
         [Category("A UserController Property"), Description("Text Alignment")] //chk
@@ -111,7 +138,7 @@ namespace Ctrls
             }
         }
         [Category("A UserController Property"), Description("Text Button Visiable")]
-        public bool btnVisiable
+        public bool ButtonVisiable
         {
             get
             {
@@ -225,7 +252,7 @@ namespace Ctrls
                     this.ShowYn = wrkFld.ShowYn;
                     this.NeedYn = wrkFld.NeedYn;
                     this.EditYn = wrkFld.EditYn;
-                    this.btnVisiable = wrkFld.EditYn;
+                    this.ButtonVisiable = wrkFld.EditYn;
                     //this. = wrkFld.Band1;
                     //this. = wrkFld.Band2;
                     //this. = wrkFld.FuncStr;
@@ -239,11 +266,11 @@ namespace Ctrls
                     //추가설정
                     if (wrkFld.FldTy == "TextButton")
                     {
-                        this.btnVisiable = true;
+                        this.ButtonVisiable = true;
                     }
                     else
                     {
-                        this.btnVisiable = false;
+                        this.ButtonVisiable = false;
                     }
                 }
 
