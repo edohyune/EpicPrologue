@@ -29,16 +29,19 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
             DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions buttonImageOptions1 = new DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions();
             DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions buttonImageOptions2 = new DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions();
             DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions buttonImageOptions3 = new DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions();
             barManager1 = new DevExpress.XtraBars.BarManager(components);
             bar1 = new DevExpress.XtraBars.Bar();
-            barButtonItem1 = new DevExpress.XtraBars.BarButtonItem();
-            barButtonItem2 = new DevExpress.XtraBars.BarButtonItem();
-            barButtonShowMsg = new DevExpress.XtraBars.BarButtonItem();
+            barBtnOpen = new DevExpress.XtraBars.BarButtonItem();
+            barBtnNew = new DevExpress.XtraBars.BarButtonItem();
+            barBtnSave = new DevExpress.XtraBars.BarButtonItem();
             barSubItem1 = new DevExpress.XtraBars.BarSubItem();
-            barButtonItem3 = new DevExpress.XtraBars.BarButtonItem();
+            barBtnTemplate = new DevExpress.XtraBars.BarButtonItem();
+            barBtnDelete = new DevExpress.XtraBars.BarButtonItem();
+            barButtonItem5 = new DevExpress.XtraBars.BarButtonItem();
             bar3 = new DevExpress.XtraBars.Bar();
             barMdiChildrenListItem1 = new DevExpress.XtraBars.BarMdiChildrenListItem();
             barStaticItemMsg = new DevExpress.XtraBars.BarStaticItem();
@@ -77,8 +80,8 @@
             barManager1.DockControls.Add(barDockControlLeft);
             barManager1.DockControls.Add(barDockControlRight);
             barManager1.Form = this;
-            barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] { barButtonItem1, barButtonItem2, barMdiChildrenListItem1, barStaticItemMsg, barButtonShowMsg, barSubItem1, barButtonItem3 });
-            barManager1.MaxItemId = 7;
+            barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] { barBtnOpen, barBtnNew, barMdiChildrenListItem1, barStaticItemMsg, barBtnSave, barSubItem1, barBtnTemplate, barBtnDelete, barButtonItem5 });
+            barManager1.MaxItemId = 9;
             barManager1.StatusBar = bar3;
             // 
             // bar1
@@ -88,40 +91,53 @@
             bar1.DockRow = 0;
             bar1.DockStyle = DevExpress.XtraBars.BarDockStyle.Top;
             bar1.FloatLocation = new System.Drawing.Point(537, 134);
-            bar1.LinksPersistInfo.AddRange(new DevExpress.XtraBars.LinkPersistInfo[] { new DevExpress.XtraBars.LinkPersistInfo(barButtonItem1), new DevExpress.XtraBars.LinkPersistInfo(barButtonItem2), new DevExpress.XtraBars.LinkPersistInfo(barButtonShowMsg), new DevExpress.XtraBars.LinkPersistInfo(barSubItem1), new DevExpress.XtraBars.LinkPersistInfo(barButtonItem3) });
+            bar1.LinksPersistInfo.AddRange(new DevExpress.XtraBars.LinkPersistInfo[] { new DevExpress.XtraBars.LinkPersistInfo(barBtnOpen, true), new DevExpress.XtraBars.LinkPersistInfo(barBtnNew, true), new DevExpress.XtraBars.LinkPersistInfo(barBtnSave, true), new DevExpress.XtraBars.LinkPersistInfo(barBtnDelete, true), new DevExpress.XtraBars.LinkPersistInfo(barBtnTemplate, true), new DevExpress.XtraBars.LinkPersistInfo(barButtonItem5, true) });
             bar1.Offset = 273;
             bar1.Text = "Tools";
             // 
-            // barButtonItem1
+            // barBtnOpen
             // 
-            barButtonItem1.Caption = "Query";
-            barButtonItem1.Id = 0;
-            barButtonItem1.Name = "barButtonItem1";
+            barBtnOpen.Caption = "Open";
+            barBtnOpen.Id = 0;
+            barBtnOpen.ImageOptions.SvgImage = (DevExpress.Utils.Svg.SvgImage)resources.GetObject("barButtonItem1.ImageOptions.SvgImage");
+            barBtnOpen.ItemShortcut = new DevExpress.XtraBars.BarShortcut(System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Q);
+            barBtnOpen.Name = "barBtnOpen";
+            barBtnOpen.PaintStyle = DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph;
+            barBtnOpen.ShortcutKeyDisplayString = "Q";
+            barBtnOpen.ShowItemShortcut = DevExpress.Utils.DefaultBoolean.True;
+            barBtnOpen.ItemClick += barBtnOpen_ItemClick;
             // 
-            // barButtonItem2
+            // barBtnNew
             // 
-            barButtonItem2.Caption = "Select System";
-            barButtonItem2.Id = 1;
-            barButtonItem2.Name = "barButtonItem2";
+            barBtnNew.Caption = "New";
+            barBtnNew.Id = 1;
+            barBtnNew.ImageOptions.SvgImage = (DevExpress.Utils.Svg.SvgImage)resources.GetObject("barButtonItem2.ImageOptions.SvgImage");
+            barBtnNew.ItemShortcut = new DevExpress.XtraBars.BarShortcut(System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N);
+            barBtnNew.Name = "barBtnNew";
+            barBtnNew.PaintStyle = DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph;
+            barBtnNew.ShortcutKeyDisplayString = "N";
+            barBtnNew.ShowItemShortcut = DevExpress.Utils.DefaultBoolean.True;
+            barBtnNew.ItemClick += barBtnNew_ItemClick;
             // 
-            // barButtonShowMsg
+            // barBtnSave
             // 
-            barButtonShowMsg.Caption = "Show Message";
-            barButtonShowMsg.Id = 4;
-            barButtonShowMsg.Name = "barButtonShowMsg";
+            barBtnSave.Caption = "Save";
+            barBtnSave.Id = 4;
+            barBtnSave.ImageOptions.SvgImage = (DevExpress.Utils.Svg.SvgImage)resources.GetObject("barButtonShowMsg.ImageOptions.SvgImage");
+            barBtnSave.ItemShortcut = new DevExpress.XtraBars.BarShortcut(System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S);
+            barBtnSave.Name = "barBtnSave";
+            barBtnSave.PaintStyle = DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph;
+            barBtnSave.ShortcutKeyDisplayString = "S";
+            barBtnSave.ItemClick += barBtnSave_ItemClick;
             // 
-            // barSubItem1
+            // barBtnTemplate
             // 
-            barSubItem1.Caption = "barSubItem1";
-            barSubItem1.Id = 5;
-            barSubItem1.Name = "barSubItem1";
-            barSubItem1.ItemClick += barSubItem1_ItemClick;
-            // 
-            // barButtonItem3
-            // 
-            barButtonItem3.Caption = "Show In Templet";
-            barButtonItem3.Id = 6;
-            barButtonItem3.Name = "barButtonItem3";
+            barBtnTemplate.Caption = "Show In Templet";
+            barBtnTemplate.Id = 6;
+            barBtnTemplate.ImageOptions.SvgImage = (DevExpress.Utils.Svg.SvgImage)resources.GetObject("barButtonItem3.ImageOptions.SvgImage");
+            barBtnTemplate.Name = "barBtnTemplate";
+            barBtnTemplate.PaintStyle = DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph;
+            barBtnTemplate.ItemClick += barBtnTemplate_ItemClick;
             // 
             // bar3
             // 
@@ -152,31 +168,31 @@
             barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
             barDockControlTop.Location = new System.Drawing.Point(0, 0);
             barDockControlTop.Manager = barManager1;
-            barDockControlTop.Size = new System.Drawing.Size(1438, 21);
+            barDockControlTop.Size = new System.Drawing.Size(1438, 25);
             // 
             // barDockControlBottom
             // 
             barDockControlBottom.CausesValidation = false;
             barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            barDockControlBottom.Location = new System.Drawing.Point(0, 845);
+            barDockControlBottom.Location = new System.Drawing.Point(0, 843);
             barDockControlBottom.Manager = barManager1;
-            barDockControlBottom.Size = new System.Drawing.Size(1438, 23);
+            barDockControlBottom.Size = new System.Drawing.Size(1438, 25);
             // 
             // barDockControlLeft
             // 
             barDockControlLeft.CausesValidation = false;
             barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
-            barDockControlLeft.Location = new System.Drawing.Point(0, 21);
+            barDockControlLeft.Location = new System.Drawing.Point(0, 25);
             barDockControlLeft.Manager = barManager1;
-            barDockControlLeft.Size = new System.Drawing.Size(0, 824);
+            barDockControlLeft.Size = new System.Drawing.Size(0, 818);
             // 
             // barDockControlRight
             // 
             barDockControlRight.CausesValidation = false;
             barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
-            barDockControlRight.Location = new System.Drawing.Point(1438, 21);
+            barDockControlRight.Location = new System.Drawing.Point(1438, 25);
             barDockControlRight.Manager = barManager1;
-            barDockControlRight.Size = new System.Drawing.Size(0, 824);
+            barDockControlRight.Size = new System.Drawing.Size(0, 818);
             // 
             // cmbForm
             // 
@@ -197,7 +213,7 @@
             msgCtrl.Location = new System.Drawing.Point(2, 23);
             msgCtrl.MenuManager = barManager1;
             msgCtrl.Name = "msgCtrl";
-            msgCtrl.Size = new System.Drawing.Size(264, 774);
+            msgCtrl.Size = new System.Drawing.Size(264, 768);
             msgCtrl.TabIndex = 10;
             // 
             // bar2
@@ -206,7 +222,7 @@
             bar2.DockCol = 0;
             bar2.DockRow = 0;
             bar2.DockStyle = DevExpress.XtraBars.BarDockStyle.Top;
-            bar2.LinksPersistInfo.AddRange(new DevExpress.XtraBars.LinkPersistInfo[] { new DevExpress.XtraBars.LinkPersistInfo(barButtonItem1), new DevExpress.XtraBars.LinkPersistInfo(barButtonItem2), new DevExpress.XtraBars.LinkPersistInfo(barButtonShowMsg) });
+            bar2.LinksPersistInfo.AddRange(new DevExpress.XtraBars.LinkPersistInfo[] { new DevExpress.XtraBars.LinkPersistInfo(barBtnOpen), new DevExpress.XtraBars.LinkPersistInfo(barBtnNew), new DevExpress.XtraBars.LinkPersistInfo(barBtnSave) });
             bar2.Offset = 169;
             bar2.Text = "Tools";
             // 
@@ -224,7 +240,7 @@
             menuCtrl.Dock = System.Windows.Forms.DockStyle.Fill;
             menuCtrl.Location = new System.Drawing.Point(0, 0);
             menuCtrl.Name = "menuCtrl";
-            menuCtrl.Size = new System.Drawing.Size(268, 799);
+            menuCtrl.Size = new System.Drawing.Size(268, 793);
             menuCtrl.TabIndex = 26;
             menuCtrl.DoubleClick += menuCtrl_DoubleClick;
             // 
@@ -243,9 +259,8 @@
             ucPanel1.Location = new System.Drawing.Point(0, 0);
             ucPanel1.Name = "ucPanel1";
             ucPanel1.ShowYn = true;
-            ucPanel1.Size = new System.Drawing.Size(268, 799);
+            ucPanel1.Size = new System.Drawing.Size(268, 793);
             ucPanel1.TabIndex = 31;
-            ucPanel1.Text = null;
             ucPanel1.CustomButtonClick += ucPanel1_CustomButtonClick;
             ucPanel1.CustomButtonUnchecked += ucPanel1_CustomButtonUnchecked;
             ucPanel1.CustomButtonChecked += ucPanel1_CustomButtonChecked;
@@ -253,10 +268,10 @@
             // ucTab1
             // 
             ucTab1.Dock = System.Windows.Forms.DockStyle.Left;
-            ucTab1.Location = new System.Drawing.Point(0, 21);
+            ucTab1.Location = new System.Drawing.Point(0, 25);
             ucTab1.Name = "ucTab1";
             ucTab1.SelectedTabPage = xtraTabPage1;
-            ucTab1.Size = new System.Drawing.Size(270, 824);
+            ucTab1.Size = new System.Drawing.Size(270, 818);
             ucTab1.TabIndex = 32;
             ucTab1.TabPages.AddRange(new DevExpress.XtraTab.XtraTabPage[] { xtraTabPage1, xtraTabPage2 });
             // 
@@ -264,7 +279,7 @@
             // 
             xtraTabPage1.Controls.Add(menuCtrl);
             xtraTabPage1.Name = "xtraTabPage1";
-            xtraTabPage1.Size = new System.Drawing.Size(268, 799);
+            xtraTabPage1.Size = new System.Drawing.Size(268, 793);
             xtraTabPage1.TabPageWidth = 120;
             xtraTabPage1.Text = "Menu";
             // 
@@ -272,9 +287,23 @@
             // 
             xtraTabPage2.Controls.Add(ucPanel1);
             xtraTabPage2.Name = "xtraTabPage2";
-            xtraTabPage2.Size = new System.Drawing.Size(268, 799);
+            xtraTabPage2.Size = new System.Drawing.Size(268, 793);
             xtraTabPage2.TabPageWidth = 120;
             xtraTabPage2.Text = "Message";
+            // 
+            // barBtnDelete
+            // 
+            barBtnDelete.Caption = "Delete";
+            barBtnDelete.Id = 7;
+            barBtnDelete.ImageOptions.SvgImage = (DevExpress.Utils.Svg.SvgImage)resources.GetObject("barButtonItem4.ImageOptions.SvgImage");
+            barBtnDelete.Name = "barBtnDelete";
+            barBtnDelete.PaintStyle = DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph;
+            barBtnDelete.ItemClick += barBtnDelete_ItemClick;
+            // 
+            // barButtonItem5
+            // 
+            barButtonItem5.Id = 8;
+            barButtonItem5.Name = "barButtonItem5";
             // 
             // FormMain
             // 
@@ -316,18 +345,20 @@
         private DevExpress.XtraBars.BarDockControl barDockControlBottom;
         private DevExpress.XtraBars.BarDockControl barDockControlLeft;
         private DevExpress.XtraBars.BarDockControl barDockControlRight;
-        private DevExpress.XtraBars.BarButtonItem barButtonItem1;
         private DevExpress.XtraEditors.ComboBoxEdit cmbForm;
-        private DevExpress.XtraBars.BarButtonItem barButtonItem2;
+        private DevExpress.XtraBars.BarButtonItem barBtnOpen;
+        private DevExpress.XtraBars.BarButtonItem barBtnNew;
+        private DevExpress.XtraBars.BarButtonItem barBtnSave;
+        private DevExpress.XtraBars.BarButtonItem barBtnDelete;
+        private DevExpress.XtraBars.BarButtonItem barButtonItem5;
+        private DevExpress.XtraBars.BarButtonItem barBtnTemplate;
         private DevExpress.XtraBars.BarMdiChildrenListItem barMdiChildrenListItem1;
         private DevExpress.XtraBars.BarStaticItem barStaticItemMsg;
         private DevExpress.XtraEditors.MemoEdit msgCtrl;
-        private DevExpress.XtraBars.BarButtonItem barButtonShowMsg;
         private DevExpress.XtraBars.Bar bar2;
         private DevExpress.XtraBars.BarSubItem barSubItem1;
         private DevExpress.XtraEditors.SimpleButton simpleButton1;
         private DevExpress.XtraEditors.ListBoxControl menuCtrl;
-        private DevExpress.XtraBars.BarButtonItem barButtonItem3;
         private DevExpress.XtraTabbedMdi.XtraTabbedMdiManager xtraTabbedMdiManager;
         private Ctrls.UCPanel ucPanel1;
         private Ctrls.UCTab ucTab1;

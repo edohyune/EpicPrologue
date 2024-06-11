@@ -7,4 +7,57 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="Ctrls\UCButton.cs" />
+    <Compile Remove="Ctrls\UCCheckBox.cs" />
+    <Compile Remove="Ctrls\UCDateBox.cs" />
+    <Compile Remove="Ctrls\UCDateBox.Designer.cs" />
+    <Compile Remove="Ctrls\UCGrid.cs" />
+    <Compile Remove="Ctrls\UCGridCode.cs" />
+    <Compile Remove="Ctrls\UCLookup.cs" />
+    <Compile Remove="Ctrls\UCMemo.cs" />
+    <Compile Remove="Ctrls\UCRichText.cs" />
+    <Compile Remove="Ctrls\UCTextBox.cs" />
+    <Compile Remove="Ctrls\UCTextBox.Designer.cs" />
+    <Compile Remove="FrmBase.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Remove="Ctrls\UCDateBox.resx" />
+    <EmbeddedResource Remove="Ctrls\UCLookup.resx" />
+    <EmbeddedResource Remove="Ctrls\UCMemo.resx" />
+    <EmbeddedResource Remove="Ctrls\UCTextBox.resx" />
+    <EmbeddedResource Remove="FrmBase.resx" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Dapper" Version="2.1.35" />
+    <PackageReference Include="DevExpress.Win.Design" Version="23.2.3" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.6" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="DevExpress.Data.Desktop.v23.2">
+      <HintPath>C:\Program Files\DevExpress 23.2\Components\Bin\Framework\DevExpress.Data.Desktop.v23.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Data.v23.2">
+      <HintPath>C:\Program Files\DevExpress 23.2\Components\Bin\Framework\DevExpress.Data.v23.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Drawing.v23.2">
+      <HintPath>C:\Program Files\DevExpress 23.2\Components\Bin\Framework\DevExpress.Drawing.v23.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Printing.v23.2.Core">
+      <HintPath>C:\Program Files\DevExpress 23.2\Components\Bin\Framework\DevExpress.Printing.v23.2.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Utils.v23.2">
+      <HintPath>C:\Program Files\DevExpress 23.2\Components\Bin\Framework\DevExpress.Utils.v23.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraEditors.v23.2">
+      <HintPath>C:\Program Files\DevExpress 23.2\Components\Bin\Framework\DevExpress.XtraEditors.v23.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraGrid.v23.2">
+      <HintPath>C:\Program Files\DevExpress 23.2\Components\Bin\Framework\DevExpress.XtraGrid.v23.2.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

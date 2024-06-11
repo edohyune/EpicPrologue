@@ -26,8 +26,8 @@ namespace GAIA
         public SignIn()
         {
             InitializeComponent();
-            Common.gUserProfilePath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-            Common.gIniFilePath = Path.Combine(Common.gUserProfilePath, "GAIA", "Setting.ini");
+            Common.SetValue("gUserProfilePath", Environment.GetFolderPath(Environment.SpecialFolder.UserProfile));
+            Common.SetValue("gIniFilePath", Path.Combine(Common.GetValue("gUserProfilePath"), "GAIA", "Setting.ini"));
         }
         private void simpleButton1_Click(object sender, EventArgs e)
         {
@@ -53,10 +53,10 @@ namespace GAIA
             }
             else
             {
-                Common.gId = usr.UsrId;
-                Common.gRegId = usr.UsrRegId;
-                Common.gNm = usr.UsrNm;
-                Common.gCls = usr.Cls;
+                Common.SetValue("gId", usr.UsrId);
+                Common.SetValue("gRegId", usr.UsrRegId.ToString());
+                Common.SetValue("gNm", usr.UsrNm);
+                Common.SetValue("gCls", usr.Cls);
 
                 FormMain.signin = true;
                 this.Close();

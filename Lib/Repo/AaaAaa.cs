@@ -69,7 +69,7 @@ namespace Lib.Repo
         public void Add(AaaAaa aaaAaa)
         {
             string sql = @"
-       " + Common.gRegId + @", getdate(), " + Common.gRegId + @", getdate()
+       " + Common.GetValue("gRegId") + @", getdate(), " + Common.GetValue("gRegId") + @", getdate()
 
 ";
             using (var db = new Lib.GaiaHelper())
@@ -80,7 +80,7 @@ namespace Lib.Repo
         public void Update(AaaAaa aaaAaa)
         {
             string sql = @"
-       MId= "" + Common.gRegId + @"",
+       MId= " + Common.GetValue("gRegId") + @",
        MDt= getdate()
 ";
             using (var db = new Lib.GaiaHelper())

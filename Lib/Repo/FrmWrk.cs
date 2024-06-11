@@ -7,14 +7,7 @@ using System.Threading.Tasks;
 namespace Lib.Repo
 {
     public class FrmWrk : MdlBase
-    { 
-        private string _WrkId;
-        public string WrkId
-        {
-            get => _WrkId;
-            set => Set(ref _WrkId, value);
-        }
-
+    {
         private string _FrwId;
         public string FrwId
         {
@@ -27,6 +20,13 @@ namespace Lib.Repo
         {
             get => _FrmId;
             set => Set(ref _FrmId, value);
+        }
+
+        private string _WrkId;
+        public string WrkId
+        {
+            get => _WrkId;
+            set => Set(ref _WrkId, value);
         }
 
         private string _CtrlNm;
@@ -57,33 +57,261 @@ namespace Lib.Repo
             set => Set(ref _UseYn, value);
         }
 
+        private int _SaveSq;
+        public int SaveSq
+        {
+            get => _SaveSq;
+            set => Set(ref _SaveSq, value);
+        }
+
+        private int _OpenSq;
+        public int OpenSq
+        {
+            get => _OpenSq;
+            set => Set(ref _OpenSq, value);
+        }
+
+        private string _OpenTrg;
+        public string OpenTrg
+        {
+            get => _OpenTrg;
+            set => Set(ref _OpenTrg, value);
+        }
+
         private string _Memo;
         public string Memo
         {
             get => _Memo;
             set => Set(ref _Memo, value);
         }
+
     }
     public interface IFrmWrkRepo
     {
-        FrmWrk GetByWrk(string frwId, string frmId, string ctrlNm);
-        List<FrmWrk> GetByFrwFrm(string frwId, string frmId);
+        List<FrmWrk> GetByWorkSetsOpenOrderby(string frwId, string frmId);
+        List<FrmWrk> GetByWorkSetsSaveOrderby(string frwId, string frmId);
+        List<FrmWrk> GetByFieldSets(string frwId, string frmId);
+        List<FrmWrk> GetByDataSets(string frwId, string frmId);
+        List<FrmWrk> GetByGridSets(string frwId, string frmId);
+        FrmWrk GetByWorkSet(string frwId, string frmId, string ctrlNm);
         void Add(FrmWrk frmWrk);
         void Update(FrmWrk frmWrk);
         void Delete(string wrkId);
     }
     public class FrmWrkRepo : IFrmWrkRepo
     {
+        public List<FrmWrk> GetByWorkSetsOpenOrderby(string frwId, string frmId)
+        {
+            string sql = @"
+select a.FrwId, a.FrmId, a.WrkId, a.CtrlNm, a.WrkNm,
+       a.WrkCd, a.UseYn, a.SaveSq, a.OpenSq, a.OpenTrg,
+       a.Memo, a.CId, a.CDt, a.MId, a.MDt
+  from FRMWRK a
+ where 1=1
+   and a.FrwId = @FrwId
+   and a.FrmId = @FrmId
+ order by a.OpenSq 
+";
+            using (var db = new Lib.GaiaHelper())
+            {
+                var result = db.Query<FrmWrk>(sql, new { FrwId = frwId, FrmId = frmId }).ToList();
+
+                if (result == null)
+                {
+                    return null;
+                }
+                else
+                {
+                    foreach (var item in result)
+                    {
+                        item.ChangedFlag = MdlState.None;
+                    }
+                    return result;
+                }
+            }
+        }
+        public List<FrmWrk> GetByWorkSetsSaveOrderby(string frwId, string frmId)
+        {
+            string sql = @"
+select a.FrwId, a.FrmId, a.WrkId, a.CtrlNm, a.WrkNm,
+       a.WrkCd, a.UseYn, a.SaveSq, a.OpenSq, a.OpenTrg,
+       a.Memo, a.CId, a.CDt, a.MId, a.MDt
+  from FRMWRK a
+ where 1=1
+   and a.FrwId = @FrwId
+   and a.FrmId = @FrmId
+ order by a.SaveSq 
+";
+            using (var db = new Lib.GaiaHelper())
+            {
+                var result = db.Query<FrmWrk>(sql, new { FrwId = frwId, FrmId = frmId }).ToList();
+
+                if (result == null)
+                {
+                    return null;
+                }
+                else
+                {
+                    foreach (var item in result)
+                    {
+                        item.ChangedFlag = MdlState.None;
+                    }
+                    return result;
+                }
+            }
+        }
+
+        public List<FrmWrk> GetByFieldSets(string frwId, string frmId)
+        {
+            string sql = @"
+select a.FrwId, a.FrmId, a.WrkId, a.CtrlNm, a.WrkNm,
+       a.WrkCd, a.UseYn, a.SaveSq, a.OpenSq, a.OpenTrg,
+       a.Memo, a.CId, a.CDt, a.MId, a.MDt
+  from FRMWRK a
+ where 1=1
+   and a.FrwId = @FrwId
+   and a.FrmId = @FrmId
+   and a.WrkCd = 'FieldSet'
+ order by a.OpenSq 
+";
+            using (var db = new Lib.GaiaHelper())
+            {
+                var result = db.Query<FrmWrk>(sql, new { FrwId = frwId, FrmId = frmId }).ToList();
+
+                if (result == null)
+                {
+                    return null;
+                }
+                else
+                {
+                    foreach (var item in result)
+                    {
+                        item.ChangedFlag = MdlState.None;
+                    }
+                    return result;
+                }
+            }
+        }
+
+        public List<FrmWrk> GetByDataSets(string frwId, string frmId)
+        {
+            string sql = @"
+select a.FrwId, a.FrmId, a.WrkId, a.CtrlNm, a.WrkNm,
+       a.WrkCd, a.UseYn, a.SaveSq, a.OpenSq, a.OpenTrg,
+       a.Memo, a.CId, a.CDt, a.MId, a.MDt
+  from FRMWRK a
+ where 1=1
+   and a.FrwId = @FrwId
+   and a.FrmId = @FrmId
+   and a.WrkCd = 'DataSet'
+ order by a.OpenSq 
+";
+            using (var db = new Lib.GaiaHelper())
+            {
+                var result = db.Query<FrmWrk>(sql, new { FrwId = frwId, FrmId = frmId }).ToList();
+
+                if (result == null)
+                {
+                    return null;
+                }
+                else
+                {
+                    foreach (var item in result)
+                    {
+                        item.ChangedFlag = MdlState.None;
+                    }
+                    return result;
+                }
+            }
+        }
+
+        public List<FrmWrk> GetByGridSets(string frwId, string frmId)
+        {
+            string sql = @"
+select a.FrwId, a.FrmId, a.WrkId, a.CtrlNm, a.WrkNm,
+       a.WrkCd, a.UseYn, a.SaveSq, a.OpenSq, a.OpenTrg,
+       a.Memo, a.CId, a.CDt, a.MId, a.MDt
+  from FRMWRK a
+ where 1=1
+   and a.FrwId = @FrwId
+   and a.FrmId = @FrmId
+   and a.WrkCd = 'GridSet'
+ order by a.OpenSq 
+";
+            using (var db = new Lib.GaiaHelper())
+            {
+                var result = db.Query<FrmWrk>(sql, new { FrwId = frwId, FrmId = frmId }).ToList();
+
+                if (result == null)
+                {
+                    return null;
+                }
+                else
+                {
+                    foreach (var item in result)
+                    {
+                        item.ChangedFlag = MdlState.None;
+                    }
+                    return result;
+                }
+            }
+        }
+
+        public FrmWrk GetByWorkSet(string frwId, string frmId, string wrkId)
+        {
+            string sql = @"
+select a.FrwId, a.FrmId, a.WrkId, a.CtrlNm, a.WrkNm,
+       a.WrkCd, a.UseYn, a.SaveSq, a.OpenSq, a.OpenTrg,
+       a.Memo, a.CId, a.CDt, a.MId, a.MDt
+  from FRMWRK a
+ where 1=1
+   and a.FrwId = @FrwId
+   and a.FrmId = @FrmId
+   and a.WrkId = @WrkId
+";
+            using (var db = new GaiaHelper())
+            {
+                var result = db.Query<FrmWrk>(sql, new {FrwId = frwId, FrmId = frmId, WrkId = wrkId }).FirstOrDefault();
+                return result;
+            }
+        }
+
+        public void Update(FrmWrk frmWrk)
+        {
+            string sql = @"
+update a
+   set CtrlNm= @CtrlNm,
+       WrkNm= @WrkNm,
+       WrkCd= @WrkCd,
+       UseYn= @UseYn,
+       SaveSq= @SaveSq,
+       OpenSq= @OpenSq,
+       OpenTrg= @OpenTrg,
+       Memo= @Memo,
+       MId= " + Common.GetValue("gRegId") + @",
+       MDt= getdate()
+  from FRMWRK a
+ where 1=1
+   and FrmId = @FrmId
+   and FrwId = @FrwId
+   and WrkId = @WrkId
+";
+            using (var db = new GaiaHelper())
+            {
+                db.OpenExecute(sql, frmWrk);
+            }
+        }
         public void Add(FrmWrk frmWrk)
         {
             string sql = @"
 insert into FRMWRK
-      (WrkId, FrwId, FrmId, CtrlNm, WrkNm,
-       WrkCd, UseYn, Memo, 
-       CId, CDt, MId, MDt)
-select @CtrlNm, @FrwId, @FrmId, @CtrlNm, @WrkNm,
-       @WrkCd, @UseYn, @Memo, 
-       @CId, getdate(), @MId, getdate()
+      (FrwId, FrmId, WrkId, CtrlNm, WrkNm,
+       WrkCd, UseYn, SaveSq, OpenSq, OpenTrg,
+       Memo, CId, CDt, MId, MDt)
+select @FrwId, @FrmId, @WrkId, @CtrlNm, @WrkNm,
+       @WrkCd, @UseYn, @SaveSq, @OpenSq, @OpenTrg,
+       @Memo, 
+       " + Common.GetValue("gRegId") + @", getdate(), " + Common.GetValue("gRegId") + @", getdate()
 ";
             using (var db = new Lib.GaiaHelper())
             {
@@ -97,118 +325,14 @@ select @CtrlNm, @FrwId, @FrmId, @CtrlNm, @WrkNm,
 delete
   from FRMWRK
  where 1=1
+   and FrmId = @FrmId
+   and FrwId = @FrwId
    and WrkId = @WrkId
 ";
             using (var db = new Lib.GaiaHelper())
             {
-                db.OpenExecute(sql, new { WrkId = wrkId});
-            }
-        }
-
-        public List<FrmWrk> GetByFrwFrm(string frwId, string frmId)
-        {
-            string sql = @"
-select a.WrkId, a.FrwId, a.FrmId, a.CtrlNm, a.WrkNm,
-       a.WrkCd, a.UseYn, a.Memo, a.CId, a.CDt,
-       a.MId, a.MDt
-  from FRMWRK a
- where 1=1
-   and a.FrwId = @FrwId
-   and a.FrmId = @FrmId
-";
-            using (var db = new Lib.GaiaHelper())
-            {
-                var result = db.Query<FrmWrk>(sql, new { FrwId = frwId, FrmId = frmId }).ToList();
-
-                if (result == null)
-                {
-                    throw new KeyNotFoundException($"A record with the code {frwId},{frmId} was not found.");
-                }
-                else
-                {
-                    foreach (var item in result)
-                    {
-                        item.ChangedFlag = MdlState.None;
-                    }
-                    return result;
-                }
-            }
-        }
-
-        public List<FrmWrk> GetByWorkSets(string frwId, string frmId)
-        {
-            string sql = @"
-select a.WrkId, a.FrwId, a.FrmId, a.CtrlNm, a.WrkNm,
-       a.WrkCd, a.UseYn, a.Memo, a.CId, a.CDt,
-       a.MId, a.MDt
-  from FRMWRK a
- where 1=1
-   and a.FrwId = @FrwId
-   and a.FrmId = @FrmId
- order by a.Seq
-";
-            using (var db = new Lib.GaiaHelper())
-            {
-                var result = db.Query<FrmWrk>(sql, new { FrwId = frwId, FrmId = frmId }).ToList();
-
-                if (result == null)
-                {
-                    throw new KeyNotFoundException($"A record with the code {frwId},{frmId} was not found.");
-                }
-                else
-                {
-                    foreach (var item in result)
-                    {
-                        item.ChangedFlag = MdlState.None;
-                    }
-                    return result;
-                }
-            }
-        }
-
-        public FrmWrk GetByWrk(string frwId, string frmId, string ctrlNm)
-        {
-            string sql = @"
-select a.WrkId, a.FrwId, a.FrmId, a.CtrlNm, a.WrkNm,
-       a.WrkCd, a.UseYn, a.Memo, a.CId, a.CDt,
-       a.MId, a.MDt
-  from FRMWRK a
- where 1=1
-   and a.FrwId = @FrwId
-   and a.FrmId = @FrmId
-   and a.CtrlNm = @CtrlNm
-";
-            using (var db = new GaiaHelper())
-            {
-                var result = db.Query<FrmWrk>(sql, new {FrwId = frwId, FrmId = frmId, CtrlNm = ctrlNm }).FirstOrDefault();
-                return result;
-            }
-        }
-
-        public void Update(FrmWrk frmWrk)
-        {
-            string sql = @"
-update a
-   set WrkId= @WrkId,
-       FrwId= @FrwId,
-       FrmId= @FrmId,
-       CtrlNm= @CtrlNm,
-       WrkNm= @WrkNm,
-       WrkCd= @WrkCd,
-       UseYn= @UseYn,
-       Memo= @Memo,
-       MId= @MId,
-       MDt= getdate()
-  from FRMWRK a
- where 1=1
-   and frwId = @FrwId
-   and WrkId = @WrkId
-";
-            using (var db = new GaiaHelper())
-            {
-                db.OpenExecute(sql, frmWrk);
+                db.OpenExecute(sql, new { WrkId = wrkId });
             }
         }
     }
-
 }

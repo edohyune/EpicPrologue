@@ -92,32 +92,18 @@ namespace GAIA
         {
             //ComboBox cmbForm = sender as ComboBox;
             PrjFrw frmWrk = cmbForm.SelectedItem as PrjFrw;
-            Common.gFrameWorkId = frmWrk.FrwId.ToString();
+            Common.SetValue("gFrameWorkId", frmWrk.FrwId.ToString());
 
             menuCtrl.Items.Clear();
             menuCtrl.Visible = true;
             //From List by FrmaeWork
-            List<FrwFrm> frms = new FrwFrmRepo().GetByOwnFrw((int)Common.gRegId, Common.gFrameWorkId);
+            List<FrwFrm> frms = new FrwFrmRepo().GetByOwnFrw(Common.GetValue("gRegId").ToInt(), Common.GetValue("gFrameWorkId"));
             foreach (var frm in frms)
             {
                 menuCtrl.Items.Add(new IdObject { Txt = frm.FrmNm, Obj = frm });
             }
             menuCtrl.DisplayMember = "Txt";
             menuCtrl.ValueMember = "Obj";
-        }
-
-        private void barButtonItem3_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
-        {
-            //FormPackaging fb = new FormPackaging();
-            FormPackaging fb = new FormPackaging(Common.gOpenFrm);
-            ////Form Mapping 작업중인 폼을 템플릿 폼에 올려서 열기
-            ////로그를 활성화하여 모든 로그를 본다. 
-            //Panel pn = fb.Controls.Find("Contents", true).FirstOrDefault() as Panel;
-            //pn.Controls.Add(dynamicForm);
-            //dynamicForm.Dock = System.Windows.Forms.DockStyle.Fill;
-            fb.Text = Lib.Common.gOpenFrm;
-            fb.Name = Lib.Common.gOpenFrm;
-            fb.Show();
         }
 
         private void menuCtrl_DoubleClick(object sender, EventArgs e)
@@ -258,10 +244,59 @@ namespace GAIA
             }
         }
 
+        public delegate void MyEventHandler(string frm, string action);
+        public static event MyEventHandler BarButtonActive;
+
+        public static void OnBarButtonActive(string frm, string action)
+        {
+            BarButtonActive?.Invoke(frm, action);
+        }
+
+        private void barButtonItem1_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            string selectedFormName = xtraTabbedMdiManager.SelectedPage.MdiChild.Name;
+            string action = e.Item.Caption;
+            OnBarButtonActive(selectedFormName, action);
+        }
+
+
         private void barSubItem1_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
             Common.gMsg = "SubItem1 Clicked";
         }
 
+        private void barBtnOpen_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+
+        }
+
+        private void barBtnNew_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+
+        }
+
+        private void barBtnSave_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+
+        }
+
+        private void barBtnDelete_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+
+        }
+
+        private void barBtnTemplate_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            //FormPackaging fb = new FormPackaging();
+            FormPackaging fb = new FormPackaging(Common.GetValue("gOpenFrm"));
+            ////Form Mapping 작업중인 폼을 템플릿 폼에 올려서 열기
+            ////로그를 활성화하여 모든 로그를 본다. 
+            //Panel pn = fb.Controls.Find("Contents", true).FirstOrDefault() as Panel;
+            //pn.Controls.Add(dynamicForm);
+            //dynamicForm.Dock = System.Windows.Forms.DockStyle.Fill;
+            fb.Text = Common.GetValue("gOpenFrm");
+            fb.Name = Common.GetValue("gOpenFrm");
+            fb.Show();
+        }
     }
 }

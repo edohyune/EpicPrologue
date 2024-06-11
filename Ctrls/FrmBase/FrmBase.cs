@@ -40,23 +40,24 @@ namespace Frms
 
         private void FrmBase_Load(object? sender, EventArgs e)
         {
-            frwId = Lib.Common.gFrameWorkId;
+            frwId = Lib.Common.GetValue("gFrmameWorkId");
 
             Form? form = this.FindForm();
             frmId = form != null ? form.Name : "Unknown";
 
             if (!string.IsNullOrEmpty(frwId))
             {
-                ResetCtrl();
+                //Initialize FieldSet registered in Form
+                ResetFieldSet();
             }
         }
 
-        private void ResetCtrl()
+        private void ResetFieldSet()
         {
             //frmWrks WorkSet을 목록을 가져온다. 
             List<FrmWrk> frmWrks = new List<FrmWrk>();
             //WrkId, FrwId, FrmId, CtrlNm, WrkNm, WrkCd, UseYn, Memo 모두 string 제외 useYn은 bool
-            frmWrks = new FrmWrkRepo().GetByFrwFrm(frwId, frmId);
+            frmWrks = new FrmWrkRepo().GetByFieldSets(frwId, frmId);
             if (frmWrks.Count > 0)
             {
                 foreach (FrmWrk frmWrk in frmWrks)
@@ -81,39 +82,46 @@ namespace Frms
 
             //wrkSetsOrderby으로 wrkSet 목록을 가져온다. 
             FrmWrkRepo frmWrkRepo = new FrmWrkRepo();
-            wrkSetsOrderby = frmWrkRepo.GetByWorkSets(frwId, frmId);
+            wrkSetsOrderby = frmWrkRepo.GetByWorkSetsOpenOrderby(frwId, frmId);
 
             foreach (var wrkSet in wrkSetsOrderby)
             {
-
+                //// 각 워크셋을 찾아서 Open 메서드 호출
+                ////var workSet = workSets.Find(ws => (ws as dynamic).thisNm == wrkSet.CtrlNm);
+                //if (workSet != null)
+                //{
+                //    (workSet as dynamic).Open();
+                //}
+                (wrkSet as dynamic).Open();
             }
 
-            using (var db = new GaiaHelper())
-            {
 
-                var sql = GenFunc.GetSql(new { FrwId = frwId, FrmId = frmId, WrkId = , CRUDM = "R" });
-                var resultDict = db.QueryKeyValue(sql, DSearchParam);
+            //using (var db = new GaiaHelper())
+            //{
 
-                dynamic obj = new ExpandoObject();
-                var objDict = (IDictionary<string, object>)obj;
-                //WorkSet 목록을 가져온다. 
-                if (resultDict != null)
-                {
-                    foreach (var fld in wrkSetsOrderby)
-                    {
-                        if (resultDict.ContainsKey(fld.FldNm))
-                        {
-                            objDict[fld.FldNm] = resultDict[fld.FldNm];
-                            OnDataChanged(new DataChangedEventArgs(fld.FldNm, resultDict[fld.FldNm]));
-                        }
-                        Control ctrl = this.FindForm().Controls.Find(fld.FldNm, true).FirstOrDefault();
-                        if (ctrl != null && resultDict.ContainsKey(fld.FldNm))
-                        {
-                            SetControlValue(ctrl, fld.CtrlNm, fld.ToolNm, resultDict[fld.FldNm]);
-                        }
-                    }
-                }
-            }
+            //    var sql = GenFunc.GetSql(new { FrwId = frwId, FrmId = frmId, WrkId = , CRUDM = "R" });
+            //    var resultDict = db.QueryKeyValue(sql, DSearchParam);
+
+            //    dynamic obj = new ExpandoObject();
+            //    var objDict = (IDictionary<string, object>)obj;
+            //    //WorkSet 목록을 가져온다. 
+            //    if (resultDict != null)
+            //    {
+            //        foreach (var fld in wrkSetsOrderby)
+            //        {
+            //            if (resultDict.ContainsKey(fld.FldNm))
+            //            {
+            //                objDict[fld.FldNm] = resultDict[fld.FldNm];
+            //                OnDataChanged(new DataChangedEventArgs(fld.FldNm, resultDict[fld.FldNm]));
+            //            }
+            //            Control ctrl = this.FindForm().Controls.Find(fld.FldNm, true).FirstOrDefault();
+            //            if (ctrl != null && resultDict.ContainsKey(fld.FldNm))
+            //            {
+            //                SetControlValue(ctrl, fld.CtrlNm, fld.ToolNm, resultDict[fld.FldNm]);
+            //            }
+            //        }
+            //    }
+            //}
 
             //// WrkFldRepo 인스턴스를 생성하여 현재 필드셋에 대한 필드 속성 정보를 가져옵니다.
             //WrkFldRepo wrkFldRepo = new WrkFldRepo();

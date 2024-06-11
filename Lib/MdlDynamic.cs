@@ -77,5 +77,10 @@ namespace Lib
         {
             return _properties.TryGetValue(propertyName, out var value) ? value : null;
         }
+                // 새롭게 추가된 메서드: 모든 동적 속성을 가져오는 메서드
+        public IDictionary<string, object> GetDynamicProperties()
+        {
+            return _properties;
+        }
     }
 }

@@ -4,7 +4,7 @@ namespace EL010.Ctrls
 {
     public class UCButton : DevExpress.XtraEditors.SimpleButton
     {
-        private string sysCd { get; set; }
+        private string frwId { get; set; }
         private string frmId { get; set; }
         private string fldId { get; set; }
 
@@ -50,9 +50,9 @@ namespace EL010.Ctrls
 
         private void UCButton_HandleCreated(object? sender, EventArgs e)
         {
-            sysCd = Lib.Common.gSysCd;
+            frwId = Lib.Common.GetValue("gFrameWorkId");
 
-            Form? form = this.FindForm();
+            Form ? form = this.FindForm();
             if (form != null)
             {
                 frmId = form.Name;

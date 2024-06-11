@@ -99,7 +99,7 @@ namespace Frms
 
                 frmWrk = new FrmWrk();
                 frmWrkRepo = new FrmWrkRepo();
-                frmWrkbs = new BindingList<FrmWrk>(frmWrkRepo.GetByFrwFrm(selectedFrwFrm.FrwId, selectedFrwFrm.FrmId));
+                frmWrkbs = new BindingList<FrmWrk>(frmWrkRepo.GetByWorkSetsOpenOrderby(selectedFrwFrm.FrwId, selectedFrwFrm.FrmId));
                 gridWorkset.DataSource = frmWrkbs;
             }
         }
@@ -174,8 +174,8 @@ namespace Frms
             selectedFrwFrm.FilePath = Path.GetDirectoryName(openFileDialog1.FileName);
             selectedFrwFrm.FileNm = openFileDialog1.SafeFileName;
             selectedFrwFrm.FrmId = selectedFrwFrm.FileNm.Substring(0, selectedFrwFrm.FileNm.Length - 4);
-            selectedFrwFrm.UsrRegId = (int)Common.gRegId;
-            selectedFrwFrm.FrwId = Common.gFrameWorkId;
+            selectedFrwFrm.UsrRegId = Common.GetValue("gRegId").ToInt();
+            selectedFrwFrm.FrwId = Common.GetValue("gFrameWorkId");
             selectedFrwFrm.NmSpace = $"Frms.{selectedFrwFrm.FrmId}";
         }
 
@@ -223,7 +223,7 @@ namespace Frms
                     var frmCtrl = frmCtrlbs.FirstOrDefault(c => c.CtrlNm == ctrlNm);
                     if (frmCtrl != null)
                     {
-                        frmCtrl.FrwId = Common.gFrameWorkId;
+                        frmCtrl.FrwId = Common.GetValue("gFrameWorkId");
                         frmCtrl.FrmId = selectedFrwFrm.FrmId;
                         frmCtrl.CtrlNm = ctrlNm;
                         frmCtrl.ToolNm = toolNm;
@@ -233,13 +233,39 @@ namespace Frms
                     {
                         frmCtrlbs.Add(new FrmCtrl
                         {
-                            FrwId = Common.gFrameWorkId,
+                            FrwId = Common.GetValue("gFrameWorkId"),
                             FrmId = selectedFrwFrm.FrmId,
                             CtrlNm = ctrlNm,
                             ToolNm = toolNm,
                             ChangedFlag = MdlState.Inserted
                             //사용하지 않는 데이터는 Null로 처리
                             //CtrlW = 0,CtrlH = 0,TitleText = "",TitleAlign = "",VisibleYn = false,ReadonlyYn = false
+                        }); ;
+                    }
+                }
+                else if (field.FieldType.FullName.Contains("UCGridSet"))
+                {
+                    var ctrlNm = field.Name;
+                    var toolNm = field.FieldType.Name;
+                    var frmCtrl = frmCtrlbs.FirstOrDefault(c => c.CtrlNm == ctrlNm);
+
+                    if (frmCtrl != null)
+                    {
+                        frmCtrl.FrwId = Common.GetValue("gFrameWorkId");
+                        frmCtrl.FrmId = selectedFrwFrm.FrmId;
+                        frmCtrl.CtrlNm = ctrlNm;
+                        frmCtrl.ToolNm = toolNm;
+                        frmCtrl.ChangedFlag = MdlState.Updated;
+                    }
+                    else
+                    {
+                        frmCtrlbs.Add(new FrmCtrl
+                        {
+                            FrwId = Common.GetValue("gFrameWorkId"),
+                            FrmId = selectedFrwFrm.FrmId,
+                            CtrlNm = ctrlNm,
+                            ToolNm = toolNm,
+                            ChangedFlag = MdlState.Inserted
                         });
                     }
                 }
@@ -369,7 +395,7 @@ namespace Frms
                         var frmCtrl = frmCtrlbs.FirstOrDefault(c => c.CtrlNm == ctrl.Name);
                         if (frmCtrl != null)
                         {
-                            frmCtrl.FrwId = Common.gFrameWorkId;
+                            frmCtrl.FrwId = Common.GetValue("gFrameWorkId");
                             frmCtrl.FrmId = selectedFrwFrm.FrmId;
                             frmCtrl.CtrlNm = ctrl.Name;
                             frmCtrl.ToolNm = ctrl.GetType().Name;
@@ -390,7 +416,7 @@ namespace Frms
                         {
                             frmCtrlbs.Add(new FrmCtrl
                             {
-                                FrwId = Common.gFrameWorkId,
+                                FrwId = Common.GetValue("gFrameWorkId"),
                                 FrmId = selectedFrwFrm.FrmId,
                                 CtrlNm = ctrl.Name,
                                 ToolNm = ctrl.GetType().Name,
@@ -626,7 +652,7 @@ namespace Frms
                 //입력을 위한 새로운 line을 준비한다. 저장은 Save 버튼을 눌러야 한다.
                 frmWrkbs.Add(new FrmWrk
                 {
-                    FrwId = Common.gFrameWorkId,
+                    FrwId = Common.GetValue("gFrameWorkId"),
                     FrmId = selectedFrwFrm.FrmId,
                     CtrlNm = "",
                     WrkCd = "",

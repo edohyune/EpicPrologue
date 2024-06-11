@@ -317,7 +317,7 @@ select @FrwId, @Cd, @PCd, @SubCd, @Nm,
        @Ref10, @Ref11, @Ref12, @Ref13, @Ref14,
        @Ref15, @Ref16, @Ref17, @Ref18, @Ref19,
        @Ref20, 
-       " + Common.gRegId + @", getdate(), " + Common.gRegId + @", getdate()
+       " + Common.GetValue("gRegId") + @", getdate(), " + Common.GetValue("gRegId") + @", getdate()
 ";
             using (var db = new Lib.GaiaHelper())
             {
@@ -372,7 +372,7 @@ update a
        Ref18= @Ref18,
        Ref19= @Ref19,
        Ref20= @Ref20,
-       MId= " + Common.gRegId + @",
+       MId= " + Common.GetValue("gRegId") + @",
        MDt= getdate()
   from FRWCDE a
  where 1=1

@@ -1,17 +1,62 @@
 ﻿using Lib.Repo;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Lib.Syntax;
 
 namespace Lib
 {
     public static class GenFunc
     {
+        #region Conversion --------------------------------------------------------
+        public static int ToInt(this string value, int defaultValue = 0)
+        {
+            return int.TryParse(value, out int result) ? result : defaultValue;
+        }
+        public static bool ToBool(this string value, bool defaultValue = false)
+        {
+            return bool.TryParse(value, out bool result) ? result : defaultValue;
+        }
+        public static DateTime ToDateTime(this string value, DateTime defaultValue)
+        {
+            return DateTime.TryParse(value, out DateTime result) ? result : defaultValue;
+        }
+        public static DevExpress.Utils.HorzAlignment StrToAlign(string align)
+        {
+            DevExpress.Utils.HorzAlignment horz = new DevExpress.Utils.HorzAlignment();
+            switch (align)
+            {
+                case "0": horz = DevExpress.Utils.HorzAlignment.Default; break;
+                case "1": horz = DevExpress.Utils.HorzAlignment.Near; break;
+                case "2": horz = DevExpress.Utils.HorzAlignment.Center; break;
+                case "3": horz = DevExpress.Utils.HorzAlignment.Far; break;
+            }
+            return horz;
+        }
+        public static System.Drawing.Color StrToColor(string colorName)
+        {
+            return System.Drawing.Color.FromName(colorName);
+        }
+        #endregion
+        #region Null Process ------------------------------------------------------
         public static bool IsNull(this string a) => string.IsNullOrWhiteSpace(a);
+        //if(value1.IsNull()) value1 = value2;
         public static string IsNull(this string a, string b) => string.IsNullOrWhiteSpace(a) ? b : a;
+        //string val = value1.IsNull("Default Value")
+        #endregion
+        #region Replace PattenVariable ---------------------------------------------
+        public static string ReplaceGPatternVariable(string input)
+        {
+            SQLVariableExtractor extractor = new SQLVariableExtractor();
+            SQLSyntaxMatch cvariables = extractor.ExtractVariables(input);
 
+            foreach (var variable in cvariables.GPatternMatch)
+            {
+                string variableName = variable.Key;
+                string variableValue = Common.GetValue(variableName); // Lib.Common에서 값 가져오기
+                input = input.Replace(variable.ToString(), variableValue);
+            }
+            return input;
+        }
+        #endregion
+        #region GetSql() GetPopUpSql()---------------------------------------------
         public static WrkSql GetSql(string frwId, string frmId, string wrkId, string crudm)
         {
             string sql = @"
@@ -80,42 +125,19 @@ select a.Query
                 var result = db.OpenQuery(sql, param);
                 if (result == null)
                 {
-                    //return "";
-                    //                    result = @"
-                    //select FldId='TEST01', FldNm='TEST11', Dt='A1', Col01='B1', Col02='C1' union
-                    //select FldId='TEST02', FldNm='TEST12', Dt='A2', Col01='B2', Col02='C2' union
-                    //select FldId='TEST03', FldNm='TEST13', Dt='A3', Col01='B3', Col02='C3' union
-                    //select FldId='TEST04', FldNm='TEST14', Dt='A4', Col01='B4', Col02='C4' union
-                    //select FldId='TEST05', FldNm='TEST15', Dt='A5', Col01='B5', Col02='C5' union
-                    //select FldId='TEST06', FldNm='TEST16', Dt='A6', Col01='B6', Col02='C6' 
-                    //";
-                    result = @"
-select FldId='TEST01' union
-select FldId='TEST02' union
-select FldId='TEST03' union
-select FldId='TEST04' union
-select FldId='TEST05' union
-select FldId='TEST06' 
-";
-                    return result;
+                    return "";
                 }
                 else
                 {
-                    result = @"
-select FldId='TEST01' union
-select FldId='TEST02' union
-select FldId='TEST03' union
-select FldId='TEST04' union
-select FldId='TEST05' union
-select FldId='TEST06' 
-";
                     return result;
                 }
             }
         }
+        #endregion
+        #region GetIni(), SetIni() ------------------------------------------------
         public static void SetIni(string key, string value = null)
         {
-            string iniFilePath = Common.gIniFilePath;
+            string iniFilePath = Common.GetValue("gIniFilePath");
             if (string.IsNullOrEmpty(iniFilePath))
             {
                 throw new Exception("환경설정 파일이 지정되지 않았습니다.");
@@ -158,7 +180,7 @@ select FldId='TEST06'
 
         public static string GetIni(string settingName)
         {
-            string iniFilePath = Common.gIniFilePath;
+            string iniFilePath = Common.GetValue("gIniFilePath");
             // 파일이 존재하지 않으면 null을 반환
             if (!File.Exists(iniFilePath))
             {
@@ -184,6 +206,7 @@ select FldId='TEST06'
             // 설정 이름에 해당하는 값이 없으면 null을 반환
             return null;
         }
+        #endregion
 
         //문자열 함수 
         public static string GetLastSubstring(string input, char delimiter)
@@ -191,25 +214,6 @@ select FldId='TEST06'
             string[] parts = input.Split(delimiter);
             return parts[^1]; // C# 8.0 이상에서 사용 가능한 인덱스 from end 연산자
         }
-
-        public static DevExpress.Utils.HorzAlignment StrToAlign(string align)
-        {
-            DevExpress.Utils.HorzAlignment horz = new DevExpress.Utils.HorzAlignment();
-            switch (align)
-            {
-                case "0": horz = DevExpress.Utils.HorzAlignment.Default; break;
-                case "1": horz = DevExpress.Utils.HorzAlignment.Near; break;
-                case "2": horz = DevExpress.Utils.HorzAlignment.Center; break;
-                case "3": horz = DevExpress.Utils.HorzAlignment.Far; break;
-            }
-            return horz;
-        }
-
-        public static System.Drawing.Color StrToColor(string colorName)
-        {
-            return System.Drawing.Color.FromName(colorName);
-        }
-
     }
 }
 

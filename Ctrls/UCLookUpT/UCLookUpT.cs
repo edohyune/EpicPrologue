@@ -84,9 +84,9 @@ namespace Ctrls
 
         private void UCLookUp_Load(object? sender, EventArgs e)
         {
-            frwId = Common.gFrameWorkId;
+            frwId = Common.GetValue("gFrameWorkId");
 
-            Form? form = this.FindForm();
+            Form ? form = this.FindForm();
             frmId = form != null ? form.Name : "Unknown";
             thisNm = this.Name;
 

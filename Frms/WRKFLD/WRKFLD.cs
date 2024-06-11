@@ -122,7 +122,7 @@ namespace Frms
             frwFrm = cmbForm.SelectedItem as FrwFrm;
 
             frmWrkRepo = new FrmWrkRepo();
-            frmWrks = new BindingList<FrmWrk>(frmWrkRepo.GetByFrwFrm(frwFrm.FrwId, frwFrm.FrmId));
+            frmWrks = new BindingList<FrmWrk>(frmWrkRepo.GetByWorkSetsOpenOrderby(frwFrm.FrwId, frwFrm.FrmId));
 
             if (frwFrm != null)
             {

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Frms.Models.GridSet
 {
-    public class G10 : Lib.MdlBase
+    public class TESTG10 : Lib.MdlBase
     {
         private int _ID;
         public int ID

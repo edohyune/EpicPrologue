@@ -18,7 +18,7 @@ namespace Ctrls
 
         private void UCTab_HandleCreated(object? sender, EventArgs e)
         {
-            frwId = Lib.Common.gFrameWorkId;
+            frwId = Lib.Common.GetValue("gFrameWorkId");
 
             Form? form = this.FindForm();
             if (form != null)

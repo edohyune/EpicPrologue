@@ -249,7 +249,7 @@ namespace Lib
             DataSet dsSelect = new DataSet();
 
             string sqltxt = GenFunc.GetSql(prm);
-            sqltxt = ReplaceAtVariables(sqltxt, param, value);
+            sqltxt = ReplaceOPatternMatch(sqltxt, param, value);
             sqltxt = RemoveConditionalClauses(sqltxt);
 
             SqlConnection SqlCon = new SqlConnection(_connectionString);
@@ -318,7 +318,7 @@ namespace Lib
             }
             return sql;
         }
-        private string ReplaceAtVariables(string sql, string[] param, string[] value)
+        private string ReplaceOPatternMatch(string sql, string[] param, string[] value)
         {
             SQLVariableExtractor extractor = new SQLVariableExtractor();
             SQLSyntaxMatch variables = extractor.ExtractVariables(sql);
@@ -344,6 +344,21 @@ namespace Lib
             var conditionalPattern = new Regex(@"andif\s+(.+?)\s+endif");
             //var conditionalPattern = new Regex(@"andif\s+(.+?)\s+endif", RegexOptions.IgnoreCase);
             return conditionalPattern.Replace(sql, string.Empty);
+        }
+
+        private string ProcessGPatternMatch(string input)
+        {
+            var matches = Regex.Matches(input, @"<\$(\w+)>");
+
+            foreach (Match match in matches)
+            {
+                string variableName = match.Groups[1].Value;
+                string variableValue = Lib.Common.GetValue(variableName); // Lib.Common에서 값 가져오기
+
+                input = input.Replace(match.Value, variableValue);
+            }
+            
+            return input;
         }
 
         private Dictionary<string, string> GetGVariables()

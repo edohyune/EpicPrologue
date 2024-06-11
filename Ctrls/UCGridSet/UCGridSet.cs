@@ -40,6 +40,8 @@ namespace Ctrls
         private object OSearchParam;
         [Browsable(false)]
         private DynamicParameters DSearchParam;
+        private WrkFldRepo wrkFldRepo { get; set; }
+        private List<WrkFld> wrkFlds { get; set; }
         #endregion
         #region Properties Browseable(true) -----------------------------------------------------------
         [EditorBrowsable(EditorBrowsableState.Always)]
@@ -435,7 +437,7 @@ namespace Ctrls
         }
         private void ucGridSet_Load(object? sender, EventArgs e)
         {
-            frwId = Common.gFrameWorkId;
+            frwId = Common.GetValue("gFrameWorkId");
 
             Form? form = this.FindForm();
             if (form != null)
@@ -495,26 +497,61 @@ namespace Ctrls
         }
         #endregion
         #region Open<T>() - Open Form -----------------------------------------------------------------
+        public DynamicModel Mdl { get; set; }
         public void Open()
         {
-            string modelName = $"Frms.Models.{frmId}.{thisNm.ToUpper()}";
+            #region Model Type 설정으로 Open<T>() 호출
+            //string modelName = $"Frms.Models.{frmId}.{thisNm.ToUpper()}";
 
-            // 모델 타입을 동적으로 설정
-            Type modelType = Type.GetType(modelName);
-            if (modelType == null)
-            {
-                throw new InvalidOperationException($"Model type '{modelName}' not found.");
-            }
+            //// 모델 타입을 동적으로 설정
+            //Type modelType = Type.GetType(modelName);
+            //if (modelType == null)
+            //{
+            //    throw new InvalidOperationException($"Model type '{modelName}' not found.");
+            //}
 
-            // 제네릭 Open<T> 메서드를 리플렉션을 사용하여 호출
-            //MethodInfo method = this.GetType().GetMethod("Open", BindingFlags.Instance | BindingFlags.Public);
+            //// 제네릭 Open<T> 메서드를 리플렉션을 사용하여 호출
+            ////MethodInfo method = this.GetType().GetMethod("Open", BindingFlags.Instance | BindingFlags.Public);
+            ////MethodInfo genericMethod = method.MakeGenericMethod(modelType);
+            ////genericMethod.Invoke(this, null);
+
+            //MethodInfo method = this.GetType().GetMethods().First(m => m.Name == "Open" && m.IsGenericMethod);
             //MethodInfo genericMethod = method.MakeGenericMethod(modelType);
             //genericMethod.Invoke(this, null);
+            #endregion
+            #region WrkFld에서 Model을 동적으로 로드하여 Open<T>() 호출
+            // WrkFld에서 Model을 동적으로 로드하여 Open<DynamicModel> 호출
+            //wrkFldRepo = new WrkFldRepo();
+            //wrkFlds = wrkFldRepo.GetFldsProperties(frwId, frmId, thisNm);
+            //Mdl = new DynamicModel();
 
-            MethodInfo method = this.GetType().GetMethods().First(m => m.Name == "Open" && m.IsGenericMethod);
-            MethodInfo genericMethod = method.MakeGenericMethod(modelType);
-            genericMethod.Invoke(this, null);
+            //// WrkFlds에서 동적으로 프로퍼티 설정
+            //foreach (WrkFld wrkFld in wrkFlds)
+            //{
+            //    Mdl.SetDynamicProperty(wrkFld.FldNm, wrkFld.DefaultText);
+            //}
 
+            //// DynamicModel을 사용하여 Open<DynamicModel> 호출
+            //MethodInfo method = this.GetType().GetMethod("Open", BindingFlags.Instance | BindingFlags.Public);
+            //MethodInfo genericMethod = method.MakeGenericMethod(typeof(DynamicModel));
+            //genericMethod.Invoke(this, new object[] { Mdl });
+            // WrkFld에서 Model을 동적으로 로드하여 Open<DynamicModel> 호출
+            wrkFldRepo = new WrkFldRepo();
+            wrkFlds = wrkFldRepo.GetFldsProperties(frwId, frmId, thisNm);
+            Mdl = new DynamicModel();
+
+            // WrkFlds에서 동적으로 프로퍼티 설정
+            foreach (WrkFld wrkFld in wrkFlds)
+            {
+                Mdl.SetDynamicProperty(wrkFld.FldNm, wrkFld.DefaultText);
+            }
+
+            // DynamicModel을 사용하여 Open<DynamicModel> 호출
+            MethodInfo method = this.GetType().GetMethods()
+                                     .First(m => m.Name == "Open" && m.IsGenericMethod && m.GetParameters().Length == 1);
+            MethodInfo genericMethod = method.MakeGenericMethod(typeof(DynamicModel));
+            genericMethod.Invoke(this, new object[] { Mdl });
+            #endregion
 
         }
 
@@ -532,6 +569,24 @@ namespace Ctrls
             }
         }
 
+        public void Open<T>(T model)
+        {
+            Common.gMsg = $"{Environment.NewLine}-- {thisNm}.Open<T>(T model) ------------------------>>";
+
+            WrkGetRepo wrkGetRepo = new WrkGetRepo();
+            List<WrkGet> wrkGets = wrkGetRepo.GetPullFlds(frwId, frmId, thisNm);
+            DSearchParam = new DynamicParameters();
+
+            foreach (var wrkGet in wrkGets)
+            {
+                string tmp = GetParamValue(this.FindForm().Controls, wrkGet);
+                DSearchParam.Add(wrkGet.FldNm, tmp);
+                Common.gMsg = $"Declare {wrkGet.FldNm} varchar ='{tmp}'";
+            }
+            OpenWrk(model);
+        }
+
+
         public void Open<T>()
         {
             Common.gMsg = $"{Environment.NewLine}-- {thisNm}.Open<T>() ------------------------>>";
@@ -548,7 +603,98 @@ namespace Ctrls
             }
             OpenWrk<T>();
         }
+        private void OpenWrk<T>(T model)
+        {
+            this.DataSource = null;
+            gvCtrl.Columns.Clear();
+            //1. GridControl Configuration
+            GridDefine();
+            //2. Grid Column Configuration
+            try
+            {
+                WrkFldRepo wrkFldRepo = new WrkFldRepo();
+                List<WrkFld> colProperties = wrkFldRepo.GetColumnProperties(frwId, frmId, thisNm);
+                gvCtrl.Columns.Clear();
+                if (colProperties != null)
+                {
+                    foreach (var column in colProperties)
+                    {
+                        AddGridColumn(gvCtrl, GetGridColumn(column) as GridColumn);// Text Color
+                        Common.gMsg = $"Added column: {column.FldNm}";
+                    }
+                    gvCtrl.RefreshData();
+                    Common.gMsg = "Columns refreshed.";
 
+                    //3. Data Source Binding
+                    Common.gMsg = $"-- {thisNm}.Select Query ------------------------>>";
+                    var sql = GenFunc.GetSql(new { FrwId = frwId, FrmId = frmId, WrkId = thisNm, CRUDM = "R" });
+                    sql = GenFunc.ReplaceGPatternVariable(sql);
+                    Common.gMsg = sql;
+                    Common.gMsg = $"-- {thisNm}.End Select Query -------------------->>";
+
+                    List<T> lists = new List<T>();
+
+                    using (var db = new GaiaHelper())
+                    {
+                        if (DSearchParam != null)
+                        {
+                            var TXT = db.Query<T>(sql, DSearchParam);
+                            var test = db.Query<DynamicModel>(sql, DSearchParam).Cast<T>().ToList();
+                            lists = db.Query<DynamicModel>(sql, DSearchParam).Cast<T>().ToList(); 
+                        }
+                        else if (OSearchParam != null)
+                        {
+                            lists = db.Query<DynamicModel>(sql, OSearchParam).Cast<T>().ToList();
+                        }
+                        else
+                        {
+                            lists = db.Query<DynamicModel>(sql, new { FrwId = frwId, FrmId = frmId, WrkId = thisNm }).Cast<T>().ToList();
+                        }
+                        //if (DSearchParam != null)
+                        //{
+                        //    lists = db.Query<T>(sql, DSearchParam);
+                        //}
+                        //else if (OSearchParam != null)
+                        //{
+                        //    lists = db.Query<T>(sql, OSearchParam);
+                        //}
+                        //else
+                        //{
+                        //    lists = db.Query<T>(sql, new { FrwId = frwId, FrmId = frmId, WrkId = thisNm });
+                        //}
+                    }
+
+                    foreach (dynamic item in lists)
+                    {
+                        // 동적으로 모델 속성 설정
+                        foreach (var prop in (model as DynamicModel).GetDynamicProperties())
+                        {
+                            var propInfo = item.GetType().GetProperty(prop.Key);
+                            if (propInfo != null && propInfo.CanWrite)
+                            {
+                                var propValue = prop.Value;
+                                if (propValue != null)
+                                {
+                                    propInfo.SetValue(item, Convert.ChangeType(propValue, propInfo.PropertyType));
+                                }
+                            }
+                        }
+                        item.ChangedFlag = MdlState.None;
+                    }
+
+                    this.DataSource = new BindingList<T>(lists);
+
+                    this.MainView.PopulateColumns();
+                }
+            }
+            catch (Exception e)
+            {
+                Common.gMsg = $"-- {thisNm}. Exception ----------------------------->>";
+                Common.gMsg = $"UCGridCode_OpenForm<T>() : {Environment.NewLine}--frwId : {frwId}{Environment.NewLine}-- frmId : {frmId}{Environment.NewLine}-- WorkSet : {thisNm}{Environment.NewLine}Exception :";
+                Common.gMsg = $"{e.Message}";
+                Common.gMsg = $"-- {thisNm}.End Exception -------------------------->>";
+            }
+        }
         private void OpenWrk<T>()
         {
             this.DataSource = null;
@@ -574,6 +720,7 @@ namespace Ctrls
                     //3. Data Source Binding
                     Common.gMsg = $"-- {thisNm}.Select Query ------------------------>>";
                     var sql = GenFunc.GetSql(new { FrwId = frwId, FrmId = frmId, WrkId = thisNm, CRUDM = "R" });
+                    sql = GenFunc.ReplaceGPatternVariable(sql);
                     Common.gMsg = sql;
                     Common.gMsg = $"-- {thisNm}.End Select Query -------------------->>";
 
@@ -602,14 +749,6 @@ namespace Ctrls
 
                     this.DataSource = new BindingList<T>(lists);
 
-
-                    //var bindingLists = new BindingList<T>(lists);
-
-                    //foreach (dynamic item in bindingLists)
-                    //{
-                    //    item.ChangedFlag = MdlState.None;
-                    //}
-                    //this.DataSource = bindingLists;
                     this.MainView.PopulateColumns();
                 }
             }
@@ -860,7 +999,7 @@ namespace Ctrls
         private void GridDefine()
         {
             FrmWrkRepo frmWrkRepo = new FrmWrkRepo();
-            FrmWrk ucInfo = frmWrkRepo.GetByWrk(frwId, frmId, thisNm);
+            FrmWrk ucInfo = frmWrkRepo.GetByWorkSet(frwId, frmId, thisNm);
 
             if (ucInfo != null)
             {
@@ -985,6 +1124,7 @@ namespace Ctrls
                         if (!string.IsNullOrEmpty(operation))
                         {
                             sql = GenFunc.GetSql(new { FrwId = frwId, FrmId = frmId, WrkId = thisNm, CRUDM = operation });
+                            sql = GenFunc.ReplaceGPatternVariable(sql);
                             foreach (var wrkRef in wrkRefs)
                             {
                                 Common.gMsg = $"--[{thisNm}] {operation}-------------------->>";

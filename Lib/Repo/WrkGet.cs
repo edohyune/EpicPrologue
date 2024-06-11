@@ -145,7 +145,7 @@ insert into WRKGET
        CId, CDt, MId, MDt)
 select @FrwId, @FrmId, @WrkId, @FldNm, @GetWrkId,
        @GetFldNm, @GetDefalueValue, @SqlId, @PId,
-       " + Common.gRegId + @", getdate(), " + Common.gRegId + @", getdate()
+       " + Common.GetValue("gRegId") + @", getdate(), " + Common.GetValue("gRegId") + @", getdate() 
 ";
             using (var db = new Lib.GaiaHelper())
             {
@@ -163,7 +163,7 @@ update a
        GetDefalueValue= @GetDefalueValue,
        SqlId= @SqlId,
        PId= @PId,
-       MId= " + Common.gRegId + @",
+       MId= " + Common.GetValue("gRegId") + @",
        MDt= getdate()
   from WRKGET a
  where 1=1

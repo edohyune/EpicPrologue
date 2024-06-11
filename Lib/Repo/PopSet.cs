@@ -133,7 +133,7 @@ insert into POPSET
        CId, CDt, MId, MDt)
 select @FrwId, @FrmId, @PopId, @FldNm, @SetPopId,
        @SetFldNm, @SetDefaultValue, @SqlId, @Id, @Pid,
-       " + Common.gRegId + @", getdate(), " + Common.gRegId + @", getdate()
+       " + Common.GetValue("gRegId") + @", getdate(), " + Common.GetValue("gRegId") + @", getdate()
 ";
             using (var db = new Lib.GaiaHelper())
             {
@@ -154,7 +154,7 @@ update a
        SqlId= @SqlId,
        Id= @Id,
        Pid= @Pid,
-       MId= " + Common.gRegId + @",
+       MId= " + Common.GetValue("gRegId") + @",
        MDt= getdate()
   from POPSET a
  where 1=1

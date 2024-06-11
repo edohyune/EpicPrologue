@@ -488,7 +488,7 @@ select @FrwId, @FrmId, @CtrlNm, @WrkId, @CtrlCls,
        @TextAlign, @FixYn, @GroupYn, @ShowYn, @NeedYn,
        @EditYn, @Band1, @Band2, @FuncStr, @FormatStr,
        @ColorFont, @ColorBg, @ToolNm, @Seq,
-       <$gRegId>, getdate(), <$gRegId>, getdate()
+       100020, getdate(), 100020, getdate()
 ";
             using (var db = new Lib.GaiaHelper())
             {

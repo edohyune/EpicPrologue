@@ -43,8 +43,7 @@ namespace Frms.TST
         }
         private void ucPanel1_CustomButtonClick(object sender, BaseButtonEventArgs e)
         {
-            g10.Open<G10>();
-            g20.Open<G10>();
+            g10.Open();
         }
 
         private Point _mouseDownLocation;

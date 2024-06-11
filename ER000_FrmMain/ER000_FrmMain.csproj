@@ -1,0 +1,241 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <StartupObject>ER000.FrmMain</StartupObject>
+    <AssemblyName>EpicDesigner</AssemblyName>
+    <RootNamespace>ER000</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Program.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Dapper" Version="2.1.35" />
+    <PackageReference Include="DevExpress.Win.Design" Version="23.2.3" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.6" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\EpicLib\ER000\ER000.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="DevExpress.Charts.v23.2.Core">
+      <HintPath>C:\EPIC\Devexpress\DevExpress.Charts.v23.2.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.CodeParser.v23.2">
+      <HintPath>C:\EPIC\Devexpress\DevExpress.CodeParser.v23.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Data.Desktop.v23.2">
+      <HintPath>C:\EPIC\Devexpress\DevExpress.Data.Desktop.v23.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Data.v23.2">
+      <HintPath>C:\EPIC\Devexpress\DevExpress.Data.v23.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.DataAccess.v23.2">
+      <HintPath>C:\EPIC\Devexpress\DevExpress.DataAccess.v23.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.DataAccess.v23.2.UI">
+      <HintPath>C:\EPIC\Devexpress\DevExpress.DataAccess.v23.2.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.DataVisualization.v23.2.Core">
+      <HintPath>C:\EPIC\Devexpress\DevExpress.DataVisualization.v23.2.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Diagram.v23.2.Core">
+      <HintPath>C:\EPIC\Devexpress\DevExpress.Diagram.v23.2.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Dialogs.v23.2.Core">
+      <HintPath>C:\EPIC\Devexpress\DevExpress.Dialogs.v23.2.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Drawing.v23.2">
+      <HintPath>C:\EPIC\Devexpress\DevExpress.Drawing.v23.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Images.v23.2">
+      <HintPath>C:\EPIC\Devexpress\DevExpress.Images.v23.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Map.v23.2.Core">
+      <HintPath>C:\EPIC\Devexpress\DevExpress.Map.v23.2.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Mvvm.v23.2">
+      <HintPath>C:\EPIC\Devexpress\DevExpress.Mvvm.v23.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Office.v23.2.Core">
+      <HintPath>C:\EPIC\Devexpress\DevExpress.Office.v23.2.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Pdf.v23.2.Core">
+      <HintPath>C:\EPIC\Devexpress\DevExpress.Pdf.v23.2.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Pdf.v23.2.Drawing">
+      <HintPath>C:\EPIC\Devexpress\DevExpress.Pdf.v23.2.Drawing.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.PivotGrid.v23.2.Core">
+      <HintPath>C:\EPIC\Devexpress\DevExpress.PivotGrid.v23.2.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Printing.v23.2.Core">
+      <HintPath>C:\EPIC\Devexpress\DevExpress.Printing.v23.2.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.RichEdit.v23.2.Core">
+      <HintPath>C:\EPIC\Devexpress\DevExpress.RichEdit.v23.2.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.RichEdit.v23.2.Export">
+      <HintPath>C:\EPIC\Devexpress\DevExpress.RichEdit.v23.2.Export.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Sparkline.v23.2.Core">
+      <HintPath>C:\EPIC\Devexpress\DevExpress.Sparkline.v23.2.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.SpellChecker.v23.2.Core">
+      <HintPath>C:\EPIC\Devexpress\DevExpress.SpellChecker.v23.2.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Spreadsheet.v23.2.Core">
+      <HintPath>C:\EPIC\Devexpress\DevExpress.Spreadsheet.v23.2.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.TreeMap.v23.2.Core">
+      <HintPath>C:\EPIC\Devexpress\DevExpress.TreeMap.v23.2.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Utils.v23.2">
+      <HintPath>C:\EPIC\Devexpress\DevExpress.Utils.v23.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Utils.v23.2.UI">
+      <HintPath>C:\EPIC\Devexpress\DevExpress.Utils.v23.2.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpo.v23.2">
+      <HintPath>C:\EPIC\Devexpress\DevExpress.Xpo.v23.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraBars.v23.2">
+      <HintPath>C:\EPIC\Devexpress\DevExpress.XtraBars.v23.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraCharts.v23.2">
+      <HintPath>C:\EPIC\Devexpress\DevExpress.XtraCharts.v23.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraCharts.v23.2.Extensions">
+      <HintPath>C:\EPIC\Devexpress\DevExpress.XtraCharts.v23.2.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraCharts.v23.2.UI">
+      <HintPath>C:\EPIC\Devexpress\DevExpress.XtraCharts.v23.2.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraCharts.v23.2.Wizard">
+      <HintPath>C:\EPIC\Devexpress\DevExpress.XtraCharts.v23.2.Wizard.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraDiagram.v23.2">
+      <HintPath>C:\EPIC\Devexpress\DevExpress.XtraDiagram.v23.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraDialogs.v23.2">
+      <HintPath>C:\EPIC\Devexpress\DevExpress.XtraDialogs.v23.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraEditors.v23.2">
+      <HintPath>C:\EPIC\Devexpress\DevExpress.XtraEditors.v23.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraGantt.v23.2">
+      <HintPath>C:\EPIC\Devexpress\DevExpress.XtraGantt.v23.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraGauges.v23.2.Core">
+      <HintPath>C:\EPIC\Devexpress\DevExpress.XtraGauges.v23.2.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraGauges.v23.2.Presets">
+      <HintPath>C:\EPIC\Devexpress\DevExpress.XtraGauges.v23.2.Presets.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraGauges.v23.2.Win">
+      <HintPath>C:\EPIC\Devexpress\DevExpress.XtraGauges.v23.2.Win.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraGrid.v23.2">
+      <HintPath>C:\EPIC\Devexpress\DevExpress.XtraGrid.v23.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraLayout.v23.2">
+      <HintPath>C:\EPIC\Devexpress\DevExpress.XtraLayout.v23.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraMap.v23.2">
+      <HintPath>C:\EPIC\Devexpress\DevExpress.XtraMap.v23.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraNavBar.v23.2">
+      <HintPath>C:\EPIC\Devexpress\DevExpress.XtraNavBar.v23.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraPdfViewer.v23.2">
+      <HintPath>C:\EPIC\Devexpress\DevExpress.XtraPdfViewer.v23.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraPivotGrid.v23.2">
+      <HintPath>C:\EPIC\Devexpress\DevExpress.XtraPivotGrid.v23.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraPrinting.v23.2">
+      <HintPath>C:\EPIC\Devexpress\DevExpress.XtraPrinting.v23.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraReports.v23.2">
+      <HintPath>C:\EPIC\Devexpress\DevExpress.XtraReports.v23.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraReports.v23.2.Extensions">
+      <HintPath>C:\EPIC\Devexpress\DevExpress.XtraReports.v23.2.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraRichEdit.v23.2">
+      <HintPath>C:\EPIC\Devexpress\DevExpress.XtraRichEdit.v23.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraScheduler.v23.2">
+      <HintPath>C:\EPIC\Devexpress\DevExpress.XtraScheduler.v23.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraScheduler.v23.2.Core">
+      <HintPath>C:\EPIC\Devexpress\DevExpress.XtraScheduler.v23.2.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraScheduler.v23.2.Core.Desktop">
+      <HintPath>C:\EPIC\Devexpress\DevExpress.XtraScheduler.v23.2.Core.Desktop.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraScheduler.v23.2.Extensions">
+      <HintPath>C:\EPIC\Devexpress\DevExpress.XtraScheduler.v23.2.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraScheduler.v23.2.Reporting">
+      <HintPath>C:\EPIC\Devexpress\DevExpress.XtraScheduler.v23.2.Reporting.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraScheduler.v23.2.Reporting.Extensions">
+      <HintPath>C:\EPIC\Devexpress\DevExpress.XtraScheduler.v23.2.Reporting.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraSpellChecker.v23.2">
+      <HintPath>C:\EPIC\Devexpress\DevExpress.XtraSpellChecker.v23.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraSpreadsheet.v23.2">
+      <HintPath>C:\EPIC\Devexpress\DevExpress.XtraSpreadsheet.v23.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraTreeList.v23.2">
+      <HintPath>C:\EPIC\Devexpress\DevExpress.XtraTreeList.v23.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraTreeMap.v23.2">
+      <HintPath>C:\EPIC\Devexpress\DevExpress.XtraTreeMap.v23.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraTreeMap.v23.2.UI">
+      <HintPath>C:\EPIC\Devexpress\DevExpress.XtraTreeMap.v23.2.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraVerticalGrid.v23.2">
+      <HintPath>C:\EPIC\Devexpress\DevExpress.XtraVerticalGrid.v23.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraWizard.v23.2">
+      <HintPath>C:\EPIC\Devexpress\DevExpress.XtraWizard.v23.2.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+</Project>
+
+
+
+
+
+
+
+
+
+
+
