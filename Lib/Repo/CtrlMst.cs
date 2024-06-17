@@ -81,6 +81,7 @@ namespace Lib.Repo
     }
     public interface ICtrlMstRepo
     {
+        Dictionary<string, string> GetBindPropertyMapping();
         bool ChkByCtrlNm(string ctrlNm);
         CtrlMst GetByCtrlNm(string ctrlNm);
         List<CtrlMst> GetAll();
@@ -229,6 +230,19 @@ select a.CtrlId, a.CtrlNm, a.CtrlGrpCd, a.CtrlRegNm, a.ContainYn, a.UseYn,
                 }
 
                 return result;
+            }
+        }
+
+        public Dictionary<string, string> GetBindPropertyMapping()
+        {
+            string sql = @"
+select a.CtrlNm, a.Binding
+  from CTRLMST
+ where a.CtrlGrpCd = 'Bind'
+";
+            using (var db = new GaiaHelper())
+            {
+                return db.QueryDictionary(sql).ToDictionary();
             }
         }
     }

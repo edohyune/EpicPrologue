@@ -1,4 +1,4 @@
-﻿using DevExpress.Drawing.Internal.Fonts.Interop;
+using DevExpress.Drawing.Internal.Fonts.Interop;
 using DevExpress.Drawing.Printing.Internal;
 using DevExpress.Pdf.Native.BouncyCastle.Ocsp;
 using DevExpress.Utils.DirectXPaint;

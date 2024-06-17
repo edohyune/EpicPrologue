@@ -1,4 +1,4 @@
-﻿using DevExpress.XtraPrinting.Native;
+using DevExpress.XtraPrinting.Native;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 

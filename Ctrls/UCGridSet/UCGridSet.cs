@@ -1,4 +1,4 @@
-﻿using Dapper;
+using Dapper;
 using DevExpress.Data;
 using DevExpress.Utils;
 using DevExpress.XtraEditors;
@@ -34,6 +34,8 @@ namespace Ctrls
         private string frwId { get; set; }
         [Browsable(false)]
         private string frmId { get; set; }
+        [Browsable(false)]
+        private string nmSpace { get; set; }
         [Browsable(false)]
         private string thisNm { get; set; }
         [Browsable(false)]
@@ -289,6 +291,7 @@ namespace Ctrls
                 if (wrkFld.DefaultText != null)
                 {
                     string defaultTxt = wrkFld.DefaultText;
+                    defaultTxt = GenFunc.ReplaceGPatternVariable(defaultTxt);
                     using (var db = new GaiaHelper())
                     {
                         defaultTxt = db.ReplaceGVariables(defaultTxt);
@@ -346,54 +349,72 @@ namespace Ctrls
             }
         }
 
-        private void SetControlValue(Form uc, string ctrlNm, string toolNm, dynamic value)
+        public void SetControlValue(Form uc, string ctrlNm, string toolNm, dynamic value)
         {
-            var ctrl = uc.Controls.Find(ctrlNm, true).FirstOrDefault();
-            if (ctrl != null)
+            var ctrl = uc.Controls.Find(ctrlNm, true).FirstOrDefault(); if (ctrl != null)
             {
-                switch (toolNm.ToLower())
+                var controlType = toolNm.ToLower(); 
+                var bindValue = value.ToString(); // 각 컨트롤 유형별로 바인드할 속성 정보를 정의합니다.
+                var bindPropertyMapping = new CtrlMstRepo().GetBindPropertyMapping();
+                if (bindPropertyMapping.ContainsKey(controlType))
                 {
-                    case "uctextbox":
-                    case "uctext":
-                        UCTextBox uctxt = ctrl as UCTextBox;
-                        if (uctxt != null)
-                        {
-                            uctxt.BindText = value.ToString();
-                        }
-                        break;
-                    case "ucdatebox":
-                    case "ucdate":
-                        UCDateBox ucdate = ctrl as UCDateBox;
-                        if (ucdate != null)
-                        {
-                            ucdate.BindText = value.ToString();
-                        }
-                        break;
-                    case "uccombo":
-                        UCLookUp uccombo = ctrl as UCLookUp;
-                        if (uccombo != null)
-                        {
-                            uccombo.BindText = value.ToString();
-                        }
-                        break;
-                    case "uccheckbox":
-                        UCCheckBox uccheckbox = ctrl as UCCheckBox;
-                        if (uccheckbox != null)
-                        {
-                            uccheckbox.BindValue = value;
-                        }
-                        break;
-                    case "ucmemo":
-                        UCMemo ucmemo = ctrl as UCMemo;
-                        if (ucmemo != null)
-                        {
-                            ucmemo.BindText = value.ToString();
-                        }
-                        break;
-                    default:
-                        break;
+                    var propertyName = bindPropertyMapping[controlType];
+                    var property = ctrl.GetType().GetProperty(propertyName);
+                    if (property != null)
+                    {
+                        var convertedValue = Convert.ChangeType(bindValue, property.PropertyType);
+                        property.SetValue(ctrl, convertedValue);
+                    }
                 }
             }
+            #region Old Code
+            //    var ctrl = uc.Controls.Find(ctrlNm, true).FirstOrDefault();
+            //    if (ctrl != null)
+            //    {
+            //        switch (toolNm.ToLower())
+            //        {
+            //            case "uctextbox":
+            //            case "uctext":
+            //                UCTextBox uctxt = ctrl as UCTextBox;
+            //                if (uctxt != null)
+            //                {
+            //                    uctxt.BindText = value.ToString();
+            //                }
+            //                break;
+            //            case "ucdatebox":
+            //            case "ucdate":
+            //                UCDateBox ucdate = ctrl as UCDateBox;
+            //                if (ucdate != null)
+            //                {
+            //                    ucdate.BindText = value.ToString();
+            //                }
+            //                break;
+            //            case "uccombo":
+            //                UCLookUp uccombo = ctrl as UCLookUp;
+            //                if (uccombo != null)
+            //                {
+            //                    uccombo.BindText = value.ToString();
+            //                }
+            //                break;
+            //            case "uccheckbox":
+            //                UCCheckBox uccheckbox = ctrl as UCCheckBox;
+            //                if (uccheckbox != null)
+            //                {
+            //                    uccheckbox.BindValue = value;
+            //                }
+            //                break;
+            //            case "ucmemo":
+            //                UCMemo ucmemo = ctrl as UCMemo;
+            //                if (ucmemo != null)
+            //                {
+            //                    ucmemo.BindText = value.ToString();
+            //                }
+            //                break;
+            //            default:
+            //                break;
+            //        }
+            //    }
+            #endregion
         }
 
         public delegate void delEventCellValueChanged(object sender, CellValueChangedEventArgs e);
@@ -497,95 +518,40 @@ namespace Ctrls
         }
         #endregion
         #region Open<T>() - Open Form -----------------------------------------------------------------
-        public DynamicModel Mdl { get; set; }
         public void Open()
         {
             #region Model Type 설정으로 Open<T>() 호출
-            //string modelName = $"Frms.Models.{frmId}.{thisNm.ToUpper()}";
+            string modelName = $"{GenFunc.GetFormNamespace(frwId, frmId)}_{thisNm.ToUpper()}";
 
-            //// 모델 타입을 동적으로 설정
-            //Type modelType = Type.GetType(modelName);
+            // 1. 모델 타입을 동적으로 설정
+            //string assemblyName = typeof(UCGridSet).Assembly.FullName;
+            //Type modelType = Type.GetType($"{modelName}, {assemblyName}");
             //if (modelType == null)
             //{
             //    throw new InvalidOperationException($"Model type '{modelName}' not found.");
             //}
 
-            //// 제네릭 Open<T> 메서드를 리플렉션을 사용하여 호출
-            ////MethodInfo method = this.GetType().GetMethod("Open", BindingFlags.Instance | BindingFlags.Public);
-            ////MethodInfo genericMethod = method.MakeGenericMethod(modelType);
-            ////genericMethod.Invoke(this, null);
+            // 2. 어셈블리를 명시적으로 로드하고 타입을 검색
+            Type modelType = null;
+            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
+            {
+                modelType = assembly.GetType(modelName);
+                if (modelType != null)
+                {
+                    break;
+                }
+            }
 
-            //MethodInfo method = this.GetType().GetMethods().First(m => m.Name == "Open" && m.IsGenericMethod);
-            //MethodInfo genericMethod = method.MakeGenericMethod(modelType);
-            //genericMethod.Invoke(this, null);
+            if (modelType == null)
+            {
+                throw new InvalidOperationException($"Model type '{modelName}' not found.");
+            }
+
+            MethodInfo method = this.GetType().GetMethods().First(m => m.Name == "Open" && m.IsGenericMethod);
+            MethodInfo genericMethod = method.MakeGenericMethod(modelType);
+            genericMethod.Invoke(this, null);
             #endregion
-            #region WrkFld에서 Model을 동적으로 로드하여 Open<T>() 호출
-            // WrkFld에서 Model을 동적으로 로드하여 Open<DynamicModel> 호출
-            //wrkFldRepo = new WrkFldRepo();
-            //wrkFlds = wrkFldRepo.GetFldsProperties(frwId, frmId, thisNm);
-            //Mdl = new DynamicModel();
-
-            //// WrkFlds에서 동적으로 프로퍼티 설정
-            //foreach (WrkFld wrkFld in wrkFlds)
-            //{
-            //    Mdl.SetDynamicProperty(wrkFld.FldNm, wrkFld.DefaultText);
-            //}
-
-            //// DynamicModel을 사용하여 Open<DynamicModel> 호출
-            //MethodInfo method = this.GetType().GetMethod("Open", BindingFlags.Instance | BindingFlags.Public);
-            //MethodInfo genericMethod = method.MakeGenericMethod(typeof(DynamicModel));
-            //genericMethod.Invoke(this, new object[] { Mdl });
-            // WrkFld에서 Model을 동적으로 로드하여 Open<DynamicModel> 호출
-            wrkFldRepo = new WrkFldRepo();
-            wrkFlds = wrkFldRepo.GetFldsProperties(frwId, frmId, thisNm);
-            Mdl = new DynamicModel();
-
-            // WrkFlds에서 동적으로 프로퍼티 설정
-            foreach (WrkFld wrkFld in wrkFlds)
-            {
-                Mdl.SetDynamicProperty(wrkFld.FldNm, wrkFld.DefaultText);
-            }
-
-            // DynamicModel을 사용하여 Open<DynamicModel> 호출
-            MethodInfo method = this.GetType().GetMethods()
-                                     .First(m => m.Name == "Open" && m.IsGenericMethod && m.GetParameters().Length == 1);
-            MethodInfo genericMethod = method.MakeGenericMethod(typeof(DynamicModel));
-            genericMethod.Invoke(this, new object[] { Mdl });
-            #endregion
-
         }
-
-        public void Open(DataTable dataTable)
-        {
-            if (dataTable != null)
-            {
-                this.DataSource = dataTable;
-                this.MainView.PopulateColumns();
-                Common.gMsg = $"Data bound with {dataTable.Rows.Count} rows.";
-            }
-            else
-            {
-                Common.gMsg = "Failed to bind data: DataTable is null.";
-            }
-        }
-
-        public void Open<T>(T model)
-        {
-            Common.gMsg = $"{Environment.NewLine}-- {thisNm}.Open<T>(T model) ------------------------>>";
-
-            WrkGetRepo wrkGetRepo = new WrkGetRepo();
-            List<WrkGet> wrkGets = wrkGetRepo.GetPullFlds(frwId, frmId, thisNm);
-            DSearchParam = new DynamicParameters();
-
-            foreach (var wrkGet in wrkGets)
-            {
-                string tmp = GetParamValue(this.FindForm().Controls, wrkGet);
-                DSearchParam.Add(wrkGet.FldNm, tmp);
-                Common.gMsg = $"Declare {wrkGet.FldNm} varchar ='{tmp}'";
-            }
-            OpenWrk(model);
-        }
-
 
         public void Open<T>()
         {
@@ -602,98 +568,6 @@ namespace Ctrls
                 Common.gMsg = $"Declare {wrkGet.FldNm} varchar ='{tmp}'";
             }
             OpenWrk<T>();
-        }
-        private void OpenWrk<T>(T model)
-        {
-            this.DataSource = null;
-            gvCtrl.Columns.Clear();
-            //1. GridControl Configuration
-            GridDefine();
-            //2. Grid Column Configuration
-            try
-            {
-                WrkFldRepo wrkFldRepo = new WrkFldRepo();
-                List<WrkFld> colProperties = wrkFldRepo.GetColumnProperties(frwId, frmId, thisNm);
-                gvCtrl.Columns.Clear();
-                if (colProperties != null)
-                {
-                    foreach (var column in colProperties)
-                    {
-                        AddGridColumn(gvCtrl, GetGridColumn(column) as GridColumn);// Text Color
-                        Common.gMsg = $"Added column: {column.FldNm}";
-                    }
-                    gvCtrl.RefreshData();
-                    Common.gMsg = "Columns refreshed.";
-
-                    //3. Data Source Binding
-                    Common.gMsg = $"-- {thisNm}.Select Query ------------------------>>";
-                    var sql = GenFunc.GetSql(new { FrwId = frwId, FrmId = frmId, WrkId = thisNm, CRUDM = "R" });
-                    sql = GenFunc.ReplaceGPatternVariable(sql);
-                    Common.gMsg = sql;
-                    Common.gMsg = $"-- {thisNm}.End Select Query -------------------->>";
-
-                    List<T> lists = new List<T>();
-
-                    using (var db = new GaiaHelper())
-                    {
-                        if (DSearchParam != null)
-                        {
-                            var TXT = db.Query<T>(sql, DSearchParam);
-                            var test = db.Query<DynamicModel>(sql, DSearchParam).Cast<T>().ToList();
-                            lists = db.Query<DynamicModel>(sql, DSearchParam).Cast<T>().ToList(); 
-                        }
-                        else if (OSearchParam != null)
-                        {
-                            lists = db.Query<DynamicModel>(sql, OSearchParam).Cast<T>().ToList();
-                        }
-                        else
-                        {
-                            lists = db.Query<DynamicModel>(sql, new { FrwId = frwId, FrmId = frmId, WrkId = thisNm }).Cast<T>().ToList();
-                        }
-                        //if (DSearchParam != null)
-                        //{
-                        //    lists = db.Query<T>(sql, DSearchParam);
-                        //}
-                        //else if (OSearchParam != null)
-                        //{
-                        //    lists = db.Query<T>(sql, OSearchParam);
-                        //}
-                        //else
-                        //{
-                        //    lists = db.Query<T>(sql, new { FrwId = frwId, FrmId = frmId, WrkId = thisNm });
-                        //}
-                    }
-
-                    foreach (dynamic item in lists)
-                    {
-                        // 동적으로 모델 속성 설정
-                        foreach (var prop in (model as DynamicModel).GetDynamicProperties())
-                        {
-                            var propInfo = item.GetType().GetProperty(prop.Key);
-                            if (propInfo != null && propInfo.CanWrite)
-                            {
-                                var propValue = prop.Value;
-                                if (propValue != null)
-                                {
-                                    propInfo.SetValue(item, Convert.ChangeType(propValue, propInfo.PropertyType));
-                                }
-                            }
-                        }
-                        item.ChangedFlag = MdlState.None;
-                    }
-
-                    this.DataSource = new BindingList<T>(lists);
-
-                    this.MainView.PopulateColumns();
-                }
-            }
-            catch (Exception e)
-            {
-                Common.gMsg = $"-- {thisNm}. Exception ----------------------------->>";
-                Common.gMsg = $"UCGridCode_OpenForm<T>() : {Environment.NewLine}--frwId : {frwId}{Environment.NewLine}-- frmId : {frmId}{Environment.NewLine}-- WorkSet : {thisNm}{Environment.NewLine}Exception :";
-                Common.gMsg = $"{e.Message}";
-                Common.gMsg = $"-- {thisNm}.End Exception -------------------------->>";
-            }
         }
         private void OpenWrk<T>()
         {
@@ -721,8 +595,6 @@ namespace Ctrls
                     Common.gMsg = $"-- {thisNm}.Select Query ------------------------>>";
                     var sql = GenFunc.GetSql(new { FrwId = frwId, FrmId = frmId, WrkId = thisNm, CRUDM = "R" });
                     sql = GenFunc.ReplaceGPatternVariable(sql);
-                    Common.gMsg = sql;
-                    Common.gMsg = $"-- {thisNm}.End Select Query -------------------->>";
 
                     List<T> lists = new List<T>();
 
@@ -742,14 +614,13 @@ namespace Ctrls
                         }
                     }
 
+                    Common.gMsg = $"-- {thisNm}.End Select Query -------------------->>";
                     foreach (dynamic item in lists)
                     {
                         item.ChangedFlag = MdlState.None;
                     }
 
                     this.DataSource = new BindingList<T>(lists);
-
-                    this.MainView.PopulateColumns();
                 }
             }
             catch (Exception e)
@@ -1124,6 +995,11 @@ namespace Ctrls
                         if (!string.IsNullOrEmpty(operation))
                         {
                             sql = GenFunc.GetSql(new { FrwId = frwId, FrmId = frmId, WrkId = thisNm, CRUDM = operation });
+                            if (string.IsNullOrWhiteSpace(sql))
+                            {
+                                Common.gMsg = $"쿼리가 존재하지 않습니다.";
+                                return;
+                            }
                             sql = GenFunc.ReplaceGPatternVariable(sql);
                             foreach (var wrkRef in wrkRefs)
                             {

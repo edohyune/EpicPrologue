@@ -1,5 +1,12 @@
 ﻿namespace Lib
 {
+    public enum LookUpType
+    {
+        None,
+        Code,
+        SubCode,
+        PopUp
+    }
     public enum MdlState
     {
         None,

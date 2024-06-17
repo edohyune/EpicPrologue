@@ -1,4 +1,4 @@
-﻿namespace WorkSetGrid
+namespace WorkSetGrid
 {
     partial class WorkSetGrid
     {

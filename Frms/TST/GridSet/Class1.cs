@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Frms.Models.GridSet
+namespace Frms.TST
 {
-    public class TESTG10 : Lib.MdlBase
+    public class GridSet_G10 : Lib.MdlBase
     {
         private int _ID;
         public int ID

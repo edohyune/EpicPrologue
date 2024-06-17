@@ -1,4 +1,4 @@
-﻿using DevExpress.XtraBars.Docking2010;
+using DevExpress.XtraBars.Docking2010;
 using DevExpress.XtraPrinting.Native;
 using Lib.Repo;
 using System.ComponentModel;

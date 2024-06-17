@@ -1,4 +1,4 @@
-﻿using DevExpress.Utils.DirectXPaint;
+using DevExpress.Utils.DirectXPaint;
 using DevExpress.XtraPrinting.Native;
 using System.ComponentModel;
 

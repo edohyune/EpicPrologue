@@ -1,4 +1,5 @@
-﻿using Lib;
+﻿using DevExpress.Pdf.Native.BouncyCastle.Asn1.Ocsp;
+using Lib;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -100,7 +101,7 @@ namespace Lib.Repo
     public interface IFrwFrmRepo
     {
         bool ChkByFrm(string frmId);
-        FrwFrm GetByFrmId(string frmId);
+        FrwFrm GetByFrmId(string frwId,string frmId);
         List<FrwFrm> GetAll();
         void Add(FrwFrm frmMst);
         void Update(FrwFrm frmMst);
@@ -149,7 +150,7 @@ select a.FrmId, a.FrmNm, a.UsrRegId, a.FrwId, a.FilePath,
             }
         }
 
-        public FrwFrm GetByFrmId(string frmId)
+        public FrwFrm GetByFrmId(string frwId, string frmId)
         {
             string sql = @"
 select a.FrmId, a.FrmNm, a.UsrRegId, a.FrwId, a.FilePath,
@@ -157,11 +158,12 @@ select a.FrmId, a.FrmNm, a.UsrRegId, a.FrwId, a.FilePath,
        a.CId, a.CDt, a.MId, a.MDt
   from FRWFRM a
  where 1=1
+   and a.FrwId = @FrwId
    and a.FrmId = @FrmId
 ";
             using (var db = new GaiaHelper())
             {
-                var result = db.Query<FrwFrm>(sql, new { FrmId = frmId }).FirstOrDefault();
+                var result = db.Query<FrwFrm>(sql, new { FrwId = frwId, FrmId = frmId }).FirstOrDefault();
                 if (result == null)
                 {
                     throw new KeyNotFoundException($"A record with the code {frmId} was not found.");

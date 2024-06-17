@@ -6,6 +6,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using System.Text;
 
 namespace ER000.Lib
 {
@@ -87,6 +88,7 @@ namespace ER000.Lib
             Dispose(disposing: true);
             GC.SuppressFinalize(this);
         }
+
         #region Dapper QueryExecute
         //1. 쿼리 실행 및 단일 결과 반환
         //단일 행 쿼리 및 결과 반환(IDictionary 사용)
@@ -95,12 +97,22 @@ namespace ER000.Lib
             try
             {
                 sql = ProcessQuery(sql, param);
+                sql = GenFunc.ReplaceGPatternVariable(sql);
                 return SqlMapper.Query(_conn, sql, param, _tran).Select(x => x as IDictionary<string, object>).ToList().FirstOrDefault();
             }
             catch (Exception ex)
             {
                 LogException(ex, sql);
                 throw;
+            }
+            finally
+            {
+                if (Common.gTrackMsg)
+                {
+                    string debugSql = GenerateDebugSql(sql, param);
+                    Common.gMsg = "Debug SQL: " + Environment.NewLine + debugSql;
+                }
+                _conn.Close();
             }
         }
 
@@ -111,12 +123,22 @@ namespace ER000.Lib
             try
             {
                 sql = ProcessQuery(sql, param);
+                sql = GenFunc.ReplaceGPatternVariable(sql);
                 return SqlMapper.Query(_conn, sql, param, _tran);
             }
             catch (Exception ex)
             {
                 LogException(ex, sql);
                 throw;
+            }
+            finally
+            {
+                if (Common.gTrackMsg)
+                {
+                    string debugSql = GenerateDebugSql(sql, param);
+                    Common.gMsg = "Debug SQL: " + Environment.NewLine + debugSql;
+                }
+                _conn.Close();
             }
         }
 
@@ -126,6 +148,7 @@ namespace ER000.Lib
             try
             {
                 sql = ProcessQuery(sql, null);
+                sql = GenFunc.ReplaceGPatternVariable(sql);
                 return SqlMapper.Query<T>(_conn, sql, null, _tran).ToList();
             }
             catch (Exception ex)
@@ -133,19 +156,39 @@ namespace ER000.Lib
                 LogException(ex, sql);
                 throw;
             }
+            finally
+            {
+                if (Common.gTrackMsg)
+                {
+                    string debugSql = GenerateDebugSql(sql, null);
+                    Common.gMsg = "Debug SQL: " + Environment.NewLine + debugSql;
+                }
+                _conn.Close();
+            }
         }
         //제네릭 타입 결과 반환 (오브젝트 파라미터)
         public List<T> Query<T>(string sql, object param)
         {
             try
             {
+                
                 sql = ProcessQuery(sql, param);
+                sql = GenFunc.ReplaceGPatternVariable(sql);
                 return SqlMapper.Query<T>(_conn, sql, param, _tran).ToList();
             }
             catch (Exception ex)
             {
                 LogException(ex, sql);
                 throw;
+            }
+            finally
+            {
+                if (Common.gTrackMsg)
+                {
+                    string debugSql = GenerateDebugSql(sql, param);
+                    Common.gMsg = "Debug SQL: " + Environment.NewLine + debugSql;
+                }
+                _conn.Close();
             }
         }
         //제네릭 타입 결과 반환 (DynamicParameters 파라미터)
@@ -154,6 +197,7 @@ namespace ER000.Lib
             try
             {
                 sql = ProcessQuery(sql, param);
+                sql = GenFunc.ReplaceGPatternVariable(sql);
                 return SqlMapper.Query<T>(_conn, sql, param, _tran).ToList();
 
             }
@@ -161,6 +205,15 @@ namespace ER000.Lib
             {
                 LogException(ex, sql);
                 throw;
+            }
+            finally
+            {
+                if (Common.gTrackMsg)
+                {
+                    string debugSql = GenerateDebugSql(sql, param);
+                    Common.gMsg = "Debug SQL: " + Environment.NewLine + debugSql;
+                }
+                _conn.Close();
             }
         }
 
@@ -171,12 +224,22 @@ namespace ER000.Lib
             try
             {
                 sql = ProcessQuery(sql, null);
+                sql = GenFunc.ReplaceGPatternVariable(sql);
                 return SqlMapper.Execute(_conn, sql, null, _tran);
             }
             catch (Exception ex)
             {
                 LogException(ex, sql);
                 throw;
+            }
+            finally
+            {
+                if (Common.gTrackMsg)
+                {
+                    string debugSql = GenerateDebugSql(sql);
+                    Common.gMsg = "Debug SQL: " + Environment.NewLine + debugSql;
+                }
+                _conn.Close();
             }
 
         }
@@ -186,6 +249,7 @@ namespace ER000.Lib
             try
             {
                 sql = ProcessQuery(sql, param);
+                sql = GenFunc.ReplaceGPatternVariable(sql);
                 return SqlMapper.Execute(_conn, sql, param, _tran);
 
             }
@@ -193,6 +257,15 @@ namespace ER000.Lib
             {
                 LogException(ex, sql);
                 throw;
+            }
+            finally
+            {
+                if (Common.gTrackMsg)
+                {
+                    string debugSql = GenerateDebugSql(sql, param);
+                    Common.gMsg = "Debug SQL: " + Environment.NewLine + debugSql;
+                }
+                _conn.Close();
             }
         }
 
@@ -203,12 +276,22 @@ namespace ER000.Lib
             try
             {
                 sql = ProcessQuery(sql, param);
+                sql = GenFunc.ReplaceGPatternVariable(sql);
                 return _conn.ExecuteScalar<string>(sql, param, _tran);
             }
             catch (Exception ex)
             {
                 LogException(ex, sql);
                 throw;
+            }
+            finally
+            {
+                if (Common.gTrackMsg)
+                {
+                    string debugSql = GenerateDebugSql(sql, param);
+                    Common.gMsg = "Debug SQL: " + Environment.NewLine + debugSql;
+                }
+                _conn.Close();
             }
         }
 
@@ -217,6 +300,7 @@ namespace ER000.Lib
             try
             {
                 sql = ProcessQuery(sql, null);
+                sql = GenFunc.ReplaceGPatternVariable(sql);
                 return _conn.ExecuteScalar<T>(sql, param, _tran);
             }
             catch (Exception ex)
@@ -224,13 +308,21 @@ namespace ER000.Lib
                 LogException(ex, sql);
                 throw;
             }
+            finally
+            {
+                if (Common.gTrackMsg)
+                {
+                    string debugSql = GenerateDebugSql(sql, param);
+                    Common.gMsg = "Debug SQL: " + Environment.NewLine + debugSql;
+                }
+                _conn.Close();
+            }
         }
 
         public DataSet GetGridColumns(object param)
         {
             var pullFlds = new WrkGetRepo().GetPullFlds(param);
-            //WrkGetRepo wrkGetRepo = new WrkGetRepo();
-            //var paramlist = wrkGetRepo.GetPullFlds(prm);
+
             string[] fld = (from a in pullFlds
                             orderby a.Id
                             select a.Id).ToArray();
@@ -271,31 +363,35 @@ namespace ER000.Lib
             return dsSelect;
         }
         #endregion
+
         #region About Log
+        private string GenerateDebugSql(string sql, object param = null)
+        {
+            StringBuilder debugSql = new StringBuilder(sql);
+
+            if (param == null) return debugSql.ToString();
+
+            foreach (var prop in param.GetType().GetProperties())
+            {
+                string placeholder = "@" + prop.Name;
+                string value = prop.GetValue(param)?.ToString();
+
+                if (prop.PropertyType == typeof(string))
+                {
+                    value = $"'{value}'";
+                }
+
+                debugSql.Replace(placeholder, value);
+            }
+            return debugSql.ToString();
+        }
         private void LogException(Exception ex, string sql = null)
         {
             Lib.Common.gMsg = $"Exception : {ex}";
             Lib.Common.gMsg = $"Query : {sql}";
         }
-        private void LogParameters(object param)
-        {
-            if (param is DynamicParameters dynamicParams)
-            {
-                foreach (var paramName in dynamicParams.ParameterNames)
-                {
-                    var paramValue = dynamicParams.Get<object>(paramName);
-                }
-            }
-            else
-            {
-                foreach (PropertyInfo prop in param.GetType().GetProperties())
-                {
-                    var propName = prop.Name;
-                    var propValue = prop.GetValue(param);
-                }
-            }
-        }
         #endregion
+
         #region SQL Query Replace
         private string ProcessQuery(string sql, object param)
         {
@@ -397,23 +493,6 @@ namespace ER000.Lib
             });
         }
         #endregion
-    }
-    public class BoolCharTypeHandler : SqlMapper.ITypeHandler
-    {
-        // 데이터베이스에서 값을 읽을 때 호출됩니다.
-        // "1"이면 true를, 그렇지 않으면 false를 반환합니다.
-        public object Parse(Type destinationType, object value)
-        {
-            return value?.ToString() == "1";
-        }
 
-        // 데이터베이스에 값을 설정할 때 호출됩니다.
-        // bool 값이 true이면 "1"을, false이면 "0"을 저장합니다.
-        public void SetValue(IDbDataParameter parameter, object value)
-        {
-            parameter.Value = (bool)value ? "1" : "0";
-            parameter.DbType = DbType.StringFixedLength;
-            parameter.Size = 1;
-        }
     }
 }

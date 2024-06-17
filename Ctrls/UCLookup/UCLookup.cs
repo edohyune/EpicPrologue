@@ -1,4 +1,4 @@
-﻿using DevExpress.XtraEditors;
+using DevExpress.XtraEditors;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Lib;
@@ -11,7 +11,7 @@ using DevExpress.XtraPrinting.Native;
 
 namespace Ctrls
 {
-    [System.ComponentModel.DefaultBindingProperty("BindText")]
+    [System.ComponentModel.DefaultBindingProperty("Code")]
     [System.ComponentModel.DefaultEvent("UCTextChanged")]
     public class UCLookUp : DevExpress.XtraEditors.XtraUserControl, INotifyPropertyChanged
     {
@@ -22,22 +22,34 @@ namespace Ctrls
         private string thisNm { get; set; }
 
         private object OSearchParam;
-        private DynamicParameters DSearchParam;
+        private DynamicParameters DSearchParam;  
 
         [Category("A UserController Property"), Description("Bind Text")]
         public string BindText
         {
+            //Text<---->EditValue
             get
             {
-                string str = (this.lookupCtrl.Text == null) ? string.Empty : this.lookupCtrl.Text;
+                string str = (this.lookupCtrl.EditValue == null) ? string.Empty : this.lookupCtrl.EditValue.ToString();
                 return str;
             }
             set
             {
-                this.lookupCtrl.Text = value;
+                this.lookupCtrl.EditValue = value;
                 OnPropertyChanged("BindText");
                 UCEditValueChanged?.Invoke(this, lookupCtrl);
             }
+            //get
+            //{
+            //    string str = (this.lookupCtrl.Text == null) ? string.Empty : this.lookupCtrl.Text;
+            //    return str;
+            //}
+            //set
+            //{
+            //    this.lookupCtrl.Text = value;
+            //    OnPropertyChanged("BindText");
+            //    UCEditValueChanged?.Invoke(this, lookupCtrl);
+            //}
         }
         #endregion
 
@@ -142,21 +154,44 @@ namespace Ctrls
                 this.lookupCtrl.Properties.Appearance.TextOptions.HAlignment = value;
             }
         }
-        [Category("A UserController Property"), Description("Default Text")] //chk
+        [Category("A UserController Property"), Description("Display Text")] //chk
         public override string Text
         {
+            //Text<---->EditValue
             get
             {
-                string str = (this.lookupCtrl.Text == null) ? string.Empty : this.lookupCtrl.Text;
+                string str = (this.lookupCtrl.EditValue == null) ? string.Empty : this.lookupCtrl.EditValue.ToString();
                 return str;
             }
             set
             {
-                this.lookupCtrl.Text = value;
+                this.lookupCtrl.EditValue = value;
                 this.BindText = value;  // Text가 업데이트 될 때 BindText도 업데이트
             }
+            //get
+            //{
+            //    string str = (this.lookupCtrl.Text == null) ? string.Empty : this.lookupCtrl.Text;
+            //    return str;
+            //}
+            //set
+            //{
+            //    this.lookupCtrl.Text = value;
+            //    this.BindText = value;  // Text가 업데이트 될 때 BindText도 업데이트
+            //}
         }
-
+        [Category("A UserController Property"), Description("EditValue")] //chk
+        public object EditValue
+        {
+            get
+            {
+                return this.lookupCtrl.EditValue;
+            }
+            set
+            {
+                this.lookupCtrl.EditValue = value;
+            }
+        }
+        
         #endregion
 
         #region Methods - Document(Get, Set, Create, Update, Delete) ----------------------->>
@@ -246,8 +281,20 @@ namespace Ctrls
             lookupCtrl.TextChanged += lookupCtrl_TextChanged;
 
             splitCtrl.Panel2.Controls.Add(lookupCtrl);
+            
+            // CloseUpKey 속성 설정
+            lookupCtrl.Properties.CloseUpKey = new DevExpress.Utils.KeyShortcut(Keys.Enter);
+
+            // EditValueChanged 이벤트 처리
+            lookupCtrl.Properties.EditValueChanged += (sender, e) => {
+                if (lookupCtrl.IsPopupOpen)
+                {
+                    lookupCtrl.ClosePopup();
+                }
+            };
 
             Load += UCLookUp_Load;
+
         }
 
         private void UCLookUp_Load(object? sender, EventArgs e)
@@ -272,62 +319,109 @@ namespace Ctrls
                 var wrkFld = wrkFldRepo.GetFldProperties(frwId, frmId, thisNm);
                 if (wrkFld != null)
                 {
-                    labelCtrl.Text = wrkFld.FldTitle;
-
-                    this.ShowYn = wrkFld.ShowYn;
-                    this.NeedYn = wrkFld.NeedYn;
-                    this.EditYn = wrkFld.EditYn;
-
-                    this.Width = wrkFld.FldWidth;
+                    //wrkFld.FldX와 wrkFld.FldY를 사용하여 위치 설정
+                    this.Location = new Point(wrkFld.FldX, wrkFld.FldY);
+                    this.ControlWidth = wrkFld.FldWidth;
                     this.TitleWidth = wrkFld.FldTitleWidth;
-                    this.Location = new System.Drawing.Point(wrkFld.FldX, wrkFld.FldY);
+                    this.Title = wrkFld.FldTitle;
+                    this.TitleAlignment = GenFunc.StrToAlign(wrkFld.TitleAlign);
 
                     if (!string.IsNullOrEmpty(wrkFld.Popup))
                     {
-                        SetPopupDataSource(wrkFld.Popup);
+                        FrwCdeRepo frwCdebs = new FrwCdeRepo();
+                        List<FrwCde> frwCdes = frwCdebs.GetFrwCdes(frwId, wrkFld.Popup, wrkFld.FldTy);
+                        var bindingLists = new BindingList<FrwCde>(frwCdes);
+
+                        this.lookupCtrl.Properties.DataSource = bindingLists;
+                        this.lookupCtrl.Properties.ValueMember = wrkFld.FldTy;
+                        this.lookupCtrl.Properties.DisplayMember = "Nm";
+                        this.lookupCtrl.Properties.BestFitMode = DevExpress.XtraEditors.Controls.BestFitMode.BestFitResizePopup;
+
+                        lookupCtrl.Properties.Columns.Add(new DevExpress.XtraEditors.Controls.LookUpColumnInfo(wrkFld.FldTy, wrkFld.FldTy == "Cd" ? "Code" : "Sub Code"));
+                        lookupCtrl.Properties.Columns.Add(new DevExpress.XtraEditors.Controls.LookUpColumnInfo("Nm","Name"));
+
+                        foreach (LookUpColumnInfo column in lookupCtrl.Properties.Columns)
+                        {
+                            if (column.FieldName != "Nm")
+                            {
+                                column.Visible = false;
+                            }
+                        }
+
+                        //if (wrkFld.FldTy == "SubCdNm")
+                        //{
+                        //    FrwCdeRepo frwCdebs = new FrwCdeRepo();
+                        //    List<FrwCde> frwCdes = frwCdebs.GetFrwCdes(frwId, wrkFld.Popup, wrkFld.FldTy);
+                        //    var bindingLists = new BindingList<FrwCde>(frwCdes);
+
+                        //    this.lookupCtrl.Properties.DataSource = bindingLists;
+                        //    this.lookupCtrl.Properties.ValueMember = wrkFld.FldTy;
+                        //    this.lookupCtrl.Properties.DisplayMember = "Nm";
+                        //    this.lookupCtrl.Properties.BestFitMode = DevExpress.XtraEditors.Controls.BestFitMode.BestFitResizePopup;
+
+                        //    lookupCtrl.Properties.Columns.Add(new DevExpress.XtraEditors.Controls.LookUpColumnInfo("Code", wrkFld.FldTy));
+                        //    lookupCtrl.Properties.Columns.Add(new DevExpress.XtraEditors.Controls.LookUpColumnInfo("Name", "Nm"));
+
+                        //    //foreach (LookUpColumnInfo column in lookupCtrl.Properties.Columns)
+                        //    //{
+                        //    //    if (column.FieldName != "Nm")
+                        //    //    {
+                        //    //        column.Visible = false;
+                        //    //    }
+                        //    //}
+                        //}
+                        //else if (wrkFld.FldTy == "CdNm")
+                        //{
+                        //    FrwCdeRepo frwCdebs = new FrwCdeRepo();
+                        //    List<FrwCde> frwCdes = frwCdebs.GetFrwCdes(frwId, wrkFld.Popup, wrkFld.FldTy);
+                        //    var bindingLists = new BindingList<FrwCde>(frwCdes);
+
+                        //    this.lookupCtrl.Properties.DataSource = bindingLists;
+                        //    this.lookupCtrl.Properties.ValueMember = wrkFld.FldTy;
+                        //    this.lookupCtrl.Properties.DisplayMember = "Nm";
+                        //    this.lookupCtrl.Properties.BestFitMode = DevExpress.XtraEditors.Controls.BestFitMode.BestFitResizePopup;
+
+                        //    lookupCtrl.Properties.Columns.Add(new DevExpress.XtraEditors.Controls.LookUpColumnInfo("Code", wrkFld.FldTy));
+                        //    lookupCtrl.Properties.Columns.Add(new DevExpress.XtraEditors.Controls.LookUpColumnInfo("Name", "Nm"));
+                        //}
+                        //else if (wrkFld.FldTy == "PopUp" && 1!=1)
+                        //{
+                        //    SetPopupDataSource(wrkFld.Popup);
+                        //    // LookUpEdit 컬럼 설정
+                        //    lookupCtrl.Properties.Columns.Clear();
+                        //    if (_dataList != null && _dataList.Count > 0)
+                        //    {
+                        //        Type itemType = _dataList[0].GetType();
+                        //        PropertyInfo[] properties = itemType.GetProperties();
+                        //        foreach (PropertyInfo property in properties)
+                        //        {
+                        //            lookupCtrl.Properties.Columns.Add(new LookUpColumnInfo(property.Name, property.Name));
+                        //        }
+
+                        //        lookupCtrl.Properties.DisplayMember = properties.Length > 0 ? properties[0].Name : string.Empty;
+                        //        lookupCtrl.Properties.ValueMember = properties.Length > 0 ? properties[0].Name : string.Empty;
+                        //    }
+                        //}
+                        this.lookupCtrl.Properties.NullText = "";
                     }
 
-                    //if (wrkFld.Popup != "")
-                    //{
-                    //    //콤보 종류 지정
-                    //    //code, combo, popup 등을 구분하여 사용
-                    //    //if (ucInfo.field_type=="Code")
-                    //    //......
-
-                    //    List<IdNm> lists = db.GetCodeNm(new { Grp = wrkFld.Popup }, "1");
-
-                    //    //List<UcCombo> lists = db.GetUcCombo(new { gcode = ucInfo.Pop }, "1");
-                    //    //var bindingLists = new BindingList<MdlIdName>(lists);
-                    //    this.comboCtrl.Properties.DataSource = lists;
-                    //    this.comboCtrl.Properties.ValueMember = "Id";
-                    //    this.comboCtrl.Properties.DisplayMember = "Nm";
-                    //    this.comboCtrl.Properties.BestFitMode = DevExpress.XtraEditors.Controls.BestFitMode.BestFitResizePopup;
-                    //    //if (ucInfo.ShowCode != "1")
-                    //    if ("1" != "1")
-                    //    {
-                    //        this.comboCtrl.Properties.PopulateColumns();
-                    //        this.comboCtrl.Properties.Columns["Id"].Visible = false;
-                    //    }
-                    //}
-                    this.labelCtrl.Appearance.TextOptions.HAlignment = GenFunc.StrToAlign(wrkFld.TitleAlign);
-                    this.Text = wrkFld.DefaultText;
-                    this.lookupCtrl.Properties.Appearance.TextOptions.HAlignment = GenFunc.StrToAlign(wrkFld.TextAlign);
-                    this.lookupCtrl.Properties.NullText = "";
-
-                    ////// LookUpEdit 컬럼 설정
-                    ////lookupCtrl.Properties.Columns.Clear();
-                    ////if (_dataList != null && _dataList.Count > 0)
-                    ////{
-                    ////    Type itemType = _dataList[0].GetType();
-                    ////    PropertyInfo[] properties = itemType.GetProperties();
-                    ////    foreach (PropertyInfo property in properties)
-                    ////    {
-                    ////        lookupCtrl.Properties.Columns.Add(new LookUpColumnInfo(property.Name, property.Name));
-                    ////    }
-
-                    ////    lookupCtrl.Properties.DisplayMember = properties.Length > 0 ? properties[0].Name : string.Empty;
-                    ////    lookupCtrl.Properties.ValueMember = properties.Length > 0 ? properties[0].Name : string.Empty;
-                    ////}
+                    this.EditValue = wrkFld.DefaultText;
+                    this.TextAlignment = GenFunc.StrToAlign(wrkFld.TextAlign);
+                    //this. = wrkFld.FixYn;
+                    //this. = wrkFld.GroupYn;
+                    this.ShowYn = wrkFld.ShowYn;
+                    this.NeedYn = wrkFld.NeedYn;
+                    this.EditYn = wrkFld.EditYn;
+                    //this.ButtonVisiable = wrkFld.EditYn;
+                    //this. = wrkFld.Band1;
+                    //this. = wrkFld.Band2;
+                    //this. = wrkFld.FuncStr;
+                    //SetFuncStr(wrkFld.FuncStr);
+                    //this. = wrkFld.FormatStr;
+                    //SetFormatStr(wrkFld.FuncStr);
+                    //this. = wrkFld.ColorFont;
+                    //this. = wrkFld.ColorBg;
+                    //this. = wrkFld.Seq;
                 }
             }
             catch (Exception ex)
@@ -335,6 +429,7 @@ namespace Ctrls
                 Lib.Common.gMsg = $"UCLookUp_Load>>ResetCtrl{Environment.NewLine}Exception : {ex.Message}";
             }
         }
+
         private List<dynamic> _dataList;
         private void SetPopupDataSource(string popId)
         {
@@ -442,10 +537,10 @@ namespace Ctrls
                 lookupCtrl.EditValue = "";
         }
         #region INotifyPropertyChanged
+        
         public delegate void delEventEditValueChanged(object Sender, Control control);   // delegate 선언
         public event delEventEditValueChanged UCEditValueChanged;   // event 선언
         public event PropertyChangedEventHandler? PropertyChanged;
-
         private void lookupCtrl_EditValueChanged(object sender, EventArgs e)
         {
             try
@@ -557,8 +652,16 @@ namespace Ctrls
         }
         private void lookupCtrl_TextChanged(object sender, EventArgs e)
         {
-            BindText = lookupCtrl.Text; 
-            //BindValue = lookupCtrl.EditValue.ToString();
+            //Text<---->EditValue
+            if (lookupCtrl.EditValue != null)
+            {
+                BindText = lookupCtrl.EditValue.ToString();
+            }
+            else
+            {
+                BindText = string.Empty; // Or any default value you see fit
+            }
+            //BindText = lookupCtrl.Text;
         }
         #endregion
 

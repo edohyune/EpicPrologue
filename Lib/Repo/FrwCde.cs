@@ -190,11 +190,15 @@ namespace Lib.Repo
             set => Set(ref _Ref20, value);
         }
 
+        public override string ToString()
+        {
+            return Nm;
+        }
     }
     public interface IFrwCdeRepo
     {
-        List<FrwCde> GetFrwCdes(string frwId);
-        List<FrwCde> GetFrwCdes(string frwId, string pCd);
+        List<FrwCde> GetFrwCdes(string frwId, string div);
+        List<FrwCde> GetFrwCdes(string frwId, string pCd, string div);
         void Add(FrwCde frwCde);
         void Update(FrwCde frwCde);
         void Delete(FrwCde frwCde);
@@ -268,20 +272,30 @@ select a.FrwId, a.Cd, a.PCd, a.SubCd, a.Nm,
                 }
             }
         }
-        public List<FrwCde> GetFrwCdes(string frwId, string pCd)
+        public List<FrwCde> GetFrwCdes(string frwId, string pCd, string div)
         {
-            string sql = @"
-select a.FrwId, a.Cd, a.PCd, a.SubCd, a.Nm,
-       a.UseYn, a.Ref01, a.Ref02, a.Ref03, a.Ref04,
-       a.Ref05, a.Ref06, a.Ref07, a.Ref08, a.Ref09,
-       a.Ref10, a.Ref11, a.Ref12, a.Ref13, a.Ref14,
-       a.Ref15, a.Ref16, a.Ref17, a.Ref18, a.Ref19,
-       a.Ref20, a.CId, a.CDt, a.MId, a.MDt
+            string sql;
+            if (div == "SubCd")
+            {
+                sql = @"
+select a.SubCd, a.Nm
   from FRWCDE a
  where 1=1
-   and a.Cd = @Cd
    and a.FrwId = @FrwId
+   and a.PCd = @PCd
 ";
+            }
+            else
+            {
+                sql = @"
+select a.Cd, a.Nm
+  from FRWCDE a
+ where 1=1
+   and a.FrwId = @FrwId
+   and a.PCd = @PCd
+";
+            }
+            
             using (var db = new GaiaHelper())
             {
                 var result = db.Query<FrwCde>(sql, new { FrwId = frwId, PCd = pCd }).ToList();
@@ -382,6 +396,50 @@ update a
             using (var db = new Lib.GaiaHelper())
             {
                 db.OpenExecute(sql, frwCde);
+            }
+        }
+
+        public List<FrwCde> GetCdNm(string frwId, string pCd)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<FrwCde> GetSubCdNm(string frwId, string pCd)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<FrwCde> GetFrwCdes(string frwId, string div)
+        {
+            throw new NotImplementedException();
+        }
+        public List<FrwCde> GetFrwCdesForCodeBox(string frwId, string pCd)
+        {
+            string sql = @"
+select a.FrwId, a.Cd, a.PCd, a.SubCd, a.Nm,
+       a.UseYn, a.Ref01, a.Ref02, a.Ref03, a.Ref04,
+       a.Ref05, a.Ref06, a.Ref07, a.Ref08, a.Ref09,
+       a.Ref10, a.Ref11, a.Ref12, a.Ref13, a.Ref14,
+       a.Ref15, a.Ref16, a.Ref17, a.Ref18, a.Ref19,
+       a.Ref20
+  from FRWCDE a
+ where 1=1
+   and a.FrwId = @FrwId
+   and a.PCd = @PCd
+";
+            using (var db = new GaiaHelper())
+            {
+                List<FrwCde>? result = db.Query<FrwCde>(sql, new { FrwId = frwId, PCd = pCd }).ToList();
+                return (result == null)? null : result;
+
+                //if (result == null)
+                //{
+                //    return null;
+                //}
+                //else
+                //{
+                //    return result;
+                //}
             }
         }
     }

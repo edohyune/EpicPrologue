@@ -228,6 +228,7 @@ namespace Lib.Repo
     }
     public interface IPopFldRepo
     {
+        List<PopFld> GetComboProperties();
         //PopFld GetPopFld(string frwId, string frmId, string popId, string fldNm);
         List<PopFld> GetPopColumnProperties(string frwId, string frmId, string popId);
         void Add(PopFld popFld);
@@ -318,6 +319,17 @@ select a.FrwId, a.FrmId, a.PopId, a.FldNm,
         {
             string sql = @"
 ";
+        }
+
+        public List<PopFld> GetComboProperties()
+        {
+            //List<PopFld> popFlds = List<PopFld>()를 정의하고 데이터를 수동으로 입력한다.
+            List<PopFld> popFlds = new List<PopFld>
+            {
+                new PopFld { FldNm = "Nm", FldTitle="Name", ShowYn=true, TextAlign = "Text"},
+                new PopFld { FldNm = "Cd", FldTitle="Code", ShowYn=false, TextAlign = "Text"}
+            };
+            return popFlds;
         }
     }
 }

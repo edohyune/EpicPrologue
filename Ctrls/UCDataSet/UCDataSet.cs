@@ -1,4 +1,4 @@
-﻿namespace Ctrls
+namespace Ctrls
 {
     public partial class UCDataSet : UserControl
     {

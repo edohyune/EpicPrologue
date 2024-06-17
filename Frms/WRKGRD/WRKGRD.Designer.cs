@@ -72,9 +72,7 @@ namespace Frms
             ucPanel1 = new Ctrls.UCPanel();
             tabWrk = new Ctrls.UCTab();
             xtraTabPage3 = new DevExpress.XtraTab.XtraTabPage();
-            g10 = new Ctrls.UCGridSet();
             xtraTabPage4 = new DevExpress.XtraTab.XtraTabPage();
-            g20 = new Ctrls.UCGridSet();
             tabQueryField = new Ctrls.UCTab();
             xtraTabPage1 = new DevExpress.XtraTab.XtraTabPage();
             tabCRUDM = new Ctrls.UCTab();
@@ -121,10 +119,6 @@ namespace Frms
             ucPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)tabWrk).BeginInit();
             tabWrk.SuspendLayout();
-            xtraTabPage3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)g10).BeginInit();
-            xtraTabPage4.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)g20).BeginInit();
             ((System.ComponentModel.ISupportInitialize)tabQueryField).BeginInit();
             tabQueryField.SuspendLayout();
             xtraTabPage1.SuspendLayout();
@@ -254,50 +248,17 @@ namespace Frms
             // 
             // xtraTabPage3
             // 
-            xtraTabPage3.Controls.Add(g10);
             xtraTabPage3.Name = "xtraTabPage3";
             xtraTabPage3.Size = new Size(179, 493);
             xtraTabPage3.TabPageWidth = 70;
             xtraTabPage3.Text = "WorkSet List";
             // 
-            // g10
-            // 
-            g10.ColumnAutoWidth = true;
-            g10.Dock = DockStyle.Fill;
-            g10.FocuseRowIndex = int.MinValue;
-            g10.Location = new Point(0, 0);
-            g10.MultiSelect = false;
-            g10.MultiSelectMode = DevExpress.XtraGrid.Views.Grid.GridMultiSelectMode.RowSelect;
-            g10.Name = "g10";
-            g10.RowAutoHeigh = false;
-            g10.ShowFindPanel = false;
-            g10.ShowGroupPanel = true;
-            g10.Size = new Size(179, 493);
-            g10.TabIndex = 0;
-            g10.UCFocusedRowChanged += g10_UCFocusedRowChanged;
-            // 
             // xtraTabPage4
             // 
-            xtraTabPage4.Controls.Add(g20);
             xtraTabPage4.Name = "xtraTabPage4";
             xtraTabPage4.Size = new Size(179, 493);
             xtraTabPage4.TabPageWidth = 70;
             xtraTabPage4.Text = "Controllers";
-            // 
-            // g20
-            // 
-            g20.ColumnAutoWidth = true;
-            g20.Dock = DockStyle.Fill;
-            g20.FocuseRowIndex = int.MinValue;
-            g20.Location = new Point(0, 0);
-            g20.MultiSelect = false;
-            g20.MultiSelectMode = DevExpress.XtraGrid.Views.Grid.GridMultiSelectMode.RowSelect;
-            g20.Name = "g20";
-            g20.RowAutoHeigh = false;
-            g20.ShowFindPanel = false;
-            g20.ShowGroupPanel = true;
-            g20.Size = new Size(179, 493);
-            g20.TabIndex = 1;
             // 
             // tabQueryField
             // 
@@ -366,7 +327,6 @@ namespace Frms
             pnlSelect.ShowYn = true;
             pnlSelect.Size = new Size(607, 493);
             pnlSelect.TabIndex = 1;
-            pnlSelect.Text = "";
             pnlSelect.CustomButtonClick += pnlSelect_CustomButtonClick;
             // 
             // tpC
@@ -387,7 +347,6 @@ namespace Frms
             pnlInsert.ShowYn = true;
             pnlInsert.Size = new Size(607, 493);
             pnlInsert.TabIndex = 0;
-            pnlInsert.Text = "";
             pnlInsert.CustomButtonClick += pnlInsert_CustomButtonClick;
             // 
             // tpU
@@ -408,7 +367,6 @@ namespace Frms
             pnlUpdate.ShowYn = true;
             pnlUpdate.Size = new Size(607, 493);
             pnlUpdate.TabIndex = 2;
-            pnlUpdate.Text = "";
             pnlUpdate.CustomButtonClick += pnlUpdate_CustomButtonClick;
             // 
             // tpD
@@ -429,7 +387,6 @@ namespace Frms
             pnlDelete.ShowYn = true;
             pnlDelete.Size = new Size(607, 493);
             pnlDelete.TabIndex = 2;
-            pnlDelete.Text = "";
             pnlDelete.CustomButtonClick += pnlDelete_CustomButtonClick;
             // 
             // xtraTabPage2
@@ -471,7 +428,6 @@ namespace Frms
             pnlColumn.ShowYn = true;
             pnlColumn.Size = new Size(609, 259);
             pnlColumn.TabIndex = 2;
-            pnlColumn.Text = null;
             pnlColumn.CustomButtonClick += pnlColumn_CustomButtonClick;
             // 
             // t10
@@ -520,7 +476,6 @@ namespace Frms
             pnlGet.ShowYn = true;
             pnlGet.Size = new Size(607, 230);
             pnlGet.TabIndex = 2;
-            pnlGet.Text = null;
             pnlGet.CustomButtonClick += pnlGet_CustomButtonClick;
             // 
             // grdGetParam
@@ -558,7 +513,6 @@ namespace Frms
             pnlSet.ShowYn = true;
             pnlSet.Size = new Size(607, 230);
             pnlSet.TabIndex = 2;
-            pnlSet.Text = null;
             pnlSet.CustomButtonClick += pnlSet_CustomButtonClick;
             // 
             // grdSetParam
@@ -596,7 +550,6 @@ namespace Frms
             pnlRef.ShowYn = true;
             pnlRef.Size = new Size(607, 230);
             pnlRef.TabIndex = 3;
-            pnlRef.Text = null;
             pnlRef.CustomButtonClick += pnlRef_CustomButtonClick;
             // 
             // grdRefData
@@ -614,12 +567,12 @@ namespace Frms
             gridView4.GridControl = grdRefData;
             gridView4.Name = "gridView4";
             // 
-            // WRKREPO
+            // WRKGRD
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             Controls.Add(ucSplit1);
-            Name = "WRKREPO";
+            Name = "WRKGRD";
             Size = new Size(800, 600);
             ucSplit1.Panel1.ResumeLayout(false);
             ucSplit1.Panel2.ResumeLayout(false);
@@ -636,10 +589,6 @@ namespace Frms
             ucPanel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)tabWrk).EndInit();
             tabWrk.ResumeLayout(false);
-            xtraTabPage3.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)g10).EndInit();
-            xtraTabPage4.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)g20).EndInit();
             ((System.ComponentModel.ISupportInitialize)tabQueryField).EndInit();
             tabQueryField.ResumeLayout(false);
             xtraTabPage1.ResumeLayout(false);

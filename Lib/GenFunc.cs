@@ -1,5 +1,6 @@
 ﻿using Lib.Repo;
 using Lib.Syntax;
+using System.Text.RegularExpressions;
 
 namespace Lib
 {
@@ -18,15 +19,38 @@ namespace Lib
         {
             return DateTime.TryParse(value, out DateTime result) ? result : defaultValue;
         }
+
+        public static DevExpress.XtraGrid.Views.Grid.GridMultiSelectMode StrToSelectMode(string selectMode)
+        {
+            DevExpress.XtraGrid.Views.Grid.GridMultiSelectMode mode = new DevExpress.XtraGrid.Views.Grid.GridMultiSelectMode();
+            switch (selectMode)
+            {
+                case "RowSelect": mode = DevExpress.XtraGrid.Views.Grid.GridMultiSelectMode.RowSelect; break;
+                case "CheckBoxRowSelect": mode = DevExpress.XtraGrid.Views.Grid.GridMultiSelectMode.CheckBoxRowSelect; break;
+                //case "CellSelect": mode = DevExpress.XtraGrid.Views.Grid.GridMultiSelectMode.CellSelect; break;
+                default:
+                    mode = DevExpress.XtraGrid.Views.Grid.GridMultiSelectMode.CellSelect; 
+                    break;
+            }
+            return mode;
+
+        }
         public static DevExpress.Utils.HorzAlignment StrToAlign(string align)
         {
             DevExpress.Utils.HorzAlignment horz = new DevExpress.Utils.HorzAlignment();
             switch (align)
             {
-                case "0": horz = DevExpress.Utils.HorzAlignment.Default; break;
+                //case "0": horz = DevExpress.Utils.HorzAlignment.Default; break;
                 case "1": horz = DevExpress.Utils.HorzAlignment.Near; break;
                 case "2": horz = DevExpress.Utils.HorzAlignment.Center; break;
                 case "3": horz = DevExpress.Utils.HorzAlignment.Far; break;
+                //case "Default": horz = DevExpress.Utils.HorzAlignment.Default; break;
+                case "Left": horz = DevExpress.Utils.HorzAlignment.Near; break;
+                case "Center": horz = DevExpress.Utils.HorzAlignment.Center; break;
+                case "Right": horz = DevExpress.Utils.HorzAlignment.Far; break;
+                default:
+                    horz = DevExpress.Utils.HorzAlignment.Default;
+                    break;
             }
             return horz;
         }
@@ -41,7 +65,7 @@ namespace Lib
         public static string IsNull(this string a, string b) => string.IsNullOrWhiteSpace(a) ? b : a;
         //string val = value1.IsNull("Default Value")
         #endregion
-        #region Replace PattenVariable ---------------------------------------------
+        #region Replace PattenVariable --------------------------------------------
         public static string ReplaceGPatternVariable(string input)
         {
             SQLVariableExtractor extractor = new SQLVariableExtractor();
@@ -50,8 +74,21 @@ namespace Lib
             foreach (var variable in cvariables.GPatternMatch)
             {
                 string variableName = variable.Key;
-                string variableValue = Common.GetValue(variableName); // Lib.Common에서 값 가져오기
-                input = input.Replace(variable.ToString(), variableValue);
+
+                string pattern = @"<\$(.*?)>";
+
+                Match match = Regex.Match(variableName, pattern);
+
+                if (match.Success)
+                {
+                    string variableValue = Common.GetValue(match.Groups[1].Value); // Lib.Common에서 값 가져오기
+                    //input = input.Replace(variable.ToString(), variableValue);
+                    input = input.Replace(variableName, $"'{variableValue}'");
+                }
+                else
+                {
+                    input = input.Replace(variableName, @"''");
+                }
             }
             return input;
         }
@@ -213,6 +250,12 @@ select a.Query
         {
             string[] parts = input.Split(delimiter);
             return parts[^1]; // C# 8.0 이상에서 사용 가능한 인덱스 from end 연산자
+        }
+        //Form NameSpace를 가져오는 함수 
+        public static string GetFormNamespace(string frwId, string frmId)
+        {
+            FrwFrm frwFrm = new FrwFrmRepo().GetByFrmId(frwId, frmId);
+            return frwFrm.NmSpace;
         }
     }
 }

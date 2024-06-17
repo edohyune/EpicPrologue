@@ -50,11 +50,53 @@ namespace Lib.Repo
             set => Set(ref _WrkCd, value);
         }
 
+        private string _SelectMode;
+        public string SelectMode
+        {
+            get => _SelectMode;
+            set => Set(ref _SelectMode, value);
+        }
+
+        private bool _MultiSelect;
+        public bool MultiSelect
+        {
+            get => _MultiSelect;
+            set => Set(ref _MultiSelect, value);
+        }
+
         private bool _UseYn;
         public bool UseYn
         {
             get => _UseYn;
             set => Set(ref _UseYn, value);
+        }
+
+        private bool _NavAdd;
+        public bool NavAdd
+        {
+            get => _NavAdd;
+            set => Set(ref _NavAdd, value);
+        }
+
+        private bool _NavDelete;
+        public bool NavDelete
+        {
+            get => _NavDelete;
+            set => Set(ref _NavDelete, value);
+        }
+
+        private bool _NavSave;
+        public bool NavSave
+        {
+            get => _NavSave;
+            set => Set(ref _NavSave, value);
+        }
+
+        private bool _NavCancel;
+        public bool NavCancel
+        {
+            get => _NavCancel;
+            set => Set(ref _NavCancel, value);
         }
 
         private int _SaveSq;
@@ -84,7 +126,6 @@ namespace Lib.Repo
             get => _Memo;
             set => Set(ref _Memo, value);
         }
-
     }
     public interface IFrmWrkRepo
     {
@@ -104,8 +145,10 @@ namespace Lib.Repo
         {
             string sql = @"
 select a.FrwId, a.FrmId, a.WrkId, a.CtrlNm, a.WrkNm,
-       a.WrkCd, a.UseYn, a.SaveSq, a.OpenSq, a.OpenTrg,
-       a.Memo, a.CId, a.CDt, a.MId, a.MDt
+       a.WrkCd, a.SelectMode, a.MultiSelect, a.UseYn, a.NavAdd,
+       a.NavDelete, a.NavSave, a.NavCancel, a.SaveSq, a.OpenSq,
+       a.OpenTrg, a.Memo, 
+       a.CId, a.CDt, a.MId, a.MDt
   from FRMWRK a
  where 1=1
    and a.FrwId = @FrwId
@@ -134,8 +177,10 @@ select a.FrwId, a.FrmId, a.WrkId, a.CtrlNm, a.WrkNm,
         {
             string sql = @"
 select a.FrwId, a.FrmId, a.WrkId, a.CtrlNm, a.WrkNm,
-       a.WrkCd, a.UseYn, a.SaveSq, a.OpenSq, a.OpenTrg,
-       a.Memo, a.CId, a.CDt, a.MId, a.MDt
+       a.WrkCd, a.SelectMode, a.MultiSelect, a.UseYn, a.NavAdd,
+       a.NavDelete, a.NavSave, a.NavCancel, a.SaveSq, a.OpenSq,
+       a.OpenTrg, a.Memo, 
+       a.CId, a.CDt, a.MId, a.MDt
   from FRMWRK a
  where 1=1
    and a.FrwId = @FrwId
@@ -165,8 +210,10 @@ select a.FrwId, a.FrmId, a.WrkId, a.CtrlNm, a.WrkNm,
         {
             string sql = @"
 select a.FrwId, a.FrmId, a.WrkId, a.CtrlNm, a.WrkNm,
-       a.WrkCd, a.UseYn, a.SaveSq, a.OpenSq, a.OpenTrg,
-       a.Memo, a.CId, a.CDt, a.MId, a.MDt
+       a.WrkCd, a.SelectMode, a.MultiSelect, a.UseYn, a.NavAdd,
+       a.NavDelete, a.NavSave, a.NavCancel, a.SaveSq, a.OpenSq,
+       a.OpenTrg, a.Memo, 
+       a.CId, a.CDt, a.MId, a.MDt
   from FRMWRK a
  where 1=1
    and a.FrwId = @FrwId
@@ -197,8 +244,10 @@ select a.FrwId, a.FrmId, a.WrkId, a.CtrlNm, a.WrkNm,
         {
             string sql = @"
 select a.FrwId, a.FrmId, a.WrkId, a.CtrlNm, a.WrkNm,
-       a.WrkCd, a.UseYn, a.SaveSq, a.OpenSq, a.OpenTrg,
-       a.Memo, a.CId, a.CDt, a.MId, a.MDt
+       a.WrkCd, a.SelectMode, a.MultiSelect, a.UseYn, a.NavAdd,
+       a.NavDelete, a.NavSave, a.NavCancel, a.SaveSq, a.OpenSq,
+       a.OpenTrg, a.Memo, 
+       a.CId, a.CDt, a.MId, a.MDt
   from FRMWRK a
  where 1=1
    and a.FrwId = @FrwId
@@ -229,8 +278,10 @@ select a.FrwId, a.FrmId, a.WrkId, a.CtrlNm, a.WrkNm,
         {
             string sql = @"
 select a.FrwId, a.FrmId, a.WrkId, a.CtrlNm, a.WrkNm,
-       a.WrkCd, a.UseYn, a.SaveSq, a.OpenSq, a.OpenTrg,
-       a.Memo, a.CId, a.CDt, a.MId, a.MDt
+       a.WrkCd, a.SelectMode, a.MultiSelect, a.UseYn, a.NavAdd,
+       a.NavDelete, a.NavSave, a.NavCancel, a.SaveSq, a.OpenSq,
+       a.OpenTrg, a.Memo, 
+       a.CId, a.CDt, a.MId, a.MDt
   from FRMWRK a
  where 1=1
    and a.FrwId = @FrwId
@@ -261,8 +312,10 @@ select a.FrwId, a.FrmId, a.WrkId, a.CtrlNm, a.WrkNm,
         {
             string sql = @"
 select a.FrwId, a.FrmId, a.WrkId, a.CtrlNm, a.WrkNm,
-       a.WrkCd, a.UseYn, a.SaveSq, a.OpenSq, a.OpenTrg,
-       a.Memo, a.CId, a.CDt, a.MId, a.MDt
+       a.WrkCd, a.SelectMode, a.MultiSelect, a.UseYn, a.NavAdd,
+       a.NavDelete, a.NavSave, a.NavCancel, a.SaveSq, a.OpenSq,
+       a.OpenTrg, a.Memo, 
+       a.CId, a.CDt, a.MId, a.MDt
   from FRMWRK a
  where 1=1
    and a.FrwId = @FrwId
@@ -280,10 +333,19 @@ select a.FrwId, a.FrmId, a.WrkId, a.CtrlNm, a.WrkNm,
         {
             string sql = @"
 update a
-   set CtrlNm= @CtrlNm,
+   set FrwId= @FrwId,
+       FrmId= @FrmId,
+       WrkId= @WrkId,
+       CtrlNm= @CtrlNm,
        WrkNm= @WrkNm,
        WrkCd= @WrkCd,
+       SelectMode= @SelectMode,
+       MultiSelect= @MultiSelect,
        UseYn= @UseYn,
+       NavAdd= @NavAdd,
+       NavDelete= @NavDelete,
+       NavSave= @NavSave,
+       NavCancel= @NavCancel,
        SaveSq= @SaveSq,
        OpenSq= @OpenSq,
        OpenTrg= @OpenTrg,
@@ -292,8 +354,8 @@ update a
        MDt= getdate()
   from FRMWRK a
  where 1=1
-   and FrmId = @FrmId
    and FrwId = @FrwId
+   and FrmId = @FrmId
    and WrkId = @WrkId
 ";
             using (var db = new GaiaHelper())
@@ -306,11 +368,14 @@ update a
             string sql = @"
 insert into FRMWRK
       (FrwId, FrmId, WrkId, CtrlNm, WrkNm,
-       WrkCd, UseYn, SaveSq, OpenSq, OpenTrg,
-       Memo, CId, CDt, MId, MDt)
+       WrkCd, SelectMode, MultiSelect, UseYn, NavAdd,
+       NavDelete, NavSave, NavCancel, SaveSq, OpenSq,
+       OpenTrg, Memo, 
+       CId, CDt, MId, MDt)
 select @FrwId, @FrmId, @WrkId, @CtrlNm, @WrkNm,
-       @WrkCd, @UseYn, @SaveSq, @OpenSq, @OpenTrg,
-       @Memo, 
+       @WrkCd, @SelectMode, @MultiSelect, @UseYn, @NavAdd,
+       @NavDelete, @NavSave, @NavCancel, @SaveSq, @OpenSq,
+       @OpenTrg, @Memo, 
        " + Common.GetValue("gRegId") + @", getdate(), " + Common.GetValue("gRegId") + @", getdate()
 ";
             using (var db = new Lib.GaiaHelper())
@@ -325,8 +390,8 @@ select @FrwId, @FrmId, @WrkId, @CtrlNm, @WrkNm,
 delete
   from FRMWRK
  where 1=1
-   and FrmId = @FrmId
    and FrwId = @FrwId
+   and FrmId = @FrmId
    and WrkId = @WrkId
 ";
             using (var db = new Lib.GaiaHelper())

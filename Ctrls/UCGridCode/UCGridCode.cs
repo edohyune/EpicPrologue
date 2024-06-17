@@ -1,4 +1,4 @@
-﻿using Dapper;
+using Dapper;
 using DevExpress.Data;
 using DevExpress.Utils;
 using DevExpress.XtraEditors;
@@ -277,7 +277,6 @@ namespace Ctrls
                     }
                 }
             }
-
             UCInitNewRow?.Invoke(sender, e);
         }
         public delegate void delEvent4(object sender, RowDeletingEventArgs e);
@@ -409,6 +408,13 @@ namespace Ctrls
             this.ViewCollection.Add(gvCtrl);
             this.UseEmbeddedNavigator = true;
 
+            this.gvCtrl.FocusedRowChanged += gvCtrl_FocusedRowChanged;
+            this.gvCtrl.BeforeLeaveRow += gvCtrl_BeforeLeaveRow;
+            this.gvCtrl.SelectionChanged += gvCtrl_SelectionChanged;
+            this.gvCtrl.InitNewRow += gvCtrl_InitNewRow;
+            this.gvCtrl.RowDeleting += gvCtrl_RowDeleting;
+            this.gvCtrl.CellValueChanged += gvCtrl_CellValueChanged;
+            this.gvCtrl.CellValueChanging += gvCtrl_CellValueChanging;
             Load += UCGridCode_Load;
         }
 

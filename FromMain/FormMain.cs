@@ -8,6 +8,7 @@ using Lib.Repo;
 using System.IO;
 using Repo;
 using DevExpress.XtraEditors.ButtonsPanelControl;
+using Ctrls;
 
 namespace GAIA
 {
@@ -37,7 +38,7 @@ namespace GAIA
         public FormMain()
         {
             InitializeComponent();
-
+             
             //menuCtrl.VisibleChanged += new EventHandler(menuCtrl_VisibleChanged);
             //msgCtrl.VisibleChanged += new EventHandler(msgCtrl_VisibleChanged);
             ucTab1.VisibleChanged += new EventHandler(ucTab1_VisibleChanged);
@@ -56,13 +57,15 @@ namespace GAIA
                 cmbForm.Properties.Items.Add(frmWrk);
             }
 
+
+
             //Tab 설정
             xtraTabbedMdiManager.AppearancePage.HeaderActive.ForeColor = System.Drawing.Color.BlueViolet;
             xtraTabbedMdiManager.AppearancePage.HeaderActive.BorderColor = System.Drawing.Color.Black;
             xtraTabbedMdiManager.AppearancePage.HeaderActive.Font = new System.Drawing.Font(xtraTabbedMdiManager.AppearancePage.HeaderActive.Font, System.Drawing.FontStyle.Bold);
             xtraTabbedMdiManager.ClosePageButtonShowMode = DevExpress.XtraTab.ClosePageButtonShowMode.InAllTabPageHeaders;
         }
-
+                   
         private void ucTab1_VisibleChanged(object sender, EventArgs e)
         {
             simpleButton1.Text = ucTab1.Visible ? "Hide" : "Show";

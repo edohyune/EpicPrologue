@@ -1,13 +1,13 @@
 ﻿using DevExpress.Mvvm.POCO;
 using DevExpress.XtraBars.Docking2010;
 using Lib.Repo;
-using Frms.Models.GridSet;
 using DevExpress.XtraGrid.Views.Grid;
 using System.Data;
 using Ctrls;
 using DevExpress.Data.Helpers;
 using DevExpress.Pdf.Native.BouncyCastle.Asn1.X509;
 using DevExpress.XtraGrid.Views.Grid.ViewInfo;
+using Frms.TST;
 
 namespace Frms.TST
 {
@@ -51,7 +51,7 @@ namespace Frms.TST
         private int _draggedRowHandle;
 
 
-        private void gvCtrl_MouseDown(object? sender, MouseEventArgs e)
+        private void sourceGrid_MouseDown(object? sender, MouseEventArgs e)
         {
             _mouseDownLocation = e.Location;
             _isDragging = false;
@@ -64,7 +64,7 @@ namespace Frms.TST
             }
         }
 
-        private void gvCtrl_MouseMove(object sender, MouseEventArgs e)
+        private void sourceGrid_MouseMove(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
             {
@@ -83,7 +83,7 @@ namespace Frms.TST
             }
         }
 
-        private void gcGrid_DragEnter(object sender, DragEventArgs e)
+        private void targetGrid_DragEnter(object sender, DragEventArgs e)
         {
             if (e.Data.GetDataPresent(typeof(int)))
             {
@@ -97,7 +97,7 @@ namespace Frms.TST
             }
         }
 
-        private void gcGrid_DragDrop(object sender, DragEventArgs e)
+        private void targetGrid_DragDrop(object sender, DragEventArgs e)
         {
            
             if (g20.gvCtrl != null)
@@ -124,15 +124,15 @@ namespace Frms.TST
             }
         }
 
-        private void g10_RowDropped(object sender, RowsDropEventArgs e)
-        {
-            Lib.Common.gMsg = "g10_RowsDropped called";
+        //private void g10_RowDropped(object sender, RowsDropEventArgs e)
+        //{
+        //    Lib.Common.gMsg = "g10_RowsDropped called";
 
-            Lib.Common.gMsg = $"{e.TargetRowHandle}/{e.SourceRowHandle}";
-            Lib.Common.gMsg = $"{g10.GetText("ID", e.SourceRowHandle)}";
+        //    Lib.Common.gMsg = $"{e.TargetRowHandle}/{e.SourceRowHandle}";
+        //    Lib.Common.gMsg = $"{g10.GetText("ID", e.SourceRowHandle)}";
 
-            g20.SetText("PID", e.TargetRowHandle, g10.GetText("ID", e.SourceRowHandle));
-        }
+        //    g20.SetText("PID", e.TargetRowHandle, g10.GetText("ID", e.SourceRowHandle));
+        //}
 
         //private void g10_RowsDropped(object sender, int source, int target, RowsDropEventArgs e)
         //{

@@ -38,7 +38,18 @@ namespace Frms
         }
         private void pnlCodeDetail_CustomButtonClick(object sender, DevExpress.XtraBars.Docking2010.BaseButtonEventArgs e)
         {
-            grdDtl.Save<FrwCde>();
+            if (e.Button.Properties.Caption == "Save")
+            {
+                grdDtl.Save<FrwCde>();
+            }
+            else if (e.Button.Properties.Caption == "New")
+            {
+                grdDtl.AddNewDoc();
+            }
+            else if (e.Button.Properties.Caption == "Open")
+            {
+                grdDtl.Open<FrwCde>();
+            }
         }
     }
 }

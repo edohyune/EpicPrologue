@@ -1,4 +1,4 @@
-﻿namespace Ctrls
+namespace Ctrls
 {
     partial class UCDataSet
     {

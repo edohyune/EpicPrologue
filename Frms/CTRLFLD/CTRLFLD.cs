@@ -13,12 +13,6 @@ namespace Frms
             InitializeComponent();
         }
 
-        private void pnlMain_CustomButtonClick(object sender, DevExpress.XtraBars.Docking2010.BaseButtonEventArgs e)
-        {
-            grdFrmCtrl.Open<FrmCtrl>();
-            grdWrkFld.Open<WrkFld>();
-        }
-
         #region DrugDrop
         private void grdFrmCtrl_UCMouseDown(object sender, MouseEventArgs e)
         {
@@ -134,6 +128,12 @@ namespace Frms
                     }
                 }
             }
+        }
+
+        private void pnlFrmCtrl_CustomButtonClick(object sender, DevExpress.XtraBars.Docking2010.BaseButtonEventArgs e)
+        {
+            grdFrmCtrl.Open<FrmCtrl>();
+            grdWrkFld.Open<WrkFld>();
         }
     }
 }

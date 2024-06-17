@@ -1,4 +1,4 @@
-﻿using Dapper;
+using Dapper;
 using DevExpress.XtraGrid.Columns;
 using Lib;
 using Lib.Repo;
@@ -60,9 +60,7 @@ namespace Ctrls
 
         public void Open()
         {
-
             Common.gMsg = $"{Environment.NewLine}-- {thisNm}.Open<T>() ------------------------>>";
-
             WrkGetRepo wrkGetRepo = new WrkGetRepo();
             List<WrkGet> wrkGets = wrkGetRepo.GetPullFlds(frwId, frmId, thisNm);
             DSearchParam = new DynamicParameters();
@@ -73,7 +71,6 @@ namespace Ctrls
                 DSearchParam.Add(wrkGet.FldNm, tmp);
                 Common.gMsg = $"Declare {wrkGet.FldNm} varchar ='{tmp}'";
             }
-
             OpenWrk();
         }
 
@@ -123,55 +120,76 @@ namespace Ctrls
             }
         }
 
-        private void SetControlValue(Control ctrl, string ctrlNm, string toolNm, dynamic value)
+
+        public void SetControlValue(Control uc, string ctrlNm, string toolNm, dynamic value)
         {
-            //var ctrl = uc.Controls.Find(ctrlNm, true).FirstOrDefault();
-            if (ctrl != null)
+            var ctrl = uc.Controls.Find(ctrlNm, true).FirstOrDefault(); if (ctrl != null)
             {
-                switch (toolNm.ToLower())
+                var controlType = toolNm.ToLower();
+                var bindValue = value.ToString(); // 각 컨트롤 유형별로 바인드할 속성 정보를 정의합니다.
+                var bindPropertyMapping = new CtrlMstRepo().GetBindPropertyMapping();
+                if (bindPropertyMapping.ContainsKey(controlType))
                 {
-                    case "uctextbox":
-                    case "uctext":
-                        UCTextBox uctxt = ctrl as UCTextBox;
-                        if (uctxt != null)
-                        {
-                            uctxt.BindText = value.ToString();
-                        }
-                        break;
-                    case "ucdatebox":
-                    case "ucdate":
-                        UCDateBox ucdate = ctrl as UCDateBox;
-                        if (ucdate != null)
-                        {
-                            ucdate.BindText = value.ToString();
-                        }
-                        break;
-                    case "uccombo":
-                        UCLookUp uccombo = ctrl as UCLookUp;
-                        if (uccombo != null)
-                        {
-                            uccombo.BindText = value.ToString();
-                        }
-                        break;
-                    case "uccheckbox":
-                        UCCheckBox uccheckbox = ctrl as UCCheckBox;
-                        if (uccheckbox != null)
-                        {
-                            uccheckbox.BindValue = value;
-                        }
-                        break;
-                    case "ucmemo":
-                        UCMemo ucmemo = ctrl as UCMemo;
-                        if (ucmemo != null)
-                        {
-                            ucmemo.BindText = value.ToString();
-                        }
-                        break;
-                    default:
-                        break;
+                    var propertyName = bindPropertyMapping[controlType];
+                    var property = ctrl.GetType().GetProperty(propertyName);
+                    if (property != null)
+                    {
+                        var convertedValue = Convert.ChangeType(bindValue, property.PropertyType);
+                        property.SetValue(ctrl, convertedValue);
+                    }
                 }
             }
         }
+
+        //private void SetControlValue(Control ctrl, string ctrlNm, string toolNm, dynamic value)
+        //{
+        //    //var ctrl = uc.Controls.Find(ctrlNm, true).FirstOrDefault();
+        //    if (ctrl != null)
+        //    {
+        //        switch (toolNm.ToLower())
+        //        {
+        //            case "uctextbox":
+        //            case "uctext":
+        //                UCTextBox uctxt = ctrl as UCTextBox;
+        //                if (uctxt != null)
+        //                {
+        //                    uctxt.BindText = value.ToString();
+        //                }
+        //                break;
+        //            case "ucdatebox":
+        //            case "ucdate":
+        //                UCDateBox ucdate = ctrl as UCDateBox;
+        //                if (ucdate != null)
+        //                {
+        //                    ucdate.BindText = value.ToString();
+        //                }
+        //                break;
+        //            case "uccombo":
+        //                UCLookUp uccombo = ctrl as UCLookUp;
+        //                if (uccombo != null)
+        //                {
+        //                    uccombo.BindText = value.ToString();
+        //                }
+        //                break;
+        //            case "uccheckbox":
+        //                UCCheckBox uccheckbox = ctrl as UCCheckBox;
+        //                if (uccheckbox != null)
+        //                {
+        //                    uccheckbox.BindValue = value;
+        //                }
+        //                break;
+        //            case "ucmemo":
+        //                UCMemo ucmemo = ctrl as UCMemo;
+        //                if (ucmemo != null)
+        //                {
+        //                    ucmemo.BindText = value.ToString();
+        //                }
+        //                break;
+        //            default:
+        //                break;
+        //        }
+        //    }
+        //}
 
         private string GetParamValue(ControlCollection frm, WrkGet wrkGet)
         {

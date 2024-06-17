@@ -45,7 +45,6 @@ namespace Frms.TST
             sNm = new UCTextBox();
             sId = new UCTextBox();
             ucPanel1 = new UCPanel();
-            g10 = new UCGridSet();
             ucSplit2 = new UCSplit();
             ucPanel2 = new UCPanel();
             txtAge = new UCTextBox();
@@ -53,6 +52,7 @@ namespace Frms.TST
             txtId = new UCTextBox();
             ucPanel3 = new UCPanel();
             g20 = new UCGridSet();
+            g10 = new UCGridNav();
             ((System.ComponentModel.ISupportInitialize)ucSplit1).BeginInit();
             ucSplit1.Panel1.SuspendLayout();
             ucSplit1.Panel2.SuspendLayout();
@@ -65,7 +65,6 @@ namespace Frms.TST
             ucPanel4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)ucPanel1).BeginInit();
             ucPanel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)g10).BeginInit();
             ((System.ComponentModel.ISupportInitialize)ucSplit2).BeginInit();
             ucSplit2.Panel1.SuspendLayout();
             ucSplit2.Panel2.SuspendLayout();
@@ -75,6 +74,7 @@ namespace Frms.TST
             ((System.ComponentModel.ISupportInitialize)ucPanel3).BeginInit();
             ucPanel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)g20).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)g10).BeginInit();
             SuspendLayout();
             // 
             // ucSplit1
@@ -135,6 +135,8 @@ namespace Frms.TST
             sAge.ButtonVisiable = false;
             sAge.ControlWidth = 180;
             sAge.EditYn = false;
+            sAge.FontFace = "Tahoma";
+            sAge.FontSize = 9F;
             sAge.Location = new Point(10, 83);
             sAge.Name = "sAge";
             sAge.ShowYn = true;
@@ -151,6 +153,8 @@ namespace Frms.TST
             sNm.ButtonVisiable = false;
             sNm.ControlWidth = 180;
             sNm.EditYn = false;
+            sNm.FontFace = "Tahoma";
+            sNm.FontSize = 9F;
             sNm.Location = new Point(10, 57);
             sNm.Name = "sNm";
             sNm.ShowYn = true;
@@ -167,6 +171,8 @@ namespace Frms.TST
             sId.ButtonVisiable = false;
             sId.ControlWidth = 180;
             sId.EditYn = false;
+            sId.FontFace = "Tahoma";
+            sId.FontSize = 9F;
             sId.Location = new Point(10, 31);
             sId.Name = "sId";
             sId.ShowYn = true;
@@ -191,23 +197,6 @@ namespace Frms.TST
             ucPanel1.TabIndex = 0;
             ucPanel1.Text = "People";
             ucPanel1.CustomButtonClick += ucPanel1_CustomButtonClick;
-            // 
-            // g10
-            // 
-            g10.ColumnAutoWidth = true;
-            g10.Dock = DockStyle.Fill;
-            g10.FocuseRowIndex = int.MinValue;
-            g10.Location = new Point(2, 23);
-            g10.MultiSelect = false;
-            g10.MultiSelectMode = DevExpress.XtraGrid.Views.Grid.GridMultiSelectMode.RowSelect;
-            g10.Name = "g10";
-            g10.RowAutoHeigh = false;
-            g10.ShowFindPanel = false;
-            g10.ShowGroupPanel = true;
-            g10.Size = new Size(312, 314);
-            g10.TabIndex = 0;
-            g10.MouseDown += gvCtrl_MouseDown;
-            g10.MouseMove += gvCtrl_MouseMove;
             // 
             // ucSplit2
             // 
@@ -250,6 +239,8 @@ namespace Frms.TST
             txtAge.ButtonVisiable = false;
             txtAge.ControlWidth = 180;
             txtAge.EditYn = false;
+            txtAge.FontFace = "Tahoma";
+            txtAge.FontSize = 9F;
             txtAge.Location = new Point(10, 83);
             txtAge.Name = "txtAge";
             txtAge.ShowYn = true;
@@ -266,6 +257,8 @@ namespace Frms.TST
             txtNm.ButtonVisiable = false;
             txtNm.ControlWidth = 180;
             txtNm.EditYn = false;
+            txtNm.FontFace = "Tahoma";
+            txtNm.FontSize = 9F;
             txtNm.Location = new Point(10, 57);
             txtNm.Name = "txtNm";
             txtNm.ShowYn = true;
@@ -282,6 +275,8 @@ namespace Frms.TST
             txtId.ButtonVisiable = false;
             txtId.ControlWidth = 180;
             txtId.EditYn = false;
+            txtId.FontFace = "Tahoma";
+            txtId.FontSize = 9F;
             txtId.Location = new Point(10, 31);
             txtId.Name = "txtId";
             txtId.ShowYn = true;
@@ -312,6 +307,7 @@ namespace Frms.TST
             g20.ColumnAutoWidth = true;
             g20.Dock = DockStyle.Fill;
             g20.FocuseRowIndex = int.MinValue;
+            g20.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             g20.Location = new Point(2, 23);
             g20.MultiSelect = false;
             g20.MultiSelectMode = DevExpress.XtraGrid.Views.Grid.GridMultiSelectMode.RowSelect;
@@ -321,8 +317,24 @@ namespace Frms.TST
             g20.ShowGroupPanel = true;
             g20.Size = new Size(476, 311);
             g20.TabIndex = 0;
-            g20.DragDrop += gcGrid_DragDrop;
-            g20.DragEnter += gcGrid_DragEnter;
+            g20.DragDrop += targetGrid_DragDrop;
+            g20.DragEnter += targetGrid_DragEnter;
+            // 
+            // g10
+            // 
+            g10.ColumnAutoWidth = true;
+            g10.Dock = DockStyle.Fill;
+            g10.FocuseRowIndex = int.MinValue;
+            g10.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            g10.Location = new Point(2, 23);
+            g10.MultiSelect = false;
+            g10.MultiSelectMode = DevExpress.XtraGrid.Views.Grid.GridMultiSelectMode.RowSelect;
+            g10.Name = "g10";
+            g10.RowAutoHeigh = false;
+            g10.ShowFindPanel = false;
+            g10.ShowGroupPanel = true;
+            g10.Size = new Size(312, 314);
+            g10.TabIndex = 0;
             // 
             // GridSet
             // 
@@ -344,7 +356,6 @@ namespace Frms.TST
             ucPanel4.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)ucPanel1).EndInit();
             ucPanel1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)g10).EndInit();
             ucSplit2.Panel1.ResumeLayout(false);
             ucSplit2.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)ucSplit2).EndInit();
@@ -354,6 +365,7 @@ namespace Frms.TST
             ((System.ComponentModel.ISupportInitialize)ucPanel3).EndInit();
             ucPanel3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)g20).EndInit();
+            ((System.ComponentModel.ISupportInitialize)g10).EndInit();
             ResumeLayout(false);
         }
         #endregion
@@ -371,7 +383,7 @@ namespace Frms.TST
         private Ctrls.UCTextBox sAge;
         private Ctrls.UCTextBox sNm;
         private Ctrls.UCTextBox sId;
-        private UCGridSet g10;
         private UCGridSet g20;
+        private UCGridNav g10;
     }
 }
