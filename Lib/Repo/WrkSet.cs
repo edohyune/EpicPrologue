@@ -209,5 +209,10 @@ update a
                 db.OpenExecute(sql, wrkSet);
             }
         }
+
+        public List<WrkSet> GetDependentWrkSets(string frwId, string frmId, string thisNm, string fieldName)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

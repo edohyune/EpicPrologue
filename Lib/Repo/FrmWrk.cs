@@ -129,9 +129,9 @@ namespace Lib.Repo
     }
     public interface IFrmWrkRepo
     {
-        List<FrmWrk> GetByWorkSetsOpenOrderby(string frwId, string frmId);
+        List<FrmWrk> GetByWorkSetsOrderby(string frwId, string frmId);
         List<FrmWrk> GetByWorkSetsSaveOrderby(string frwId, string frmId);
-        List<FrmWrk> GetByFieldSets(string frwId, string frmId);
+        List<FrmWrk> GetByWorkSets(string frwId, string frmId);
         List<FrmWrk> GetByDataSets(string frwId, string frmId);
         List<FrmWrk> GetByGridSets(string frwId, string frmId);
         FrmWrk GetByWorkSet(string frwId, string frmId, string ctrlNm);
@@ -141,7 +141,7 @@ namespace Lib.Repo
     }
     public class FrmWrkRepo : IFrmWrkRepo
     {
-        public List<FrmWrk> GetByWorkSetsOpenOrderby(string frwId, string frmId)
+        public List<FrmWrk> GetByWorkSetsOrderby(string frwId, string frmId)
         {
             string sql = @"
 select a.FrwId, a.FrmId, a.WrkId, a.CtrlNm, a.WrkNm,
@@ -206,7 +206,7 @@ select a.FrwId, a.FrmId, a.WrkId, a.CtrlNm, a.WrkNm,
             }
         }
 
-        public List<FrmWrk> GetByFieldSets(string frwId, string frmId)
+        public List<FrmWrk> GetByWorkSets(string frwId, string frmId)
         {
             string sql = @"
 select a.FrwId, a.FrmId, a.WrkId, a.CtrlNm, a.WrkNm,
@@ -218,7 +218,6 @@ select a.FrwId, a.FrmId, a.WrkId, a.CtrlNm, a.WrkNm,
  where 1=1
    and a.FrwId = @FrwId
    and a.FrmId = @FrmId
-   and a.WrkCd = 'FieldSet'
  order by a.OpenSq 
 ";
             using (var db = new Lib.GaiaHelper())

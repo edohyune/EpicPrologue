@@ -1,5 +1,6 @@
 using Dapper;
 using DevExpress.XtraGrid.Columns;
+using DevExpress.XtraScheduler.Drawing;
 using Lib;
 using Lib.Repo;
 using System.CodeDom;
@@ -11,11 +12,11 @@ using static System.Windows.Forms.Control;
 
 namespace Ctrls
 {
-    public class UCFieldSet : UserControl
+    public class UCFieldSet : UserControl, IWorkSet
     {
         public string frwId { get; set; }
         public string frmId { get; set; }
-        public string thisNm { get; set; }
+        public string wrkId { get; set; }
         private WrkFld wrkFld { get; set; }
         private WrkFldRepo wrkFldRepo { get; set; }
         private List<WrkFld> wrkFlds { get; set; }
@@ -31,16 +32,15 @@ namespace Ctrls
         {
             frwId = _frwId;
             frmId = _frmId;
-            thisNm = _thisNm;
+            wrkId = _thisNm;
 
             InitializeField();
         }
-
         public void InitializeField()
         {
             //  - 필드셋의 컨트롤 정보를 불러온다.(frwId, frmId, ctrlNm)
             wrkFldRepo = new WrkFldRepo();
-            wrkFlds = wrkFldRepo.GetFldsProperties(frwId, frmId, thisNm);
+            wrkFlds = wrkFldRepo.GetFldsProperties(frwId, frmId, wrkId);
 
             //동적 모델을 생성한다. 
             Model = new DynamicModel();
@@ -49,20 +49,20 @@ namespace Ctrls
             foreach (WrkFld wrkFld in wrkFlds)
             {
                 Model.SetDynamicProperty(wrkFld.FldNm, wrkFld.DefaultText);
-
-                //PropertyInfo propertyInfo = this.GetType().GetProperty(wrkFld.FldNm);
-                //if (propertyInfo != null)
-                //{
-                //    propertyInfo.SetValue(this, wrkFld.DefaultText);
-                //}
+                Control ctrl = this.Controls.Find(wrkFld.FldNm, true).FirstOrDefault();
+                if (ctrl != null)
+                {
+                    BindControl(ctrl, wrkFld.ToolNm, wrkFld);
+                    SetControlValue(ctrl, wrkFld.FldNm, wrkFld.ToolNm, wrkFld.DefaultText);
+                }
             }
         }
 
         public void Open()
         {
-            Common.gMsg = $"{Environment.NewLine}-- {thisNm}.Open<T>() ------------------------>>";
+            Common.gMsg = $"{Environment.NewLine}-- {wrkId}.Open<T>() ------------------------>>";
             WrkGetRepo wrkGetRepo = new WrkGetRepo();
-            List<WrkGet> wrkGets = wrkGetRepo.GetPullFlds(frwId, frmId, thisNm);
+            List<WrkGet> wrkGets = wrkGetRepo.GetPullFlds(frwId, frmId, wrkId);
             DSearchParam = new DynamicParameters();
 
             foreach (var wrkGet in wrkGets)
@@ -80,10 +80,10 @@ namespace Ctrls
             {
                 // 1. 모델 정보 가져오기
                 WrkFldRepo wrkFldRepo = new WrkFldRepo();
-                List<WrkFld> flds = wrkFldRepo.GetFldsProperties(frwId, frmId, thisNm);
+                List<WrkFld> flds = wrkFldRepo.GetFldsProperties(frwId, frmId, wrkId);
 
                 // 2. SQL 쿼리 실행 및 결과 가져오기
-                var sql = GenFunc.GetSql(new { FrwId = frwId, FrmId = frmId, WrkId = thisNm, CRUDM = "R" });
+                var sql = GenFunc.GetSql(new { FrwId = frwId, FrmId = frmId, WrkId = wrkId, CRUDM = "R" });
                 
                 using (var db = new GaiaHelper())
                 {
@@ -101,11 +101,11 @@ namespace Ctrls
                             {
                                 //objDict[fld.FldNm] = resultDict[fld.FldNm];
                                 Model.SetDynamicProperty(fld.FldNm, resultDict[fld.FldNm]);
-                            }
-                            Control ctrl = this.FindForm().Controls.Find(fld.FldNm, true).FirstOrDefault(); // 컨트롤 찾기
-                            if (ctrl != null && resultDict.ContainsKey(fld.FldNm))
-                            {
-                                SetControlValue(ctrl, fld.CtrlNm, fld.ToolNm, resultDict[fld.FldNm]); // 컨트롤 값 설정
+                                Control ctrl = this.FindForm().Controls.Find(fld.FldNm, true).FirstOrDefault(); // 컨트롤 찾기
+                                if (ctrl != null && resultDict.ContainsKey(fld.FldNm))
+                                {
+                                    SetControlValue(ctrl, fld.CtrlNm, fld.ToolNm, resultDict[fld.FldNm]); // 컨트롤 값 설정
+                                }
                             }
                         }
                     }
@@ -113,25 +113,60 @@ namespace Ctrls
             }
             catch (Exception e)
             {
-                Common.gMsg = $"-- {thisNm}. Exception ----------------------------->>";
-                Common.gMsg = $"UCFieldSet_OpenWrk() : {Environment.NewLine}--frwId : {frwId}{Environment.NewLine}-- frmId : {frmId}{Environment.NewLine}-- WorkSet : {thisNm}{Environment.NewLine}Exception :";
+                Common.gMsg = $"-- {wrkId}. Exception ----------------------------->>";
+                Common.gMsg = $"UCFieldSet_OpenWrk() : {Environment.NewLine}--frwId : {frwId}{Environment.NewLine}-- frmId : {frmId}{Environment.NewLine}-- WorkSet : {wrkId}{Environment.NewLine}Exception :";
                 Common.gMsg = $"{e.Message}";
-                Common.gMsg = $"-- {thisNm}.End Exception -------------------------->>";
+                Common.gMsg = $"-- {wrkId}.End Exception -------------------------->>";
             }
         }
 
+        private void BindControl(Control ctrl, string toolNm, WrkFld wrkFld)
+        {
+            var controlType = toolNm.ToLower();
+            var bindPropertyMapping = new CtrlMstRepo().GetBindPropertyMapping();
+            var bindEventMapping = new CtrlMstRepo().GetBindEventMapping();
+
+            if (bindPropertyMapping.ContainsKey(controlType) && bindEventMapping.ContainsKey(controlType))
+            {
+                var propertyName = bindPropertyMapping[controlType];
+                var eventName = bindEventMapping[controlType];
+                var property = ctrl.GetType().GetProperty(propertyName);
+
+                if (property != null)
+                {
+                    EventInfo eventInfo = ctrl.GetType().GetEvent(eventName);
+                    if (eventInfo != null)
+                    {
+                        eventInfo.AddEventHandler(ctrl, new EventHandler((s, e) => OnControlValueChanged(wrkFld.FldNm, property.GetValue(ctrl))));
+                    }
+                }
+            }
+        }
 
         public void SetControlValue(Control uc, string ctrlNm, string toolNm, dynamic value)
         {
-            var ctrl = uc.Controls.Find(ctrlNm, true).FirstOrDefault(); if (ctrl != null)
+            var ctrl = uc.Controls.Find(ctrlNm, true).FirstOrDefault();
+            if (ctrl != null)
             {
                 var controlType = toolNm.ToLower();
                 var bindValue = value.ToString(); // 각 컨트롤 유형별로 바인드할 속성 정보를 정의합니다.
                 var bindPropertyMapping = new CtrlMstRepo().GetBindPropertyMapping();
+
                 if (bindPropertyMapping.ContainsKey(controlType))
                 {
                     var propertyName = bindPropertyMapping[controlType];
                     var property = ctrl.GetType().GetProperty(propertyName);
+
+                    if (property != null)
+                    {
+                        var convertedValue = Convert.ChangeType(bindValue, property.PropertyType);
+                        property.SetValue(ctrl, convertedValue);
+                    }
+                }
+                else
+                {
+                    // 기본 Text 속성에 바인딩
+                    var property = ctrl.GetType().GetProperty("Text");
                     if (property != null)
                     {
                         var convertedValue = Convert.ChangeType(bindValue, property.PropertyType);
@@ -141,55 +176,22 @@ namespace Ctrls
             }
         }
 
-        //private void SetControlValue(Control ctrl, string ctrlNm, string toolNm, dynamic value)
-        //{
-        //    //var ctrl = uc.Controls.Find(ctrlNm, true).FirstOrDefault();
-        //    if (ctrl != null)
-        //    {
-        //        switch (toolNm.ToLower())
-        //        {
-        //            case "uctextbox":
-        //            case "uctext":
-        //                UCTextBox uctxt = ctrl as UCTextBox;
-        //                if (uctxt != null)
-        //                {
-        //                    uctxt.BindText = value.ToString();
-        //                }
-        //                break;
-        //            case "ucdatebox":
-        //            case "ucdate":
-        //                UCDateBox ucdate = ctrl as UCDateBox;
-        //                if (ucdate != null)
-        //                {
-        //                    ucdate.BindText = value.ToString();
-        //                }
-        //                break;
-        //            case "uccombo":
-        //                UCLookUp uccombo = ctrl as UCLookUp;
-        //                if (uccombo != null)
-        //                {
-        //                    uccombo.BindText = value.ToString();
-        //                }
-        //                break;
-        //            case "uccheckbox":
-        //                UCCheckBox uccheckbox = ctrl as UCCheckBox;
-        //                if (uccheckbox != null)
-        //                {
-        //                    uccheckbox.BindValue = value;
-        //                }
-        //                break;
-        //            case "ucmemo":
-        //                UCMemo ucmemo = ctrl as UCMemo;
-        //                if (ucmemo != null)
-        //                {
-        //                    ucmemo.BindText = value.ToString();
-        //                }
-        //                break;
-        //            default:
-        //                break;
-        //        }
-        //    }
-        //}
+        public void Save()
+        {
+            SaveWrk();
+        }
+        private void SaveWrk()
+        { 
+            return;
+        }
+        public void Save<T>()
+        {
+            //FieldSet을 저장한다. 
+            //  - DefaultValue를 가져온다. 
+            //  - FieldSet의 ChangedFlag의 MdlStat를 이용해 구분한다. 
+            //  - insert update 쿼리를 불러와서 실행한다.
+            return;
+        }
 
         private string GetParamValue(ControlCollection frm, WrkGet wrkGet)
         {
@@ -220,19 +222,14 @@ namespace Ctrls
             //FieldSet을 초기화한다.
             return;
         }
+        public void New()
+        {
+            NewDocument();
+        }
 
         private void NewDocument()
         {
             //FieldSet을 초기화하고 신규데이터를 받을 준비를 한다. 
-            return;
-        }
-
-        public void Save<T>()
-        {
-            //FieldSet을 저장한다. 
-            //  - DefaultValue를 가져온다. 
-            //  - FieldSet의 ChangedFlag의 MdlStat를 이용해 구분한다. 
-            //  - insert update 쿼리를 불러와서 실행한다.
             return;
         }
 
@@ -244,23 +241,23 @@ namespace Ctrls
             //  - delete 쿼리를 불러와서 실행한다.
         }
 
+        private void OnControlValueChanged(string fieldName, dynamic newValue)
+        {
+            // 동적 모델에 새로운 값을 설정
+            Model.SetDynamicProperty(fieldName, newValue);
+            // 데이터 변경 이벤트를 트리거
+            OnDataChanged(new DataChangedEventArgs(fieldName, newValue));
+        }
+
         public event EventHandler<DataChangedEventArgs> DataChanged;
-        protected virtual void OnDataChanged(DataChangedEventArgs e)
+
+        public virtual void OnDataChanged(DataChangedEventArgs e)
         {
             DataChanged?.Invoke(this, e);
         }
-    }
-}
-
-
-public class DataChangedEventArgs : EventArgs
-{
-    public string FieldName { get; }
-    public dynamic NewValue { get; }
-
-    public DataChangedEventArgs(string fieldName, dynamic newValue)
-    {
-        FieldName = fieldName;
-        NewValue = newValue;
+        public void OnDataChanged(DevExpress.Data.ChartDataSources.DataChangedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

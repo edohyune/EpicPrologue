@@ -1,53 +1,119 @@
-using DevExpress.Utils.DirectXPaint;
-using DevExpress.XtraPrinting.Native;
 using System.ComponentModel;
+using Lib.Repo;
+using Lib;
 
 namespace Ctrls
 {
     public class UCButton : DevExpress.XtraEditors.SimpleButton
     {
-        private string sysCd { get; set; }
+        private string frwId { get; set; }
         private string frmId { get; set; }
-        private string fldId { get; set; }
+        private string thisNm { get; set; }
 
         [Category("A UserController Property"), Description("Title Alignment")]
         public DevExpress.Utils.HorzAlignment TitleAlignment
         {
             get
             {
-                return this.btnCtrl.Appearance.TextOptions.HAlignment;
+                return this.Appearance.TextOptions.HAlignment;
             }
             set
             {
-                this.btnCtrl.Appearance.TextOptions.HAlignment = value;
+                this.Appearance.TextOptions.HAlignment = value;
             }
         }
-
+        [Category("A UserController Property"), Description("Visiable")] //chk
+        public bool ShowYn
+        {
+            get
+            {
+                return this.Visible;
+            }
+            set
+            {
+                this.Visible = value;
+            }
+        }
+        [Category("A UserController Property"), Description("Font Face")] //chk
+        public string FontFace
+        {
+            get
+            {
+                return this.Font.Name;
+            }
+            set
+            {
+                this.Font = new Font(value, this.Font.Size, this.Font.Style);
+            }
+        }
+        [Category("A UserController Property"), Description("Font Size")] //chk
+        public float FontSize
+        {
+            get
+            {
+                return this.Font.Size;
+            }
+            set
+            {
+                this.Font = new Font(this.Font.Name, value, this.Font.Style);
+            }
+        }
+        [Category("A UserController Property"), Description("Font Size")] //chk
+        public System.Drawing.FontStyle FontBold
+        {
+            get
+            {
+                return this.Font.Style;
+            }
+            set
+            {
+                this.Font = new Font(this.Font.Name, this.Font.Size, value);
+            }
+        }
+        [Category("A UserController Property"), Description("Height")]
+        public int ControlHeight
+        {
+            get
+            {
+                return this.Height;
+            }
+            set
+            {
+                this.Height = value;
+            }
+        }
+        [Category("A UserController Property"), Description("Width")] //chk
+        public int ControlWidth
+        {
+            get
+            {
+                return this.Width;
+            }
+            set
+            {
+                this.Width = value;
+            }
+        }
         [Category("A UserController Property"), Description("Editable=Enable=Not ReadOnly")] //chk
         public bool EditYn
         {
             get
             {
-                return this.btnCtrl.Enabled;
+                return this.Enabled;
             }
             set
             {
-                this.btnCtrl.Enabled = value;
+                this.Enabled = value;
             }
         }
 
-
-        public DevExpress.XtraEditors.SimpleButton btnCtrl { get; set; }
-
         public UCButton()
         {
-            btnCtrl = new DevExpress.XtraEditors.SimpleButton();
+            this.Appearance.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Appearance.Options.UseFont = true;
+            this.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.Simple;
+            this.Text = "UCButton";
 
-            btnCtrl.Appearance.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            btnCtrl.Appearance.Options.UseFont = true;
-            btnCtrl.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.Simple;
-
-            btnCtrl.Text = "UCButton";
             HandleCreated += UCButton_HandleCreated;
         }
 
@@ -56,50 +122,37 @@ namespace Ctrls
             frmId = Lib.Common.GetValue("gFrameWorkId");
 
             Form ? form = this.FindForm();
-            if (form != null)
-            {
-                frmId = form.Name;
-            }
-            else
-            {
-                frmId = "Unknown";
-            }
-            fldId = this.Name;
 
-            //Design모드에서 DB에서 설정값을 가져오지 않기
-            if (sysCd != string.Empty)
-            {
-                ResetCtrl();
+            if (form != null) frmId = form.Name;
+            else frmId = "Unknown";
 
-            }
+            thisNm = this.Name;
 
+            if (thisNm != string.Empty) ResetCtrl();
         }
 
         private void ResetCtrl()
         {
             try
             {
-                Lib.Common.gMsg = $"UCButton : {sysCd}.{frmId}.{fldId}";
-                using (var db = new Lib.GaiaHelper())
+                var wrkFld = new WrkFldRepo().GetFldProperties(frwId, frmId, thisNm);
+                if (wrkFld != null)
                 {
-                    //var ucInfo = db.GetUc(new { sys = SysCode, frm = FrmID, ctrl = FldID }).SingleOrDefault();
-                    //if (ucInfo != null)
-                    //{
-                    //    this.Title = ucInfo.Title;
-                    //    this.TitleWidth = ucInfo.TitleW;
-                    //    this.labelCtrl.Visible = (ucInfo.Show_chk == "0" ? false : true);
-                    //    this.textCtrl.Visible = (ucInfo.Show_chk == "0" ? false : true);
-                    //    this.labelCtrl.Appearance.TextOptions.HAlignment = GenFunc.StrToAlign(ucInfo.TitleAlign);
-                    //    this.Text = ucInfo.Txt;
-                    //    this.textCtrl.Properties.Appearance.TextOptions.HAlignment = GenFunc.StrToAlign(ucInfo.TxtAlign);
-                    //    this.textCtrl.ReadOnly = (ucInfo.Edit_chk == "1" ? false : true);
-                    //}
+                    this.Text = wrkFld.FldTitle;
+                    this.ControlWidth = wrkFld.FldWidth;
+                    this.ControlHeight = wrkFld.FldHeight;
+                    this.ShowYn = wrkFld.ShowYn;
+                    this.Appearance.TextOptions.HAlignment = GenFunc.StrToAlign(wrkFld.TextAlign);
+                    this.Enabled = wrkFld.EditYn;
                 }
             }
             catch (Exception ex)
             {
-                Lib.Common.gMsg = $"Exception : {ex}";
+                Lib.Common.gMsg = $"UCButton_HandleCreated>>ResetCtrl{Environment.NewLine}Exception : {ex.Message}";
             }
+
+
+
         }
     }
 }

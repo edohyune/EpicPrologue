@@ -24,7 +24,7 @@ namespace Lib
             return new Dictionary<string, string>(commonValues);
         }
 
-        private static void RefreshCache()
+        private static void InitGlobalVariable()
         {
             commonValues["gId"] = string.Empty;
             commonValues["gRegId"] = string.Empty;
@@ -34,6 +34,23 @@ namespace Lib
             commonValues["gUserProfilePath"] = string.Empty;
             commonValues["gIniFilePath"] = string.Empty;
             commonValues["gOpenFrm"] = string.Empty;
+            commonValues["today"] = DateTime.Today.ToString("d");
+            // 필요한 경우 여기에서 DB나 다른 소스로부터 값을 가져오는 로직 추가
+
+            lastCacheUpdateTime = DateTime.Now; // 캐시 업데이트 시간 기록
+        }
+
+        private static void RefreshCache()
+        {
+            //commonValues["gId"] = string.Empty;
+            //commonValues["gRegId"] = string.Empty;
+            //commonValues["gNm"] = string.Empty;
+            //commonValues["gCls"] = string.Empty;
+            //commonValues["gFrameWorkId"] = string.Empty;
+            //commonValues["gUserProfilePath"] = string.Empty;
+            //commonValues["gIniFilePath"] = string.Empty;
+            //commonValues["gOpenFrm"] = string.Empty;
+            commonValues["today"] = DateTime.Today.ToString("d");
             // 필요한 경우 여기에서 DB나 다른 소스로부터 값을 가져오는 로직 추가
 
             lastCacheUpdateTime = DateTime.Now; // 캐시 업데이트 시간 기록

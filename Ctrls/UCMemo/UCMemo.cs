@@ -1,4 +1,4 @@
-using System;
+ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -54,7 +54,18 @@ namespace Ctrls
                 this.Width = value;
             }
         }
-
+        [Category("A UserController Property"), Description("Height")]
+        public int ControlHeight
+        {
+            get
+            {
+                return this.Height;
+            }
+            set
+            {
+                this.Height = value;
+            }
+        }
         [Category("A UserController Property"), Description("Title Width")]
         public int TitleWidth
         {
@@ -106,6 +117,32 @@ namespace Ctrls
                 this.BindText = value;  // Text가 업데이트 될 때 BindText도 업데이트
             }
         }
+        [Category("A UserController Property"), Description("Font Face")] //chk
+        public string FontFace
+        {
+            get
+            {
+                return this.memoCtrl.Font.Name;
+            }
+            set
+            {
+                this.labelCtrl.Font = new Font(value, this.memoCtrl.Font.Size);
+                this.memoCtrl.Font = new Font(value, this.memoCtrl.Font.Size);
+            }
+        }
+        [Category("A UserController Property"), Description("Font Size")] //chk
+        public float FontSize
+        {
+            get
+            {
+                return this.memoCtrl.Font.Size;
+            }
+            set
+            {
+                this.memoCtrl.Font = new Font(this.memoCtrl.Font.Name, value);
+                this.labelCtrl.Font = new Font(this.labelCtrl.Font.Name, value);
+            }
+        }
         [Category("A UserController Property"), Description("Text Alignment")] //chk
         public DevExpress.Utils.HorzAlignment TextAlignment
         {
@@ -125,11 +162,11 @@ namespace Ctrls
         {
             get
             {
-                return memoCtrl.ReadOnly;
+                return !(memoCtrl.ReadOnly);
             }
             set
             {
-                memoCtrl.ReadOnly = value;
+                memoCtrl.ReadOnly = !value;
             }
         }
         [Category("A UserController Property"), Description("Visiable")] //chk
@@ -209,18 +246,37 @@ namespace Ctrls
             {
                 var wrkFldRepo = new WrkFldRepo();
                 var wrkFld = wrkFldRepo.GetFldProperties(frwId, frmId, thisNm);
-                if (wrkFld!=null)
+                if (wrkFld != null)
                 {
-                    this.labelCtrl.Text = wrkFld.FldNm;
-                    this.Visible = wrkFld.ShowYn;
-                    this.Width = wrkFld.FldWidth;
-                    this.Height = wrkFld.FldHeight;
+                    //wrkFld.FldX와 wrkFld.FldY를 사용하여 위치 설정
+                    this.Location = new Point(wrkFld.FldX, wrkFld.FldY);
+                    this.ControlWidth = wrkFld.FldWidth;
+                    this.ControlHeight = wrkFld.FldHeight;
                     this.TitleWidth = wrkFld.FldTitleWidth;
                     this.Title = wrkFld.FldTitle;
                     this.TitleAlignment = GenFunc.StrToAlign(wrkFld.TitleAlign);
+                    //this. = wrkFld.Popup;
+                    this.Text = wrkFld.DefaultText;
+                    this.TextAlignment = GenFunc.StrToAlign(wrkFld.TextAlign);
+                    //this. = wrkFld.FixYn;
+                    //this. = wrkFld.GroupYn;
                     this.ShowYn = wrkFld.ShowYn;
                     this.NeedYn = wrkFld.NeedYn;
-                    this.EditYn = wrkFld.EditYn ? false : true;
+                    this.EditYn = wrkFld.EditYn;
+                    //this. = wrkFld.Band1;
+                    //this. = wrkFld.Band2;
+                    //this. = wrkFld.FuncStr;
+                    //this. = wrkFld.FormatStr;
+                    //this. = wrkFld.ColorFont;
+                    //this. = wrkFld.ColorBg;
+                    //this. = wrkFld.Seq;
+
+                }
+                else 
+                { 
+                    this.Text = string.Empty;
+                    this.ShowYn = true;
+                    this.EditYn = true;
                 }
             }
             catch (Exception ex)

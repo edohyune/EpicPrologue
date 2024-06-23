@@ -28,8 +28,8 @@ namespace Frms.TST
 
         private void btnTEST01_Click(object sender, EventArgs e)
         {
-            SQLVariableExtractor extractor = new SQLVariableExtractor();
-            SQLSyntaxMatch variables = extractor.ExtractVariables(txtMemo.Text);
+            SyntaxExtractor extractor = new SyntaxExtractor();
+            SyntaxMatch variables = extractor.ExtractVariables(txtMemo.Text);
 
             foreach (var kvp in variables.OPatternMatch)
             {
@@ -39,8 +39,8 @@ namespace Frms.TST
 
         private void btnTEST02_Click(object sender, EventArgs e)
         {
-            SQLVariableExtractor extractor = new SQLVariableExtractor();
-            SQLSyntaxMatch variables = extractor.ExtractVariables(txtMemo.Text);
+            SyntaxExtractor extractor = new SyntaxExtractor();
+            SyntaxMatch variables = extractor.ExtractVariables(txtMemo.Text);
 
             foreach (var kvp in variables.DPatternMatch)
             {
@@ -51,8 +51,8 @@ namespace Frms.TST
 
         private void btnTEST03_Click(object sender, EventArgs e)
         {
-            SQLVariableExtractor extractor = new SQLVariableExtractor();
-            SQLSyntaxMatch variables = extractor.ExtractVariables(txtMemo.Text);
+            SyntaxExtractor extractor = new SyntaxExtractor();
+            SyntaxMatch variables = extractor.ExtractVariables(txtMemo.Text);
 
             foreach (var kvp in variables.GPatternMatch)
             {

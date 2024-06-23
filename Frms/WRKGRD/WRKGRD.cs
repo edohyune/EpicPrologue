@@ -144,7 +144,7 @@ namespace Frms
             frwFrm = cmbForm.SelectedItem as FrwFrm;
 
             frmWrkRepo = new FrmWrkRepo();
-            frmWrks = new BindingList<FrmWrk>(frmWrkRepo.GetByWorkSetsOpenOrderby(frwFrm.FrwId, frwFrm.FrmId));
+            frmWrks = new BindingList<FrmWrk>(frmWrkRepo.GetByWorkSetsOrderby(frwFrm.FrwId, frwFrm.FrmId));
 
             if (frwFrm != null)
             {
@@ -242,6 +242,18 @@ namespace Frms
                     grdSetparamGrid();
                     grdRefDataGrid();
                 }
+            }
+            else if (e.Button.Properties.Caption == "Expanding")
+            {
+                ucSplit2.SplitterDistance = ucSplit2.Parent.Width;
+                //ExpandYn = true;
+                e.Button.Properties.Caption = "Collapsing"; // 캡션 변경
+            }
+            else if (e.Button.Properties.Caption == "Collapsing")
+            {
+                ucSplit2.SplitterDistance = 250;
+                //ExpandYn = false;
+                e.Button.Properties.Caption = "Expanding"; // 캡션 변경
             }
         }
         private void pnlSelect_CustomButtonClick(object sender, DevExpress.XtraBars.Docking2010.BaseButtonEventArgs e)
@@ -556,8 +568,8 @@ namespace Frms
             }
             else if (e.Button.Properties.Caption == "Make GetParameters Data")
             {
-                SQLVariableExtractor extractor = new SQLVariableExtractor();
-                SQLSyntaxMatch cvariables = extractor.ExtractVariables(rtSelect.Text);
+                SyntaxExtractor extractor = new SyntaxExtractor();
+                SyntaxMatch cvariables = extractor.ExtractVariables(rtSelect.Text);
 
                 foreach (var kvp in cvariables.OPatternMatch)
                 {
@@ -708,8 +720,8 @@ namespace Frms
             }
             else if (e.Button.Properties.Caption == "Make Reference Data")
             {
-                SQLVariableExtractor extractor = new SQLVariableExtractor();
-                SQLSyntaxMatch cvariables = extractor.ExtractVariables(rtUpdate.Text);
+                SyntaxExtractor extractor = new SyntaxExtractor();
+                SyntaxMatch cvariables = extractor.ExtractVariables(rtUpdate.Text);
 
                 foreach (var kvp in cvariables.OPatternMatch)
                 {

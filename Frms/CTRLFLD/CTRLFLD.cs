@@ -135,5 +135,11 @@ namespace Frms
             grdFrmCtrl.Open<FrmCtrl>();
             grdWrkFld.Open<WrkFld>();
         }
+
+        private void cmbFrm_UCSelectedIndexChanged(object sender, EventArgs e)
+        {
+            grdFrmCtrl.Open<FrmCtrl>();
+            grdWrkFld.Open<WrkFld>();
+        }
     }
 }

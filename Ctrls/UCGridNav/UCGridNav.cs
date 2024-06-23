@@ -22,10 +22,12 @@ using DevExpress.XtraEditors.Senders;
 using System.Reflection;
 using System.Collections;
 using DevExpress.XtraSpreadsheet.DocumentFormats.Xlsb;
+using System.Windows.Controls;
+using DevExpress.Data.ChartDataSources;
 
 namespace Ctrls
 {
-    public class UCGridNav : DevExpress.XtraGrid.GridControl
+    public class UCGridNav : DevExpress.XtraGrid.GridControl, IWorkSet
     {
         #region Properties Browseable(false) ----------------------------------------------------------
         [EditorBrowsable(EditorBrowsableState.Always)]
@@ -33,17 +35,14 @@ namespace Ctrls
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         public DevExpress.XtraGrid.Views.Grid.GridView gvCtrl { get; private set; }
         [Browsable(false)]
-        private string frwId { get; set; }
+        public string frwId { get; set; }
         [Browsable(false)]
-        private string frmId { get; set; }
+        public string frmId { get; set; }
+
         [Browsable(false)]
         private string nmSpace { get; set; }
         [Browsable(false)]
-        private string thisNm { get; set; }
-        [Browsable(false)]
-        private object OSearchParam;
-        [Browsable(false)]
-        private DynamicParameters DSearchParam;
+        public string wrkId { get; set; }
         private WrkFldRepo wrkFldRepo { get; set; }
         private List<WrkFld> wrkFlds { get; set; }
         #endregion
@@ -122,7 +121,10 @@ namespace Ctrls
         [EditorBrowsable(EditorBrowsableState.Always)]
         public void AddNewDoc()
         {
-            gvCtrl.AddNewRow();
+            if (gvCtrl.RowCount == 0 || gvCtrl.GetFocusedDataSourceRowIndex() == gvCtrl.RowCount - 1)
+            {
+                this.New();
+            }
         }
         [EditorBrowsable(EditorBrowsableState.Always)]
         public void SetDataSource<T>(List<T> lists)
@@ -263,37 +265,18 @@ namespace Ctrls
         }
         #endregion
         #region EVENT ---------------------------------------------------------------------------------
-        public delegate void delEvent(object sender, EventArgs e);   // delegate 선언
-        public event delEvent UCBeforeLeaveRow;
-        private void gvCtrl_BeforeLeaveRow(object sender, RowAllowEventArgs e)
-        {
-            UCBeforeLeaveRow?.Invoke(sender, e);
-        }
-        public delegate void delEventSelectionChanged(object sender, DevExpress.Data.SelectionChangedEventArgs e);   // delegate 선언
-        public event delEventSelectionChanged UCSelectionChanged;
-        private void gvCtrl_SelectionChanged(object sender, DevExpress.Data.SelectionChangedEventArgs e)
-        {
-            UCSelectionChanged?.Invoke(sender, e);
-        }
-        /*
-        gvCtrl.SelectionChanged += gvForms_SelectionChanged;
-        private void gvForms_SelectionChanged(object sender, DevExpress.Data.SelectionChangedEventArgs e)
-        {
-
-        }
-         */
-        public delegate void delEventInitNewRow(object sender, InitNewRowEventArgs e);   // delegate 선언
+        public delegate void delEventInitNewRow(object sender, InitNewRowEventArgs e);
         public event delEventInitNewRow UCInitNewRow;
         private void gvCtrl_InitNewRow(object sender, InitNewRowEventArgs e)
         {
             WrkFldRepo wrkFldRepo = new WrkFldRepo();
-            var wrkFlds = wrkFldRepo.GetColumnProperties(frwId, frmId, thisNm);
+            var wrkFlds = wrkFldRepo.GetColumnProperties(frwId, frmId, wrkId);
             foreach (var wrkFld in wrkFlds)
             {
                 if (wrkFld.DefaultText != null)
                 {
                     string defaultTxt = wrkFld.DefaultText;
-                    defaultTxt = GenFunc.ReplaceGPatternVariable(defaultTxt);
+                    defaultTxt = GenFunc.ReplaceGPatternQuery(defaultTxt);
                     using (var db = new GaiaHelper())
                     {
                         defaultTxt = db.ReplaceGVariables(defaultTxt);
@@ -301,7 +284,6 @@ namespace Ctrls
                     }
                 }
             }
-
             UCInitNewRow?.Invoke(sender, e);
         }
         public delegate void delEvent4(object sender, RowDeletingEventArgs e);
@@ -310,14 +292,18 @@ namespace Ctrls
         {
             UCRowDeleting?.Invoke(sender, e);
         }
-
-        public delegate void delEventFocusedRowChanged(object sender, int preIndex, int rowIndex, FocusedRowChangedEventArgs e);   // delegate 선언
+        public delegate void delEventFocusedRowChanged(object sender, int preIndex, int rowIndex, FocusedRowChangedEventArgs e);
         public event delEventFocusedRowChanged UCFocusedRowChanged;
         public void gvCtrl_FocusedRowChanged(object sender, FocusedRowChangedEventArgs e)
         {
+            if (e.PrevFocusedRowHandle >= 0 && gvCtrl.IsNewItemRow(e.PrevFocusedRowHandle))
+            {
+                gvCtrl.UpdateCurrentRow(); // 포커스 이동 시 행 추가 확정
+            }
+
             if (UCFocusedRowChanged != null && e.FocusedRowHandle >= 0)
             {
-                List<WrkSet> ctrls = new WrkSetRepo().SetPushFlds(frwId, frmId, thisNm);
+                List<WrkSet> ctrls = new WrkSetRepo().SetPushFlds(frwId, frmId, wrkId);
                 if (ctrls != null)
                 {
                     var fieldInfo = ctrls.ToDictionary(x => x.FldNm, x => x.ToolNm);
@@ -349,8 +335,20 @@ namespace Ctrls
                 }
                 UCFocusedRowChanged(sender, e.PrevFocusedRowHandle, e.FocusedRowHandle, e);
             }
+            // 포커스가 변경된 후 새로운 행의 값을 기반으로 DataChanged 이벤트를 트리거
+            var focusedRow = gvCtrl.GetRow(e.FocusedRowHandle);
+            if (focusedRow != null)
+            {
+                var newValue = focusedRow; // 전체 행 객체를 값으로 설정할 수 있습니다.
+                OnDataChanged(new Lib.DataChangedEventArgs("FocusedRowChanged", newValue));
+            }
         }
 
+        public event EventHandler<Lib.DataChangedEventArgs> DataChanged;
+        public void OnDataChanged(Lib.DataChangedEventArgs e)
+        {
+            DataChanged?.Invoke(this, e);
+        }
         public void SetControlValue(Form uc, string ctrlNm, string toolNm, dynamic value)
         {
             var ctrl = uc.Controls.Find(ctrlNm, true).FirstOrDefault(); if (ctrl != null)
@@ -369,62 +367,14 @@ namespace Ctrls
                     }
                 }
             }
-            #region Old Code
-            //    var ctrl = uc.Controls.Find(ctrlNm, true).FirstOrDefault();
-            //    if (ctrl != null)
-            //    {
-            //        switch (toolNm.ToLower())
-            //        {
-            //            case "uctextbox":
-            //            case "uctext":
-            //                UCTextBox uctxt = ctrl as UCTextBox;
-            //                if (uctxt != null)
-            //                {
-            //                    uctxt.BindText = value.ToString();
-            //                }
-            //                break;
-            //            case "ucdatebox":
-            //            case "ucdate":
-            //                UCDateBox ucdate = ctrl as UCDateBox;
-            //                if (ucdate != null)
-            //                {
-            //                    ucdate.BindText = value.ToString();
-            //                }
-            //                break;
-            //            case "uccombo":
-            //                UCLookUp uccombo = ctrl as UCLookUp;
-            //                if (uccombo != null)
-            //                {
-            //                    uccombo.BindText = value.ToString();
-            //                }
-            //                break;
-            //            case "uccheckbox":
-            //                UCCheckBox uccheckbox = ctrl as UCCheckBox;
-            //                if (uccheckbox != null)
-            //                {
-            //                    uccheckbox.BindValue = value;
-            //                }
-            //                break;
-            //            case "ucmemo":
-            //                UCMemo ucmemo = ctrl as UCMemo;
-            //                if (ucmemo != null)
-            //                {
-            //                    ucmemo.BindText = value.ToString();
-            //                }
-            //                break;
-            //            default:
-            //                break;
-            //        }
-            //    }
-            #endregion
         }
-
         public delegate void delEventCellValueChanged(object sender, CellValueChangedEventArgs e);
         public event delEventCellValueChanged UCCellValueChanged;
         private void gvCtrl_CellValueChanged(object sender, CellValueChangedEventArgs e)
         {
             UCCellValueChanged?.Invoke(sender, e);
         }
+
         public delegate void delEventCellValueChanging(object sender, CellValueChangedEventArgs e);
         public event delEventCellValueChanging UCCellValueChanging;
         private void gvCtrl_CellValueChanging(object sender, CellValueChangedEventArgs e)
@@ -432,6 +382,10 @@ namespace Ctrls
             UCCellValueChanging?.Invoke(sender, e);
         }
         #endregion
+
+        private object OSearchParam;
+        private DynamicParameters DSearchParam;
+        private bool ColumnsInitYn = false;
 
         public UCGridNav()
         {
@@ -442,22 +396,17 @@ namespace Ctrls
             this.gvCtrl.GridControl = this;
             this.gvCtrl.Name = "gvCtrl";
 
-
             this.Load += ucGridSet_Load;
 
             this.gvCtrl.FocusedRowChanged += gvCtrl_FocusedRowChanged;
-            this.gvCtrl.BeforeLeaveRow += gvCtrl_BeforeLeaveRow;
-            this.gvCtrl.SelectionChanged += gvCtrl_SelectionChanged;
             this.gvCtrl.InitNewRow += gvCtrl_InitNewRow;
             this.gvCtrl.RowDeleting += gvCtrl_RowDeleting;
             this.gvCtrl.CellValueChanged += gvCtrl_CellValueChanged;
             this.gvCtrl.CellValueChanging += gvCtrl_CellValueChanging;
-            this.EmbeddedNavigator.ButtonClick += gcCtrls_EmbeddedNavigator_ButtonClick;
-            //this.gvCtrl.MouseDown += gvCtrl_MouseDown;
-            //this.gvCtrl.MouseMove += gvCtrl_MouseMove;
-            //this.DragDrop += gcGrid_DragDrop;
-            //this.DragEnter += gcGrid_DragEnter;
 
+            // 클립보드 관련 이벤트 핸들러 추가
+            this.gvCtrl.KeyDown += gvCtrl_KeyDown;
+            this.EmbeddedNavigator.ButtonClick += gcCtrls_EmbeddedNavigator_ButtonClick;
         }
 
         private void ucGridSet_Load(object? sender, EventArgs e)
@@ -474,19 +423,20 @@ namespace Ctrls
                 frmId = "Unknown";
             }
 
-            thisNm = this.Name;
+            wrkId = this.Name;
 
             if (frwId != string.Empty)
             {
                 ResetColumns();
             }
         }
-        #region PreView<T>() - Preview Form -----------------------------------------------------------
+        #region ResetColumns() - Preview Form ---------------------------------------------------------
         private void ResetColumns()
         {
             WrkFldRepo wrkFldRepo = new WrkFldRepo();
-            List<WrkFld> colProperties = wrkFldRepo.GetColumnProperties(frwId, frmId, thisNm);
+            List<WrkFld> colProperties = wrkFldRepo.GetColumnProperties(frwId, frmId, wrkId);
             gvCtrl.Columns.Clear();
+            GridDefine();
             if (colProperties != null)
             {
                 foreach (var column in colProperties)
@@ -508,6 +458,7 @@ namespace Ctrls
             gridColumn.AppearanceHeader.TextOptions.HAlignment = GenFunc.StrToAlign(column.TitleAlign);
             gridColumn.Visible = column.ShowYn;
             gridColumn.Fixed = (column.FixYn ? DevExpress.XtraGrid.Columns.FixedStyle.None : DevExpress.XtraGrid.Columns.FixedStyle.Left);
+
             if (!string.IsNullOrEmpty(column.Band1))
             {
                 // 밴드 설정은 그리드 뷰에 밴드가 있는 경우에만 유효합니다.
@@ -521,34 +472,20 @@ namespace Ctrls
             return gridColumn;
         }
         #endregion
-        #region Open<T>() - Open Form -----------------------------------------------------------------
+        #region Open() - Open Form --------------------------------------------------------------------
         public void Open()
         {
+            if (wrkId==null){ return; }
+
             #region Model Type 설정으로 Open<T>() 호출
-            string modelName = $"{GenFunc.GetFormNamespace(frwId, frmId)}_{thisNm.ToUpper()}";
+            string modelName = $"{GenFunc.GetFormNamespace(frwId, frmId)}_{wrkId.ToUpper()}";
 
-            // 1. 모델 타입을 동적으로 설정
-            //string assemblyName = typeof(UCGridNav).Assembly.FullName;
-            //Type modelType = Type.GetType($"{modelName}, {assemblyName}");
-            //if (modelType == null)
-            //{
-            //    throw new InvalidOperationException($"Model type '{modelName}' not found.");
-            //}
-
-            // 2. 어셈블리를 명시적으로 로드하고 타입을 검색
-            Type modelType = null;
-            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
-            {
-                modelType = assembly.GetType(modelName);
-                if (modelType != null)
-                {
-                    break;
-                }
-            }
+            Type modelType = GetModelType(modelName);
 
             if (modelType == null)
             {
-                throw new InvalidOperationException($"Model type '{modelName}' not found.");
+                MessageBox.Show($"Model type '{modelName}' not found.{Environment.NewLine}Please define the model({modelName}) first");
+                return;
             }
 
             MethodInfo method = this.GetType().GetMethods().First(m => m.Name == "Open" && m.IsGenericMethod);
@@ -559,46 +496,45 @@ namespace Ctrls
 
         public void Open<T>()
         {
-            Common.gMsg = $"{Environment.NewLine}-- {thisNm}.Open<T>() ------------------------>>";
-
             WrkGetRepo wrkGetRepo = new WrkGetRepo();
-            List<WrkGet> wrkGets = wrkGetRepo.GetPullFlds(frwId, frmId, thisNm);
+            List<WrkGet> wrkGets = wrkGetRepo.GetPullFlds(frwId, frmId, wrkId);
             DSearchParam = new DynamicParameters();
 
             foreach (var wrkGet in wrkGets)
             {
-                string tmp = GetParamValue(this.FindForm().Controls, wrkGet);
-                DSearchParam.Add(wrkGet.FldNm, tmp);
-                Common.gMsg = $"Declare {wrkGet.FldNm} varchar ='{tmp}'";
+                string value = GetParamValue(this.FindForm().Controls, wrkGet);
+                DSearchParam.Add(wrkGet.FldNm, value);
             }
             OpenWrk<T>();
         }
+
         private void OpenWrk<T>()
         {
             this.DataSource = null;
-            gvCtrl.Columns.Clear();
-            //1. GridControl Configuration
-            GridDefine();
+            //1. GridControl Configuration  GridDefine(); 위에서 이미처리 해서 생략
             //2. Grid Column Configuration
-            try
+            if (!ColumnsInitYn)
             {
-                WrkFldRepo wrkFldRepo = new WrkFldRepo();
-                List<WrkFld> colProperties = wrkFldRepo.GetColumnProperties(frwId, frmId, thisNm);
                 gvCtrl.Columns.Clear();
-                if (colProperties != null)
+                try
                 {
-                    foreach (var column in colProperties)
+                    WrkFldRepo wrkFldRepo = new WrkFldRepo();
+                    List<WrkFld> colProperties = wrkFldRepo.GetColumnProperties(frwId, frmId, wrkId);
+
+                    if (colProperties != null)
                     {
-                        AddGridColumn(gvCtrl, GetGridColumn(column) as GridColumn);// Text Color
-                        Common.gMsg = $"Added column: {column.FldNm}";
+                        foreach (var column in colProperties)
+                        {
+                            AddGridColumn(gvCtrl, GetGridColumn(column) as GridColumn);
+                        }
+                        gvCtrl.RefreshData();
+                        ColumnsInitYn = true;  // 컬럼이 초기화되었음을 플래그로 표시
                     }
-                    gvCtrl.RefreshData();
-                    Common.gMsg = "Columns refreshed.";
 
                     //3. Data Source Binding
-                    Common.gMsg = $"-- {thisNm}.Select Query ------------------------>>";
-                    var sql = GenFunc.GetSql(new { FrwId = frwId, FrmId = frmId, WrkId = thisNm, CRUDM = "R" });
-                    sql = GenFunc.ReplaceGPatternVariable(sql);
+                    Common.gMsg = $"-- Select Query : {frwId}.{frmId}.{wrkId} ------------------------";
+                    var sql = GenFunc.GetSql(new { FrwId = frwId, FrmId = frmId, WrkId = wrkId, CRUDM = "R" });
+                    sql = GenFunc.ReplaceGPatternQuery(sql);
 
                     List<T> lists = new List<T>();
 
@@ -614,11 +550,10 @@ namespace Ctrls
                         }
                         else
                         {
-                            lists = db.Query<T>(sql, new { FrwId = frwId, FrmId = frmId, WrkId = thisNm });
+                            lists = db.Query<T>(sql, new { FrwId = frwId, FrmId = frmId, WrkId = wrkId });
                         }
                     }
-
-                    Common.gMsg = $"-- {thisNm}.End Select Query -------------------->>";
+                    Common.gMsg = $"-- End Select Query : {frwId}.{frmId}.{wrkId} ---------------------";
                     foreach (dynamic item in lists)
                     {
                         item.ChangedFlag = MdlState.None;
@@ -626,14 +561,355 @@ namespace Ctrls
 
                     this.DataSource = new BindingList<T>(lists);
                 }
+                catch (Exception e)
+                {
+                    Common.gMsg = $"-- Exception -------------------------------";
+                    Common.gMsg = $"UCGridNav_OpenWrk<T>() : {frwId}.{frmId}.{wrkId} {Environment.NewLine} Exception :";
+                    Common.gMsg = $"{e.Message}";
+                    Common.gMsg = $"-- End Exception ---------------------------";
+                    return;
+                }
             }
-            catch (Exception e)
+        }
+        #endregion
+        #region Save - Save Data ----------------------------------------------------------------------
+        public void Save()
+        {
+            if (wrkId == null) { return; }
+
+            #region Model Type 설정으로 Save<T>() 호출
+            string modelName = $"{GenFunc.GetFormNamespace(frwId, frmId)}_{wrkId.ToUpper()}";
+
+            Type modelType = GetModelType(modelName);
+
+            if (modelType == null)
             {
-                Common.gMsg = $"-- {thisNm}. Exception ----------------------------->>";
-                Common.gMsg = $"UCGridCode_OpenForm<T>() : {Environment.NewLine}--frwId : {frwId}{Environment.NewLine}-- frmId : {frmId}{Environment.NewLine}-- WorkSet : {thisNm}{Environment.NewLine}Exception :";
-                Common.gMsg = $"{e.Message}";
-                Common.gMsg = $"-- {thisNm}.End Exception -------------------------->>";
+                MessageBox.Show($"Model type '{modelName}' not found.{Environment.NewLine}Please define the model({modelName}) first");
+                return;
             }
+
+            MethodInfo method = this.GetType().GetMethods().First(m => m.Name == "Open" && m.IsGenericMethod);
+            MethodInfo genericMethod = method.MakeGenericMethod(modelType);
+            genericMethod.Invoke(this, null);
+            #endregion
+        }
+        public void Save<T>()
+        {
+            if (gvCtrl.IsEditing)
+            {
+                gvCtrl.CloseEditor();
+            }
+            if (gvCtrl.FocusedRowModified)
+            {
+                gvCtrl.UpdateCurrentRow();
+            }
+
+            WrkRefRepo wrkRefRepo = new WrkRefRepo();
+            List<WrkRef> wrkRefs = wrkRefRepo.RefDataFlds(frwId, frmId, wrkId);
+
+            var list = (BindingList<T>)this.DataSource;
+            if (list != null)
+            {
+                using (var db = new GaiaHelper())
+                {
+                    var changedItems = list.Where(item => IsChanged(item)).ToList();
+
+                    foreach (dynamic item in changedItems)
+                    {
+                        string sql = string.Empty;
+                        int returnValue = 0;
+
+                        string operation = GetOperation(GetChangedFlag(item));
+
+                        if (!string.IsNullOrEmpty(operation))
+                        {
+                            sql = GenFunc.GetSql(new { FrwId = frwId, FrmId = frmId, WrkId = wrkId, CRUDM = operation });
+
+                            if (string.IsNullOrWhiteSpace(sql))
+                            {
+                                Common.gMsg = $"'{operation}'쿼리가 존재하지 않습니다.";
+                                return;
+                            }
+
+                            sql = GenFunc.ReplaceGPatternQuery(sql);
+
+                            foreach (var wrkRef in wrkRefs)
+                            {
+                                sql = sql.Replace($"{wrkRef.FldNm}", $"'{RefParamValue(this.FindForm().Controls, wrkRef)}'");
+                            }
+                            returnValue = db.OpenExecute(sql, item);
+                            Common.gMsg = $"--[{wrkId}] END {operation}---------------->>";
+                        }
+                    }
+                }
+                //OnSaveCompleted(); 저장후 처리할 이벤트를 발동 시킬수 있음 - Documemt개체와 연동하여 처리할 수 있음
+            }
+        }
+        private string GetOperation(MdlState state)
+        {
+            switch (state)
+            {
+                case MdlState.Inserted:
+                    return "C";
+                case MdlState.Updated:
+                    return "U";
+                case MdlState.Deleted:
+                    return "D";
+                default:
+                    return string.Empty;
+            }
+        }
+        private bool IsChanged<T>(T item)
+        {
+            var prop = typeof(T).GetProperty("ChangedFlag");
+            if (prop != null)
+            {
+                var value = (MdlState)prop.GetValue(item);
+                return value != MdlState.None;
+            }
+            return false;
+        }
+        private MdlState GetChangedFlag(object item)
+        {
+            var prop = item.GetType().GetProperty("ChangedFlag");
+            if (prop != null)
+            {
+                return (MdlState)prop.GetValue(item);
+            }
+            return MdlState.None;
+        }
+        #endregion
+        private void SetChangedFlag(object? item, MdlState state)
+        {
+            var prop = item.GetType().GetProperty("ChangedFlag");
+            if (prop != null)
+            {
+                prop.SetValue(item, state);
+            }
+        }
+        #region New() Delete() - Temporarily Delete Data ----------------------------------------------
+        private void gcCtrls_EmbeddedNavigator_ButtonClick(object sender, NavigatorButtonClickEventArgs e)
+        {
+            switch (e.Button.ButtonType)
+            {
+                //해당 로우만 그리드에서 삭제 (데이터베이스에서 삭제하지 않음)
+                case NavigatorButtonType.Remove:
+                    e.Handled= true;
+                    Delete();
+                    break;
+                //해당 로우만 저장
+                case NavigatorButtonType.EndEdit:
+                    gvCtrl.UpdateCurrentRow(); //수정된 내용을 바인딩 데이터에 반영한다.
+                    break;
+                case NavigatorButtonType.Append:
+                    e.Handled = true;
+                    New();
+                    break;
+                case NavigatorButtonType.CancelEdit:
+                    gvCtrl.CancelUpdateCurrentRow();
+                    break;
+                case NavigatorButtonType.Custom:
+                    if (e.Button.Tag.ToString() == "Query")
+                    {
+                        this.Open();
+                    }
+                    break;
+            }
+        }
+
+        public void Delete()
+        {
+            this.SetText("ChangedFlag", MdlState.Deleted);
+            gvCtrl.DeleteRow(gvCtrl.FocusedRowHandle);
+        }
+
+        public void New() 
+        {
+            gvCtrl.AddNewRow();
+        }
+        #endregion
+
+        #region Copy Paste Clipboard ------------------------------------------------------------------
+
+        private void gvCtrl_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Control && e.KeyCode == Keys.C)
+            {
+                CopySelectedRowsToClipboard();
+                e.Handled = true;
+            }
+            else if (e.Control && e.KeyCode == Keys.V)
+            {
+                PasteClipboardData();
+                e.Handled = true;
+            }
+        }
+        private void CopySelectedRowsToClipboard()
+        {
+            gvCtrl.OptionsClipboard.AllowCopy = DevExpress.Utils.DefaultBoolean.True;
+            gvCtrl.OptionsClipboard.CopyColumnHeaders = DevExpress.Utils.DefaultBoolean.False;
+
+            gvCtrl.CopyToClipboard();
+        }
+        private void PasteClipboardData()
+        {
+            try
+            {
+                var clipboardText = Clipboard.GetText().TrimEnd('\r', '\n');
+                var rows = clipboardText.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+
+                int startRowHandle = gvCtrl.FocusedRowHandle;
+                if (startRowHandle == GridControl.InvalidRowHandle)
+                {
+                    startRowHandle = 0; // 포커스된 행이 없으면 0번째 행부터 시작
+                }
+                int startColumnIndex = gvCtrl.FocusedColumn?.VisibleIndex ?? 0; // 포커스된 열이 없으면 0번째 열부터 시작
+
+                foreach (var row in rows)
+                {
+                    var columns = row.Split(new[] { '\t' }, StringSplitOptions.None); // 탭으로 셀 분리
+
+                    // 빈 행은 건너뛰기
+                    if (columns.Length == 1 && string.IsNullOrWhiteSpace(columns[0]))
+                    {
+                        continue;
+                    }
+
+                    // 필요한 경우 새 행 추가
+                    if (startRowHandle >= gvCtrl.DataRowCount)
+                    {
+                        gvCtrl.AddNewRow();
+                        startRowHandle = gvCtrl.GetRowHandle(gvCtrl.DataRowCount - 1);
+                    }
+
+                    for (int i = 0; i < columns.Length; i++)
+                    {
+                        if (startColumnIndex + i >= gvCtrl.VisibleColumns.Count) break; // 보이는 컬럼 수보다 많으면 중단
+
+                        // 셀 값 설정 (데이터 형식 변환 필요 시 추가)
+                        gvCtrl.SetRowCellValue(startRowHandle, gvCtrl.VisibleColumns[startColumnIndex + i], columns[i]);
+                    }
+                    startRowHandle++;
+                }
+
+                gvCtrl.UpdateCurrentRow();
+                gvCtrl.RefreshData(); // 데이터 변경 사항 반영
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"붙여넣기 중 오류가 발생했습니다: {ex.Message}");
+            }
+        }
+        #endregion
+        #region GridDefine() - Grid Control Configuration (Options, Navigator, etc.) ------------------
+        private void GridDefine()
+        {
+            FrmWrkRepo frmWrkRepo = new FrmWrkRepo();
+            FrmWrk ucInfo = frmWrkRepo.GetByWorkSet(frwId, frmId, wrkId);
+
+            if (ucInfo != null)
+            {
+                //gvCtrl.OptionsFind.AlwaysVisible = (ucInfo.OptionsFind_chk == "0" ? false : true);
+                gvCtrl.OptionsFind.AlwaysVisible = true;
+                gvCtrl.OptionsFind.AllowFindPanel = true;
+                gvCtrl.OptionsFind.ShowCloseButton = true;
+                gvCtrl.OptionsFind.ShowClearButton = true;
+                gvCtrl.OptionsFind.ShowFindButton = true;
+
+                //gvCtrl.OptionsView.ShowGroupPanel = (ucInfo.ShowGroupPanel_chk == "0" ? false : true);
+                //gvCtrl.OptionsView.ShowFooter = (ucInfo.ShowFooter_chk == "0" ? false : true);
+                //gvCtrl.OptionsView.ColumnAutoWidth = (ucInfo.ColumnAutoWidth_chk == "0" ? false : true);
+                //gvCtrl.OptionsView.EnableAppearanceEvenRow = (ucInfo.EvenRow_chk == "0" ? false : true);
+                gvCtrl.OptionsView.ShowGroupPanel = true;
+                gvCtrl.OptionsView.ShowFooter = true;
+                gvCtrl.OptionsView.ColumnAutoWidth = true;
+                gvCtrl.OptionsView.EnableAppearanceEvenRow = true;
+
+                gvCtrl.OptionsView.ShowIndicator = true;
+                gvCtrl.OptionsView.ColumnHeaderAutoHeight = DevExpress.Utils.DefaultBoolean.True;
+                gvCtrl.OptionsView.RowAutoHeight = true;
+                gvCtrl.OptionsView.ColumnAutoWidth = false; // 컬럼 너비 자동 조정
+
+
+                //gvCtrl.OptionsBehavior.Editable = (ucInfo.Edit_chk == "0" ? false : true);
+                gvCtrl.OptionsBehavior.Editable = true;
+                gvCtrl.OptionsBehavior.EditorShowMode = EditorShowMode.MouseDown;
+
+                gvCtrl.OptionsCustomization.AllowColumnMoving = true;
+                gvCtrl.OptionsCustomization.AllowColumnResizing = true;
+                gvCtrl.OptionsCustomization.AllowFilter = true;
+                gvCtrl.OptionsCustomization.AllowSort = true;
+
+
+                gvCtrl.OptionsSelection.MultiSelect = ucInfo.MultiSelect;
+                gvCtrl.OptionsSelection.MultiSelectMode = GenFunc.StrToSelectMode(ucInfo.SelectMode);
+
+                gvCtrl.OptionsSelection.EnableAppearanceFocusedCell = true;
+                gvCtrl.OptionsSelection.EnableAppearanceFocusedRow = true;
+
+                gvCtrl.FocusRectStyle = DrawFocusRectStyle.RowFocus;
+
+                gvCtrl.OptionsMenu.EnableColumnMenu = false;
+                gvCtrl.OptionsMenu.EnableFooterMenu = false;
+                gvCtrl.OptionsMenu.EnableGroupPanelMenu = false;
+                gvCtrl.OptionsMenu.ShowAddNewSummaryItem = DefaultBoolean.True;
+                gvCtrl.OptionsMenu.ShowAutoFilterRowItem = true;
+                gvCtrl.OptionsMenu.ShowDateTimeGroupIntervalItems = true;
+                gvCtrl.OptionsMenu.ShowGroupSortSummaryItems = true;
+                gvCtrl.OptionsMenu.ShowGroupSummaryEditorItem = true;
+                gvCtrl.OptionsMenu.ShowSplitItem = true;
+
+                gvCtrl.OptionsNavigation.AutoFocusNewRow = true;
+
+                gvCtrl.Appearance.HeaderPanel.Options.UseTextOptions = true;
+                gvCtrl.Appearance.HeaderPanel.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+
+                gvCtrl.DetailHeight = 300;
+                gvCtrl.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+                gvCtrl.OptionsClipboard.CopyColumnHeaders = DevExpress.Utils.DefaultBoolean.False;
+                gvCtrl.OptionsFilter.DefaultFilterEditorView = DevExpress.XtraEditors.FilterEditorViewMode.VisualAndText;
+                gvCtrl.OptionsFilter.ShowAllTableValuesInFilterPopup = true;
+                gvCtrl.OptionsPrint.AllowMultilineHeaders = true;
+
+                GridNavigator(this, ucInfo.NavAdd, ucInfo.NavDelete, ucInfo.NavSave, ucInfo.NavCancel);
+            }
+        }
+
+        private void GridNavigator(GridControl gc, bool navAdd, bool navDelete, bool navSave, bool navCancel)
+        {
+            ControlNavigator navigator = gc.EmbeddedNavigator;
+            navigator.Buttons.BeginUpdate();
+            navigator.Buttons.CustomButtons.Clear();
+            try
+            {
+                navigator.Buttons.Append.Visible = navAdd;
+                navigator.Buttons.Remove.Visible = navDelete;
+                navigator.Buttons.EndEdit.Visible = navSave;
+                navigator.Buttons.CancelEdit.Visible = navCancel;
+
+                navigator.Buttons.Edit.Enabled = false;
+                navigator.Buttons.Edit.Visible = false;
+                navigator.Buttons.First.Enabled = false;
+                navigator.Buttons.First.Visible = false;
+                navigator.Buttons.Last.Enabled = false;
+                navigator.Buttons.Last.Visible = false;
+                navigator.Buttons.Next.Enabled = false;
+                navigator.Buttons.Next.Visible = false;
+                navigator.Buttons.NextPage.Enabled = false;
+                navigator.Buttons.NextPage.Visible = false;
+                navigator.Buttons.Prev.Enabled = false;
+                navigator.Buttons.Prev.Visible = false;
+                navigator.Buttons.PrevPage.Enabled = false;
+                navigator.Buttons.PrevPage.Visible = false;
+                navigator.ShowToolTips = false;
+                navigator.TextLocation = DevExpress.XtraEditors.NavigatorButtonsTextLocation.Begin;
+                navigator.Buttons.CustomButtons.AddRange(new DevExpress.XtraEditors.NavigatorCustomButton[] { new DevExpress.XtraEditors.NavigatorCustomButton(-1, 11, true, true, "", "Query") });
+            }
+            finally
+            {
+                navigator.Buttons.EndUpdate();
+            }
+            gc.UseEmbeddedNavigator = true;
         }
         #endregion
         #region Grid Column Configuration -------------------------------------------------------------
@@ -643,6 +919,7 @@ namespace Ctrls
 
             column.Name = wrkFld.FldNm;
             column.FieldName = wrkFld.FldNm;
+            column.Tag = wrkFld.NeedYn;
             column.Caption = wrkFld.FldTitle;
             column.Width = wrkFld.FldTitleWidth;
             column.Visible = wrkFld.ShowYn;
@@ -731,97 +1008,22 @@ namespace Ctrls
             chkbox.ValueUnchecked = "0";
             chkbox.ValueGrayed = "0";
             chkbox.NullStyle = StyleIndeterminate.Unchecked;
-            chkbox.CheckStyle = CheckStyles.Radio; // CheckStyles.Standard;
+            chkbox.CheckStyle = CheckStyles.Radio;
             return chkbox;
         }
         private RepositoryItem SetColumnLookup(string pcode)
         {
             RepositoryItemLookUpEdit lookUp = new RepositoryItemLookUpEdit();
-
-            //using (var db = new ACE.Lib.DbHelper())
-            //{
-            //}
-            //List<MdlIdName> lists = new List<MdlIdName>();
-            //lists = db.GetCodeNm(new { Grp = pcode });
-
-            //lookUp.DataSource = lists;
-            //lookUp.ValueMember = "Id";
-            //lookUp.DisplayMember = "Nm";
-
-            //lookUp.ShowHeader = false;
-            //lookUp.ForceInitialize();
-            //lookUp.PopulateColumns();
-            //lookUp.Columns["Id"].Visible = true;
-            //lookUp.Columns["Nm"].Visible = true;
-            //lookUp.DropDownRows = 15; //dsLook.Tables[0].Rows.Count;
-            //lookUp.BestFitMode = DevExpress.XtraEditors.Controls.BestFitMode.BestFitResizePopup;
-            //lookUp.AutoHeight = true;
-            //lookUp.NullText = "";
-            //lookUp.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
-            //lookUp.AutoSearchColumnIndex = 1;
-            //lookUp.SearchMode = DevExpress.XtraEditors.Controls.SearchMode.OnlyInPopup;
-            //lookUp.HeaderClickMode = DevExpress.XtraEditors.Controls.HeaderClickMode.AutoSearch;
-            //lookUp.CaseSensitiveSearch = false;
-
             return lookUp;
         }
         private RepositoryItemLookUpEdit SetColumnLookup_Value(string pcode)
         {
             RepositoryItemLookUpEdit lookUp = new RepositoryItemLookUpEdit();
-
-            //List<MdlIdName> lists = new List<MdlIdName>();
-            //lists = db.GetNmNm(new { Grp = pcode });
-            //lookUp.DataSource = lists;
-            //lookUp.ValueMember = "Id";
-            //lookUp.DisplayMember = "Nm";
-
-            //lookUp.ShowHeader = false;
-            //lookUp.ForceInitialize();
-            //lookUp.PopulateColumns();
-            //lookUp.Columns["Id"].Visible = false;
-            //lookUp.Columns["Nm"].Visible = true;
-            //lookUp.DropDownRows = 15; //dsLook.Tables[0].Rows.Count;
-            //lookUp.BestFitMode = DevExpress.XtraEditors.Controls.BestFitMode.BestFitResizePopup;
-            //lookUp.AutoHeight = true;
-            //lookUp.NullText = "";
-            //lookUp.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
-            //lookUp.AutoSearchColumnIndex = 1;
-            //lookUp.SearchMode = DevExpress.XtraEditors.Controls.SearchMode.OnlyInPopup;
-            //lookUp.HeaderClickMode = DevExpress.XtraEditors.Controls.HeaderClickMode.AutoSearch;
-            //lookUp.CaseSensitiveSearch = false;
             return lookUp;
         }
         private RepositoryItemLookUpEdit SetLookupCode(string grp, string opt)
         {
             RepositoryItemLookUpEdit lookup = new RepositoryItemLookUpEdit();
-            //List<MdlIdName> lists;
-
-            //if (opt == "0")
-            //{
-            //    lists = db.GetNmNm(new { Grp = grp }, "0"); //컬럼에서는 항상 ALL제외 
-            //}
-            //else
-            //{
-            //    lists = db.GetCodeNm(new { Grp = grp }, "0"); //컬럼에서는 항상 ALL제외 
-            //}
-
-            //lookup.DataSource = lists;
-            //lookup.ValueMember = "Id";
-            //lookup.DisplayMember = "Nm";
-            //lookup.ShowHeader = false;
-            //lookup.ForceInitialize();
-            //lookup.PopulateColumns();
-            //lookup.Columns["Id"].Visible = true;
-            //lookup.Columns["Nm"].Visible = true;
-            //lookup.DropDownRows = 10; //lookup.count
-            //lookup.BestFitMode = BestFitMode.BestFitResizePopup;
-            //lookup.AutoHeight = true;
-            //lookup.NullText = "";
-            //lookup.TextEditStyle = TextEditStyles.Standard;
-            //lookup.AutoSearchColumnIndex = 1;
-            //lookup.SearchMode = SearchMode.OnlyInPopup;
-            //lookup.HeaderClickMode = HeaderClickMode.AutoSearch;
-            //lookup.CaseSensitiveSearch = false;
             return lookup;
         }
         private RepositoryItemLookUpEdit SetLookupCombo(object pcode, int opt)
@@ -858,330 +1060,7 @@ namespace Ctrls
             }
         }
         #endregion
-        #region GridDefine() - Grid Control Configuration (Options, Navigator, etc.) ------------------
-        private void GridDefine()
-        {
-            FrmWrkRepo frmWrkRepo = new FrmWrkRepo();
-            FrmWrk ucInfo = frmWrkRepo.GetByWorkSet(frwId, frmId, thisNm);
 
-            if (ucInfo != null)
-            {
-                //gvCtrl.OptionsFind.AlwaysVisible = (ucInfo.OptionsFind_chk == "0" ? false : true);
-                gvCtrl.OptionsFind.AlwaysVisible = true;
-                gvCtrl.OptionsFind.AllowFindPanel = true;
-                gvCtrl.OptionsFind.ShowCloseButton = true;
-                gvCtrl.OptionsFind.ShowClearButton = true;
-                gvCtrl.OptionsFind.ShowFindButton = true;
-
-                //gvCtrl.OptionsView.ShowGroupPanel = (ucInfo.ShowGroupPanel_chk == "0" ? false : true);
-                //gvCtrl.OptionsView.ShowFooter = (ucInfo.ShowFooter_chk == "0" ? false : true);
-                //gvCtrl.OptionsView.ColumnAutoWidth = (ucInfo.ColumnAutoWidth_chk == "0" ? false : true);
-                //gvCtrl.OptionsView.EnableAppearanceEvenRow = (ucInfo.EvenRow_chk == "0" ? false : true);
-                gvCtrl.OptionsView.ShowGroupPanel = true;
-                gvCtrl.OptionsView.ShowFooter = true;
-                gvCtrl.OptionsView.ColumnAutoWidth = true;
-                gvCtrl.OptionsView.EnableAppearanceEvenRow = true;
-
-                gvCtrl.OptionsView.ShowIndicator = true;
-                gvCtrl.OptionsView.ColumnHeaderAutoHeight = DevExpress.Utils.DefaultBoolean.True;
-                gvCtrl.OptionsView.RowAutoHeight = true;
-
-                //gvCtrl.OptionsBehavior.Editable = (ucInfo.Edit_chk == "0" ? false : true);
-                gvCtrl.OptionsBehavior.Editable = true;
-                gvCtrl.OptionsBehavior.EditorShowMode = EditorShowMode.MouseDown;
-
-                gvCtrl.OptionsCustomization.AllowColumnMoving = true;
-                gvCtrl.OptionsCustomization.AllowColumnResizing = true;
-                gvCtrl.OptionsCustomization.AllowFilter = true;
-                gvCtrl.OptionsCustomization.AllowSort = true;
-
-
-                gvCtrl.OptionsSelection.MultiSelect = ucInfo.MultiSelect;
-                gvCtrl.OptionsSelection.MultiSelectMode = GenFunc.StrToSelectMode(ucInfo.SelectMode);
-
-                gvCtrl.OptionsSelection.EnableAppearanceFocusedCell = true;
-                gvCtrl.OptionsSelection.EnableAppearanceFocusedRow = true;
-
-                gvCtrl.FocusRectStyle = DrawFocusRectStyle.RowFocus;
-
-                gvCtrl.OptionsMenu.EnableColumnMenu = false;
-                gvCtrl.OptionsMenu.EnableFooterMenu = false;
-                gvCtrl.OptionsMenu.EnableGroupPanelMenu = false;
-                gvCtrl.OptionsMenu.ShowAddNewSummaryItem = DefaultBoolean.True;
-                gvCtrl.OptionsMenu.ShowAutoFilterRowItem = true;
-                gvCtrl.OptionsMenu.ShowDateTimeGroupIntervalItems = true;
-                gvCtrl.OptionsMenu.ShowGroupSortSummaryItems = true;
-                gvCtrl.OptionsMenu.ShowGroupSummaryEditorItem = true;
-                gvCtrl.OptionsMenu.ShowSplitItem = true;
-
-                gvCtrl.OptionsNavigation.AutoFocusNewRow = true;
-                //gvCtrl.Appearance.FocusedRow.BackColor = Color.FromArgb(255, 255, 192);
-                //gvCtrl.Appearance.SelectedRow.BackColor = Color.FromArgb(255, 255, 192);
-                //gvCtrl.Appearance.SelectedRow.Options.UseBackColor = true;
-
-                gvCtrl.Appearance.HeaderPanel.Options.UseTextOptions = true;
-                gvCtrl.Appearance.HeaderPanel.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-
-                gvCtrl.DetailHeight = 300;
-                gvCtrl.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
-                gvCtrl.OptionsClipboard.CopyColumnHeaders = DevExpress.Utils.DefaultBoolean.False;
-                gvCtrl.OptionsFilter.DefaultFilterEditorView = DevExpress.XtraEditors.FilterEditorViewMode.VisualAndText;
-                gvCtrl.OptionsFilter.ShowAllTableValuesInFilterPopup = true;
-                gvCtrl.OptionsPrint.AllowMultilineHeaders = true;
-
-                GridNavigator(this, ucInfo.NavAdd, ucInfo.NavDelete, ucInfo.NavSave, ucInfo.NavCancel);
-            }
-        }
-
-        private void GridNavigator(GridControl gc, bool navAdd, bool navDelete, bool navSave, bool navCancel)
-        {
-            ControlNavigator navigator = gc.EmbeddedNavigator;
-            navigator.Buttons.BeginUpdate();
-            try
-            {
-                navigator.Buttons.Append.Visible = navAdd;
-                navigator.Buttons.Remove.Visible = navDelete;
-                navigator.Buttons.EndEdit.Visible = navSave;
-                navigator.Buttons.CancelEdit.Visible = navCancel;
-                navigator.Buttons.Edit.Visible = false;
-            }
-            finally
-            {
-                navigator.Buttons.EndUpdate();
-            }
-            gc.UseEmbeddedNavigator = true;
-        }
-        #endregion
-        #region Save<T>() - Save Data -----------------------------------------------------------------
-        public void Save()
-        {
-            #region Model Type 설정으로 Open<T>() 호출
-            string modelName = $"{GenFunc.GetFormNamespace(frwId, frmId)}_{thisNm.ToUpper()}";
-
-            Type modelType = null;
-
-            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
-            {
-                modelType = assembly.GetType(modelName);
-                if (modelType != null)
-                {
-                    break;
-                }
-            }
-
-            if (modelType == null)
-            {
-                throw new InvalidOperationException($"Model type '{modelName}' not found.");
-            }
-
-            MethodInfo method = this.GetType().GetMethods().First(m => m.Name == "Save" && m.IsGenericMethod);
-            MethodInfo genericMethod = method.MakeGenericMethod(modelType);
-            genericMethod.Invoke(this, null);
-            #endregion
-        }
-        public void Save<T>()
-        {
-            if (gvCtrl.IsEditing)
-            {
-                gvCtrl.CloseEditor();
-            }
-            if (gvCtrl.FocusedRowModified)
-            {
-                gvCtrl.UpdateCurrentRow();
-            }
-
-            var list = (BindingList<T>)this.DataSource;
-            if (list != null)
-            {
-                using (var db = new GaiaHelper())
-                {
-                    var changedItems = list.Where(item => IsChanged(item)).ToList();
-
-                    foreach (dynamic item in changedItems)
-                    {
-                        WrkRefRepo wrkRefRepo = new WrkRefRepo();
-                        List<WrkRef> wrkRefs = wrkRefRepo.RefDataFlds(frwId, frmId, thisNm);
-
-                        string sql = string.Empty;
-                        int returnValue = 0;
-
-                        string operation = GetOperation(GetChangedFlag(item));
-
-                        if (!string.IsNullOrEmpty(operation))
-                        {
-                            sql = GenFunc.GetSql(new { FrwId = frwId, FrmId = frmId, WrkId = thisNm, CRUDM = operation });
-                            if (string.IsNullOrWhiteSpace(sql))
-                            {
-                                Common.gMsg = $"쿼리가 존재하지 않습니다.";
-                                return;
-                            }
-                            sql = GenFunc.ReplaceGPatternVariable(sql);
-                            foreach (var wrkRef in wrkRefs)
-                            {
-                                Common.gMsg = $"--[{thisNm}] {operation}-------------------->>";
-                                Common.gMsg = $"--Grid Save As Parameters------------------->>";
-                                sql = sql.Replace($"{wrkRef.FldNm}", $"'{RefParamValue(this.FindForm().Controls, wrkRef)}'");
-                            }
-                            Common.gMsg = sql;
-                            returnValue = db.OpenExecute(sql, item);
-                            Common.gMsg = $"--[{thisNm}] END {operation}---------------->>";
-                        }
-                    }
-                }
-                OnSaveCompleted();
-            }
-        }
-
-        private void OnSaveCompleted()
-        {
-            //OpenForm<T>();
-            Common.gMsg = $"--[{thisNm}] END Delete--------------------{Environment.NewLine}";
-        }
-
-        private string GetOperation(MdlState state)
-        {
-            switch (state)
-            {
-                case MdlState.Inserted:
-                    return "C";
-                case MdlState.Updated:
-                    return "U";
-                case MdlState.Deleted:
-                    return "D";
-                default:
-                    return string.Empty;
-            }
-        }
-
-        private bool IsChanged<T>(T item)
-        {
-            var prop = typeof(T).GetProperty("ChangedFlag");
-            if (prop != null)
-            {
-                var value = (MdlState)prop.GetValue(item);
-                return value != MdlState.None;
-            }
-            return false;
-        }
-
-        private MdlState GetChangedFlag(object item)
-        {
-            var prop = item.GetType().GetProperty("ChangedFlag");
-            if (prop != null)
-            {
-                return (MdlState)prop.GetValue(item);
-            }
-            return MdlState.None;
-        }
-        #endregion
-
-        private void gcCtrls_EmbeddedNavigator_ButtonClick(object sender, NavigatorButtonClickEventArgs e)
-        {
-            var list = this.DataSource as IList;
-            var item = list[FocuseRowIndex];
-
-            switch (e.Button.ButtonType)
-            {
-                //해당 로우만 그리드에서 삭제 (데이터베이스에서 삭제하지 않음)
-                case NavigatorButtonType.Remove:
-                    if (list != null && FocuseRowIndex >= 0 && FocuseRowIndex < list.Count)
-                    {
-                        //list.RemoveAt(FocuseRowIndex); // 그리드에서만 항목 제거
-                        //var item = list[FocuseRowIndex];
-                        //포커스 된 로우의 ChangedFlag를 Deleted로 변경
-                        SetChangedFlag(item, MdlState.Deleted);
-                        gvCtrl.RefreshData();
-                    }
-                    break;
-                //해당 로우만 저장
-                case NavigatorButtonType.EndEdit:
-                    //SaveFocuseRow(); //true : 포커스된 로우만 저장
-                    if (gvCtrl.IsEditing)
-                    {
-                        gvCtrl.CloseEditor(); //수정중인 작업을 완료한다. (수정중인 셀을 닫는다.)
-                    }
-                    if (gvCtrl.FocusedRowModified)
-                    {
-                        gvCtrl.UpdateCurrentRow(); //수정된 내용을 바인딩 데이터에 반영한다.
-                    }
-
-                    if (list != null)
-                    {
-                        using (var db = new GaiaHelper())
-                        {
-                            int returnValue = 0;
-
-                            if (FocuseRowIndex >= 0 && FocuseRowIndex < list.Count)
-                            {
-                                var state = GetChangedFlag(item);
-
-                                string sql = GenFunc.GetSql(new { FrwId = frwId, FrmId = frmId, WrkId = thisNm, CRUDM = GetOperation(state)});
-
-                                sql = GenFunc.ReplaceGPatternVariable(sql);
-
-                                WrkRefRepo wrkRefRepo = new WrkRefRepo();
-                                List<WrkRef> wrkRefs = wrkRefRepo.RefDataFlds(frwId, frmId, thisNm);
-                                foreach (var wrkRef in wrkRefs)
-                                {
-                                    sql = sql.Replace($"{wrkRef.FldNm}", $"'{RefParamValue(this.FindForm().Controls, wrkRef)}'");
-                                }
-
-                                if (!string.IsNullOrEmpty(sql))
-                                {
-                                    returnValue = db.OpenExecute(sql, item);
-                                }
-
-                                SetChangedFlag(item, MdlState.None); //변경된 상태를 초기화
-                            }
-                        }
-                    }
-                    break;
-                //신규문서작업
-                case NavigatorButtonType.Append:
-                    this.AddNewDoc();
-                    break;
-                //선택 문서의 입력 취소
-                //그리드에서 삭제되지 않은데이터에 대해서 취소작업이 되는지 안된다면 MdlStat를 변경할것
-                case NavigatorButtonType.CancelEdit:
-                    
-                    if (gvCtrl.IsEditing)
-                    {
-                        gvCtrl.CancelUpdateCurrentRow();
-                    }
-                    break;
-            }
-        }
-
-        private void SetChangedFlag(object? item, MdlState state)
-        {
-            var prop = item.GetType().GetProperty("ChangedFlag");
-            if (prop != null)
-            {
-                prop.SetValue(item, state);
-            }
-        }
-
-
-        #region Delete<T>() - Temporarily Delete Data -------------------------------------------------
-        public void Delete<T>(RowDeletingEventArgs e)
-        {
-            var list = (BindingList<T>)this.DataSource;
-            if (list != null)
-            {
-                list.Remove((T)e.Row); // 그리드에서만 항목 제거
-            }
-        }
-
-        public void Delete<T>()
-        {
-            var list = (BindingList<T>)this.DataSource;
-            if (list != null && FocuseRowIndex >= 0 && FocuseRowIndex < list.Count)
-            {
-                list.RemoveAt(FocuseRowIndex); // 그리드에서만 항목 제거
-            }
-        }
-
-        #endregion
         #region Grid Control Get/Reference Parmameters ------------------------------------------------
         private string GetParamValue(ControlCollection frm, WrkGet wrkGet)
         {
@@ -1229,17 +1108,18 @@ namespace Ctrls
             return str;
         }
         #endregion
-    }
 
-    public class RowsDropEventArgs : EventArgs
-    {
-        public int SourceRowHandle { get; }
-        public int TargetRowHandle { get; }
-
-        public RowsDropEventArgs(int sourceRowHandle, int targetRowHandle)
+        private Type GetModelType(string modelName)
         {
-            SourceRowHandle = sourceRowHandle;
-            TargetRowHandle = targetRowHandle;
+            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
+            {
+                var modelType = assembly.GetType(modelName);
+                if (modelType != null)
+                {
+                    return modelType;
+                }
+            }
+            return null;
         }
     }
 }

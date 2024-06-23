@@ -34,6 +34,18 @@ namespace Ctrls
                 this.Width = value;
             }
         }
+        [Category("A UserController Property"), Description("Height")]
+        public int ControlHeight
+        {
+            get 
+            {
+                return this.Height;
+            }
+            set
+            {
+                this.Height = value;
+            }
+        }
         [Category("A UserController Property"), Description("Title Width")] //chk
         public int TitleWidth
         {
@@ -164,14 +176,6 @@ namespace Ctrls
         }
         #endregion
         #region Properties Browsable(false)
-        [Category("A UserController Property"), Description("Height"), Browsable(false)]
-        public int ControlHeight
-        {
-            set
-            {
-                this.Height = value;
-            }
-        }
         [Category("A UserController Property"), Description("Bind Text"), Browsable(false)]
         public string BindText
         {
@@ -239,8 +243,9 @@ namespace Ctrls
                 if (wrkFld != null)
                 {
                     //wrkFld.FldX와 wrkFld.FldY를 사용하여 위치 설정
-                    this.Location =  new Point(wrkFld.FldX, wrkFld.FldY);
+                    this.Location = new Point(wrkFld.FldX, wrkFld.FldY);
                     this.ControlWidth = wrkFld.FldWidth;
+                    this.ControlHeight = wrkFld.FldHeight;
                     this.TitleWidth = wrkFld.FldTitleWidth;
                     this.Title = wrkFld.FldTitle;
                     this.TitleAlignment = GenFunc.StrToAlign(wrkFld.TitleAlign);
@@ -272,6 +277,12 @@ namespace Ctrls
                     {
                         this.ButtonVisiable = false;
                     }
+                }
+                else
+                {
+                    this.Text = string.Empty;
+                    this.ShowYn = true;
+                    this.EditYn = true;
                 }
 
             }

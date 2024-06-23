@@ -55,8 +55,8 @@ namespace Ctrls
             // splitCtrl.Panel2
             // 
             splitCtrl.Panel2.Controls.Add(cmbCtrl);
-            splitCtrl.Size = new Size(154, 18);
-            splitCtrl.SplitterDistance = 69;
+            splitCtrl.Size = new Size(180, 21);
+            splitCtrl.SplitterDistance = 80;
             splitCtrl.SplitterWidth = 1;
             splitCtrl.TabIndex = 1;
             // 
@@ -70,7 +70,7 @@ namespace Ctrls
             labelCtrl.Dock = DockStyle.Fill;
             labelCtrl.Location = new Point(0, 0);
             labelCtrl.Name = "labelCtrl";
-            labelCtrl.Size = new Size(69, 18);
+            labelCtrl.Size = new Size(80, 21);
             labelCtrl.TabIndex = 0;
             labelCtrl.Text = "UCCodeBox";
             // 
@@ -84,7 +84,7 @@ namespace Ctrls
             cmbCtrl.Properties.Appearance.Options.UseTextOptions = true;
             cmbCtrl.Properties.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Near;
             cmbCtrl.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
-            cmbCtrl.Size = new Size(84, 20);
+            cmbCtrl.Size = new Size(99, 20);
             cmbCtrl.TabIndex = 0;
             cmbCtrl.SelectedIndexChanged += cmbCtrl_SelectedIndexChanged;
             cmbCtrl.SelectedValueChanged += cmbCtrl_SelectedValueChanged;
@@ -95,7 +95,7 @@ namespace Ctrls
             AutoScaleMode = AutoScaleMode.Font;
             Controls.Add(splitCtrl);
             Name = "UCCodeBox";
-            Size = new Size(154, 18);
+            Size = new Size(180, 21);
             Load += UCCodeBox_Load;
             splitCtrl.Panel1.ResumeLayout(false);
             splitCtrl.Panel2.ResumeLayout(false);

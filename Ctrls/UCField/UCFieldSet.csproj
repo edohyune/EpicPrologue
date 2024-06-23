@@ -16,6 +16,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Lib\Lib.csproj" />
     <ProjectReference Include="..\UCButton\UCButton.csproj" />
+    <ProjectReference Include="..\UCGridNav\UCGridNav.csproj" />
     <ProjectReference Include="..\UCGrid\UCGrid.csproj" />
     <ProjectReference Include="..\UCLookup\UCLookUp.csproj" />
     <ProjectReference Include="..\UCTextBox\UCTextBox.csproj" />

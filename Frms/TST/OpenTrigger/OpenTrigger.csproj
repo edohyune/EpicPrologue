@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="DevExpress.Win.Design" Version="23.2.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Ctrls\FrmBase\FrmBase.csproj" />
+    <ProjectReference Include="..\..\..\Ctrls\UCCodeBox\UCCodeBox.csproj" />
+    <ProjectReference Include="..\..\..\Ctrls\UCField\UCFieldSet.csproj" />
+    <ProjectReference Include="..\..\..\Ctrls\UCGridNav\UCGridNav.csproj" />
+    <ProjectReference Include="..\..\..\Ctrls\UCRichText\UCRichText.csproj" />
+    <ProjectReference Include="..\..\..\Ctrls\UCSplit\UCSplit.csproj" />
+    <ProjectReference Include="..\..\..\Ctrls\UCTextBox\UCTextBox.csproj" />
+  </ItemGroup>
+
+</Project>

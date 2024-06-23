@@ -1,4 +1,4 @@
-﻿namespace Grid
+﻿namespace Frms.TST
 {
     partial class Grid
     {
@@ -29,66 +29,84 @@
         private void InitializeComponent()
         {
             ucPanel1 = new Ctrls.UCPanel();
-            g10 = new DevExpress.XtraGrid.GridControl();
-            gvCtrl = new DevExpress.XtraGrid.Views.Grid.GridView();
-            g20 = new DevExpress.XtraGrid.GridControl();
-            gridView1 = new DevExpress.XtraGrid.Views.Grid.GridView();
+            gPaste = new Ctrls.UCGridNav();
+            gCopy = new Ctrls.UCGridNav();
+            ucSplit1 = new Ctrls.UCSplit();
             ((System.ComponentModel.ISupportInitialize)ucPanel1).BeginInit();
             ucPanel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)g10).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)gvCtrl).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)g20).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)gridView1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)gPaste).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)gCopy).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)ucSplit1).BeginInit();
+            ucSplit1.Panel1.SuspendLayout();
+            ucSplit1.Panel2.SuspendLayout();
+            ucSplit1.SuspendLayout();
             SuspendLayout();
             // 
             // ucPanel1
             // 
-            ucPanel1.Controls.Add(g20);
-            ucPanel1.Controls.Add(g10);
+            ucPanel1.Controls.Add(ucSplit1);
             ucPanel1.Dock = DockStyle.Fill;
             ucPanel1.EditYn = true;
             ucPanel1.Location = new Point(0, 0);
             ucPanel1.Name = "ucPanel1";
             ucPanel1.ShowYn = true;
-            ucPanel1.Size = new Size(488, 432);
+            ucPanel1.Size = new Size(859, 538);
             ucPanel1.TabIndex = 0;
             ucPanel1.Text = "ucPanel1";
             // 
-            // g10
+            // gPaste
             // 
-            g10.Location = new Point(2, 23);
-            g10.MainView = gvCtrl;
-            g10.Name = "g10";
-            g10.Size = new Size(228, 409);
-            g10.TabIndex = 0;
-            g10.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] { gvCtrl });
-            g10.DragDrop += g10_DragDrop;
-            g10.DragOver += g10_DragOver;
-            g10.MouseDown += g10_MouseDown;
-            g10.MouseMove += g10_MouseMove;
+            gPaste.ColumnAutoWidth = true;
+            gPaste.Dock = DockStyle.Fill;
+            gPaste.EmbeddedNavigator.CustomButtons.AddRange(new DevExpress.XtraEditors.NavigatorCustomButton[] { new DevExpress.XtraEditors.NavigatorCustomButton(-1, 11, true, true, "", "Query") });
+            gPaste.FocuseRowIndex = int.MinValue;
+            gPaste.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            gPaste.Location = new Point(0, 0);
+            gPaste.MultiSelect = false;
+            gPaste.MultiSelectMode = DevExpress.XtraGrid.Views.Grid.GridMultiSelectMode.RowSelect;
+            gPaste.Name = "gPaste";
+            gPaste.RowAutoHeigh = false;
+            gPaste.ShowFindPanel = false;
+            gPaste.ShowGroupPanel = true;
+            gPaste.Size = new Size(433, 513);
+            gPaste.TabIndex = 3;
+            gPaste.UseEmbeddedNavigator = true;
             // 
-            // gvCtrl
+            // gCopy
             // 
-            gvCtrl.GridControl = g10;
-            gvCtrl.Name = "gvCtrl";
-            gvCtrl.DragObjectDrop += gvCtrl_DragObjectDrop;
-            gvCtrl.DragObjectOver += gvCtrl_DragObjectOver;
-            gvCtrl.MouseDown += gvCtrl_MouseDown;
-            gvCtrl.MouseMove += gvCtrl_MouseMove;
+            gCopy.ColumnAutoWidth = true;
+            gCopy.Dock = DockStyle.Fill;
+            gCopy.EmbeddedNavigator.CustomButtons.AddRange(new DevExpress.XtraEditors.NavigatorCustomButton[] { new DevExpress.XtraEditors.NavigatorCustomButton(-1, 11, true, true, "", "Query") });
+            gCopy.FocuseRowIndex = int.MinValue;
+            gCopy.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            gCopy.Location = new Point(0, 0);
+            gCopy.MultiSelect = false;
+            gCopy.MultiSelectMode = DevExpress.XtraGrid.Views.Grid.GridMultiSelectMode.RowSelect;
+            gCopy.Name = "gCopy";
+            gCopy.RowAutoHeigh = false;
+            gCopy.ShowFindPanel = false;
+            gCopy.ShowGroupPanel = true;
+            gCopy.Size = new Size(418, 513);
+            gCopy.TabIndex = 2;
+            gCopy.UseEmbeddedNavigator = true;
             // 
-            // g20
+            // ucSplit1
             // 
-            g20.Location = new Point(255, 23);
-            g20.MainView = gridView1;
-            g20.Name = "g20";
-            g20.Size = new Size(228, 409);
-            g20.TabIndex = 1;
-            g20.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] { gridView1 });
+            ucSplit1.Dock = DockStyle.Fill;
+            ucSplit1.Location = new Point(2, 23);
+            ucSplit1.Name = "ucSplit1";
             // 
-            // gridView1
+            // ucSplit1.Panel1
             // 
-            gridView1.GridControl = g20;
-            gridView1.Name = "gridView1";
+            ucSplit1.Panel1.Controls.Add(gCopy);
+            // 
+            // ucSplit1.Panel2
+            // 
+            ucSplit1.Panel2.Controls.Add(gPaste);
+            ucSplit1.Size = new Size(855, 513);
+            ucSplit1.SplitterDistance = 418;
+            ucSplit1.TabIndex = 4;
+            ucSplit1.TitleWidth = 50;
             // 
             // Grid
             // 
@@ -96,22 +114,23 @@
             AutoScaleMode = AutoScaleMode.Font;
             Controls.Add(ucPanel1);
             Name = "Grid";
-            Size = new Size(488, 432);
+            Size = new Size(859, 538);
             ((System.ComponentModel.ISupportInitialize)ucPanel1).EndInit();
             ucPanel1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)g10).EndInit();
-            ((System.ComponentModel.ISupportInitialize)gvCtrl).EndInit();
-            ((System.ComponentModel.ISupportInitialize)g20).EndInit();
-            ((System.ComponentModel.ISupportInitialize)gridView1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)gPaste).EndInit();
+            ((System.ComponentModel.ISupportInitialize)gCopy).EndInit();
+            ucSplit1.Panel1.ResumeLayout(false);
+            ucSplit1.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)ucSplit1).EndInit();
+            ucSplit1.ResumeLayout(false);
             ResumeLayout(false);
         }
 
         #endregion
 
         private Ctrls.UCPanel ucPanel1;
-        private DevExpress.XtraGrid.GridControl g10;
-        private DevExpress.XtraGrid.Views.Grid.GridView gvCtrl;
-        private DevExpress.XtraGrid.GridControl g20;
-        private DevExpress.XtraGrid.Views.Grid.GridView gridView1;
+        private Ctrls.UCGridNav gCopy;
+        private Ctrls.UCGridNav gPaste;
+        private Ctrls.UCSplit ucSplit1;
     }
 }

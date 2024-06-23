@@ -291,7 +291,7 @@ namespace Ctrls
                 if (wrkFld.DefaultText != null)
                 {
                     string defaultTxt = wrkFld.DefaultText;
-                    defaultTxt = GenFunc.ReplaceGPatternVariable(defaultTxt);
+                    defaultTxt = GenFunc.ReplaceGPatternQuery(defaultTxt);
                     using (var db = new GaiaHelper())
                     {
                         defaultTxt = db.ReplaceGVariables(defaultTxt);
@@ -594,7 +594,7 @@ namespace Ctrls
                     //3. Data Source Binding
                     Common.gMsg = $"-- {thisNm}.Select Query ------------------------>>";
                     var sql = GenFunc.GetSql(new { FrwId = frwId, FrmId = frmId, WrkId = thisNm, CRUDM = "R" });
-                    sql = GenFunc.ReplaceGPatternVariable(sql);
+                    sql = GenFunc.ReplaceGPatternQuery(sql);
 
                     List<T> lists = new List<T>();
 
@@ -1000,7 +1000,7 @@ namespace Ctrls
                                 Common.gMsg = $"쿼리가 존재하지 않습니다.";
                                 return;
                             }
-                            sql = GenFunc.ReplaceGPatternVariable(sql);
+                            sql = GenFunc.ReplaceGPatternQuery(sql);
                             foreach (var wrkRef in wrkRefs)
                             {
                                 Common.gMsg = $"--[{thisNm}] {operation}-------------------->>";

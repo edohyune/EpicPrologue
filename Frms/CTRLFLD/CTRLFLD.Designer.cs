@@ -28,10 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
-            DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions buttonImageOptions5 = new DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions();
             DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions buttonImageOptions1 = new DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions();
-            DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions buttonImageOptions6 = new DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions();
-            DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions buttonImageOptions7 = new DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions();
+            DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions buttonImageOptions2 = new DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions();
+            DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions buttonImageOptions3 = new DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions();
+            DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions buttonImageOptions4 = new DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CTRLFLD));
             ucSplit1 = new Ctrls.UCSplit();
             pnlFrmCtrl = new Ctrls.UCPanel();
@@ -81,7 +81,7 @@
             // pnlFrmCtrl
             // 
             pnlFrmCtrl.Controls.Add(grdFrmCtrl);
-            pnlFrmCtrl.CustomHeaderButtons.AddRange(new DevExpress.XtraEditors.ButtonPanel.IBaseButton[] { new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Open", true, buttonImageOptions5, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1) });
+            pnlFrmCtrl.CustomHeaderButtons.AddRange(new DevExpress.XtraEditors.ButtonPanel.IBaseButton[] { new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Open", true, buttonImageOptions1, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1) });
             pnlFrmCtrl.Dock = DockStyle.Fill;
             pnlFrmCtrl.EditYn = true;
             pnlFrmCtrl.Location = new Point(0, 0);
@@ -114,9 +114,9 @@
             // pnlWrkFld
             // 
             pnlWrkFld.Controls.Add(grdWrkFld);
-            buttonImageOptions7.SvgImage = (DevExpress.Utils.Svg.SvgImage)resources.GetObject("buttonImageOptions7.SvgImage");
-            buttonImageOptions7.SvgImageSize = new Size(16, 16);
-            pnlWrkFld.CustomHeaderButtons.AddRange(new DevExpress.XtraEditors.ButtonPanel.IBaseButton[] { new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Save", true, buttonImageOptions1, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1), new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Delete", true, buttonImageOptions6, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1), new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("     GET     ", true, buttonImageOptions7, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1) });
+            buttonImageOptions4.SvgImage = (DevExpress.Utils.Svg.SvgImage)resources.GetObject("buttonImageOptions4.SvgImage");
+            buttonImageOptions4.SvgImageSize = new Size(16, 16);
+            pnlWrkFld.CustomHeaderButtons.AddRange(new DevExpress.XtraEditors.ButtonPanel.IBaseButton[] { new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Save", true, buttonImageOptions2, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1), new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Delete", true, buttonImageOptions3, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1), new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("     GET     ", true, buttonImageOptions4, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1) });
             pnlWrkFld.CustomHeaderButtonsLocation = DevExpress.Utils.GroupElementLocation.AfterText;
             pnlWrkFld.Dock = DockStyle.Fill;
             pnlWrkFld.EditYn = true;
@@ -151,6 +151,7 @@
             // ucSplit2
             // 
             ucSplit2.Dock = DockStyle.Fill;
+            ucSplit2.FixedPanel = FixedPanel.Panel1;
             ucSplit2.Location = new Point(0, 0);
             ucSplit2.Name = "ucSplit2";
             ucSplit2.Orientation = Orientation.Horizontal;
@@ -196,6 +197,7 @@
             cmbFrm.Title = "UCCodeBox";
             cmbFrm.TitleAlignment = DevExpress.Utils.HorzAlignment.Default;
             cmbFrm.TitleWidth = 69;
+            cmbFrm.UCSelectedIndexChanged += cmbFrm_UCSelectedIndexChanged;
             // 
             // CTRLFLD
             // 

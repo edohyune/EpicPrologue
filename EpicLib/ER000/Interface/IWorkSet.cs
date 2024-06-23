@@ -28,5 +28,6 @@ namespace ER000.Interface
         /// 워크셋 데이터를 삭제합니다.
         /// </summary>
         void New();
+
     }
 }

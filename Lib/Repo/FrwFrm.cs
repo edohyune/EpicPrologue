@@ -127,6 +127,22 @@ select a.FrmId, a.FrmNm, a.UsrRegId, a.FrwId, a.FilePath,
                 return result == null;
             }
         }
+        public List<MdlNmSpace> GetMdlNmSpace(string frwId)
+        {
+            string sql = @"
+select a.FrmId, NmSpace=concat(a.NmSpace,'_',upper(b.WrkId))
+  from FRWFRM a
+  join FRMWRK b on a.FrwId=b.FrwId and a.FrmId=b.FrmId
+ where 1=1
+   and a.FrwId = @FrwId
+";
+            using (var db = new GaiaHelper())
+            {
+                var result = db.Query<MdlNmSpace>(sql, new { FrwId = frwId }).ToList();
+                return result;
+            }
+        }
+
         public List<FrwFrm> GetByOwnFrw(int ownId, string frwId)
         {
             string sql = @"
@@ -166,7 +182,7 @@ select a.FrmId, a.FrmNm, a.UsrRegId, a.FrwId, a.FilePath,
                 var result = db.Query<FrwFrm>(sql, new { FrwId = frwId, FrmId = frmId }).FirstOrDefault();
                 if (result == null)
                 {
-                    throw new KeyNotFoundException($"A record with the code {frmId} was not found.");
+                    return null;
                 }
                 else 
                 {

@@ -10,6 +10,9 @@ using Ctrls.FrmBase.Models;
 using Dapper;
 using Ctrls;
 using System.Dynamic;
+using DevExpress.XtraTab;
+using DevExpress.XtraPrinting.Control;
+using DevExpress.XtraEditors;
 
 namespace Frms
 {
@@ -20,27 +23,30 @@ namespace Frms
         private string frwId { get; set; }
         [Browsable(false)]
         private string frmId { get; set; }
-
+        public bool ActivateAllTabsOnLoad { get; set; }
 
         private object OSearchParam;
         private DynamicParameters DSearchParam;
 
         private List<UCFieldSet> fieldSets;
-        private List<FrmWrk> wrkSetsOrderby;
+        private List<UCGridNav> gridSets;
+
+
+        private List<IWorkSet> workSets;
+        private List<FrmWrk> frmWrks;
 
         #endregion
-        #region Properties Browseable(true) -----------------------------------------------------------
 
-        #endregion
         public FrmBase()
         {
             Load += FrmBase_Load;
             fieldSets = new List<UCFieldSet>();
+            gridSets = new List<UCGridNav>(); 
         }
 
         private void FrmBase_Load(object? sender, EventArgs e)
         {
-            frwId = Lib.Common.GetValue("gFrmameWorkId");
+            frwId = Lib.Common.GetValue("gFrameWorkId");
 
             Form? form = this.FindForm();
             frmId = form != null ? form.Name : "Unknown";
@@ -48,178 +54,249 @@ namespace Frms
             if (!string.IsNullOrEmpty(frwId))
             {
                 //Initialize FieldSet registered in Form
-                ResetFieldSet();
+                ResetWorkSet();
             }
         }
 
-        private void ResetFieldSet()
+        private void ResetWorkSet()
         {
-            //frmWrks WorkSet을 목록을 가져온다. 
-            List<FrmWrk> frmWrks = new List<FrmWrk>();
-            //WrkId, FrwId, FrmId, CtrlNm, WrkNm, WrkCd, UseYn, Memo 모두 string 제외 useYn은 bool
-            frmWrks = new FrmWrkRepo().GetByFieldSets(frwId, frmId);
+            frmWrks = new FrmWrkRepo().GetByWorkSetsOrderby(frwId, frmId); 
+
             if (frmWrks.Count > 0)
             {
                 foreach (FrmWrk frmWrk in frmWrks)
                 {
-                    UCFieldSet fieldSet = new UCFieldSet(frwId, frmId, frmWrk.CtrlNm);
-                    fieldSets.Add(fieldSet);
-                    this.Controls.Add(fieldSet);
-                    fieldSet.InitializeField();
-                    fieldSet.DataChanged += FieldSet_DataChanged;
+                    if (frmWrk.WrkCd=="FieldSet")
+                    {
+                        UCFieldSet fieldSet = new UCFieldSet(frwId, frmId, frmWrk.WrkId);
+                        if (fieldSet != null)
+                        {
+                            workSets.Add(fieldSet);
+                            this.Controls.Add(fieldSet);
+                            fieldSet.InitializeField();
+
+                            fieldSet.DataChanged += WorkSet_DataChanged;
+                        }
+                    }
+                    else if (frmWrk.WrkCd == "GridSet")
+                    {
+                        UCGridNav gridSet = CtrlHelper.FindControlRecursive<UCGridNav>(this, frmWrk.WrkId);
+                        if (gridSet != null)
+                        {
+                            gridSets.Add(gridSet);
+
+                            gridSet.DataChanged += WorkSet_DataChanged;
+                        }
+                    }
                 }
+
+
+                #region 하위 워크셋과의 관계설정
+
+                // 하위 워크셋 관계 설정 워크셋이 부모 워크셋의 값을 가지고 있는 경우
+
+                // 자신의 워크셋을 WrkSet Get하는 것으로 하위 워크셋과의 관계를 설정한다.-------------------------------------------------------
+
+                //foreach (var wrkSet in frmWrks)
+                //{
+                //    var parentFieldSet = fieldSets.Find(fs => fs.wrkId == wrkSet.WrkId);
+                //    if (parentFieldSet != null)
+                //    {
+                //        foreach (var child in frmWrks.Where(ws => ws.ParentId == wrkSet.WrkId))
+                //        {
+                //            var childFieldSet = fieldSets.Find(fs => fs.wrkId == child.WrkId);
+                //            if (childFieldSet != null)
+                //            {
+                //                parentFieldSet.ChildWorkSets.Add(childFieldSet);
+                //            }
+
+                //            var childGridSet = gridSets.Find(gs => gs.Name == child.WrkId);
+                //            if (childGridSet != null)
+                //            {
+                //                parentFieldSet.ChildWorkSets.Add(childGridSet);
+                //            }
+                //        }
+                //    }
+
+                //    var parentGridSet = gridSets.Find(gs => gs.Name == wrkSet.WrkId);
+                //    if (parentGridSet != null)
+                //    {
+                //        foreach (var child in wrkSetsOrderby.Where(ws => ws.ParentId == wrkSet.WrkId))
+                //        {
+                //            var childFieldSet = fieldSets.Find(fs => fs.wrkId == child.WrkId);
+                //            if (childFieldSet != null)
+                //            {
+                //                parentGridSet.ChildWorkSets.Add(childFieldSet);
+                //            }
+
+                //            var childGridSet = gridSets.Find(gs => gs.Name == child.WrkId);
+                //            if (childGridSet != null)
+                //            {
+                //                parentGridSet.ChildWorkSets.Add(childGridSet);
+                //            }
+                //        }
+                //    }
+                //}
+                #endregion
+
+
+
             }
         }
 
         #region this.Open() ----------------------------------------------------------
-        private void Open()
+        //전체오픈
+        protected void Open()
         {
-            //ope
-            //foreach (UCFieldSet fieldSet in fieldSets)
-            //{
-            //    fieldSet.Open();
-            //}
+            //워트셋의 오픈트리거가 구현되면 최초의 워크셋을 오픈하면 하위 워크셋들이 자동으로 오픈된다.
 
-            //wrkSetsOrderby으로 wrkSet 목록을 가져온다. 
-            FrmWrkRepo frmWrkRepo = new FrmWrkRepo();
-            wrkSetsOrderby = frmWrkRepo.GetByWorkSetsOpenOrderby(frwId, frmId);
-
-            foreach (var wrkSet in wrkSetsOrderby)
+            foreach (var wrkSet in frmWrks)
             {
-                //// 각 워크셋을 찾아서 Open 메서드 호출
-                ////var workSet = workSets.Find(ws => (ws as dynamic).thisNm == wrkSet.CtrlNm);
-                //if (workSet != null)
-                //{
-                //    (workSet as dynamic).Open();
-                //}
-                (wrkSet as dynamic).Open();
+                var fieldSet = fieldSets.Find(fs => fs.wrkId == wrkSet.WrkId);
+                if (fieldSet != null)
+                {
+                    fieldSet.Open();
+                    Common.gMsg= $"FieldSet Open : {wrkSet.WrkId} ==================================";
+                }
+
+                var gridSet = gridSets.Find(gs => gs.Name == wrkSet.WrkId);
+                if (gridSet != null)
+                {
+                    gridSet.Open();
+                    Common.gMsg = $"GridSet Open : {wrkSet.WrkId} ==================================";
+                }
             }
-
-
-            //using (var db = new GaiaHelper())
-            //{
-
-            //    var sql = GenFunc.GetSql(new { FrwId = frwId, FrmId = frmId, WrkId = , CRUDM = "R" });
-            //    var resultDict = db.QueryKeyValue(sql, DSearchParam);
-
-            //    dynamic obj = new ExpandoObject();
-            //    var objDict = (IDictionary<string, object>)obj;
-            //    //WorkSet 목록을 가져온다. 
-            //    if (resultDict != null)
-            //    {
-            //        foreach (var fld in wrkSetsOrderby)
-            //        {
-            //            if (resultDict.ContainsKey(fld.FldNm))
-            //            {
-            //                objDict[fld.FldNm] = resultDict[fld.FldNm];
-            //                OnDataChanged(new DataChangedEventArgs(fld.FldNm, resultDict[fld.FldNm]));
-            //            }
-            //            Control ctrl = this.FindForm().Controls.Find(fld.FldNm, true).FirstOrDefault();
-            //            if (ctrl != null && resultDict.ContainsKey(fld.FldNm))
-            //            {
-            //                SetControlValue(ctrl, fld.CtrlNm, fld.ToolNm, resultDict[fld.FldNm]);
-            //            }
-            //        }
-            //    }
-            //}
-
-            //// WrkFldRepo 인스턴스를 생성하여 현재 필드셋에 대한 필드 속성 정보를 가져옵니다.
-            //WrkFldRepo wrkFldRepo = new WrkFldRepo();
-            //List<WrkFld> flds = wrkFldRepo.GetFldsProperties(frwId, frmId, thisNm);
-
-            //// SQL 쿼리를 생성합니다. 이 쿼리는 주어진 프레임워크 ID, 폼 ID, 작업 ID, 및 CRUDM("R" - 조회) 값을 사용하여 생성됩니다.
-            //var sql = GenFunc.GetSql(new { FrwId = frwId, FrmId = frmId, WrkId = thisNm, CRUDM = "R" });
-
-            //// GaiaHelper를 사용하여 데이터베이스에 연결하고 쿼리를 실행합니다.
-            //using (var db = new GaiaHelper())
-            //{
-            //    // 쿼리 결과를 딕셔너리 형태로 가져옵니다.
-            //    var resultDict = db.QueryKeyValue(sql, DSearchParam);
-
-            //    // 동적 객체를 생성하여 결과 값을 저장할 딕셔너리를 생성합니다.
-            //    dynamic obj = new ExpandoObject();
-            //    var objDict = (IDictionary<string, object>)obj;
-
-            //    // 결과 값이 null이 아닌 경우
-            //    if (resultDict != null)
-            //    {
-            //        // 필드셋의 각 필드에 대해
-            //        foreach (var fld in flds)
-            //        {
-            //            // 결과 딕셔너리에 해당 필드 이름이 있는 경우
-            //            if (resultDict.ContainsKey(fld.FldNm))
-            //            {
-            //                // 동적 객체에 필드 값을 설정합니다.
-            //                objDict[fld.FldNm] = resultDict[fld.FldNm];
-
-            //                // 데이터가 변경되었음을 알리는 이벤트를 발생시킵니다.
-            //                OnDataChanged(new DataChangedEventArgs(fld.FldNm, resultDict[fld.FldNm]));
-            //            }
-
-            //            // 폼에서 해당 필드 이름을 가진 컨트롤을 찾습니다.
-            //            Control ctrl = this.FindForm().Controls.Find(fld.FldNm, true).FirstOrDefault();
-
-            //            // 컨트롤이 null이 아니고 결과 딕셔너리에 필드 이름이 있는 경우
-            //            if (ctrl != null && resultDict.ContainsKey(fld.FldNm))
-            //            {
-            //                // 컨트롤 값을 설정합니다.
-            //                SetControlValue(ctrl, fld.CtrlNm, fld.ToolNm, resultDict[fld.FldNm]);
-            //            }
-            //        }
-            //    }
-            //}
         }
         #endregion
 
         #region this.Save() ----------------------------------------------------------
-
         private void Save()
         {
-            foreach (Control ctrl in this.Controls)
-            {
-                // WorkSet 모델 인스턴스 생성 및 데이터 설정
-                MdlWrkSet model = new MdlWrkSet();
-                model.Data = ctrl.Text; // 예시: 컨트롤의 Text 속성 사용
-                model.CtrlId = ctrl.Name; // 컨트롤 이름을 ID로 사용
+            var saveOrderby = frmWrks.OrderBy(wrk => wrk.SaveSq).ToList();
 
-                // 데이터베이스에 저장
-                SaveWorkSetData(model);
+            foreach (var wrkSet in saveOrderby)
+            {
+                var fieldSet = fieldSets.Find(fs => fs.wrkId == wrkSet.WrkId);
+                if (fieldSet != null)
+                {
+                    fieldSet.Save();
+                    Common.gMsg = $"FieldSet Save : {wrkSet.WrkId} ==================================";
+                }
+
+                var gridSet = gridSets.Find(gs => gs.Name == wrkSet.WrkId);
+                if (gridSet != null)
+                {
+                    gridSet.Save();
+                    Common.gMsg = $"GridSet Save : {wrkSet.WrkId} ==================================";
+                }
             }
         }
-
-        private void SaveWorkSetData(MdlWrkSet model)
-        {
-            //frwId, frmId, wrkId를 알면 해당 워크셋에서 사용하는 insert update, delete 쿼리를 가지고 올 수 있다. 
-            return;
-        }
-
-        private void btnSave_Click(object sender, EventArgs e)
-        {
-            Save();
-        }
         #endregion
 
-        #region this.Delete() ----------------------------------------------------------
+        //private void WorkSet_DataChanged(object sender, DataChangedEventArgs e)
+        //{
+        //    // 데이터가 변경되면 해당 필드셋과 이후의 모든 필드셋을 다시 엽니다.
+        //    bool reopen = false;
+        //    foreach (var wrkSet in frmWrks)
+        //    {
+        //        if (wrkSet.WrkId == (sender as IWorkSet)?.wrkId)
+        //        {
+        //            reopen = true;
+        //        }
 
-        #endregion
+        //        if (reopen)
+        //        {
+        //            var fieldSet = fieldSets.Find(fs => fs.wrkId == wrkSet.WrkId);
+        //            fieldSet?.Open();
 
-
-        private void FieldSet_DataChanged(object sender, DataChangedEventArgs e)
+        //            var gridSet = gridSets.Find(gs => gs.wrkId == wrkSet.WrkId);
+        //            gridSet?.Open();
+        //        }
+        //    }
+        //}
+        private void WorkSet_DataChanged(object sender, DataChangedEventArgs e)
         {
+            //// 변경된 데이터와 관련된 워크셋만 다시 엽니다.
+            //var senderWorkSet = sender as IWorkSet;
+            //if (senderWorkSet == null) return;
+
+            //// 자신의 그리드를 Get하는 워크셋 목록을 가져옵니다.
+            //WrkGetRepo wrkGetRepo = new WrkGetRepo();
+            //var pullWrks = wrkGetRepo.GetPullFlds(senderWorkSet.frwId, senderWorkSet.frmId, senderWorkSet.wrkId);
+
+            //foreach (var pullWrk in pullWrks)
+            //{
+            //    // 해당 워크셋을 찾습니다.
+            //    var workSet = workSets.FirstOrDefault(ws => ws.wrkId == pullWrk.WrkId);
+            //    if (workSet != null)
+            //    {
+            //        workSet.Open();
+            //    }
+            //}
             // 데이터가 변경되면 해당 필드셋과 이후의 모든 필드셋을 다시 엽니다.
-            bool reopen = false;
-            foreach (UCFieldSet fieldSet in fieldSets)
-            {
-                if (fieldSet == sender)
-                {
-                    reopen = true;
-                }
+            var changedWorkSet = sender as IWorkSet;
 
-                if (reopen)
+            if (changedWorkSet == null)
+                return;
+
+            // 자신의 그리드를 Get하는 워크셋 목록을 가져옵니다.
+            WrkGetRepo wrkGetRepo = new WrkGetRepo();
+            var pullWrks = wrkGetRepo.GetPullWrks(changedWorkSet.frwId, changedWorkSet.frmId, changedWorkSet.wrkId);
+
+            foreach (var wrkSet in pullWrks)
+            {
+                if (wrkSet.WrkId == changedWorkSet.wrkId)
                 {
-                    fieldSet.Open();
+                    var fieldSet = fieldSets.Find(fs => fs.wrkId == wrkSet.WrkId);
+                    fieldSet?.Open();
+
+                    var gridSet = gridSets.Find(gs => gs.wrkId == wrkSet.WrkId);
+                    gridSet?.Open();
                 }
             }
         }
+
+        #region 탭페이지 활성화 ---------------------------------------------------
+        public void ActivateAllTabs()
+        {
+            ActivateTabPages(this); // this는 현재 폼(FrmBase)을 나타냅니다.
+            ResetSelectedTabPages(this); // 활성화 후 원래 선택된 탭 페이지로 복구
+        }
+        protected void ActivateTabPages(Control parentControl)
+        {
+            foreach (Control control in parentControl.Controls)
+            {
+                if (control is UCTab ucTab)
+                {
+                    foreach (XtraTabPage tabPage in ucTab.TabPages)
+                    {
+                        ucTab.SelectedTabPage = tabPage;
+                        ActivateTabPages(tabPage); // 탭 페이지 내의 컨트롤도 확인
+                    }
+                }
+                else
+                {
+                    ActivateTabPages(control); // 다른 컨트롤 내부도 재귀적으로 확인
+                }
+            }
+        }
+
+        protected void ResetSelectedTabPages(Control parentControl)
+        {
+            foreach (Control control in parentControl.Controls)
+            {
+                if (control is UCTab ucTab)
+                {
+                    var originalSelectedPage = ucTab.SelectedTabPage;
+                    ucTab.SelectedTabPage = originalSelectedPage; // 원래 선택된 탭 페이지로 복구
+                    ResetSelectedTabPages(ucTab);
+                }
+                else
+                {
+                    ResetSelectedTabPages(control); // 다른 컨트롤 내부도 재귀적으로 확인
+                }
+            }
+        }
+        #endregion
     }
 }

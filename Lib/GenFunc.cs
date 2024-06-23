@@ -1,5 +1,4 @@
 ﻿using Lib.Repo;
-using Lib.Syntax;
 using System.Text.RegularExpressions;
 
 namespace Lib
@@ -65,30 +64,45 @@ namespace Lib
         public static string IsNull(this string a, string b) => string.IsNullOrWhiteSpace(a) ? b : a;
         //string val = value1.IsNull("Default Value")
         #endregion
-        #region Replace PattenVariable --------------------------------------------
-        public static string ReplaceGPatternVariable(string input)
+        #region Replace Syntax Patten ---------------------------------------------
+        public static string ReplaceGPatternQuery(string input)
         {
-            SQLVariableExtractor extractor = new SQLVariableExtractor();
-            SQLSyntaxMatch cvariables = extractor.ExtractVariables(input);
+            var components = Lib.Syntax.SyntaxExtractor.ExtractPattern(input, match => match.GPatternMatch);
 
-            foreach (var variable in cvariables.GPatternMatch)
+            foreach (var component in components)
             {
-                string variableName = variable.Key;
+                string componentNm = component.Key;
 
-                string pattern = @"<\$(.*?)>";
+                string pattern = RegexStrs.Lists[RegexStr.GPattern];//@"<\$(.*?)>";
 
-                Match match = Regex.Match(variableName, pattern);
+                Match match = Regex.Match(componentNm, pattern);
 
                 if (match.Success)
                 {
-                    string variableValue = Common.GetValue(match.Groups[1].Value); // Lib.Common에서 값 가져오기
-                    //input = input.Replace(variable.ToString(), variableValue);
-                    input = input.Replace(variableName, $"'{variableValue}'");
+                    string gVariableValue = Common.GetValue(match.Groups[1].Value); // Lib.Common에서 값 가져오기
+                    //input = input.Replace(component.ToString(), gVariableValue);
+                    input = input.Replace(componentNm, $"'{gVariableValue}'");
                 }
                 else
                 {
-                    input = input.Replace(variableName, @"''");
+                    input = input.Replace(componentNm, @"''");
                 }
+            }
+            return input;
+        }
+        public static string ReplaceGPatternWord(string input)
+        {
+            string pattern = RegexStrs.Lists[RegexStr.GPattern];//@"<\$(.*?)>";
+            Match match = Regex.Match(input, pattern);
+
+            if (match.Success)
+            {
+                string gVariableValue = Common.GetValue(match.Groups[1].Value); // Lib.Common에서 값 가져오기
+                input = input.Replace(input, $"'{gVariableValue}'");
+            }
+            else
+            {
+                input = input.Replace(input, @"''");
             }
             return input;
         }
@@ -129,8 +143,8 @@ select a.Query
 select a.Query
   from WRKSQL a
  where 1=1
-   and a.FrmId = @FrmId
    and a.FrwId = @FrwId
+   and a.FrmId = @FrmId
    and a.WrkId = @WrkId
    and a.CRUDM = @CRUDM
 ";
@@ -251,10 +265,14 @@ select a.Query
             string[] parts = input.Split(delimiter);
             return parts[^1]; // C# 8.0 이상에서 사용 가능한 인덱스 from end 연산자
         }
-        //Form NameSpace를 가져오는 함수 
+        //Form NameSpace를 FrwFrm과 FrmWrk에서 가져오는 함수 
         public static string GetFormNamespace(string frwId, string frmId)
         {
             FrwFrm frwFrm = new FrwFrmRepo().GetByFrmId(frwId, frmId);
+            if (frwFrm == null)
+            {
+                return "";
+            }
             return frwFrm.NmSpace;
         }
     }

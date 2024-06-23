@@ -10,33 +10,18 @@ using System.Data;
 
 namespace Frms
 {
-    public partial class WRKFLD : UserControl
+    public partial class WRKFLD : FrmBase
     {
         public WRKFLD()
         {
             InitializeComponent();
         }
-
-        private void cmbForm_SelectedIndexChanged(object sender, EventArgs e)
+        private void cmbFrm_UCSelectedIndexChanged(object sender, EventArgs e)
         {
-            grdFrmWrk.Open();
+            this.Open();
         }
 
-        private void grdFrmWrk_UCFocusedRowChanged(object sender, int preIndex, int rowIndex, DevExpress.XtraGrid.Views.Base.FocusedRowChangedEventArgs e)
-        {
-
-            //if (selectedDoc != null)
-            //{
-            //    g20OpenGrid();
-            //    SetWrkSQL();
-            //    t10OpenGrid();
-            //    grdGetParamGrid();
-            //    grdSetparamGrid();
-            //    grdRefDataGrid();
-            //}
-        }
-
-        #region OPEN ---------------------------------------------------------------->>
+        #region OPEN --------------------------------------------------------------->>
         #endregion
 
         #region CustomButtonClick -------------------------------------------------->>
@@ -250,8 +235,8 @@ namespace Frms
             else if (e.Button.Properties.Caption == "Make GetParameters Data")
             {
                 return;
-                //SQLVariableExtractor extractor = new SQLVariableExtractor();
-                //SQLSyntaxMatch cvariables = extractor.ExtractVariables(rtSelect.Text);
+                //SyntaxExtractor extractor = new SyntaxExtractor();
+                //SyntaxMatch cvariables = extractor.ExtractVariables(rtSelect.Text);
 
                 //foreach (var kvp in cvariables.OPatternMatch)
                 //{
@@ -328,8 +313,8 @@ namespace Frms
             else if (e.Button.Properties.Caption == "Make Reference Data")
             {
                 return;
-                //SQLVariableExtractor extractor = new SQLVariableExtractor();
-                //SQLSyntaxMatch cvariables = extractor.ExtractVariables(rtUpdate.Text);
+                //SyntaxExtractor extractor = new SyntaxExtractor();
+                //SyntaxMatch cvariables = extractor.ExtractVariables(rtUpdate.Text);
 
                 //foreach (var kvp in cvariables.OPatternMatch)
                 //{
@@ -457,7 +442,6 @@ namespace Frms
         }
         #endregion
 
-        public bool ExpandYn = false;
         private void ucPanel1_CustomButtonClick(object sender, DevExpress.XtraBars.Docking2010.BaseButtonEventArgs e)
         {
             if (e.Button.Properties.Caption == "Expanding")
@@ -472,7 +456,6 @@ namespace Frms
                 //ExpandYn = false;
                 e.Button.Properties.Caption = "Expanding"; // 캡션 변경
             }
-
             else if (e.Button.Properties.Caption == "Save")
             {
                 return;

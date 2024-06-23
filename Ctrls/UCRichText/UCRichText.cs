@@ -139,6 +139,12 @@ namespace Ctrls
                     this.EditYn = wrkFld.EditYn;
                     this.Text = wrkFld.DefaultText;
                 }
+                else 
+                {
+                    this.ShowYn = true;
+                    this.EditYn = true;
+                    this.Text = string.Empty;
+                }
             }
             catch (Exception ex)
             {

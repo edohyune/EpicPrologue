@@ -76,15 +76,14 @@
             DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions buttonImageOptions46 = new DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions();
             DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions buttonImageOptions47 = new DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions();
             DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions buttonImageOptions48 = new DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions();
-            DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions buttonImageOptions49 = new DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions();
             ucSplit1 = new Ctrls.UCSplit();
             ucPanel2 = new Ctrls.UCPanel();
-            ucCodeBox1 = new Ctrls.UCCodeBox();
+            cmbFrm = new Ctrls.UCCodeBox();
             ucSplit2 = new Ctrls.UCSplit();
             ucPanel1 = new Ctrls.UCPanel();
             tabWrk = new Ctrls.UCTab();
             xtraTabPage3 = new DevExpress.XtraTab.XtraTabPage();
-            grdFrmWrk = new Ctrls.UCGridSet();
+            grdFrmWrk = new Ctrls.UCGridNav();
             xtraTabPage4 = new DevExpress.XtraTab.XtraTabPage();
             grdFrmCtrl = new Ctrls.UCGridNav();
             tabQueryField = new Ctrls.UCTab();
@@ -118,17 +117,17 @@
             xtraTabPage2 = new DevExpress.XtraTab.XtraTabPage();
             ucSplit4 = new Ctrls.UCSplit();
             ucPanel3 = new Ctrls.UCPanel();
-            grdWrkFld = new Ctrls.UCGridSet();
+            grdWrkFld = new Ctrls.UCGridNav();
             ucTab1 = new Ctrls.UCTab();
             xtraTabPage8 = new DevExpress.XtraTab.XtraTabPage();
             ucPanel4 = new Ctrls.UCPanel();
-            grdWrkGet = new Ctrls.UCGridSet();
+            grdWrkGet = new Ctrls.UCGridNav();
             xtraTabPage9 = new DevExpress.XtraTab.XtraTabPage();
             ucPanel5 = new Ctrls.UCPanel();
-            grdWrkSet = new Ctrls.UCGridSet();
+            grdWrkSet = new Ctrls.UCGridNav();
             xtraTabPage10 = new DevExpress.XtraTab.XtraTabPage();
             ucPanel6 = new Ctrls.UCPanel();
-            grdWrkRef = new Ctrls.UCGridSet();
+            grdWrkRef = new Ctrls.UCGridNav();
             ucSplit3 = new Ctrls.UCSplit();
             pnlColumn = new Ctrls.UCPanel();
             t10 = new DevExpress.XtraGrid.GridControl();
@@ -267,40 +266,41 @@
             // ucSplit1.Panel2
             // 
             ucSplit1.Panel2.Controls.Add(ucSplit2);
-            ucSplit1.Size = new Size(800, 600);
-            ucSplit1.SplitterDistance = 53;
+            ucSplit1.Size = new Size(1082, 705);
+            ucSplit1.SplitterDistance = 62;
             ucSplit1.TabIndex = 3;
             ucSplit1.TitleWidth = 50;
             // 
             // ucPanel2
             // 
-            ucPanel2.Controls.Add(ucCodeBox1);
+            ucPanel2.Controls.Add(cmbFrm);
             ucPanel2.Dock = DockStyle.Fill;
             ucPanel2.EditYn = true;
             ucPanel2.Location = new Point(0, 0);
             ucPanel2.Name = "ucPanel2";
             ucPanel2.ShowYn = true;
-            ucPanel2.Size = new Size(800, 53);
+            ucPanel2.Size = new Size(1082, 62);
             ucPanel2.TabIndex = 0;
             ucPanel2.Text = "Form Select";
             // 
-            // ucCodeBox1
+            // cmbFrm
             // 
-            ucCodeBox1.Code = null;
-            ucCodeBox1.ControlHeight = 21;
-            ucCodeBox1.ControlWidth = 277;
-            ucCodeBox1.EditYn = true;
-            ucCodeBox1.FontFace = "Tahoma";
-            ucCodeBox1.FontSize = 9F;
-            ucCodeBox1.Location = new Point(7, 29);
-            ucCodeBox1.Name = "ucCodeBox1";
-            ucCodeBox1.ShowYn = true;
-            ucCodeBox1.Size = new Size(277, 21);
-            ucCodeBox1.TabIndex = 0;
-            ucCodeBox1.TextAlignment = DevExpress.Utils.HorzAlignment.Near;
-            ucCodeBox1.Title = "UCCodeBox";
-            ucCodeBox1.TitleAlignment = DevExpress.Utils.HorzAlignment.Default;
-            ucCodeBox1.TitleWidth = 69;
+            cmbFrm.Code = null;
+            cmbFrm.ControlHeight = 21;
+            cmbFrm.ControlWidth = 277;
+            cmbFrm.EditYn = true;
+            cmbFrm.FontFace = "Tahoma";
+            cmbFrm.FontSize = 9F;
+            cmbFrm.Location = new Point(7, 29);
+            cmbFrm.Name = "cmbFrm";
+            cmbFrm.ShowYn = true;
+            cmbFrm.Size = new Size(277, 21);
+            cmbFrm.TabIndex = 0;
+            cmbFrm.TextAlignment = DevExpress.Utils.HorzAlignment.Near;
+            cmbFrm.Title = "UCCodeBox";
+            cmbFrm.TitleAlignment = DevExpress.Utils.HorzAlignment.Default;
+            cmbFrm.TitleWidth = 69;
+            cmbFrm.UCSelectedIndexChanged += cmbFrm_UCSelectedIndexChanged;
             // 
             // ucSplit2
             // 
@@ -315,22 +315,22 @@
             // ucSplit2.Panel2
             // 
             ucSplit2.Panel2.Controls.Add(tabQueryField);
-            ucSplit2.Size = new Size(800, 543);
-            ucSplit2.SplitterDistance = 185;
+            ucSplit2.Size = new Size(1082, 639);
+            ucSplit2.SplitterDistance = 337;
             ucSplit2.TabIndex = 0;
             ucSplit2.TitleWidth = 50;
             // 
             // ucPanel1
             // 
             ucPanel1.Controls.Add(tabWrk);
-            ucPanel1.CustomHeaderButtons.AddRange(new DevExpress.XtraEditors.ButtonPanel.IBaseButton[] { new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Open", true, buttonImageOptions1, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1), new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Expanding", true, buttonImageOptions2, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1) });
+            ucPanel1.CustomHeaderButtons.AddRange(new DevExpress.XtraEditors.ButtonPanel.IBaseButton[] { new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Expanding", true, buttonImageOptions1, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1) });
             ucPanel1.CustomHeaderButtonsLocation = DevExpress.Utils.GroupElementLocation.AfterText;
             ucPanel1.Dock = DockStyle.Fill;
             ucPanel1.EditYn = true;
             ucPanel1.Location = new Point(0, 0);
             ucPanel1.Name = "ucPanel1";
             ucPanel1.ShowYn = true;
-            ucPanel1.Size = new Size(185, 543);
+            ucPanel1.Size = new Size(337, 639);
             ucPanel1.TabIndex = 0;
             ucPanel1.Text = "WrkSet List - FRMWRK";
             ucPanel1.CustomButtonClick += ucPanel1_CustomButtonClick;
@@ -341,7 +341,7 @@
             tabWrk.Location = new Point(2, 23);
             tabWrk.Name = "tabWrk";
             tabWrk.SelectedTabPage = xtraTabPage3;
-            tabWrk.Size = new Size(181, 518);
+            tabWrk.Size = new Size(333, 614);
             tabWrk.TabIndex = 1;
             tabWrk.TabPages.AddRange(new DevExpress.XtraTab.XtraTabPage[] { xtraTabPage3, xtraTabPage4 });
             // 
@@ -349,7 +349,7 @@
             // 
             xtraTabPage3.Controls.Add(grdFrmWrk);
             xtraTabPage3.Name = "xtraTabPage3";
-            xtraTabPage3.Size = new Size(179, 493);
+            xtraTabPage3.Size = new Size(331, 589);
             xtraTabPage3.TabPageWidth = 70;
             xtraTabPage3.Text = "WorkSet List";
             // 
@@ -357,6 +357,7 @@
             // 
             grdFrmWrk.ColumnAutoWidth = true;
             grdFrmWrk.Dock = DockStyle.Fill;
+            grdFrmWrk.EmbeddedNavigator.CustomButtons.AddRange(new DevExpress.XtraEditors.NavigatorCustomButton[] { new DevExpress.XtraEditors.NavigatorCustomButton(-1, 11, true, true, "", "Query"), new DevExpress.XtraEditors.NavigatorCustomButton(-1, 11, true, true, "", "Query") });
             grdFrmWrk.FocuseRowIndex = int.MinValue;
             grdFrmWrk.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             grdFrmWrk.Location = new Point(0, 0);
@@ -366,14 +367,14 @@
             grdFrmWrk.RowAutoHeigh = false;
             grdFrmWrk.ShowFindPanel = false;
             grdFrmWrk.ShowGroupPanel = true;
-            grdFrmWrk.Size = new Size(179, 493);
+            grdFrmWrk.Size = new Size(331, 589);
             grdFrmWrk.TabIndex = 0;
             // 
             // xtraTabPage4
             // 
             xtraTabPage4.Controls.Add(grdFrmCtrl);
             xtraTabPage4.Name = "xtraTabPage4";
-            xtraTabPage4.Size = new Size(179, 493);
+            xtraTabPage4.Size = new Size(331, 589);
             xtraTabPage4.TabPageWidth = 70;
             xtraTabPage4.Text = "Controllers";
             // 
@@ -381,6 +382,7 @@
             // 
             grdFrmCtrl.ColumnAutoWidth = true;
             grdFrmCtrl.Dock = DockStyle.Fill;
+            grdFrmCtrl.EmbeddedNavigator.CustomButtons.AddRange(new DevExpress.XtraEditors.NavigatorCustomButton[] { new DevExpress.XtraEditors.NavigatorCustomButton(-1, 11, true, true, "", "Query"), new DevExpress.XtraEditors.NavigatorCustomButton(-1, 11, true, true, "", "Query") });
             grdFrmCtrl.FocuseRowIndex = int.MinValue;
             grdFrmCtrl.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             grdFrmCtrl.Location = new Point(0, 0);
@@ -390,7 +392,7 @@
             grdFrmCtrl.RowAutoHeigh = false;
             grdFrmCtrl.ShowFindPanel = false;
             grdFrmCtrl.ShowGroupPanel = true;
-            grdFrmCtrl.Size = new Size(179, 493);
+            grdFrmCtrl.Size = new Size(331, 589);
             grdFrmCtrl.TabIndex = 0;
             // 
             // tabQueryField
@@ -399,7 +401,7 @@
             tabQueryField.Location = new Point(0, 0);
             tabQueryField.Name = "tabQueryField";
             tabQueryField.SelectedTabPage = xtraTabPage1;
-            tabQueryField.Size = new Size(611, 543);
+            tabQueryField.Size = new Size(741, 639);
             tabQueryField.TabIndex = 0;
             tabQueryField.TabPages.AddRange(new DevExpress.XtraTab.XtraTabPage[] { xtraTabPage1, xtraTabPage2 });
             // 
@@ -407,7 +409,7 @@
             // 
             xtraTabPage1.Controls.Add(tabCRUDM);
             xtraTabPage1.Name = "xtraTabPage1";
-            xtraTabPage1.Size = new Size(609, 518);
+            xtraTabPage1.Size = new Size(739, 614);
             xtraTabPage1.TabPageWidth = 120;
             xtraTabPage1.Text = "CRUD-M";
             // 
@@ -417,7 +419,7 @@
             tabCRUDM.Location = new Point(0, 0);
             tabCRUDM.Name = "tabCRUDM";
             tabCRUDM.SelectedTabPage = tpR;
-            tabCRUDM.Size = new Size(609, 518);
+            tabCRUDM.Size = new Size(739, 614);
             tabCRUDM.TabIndex = 0;
             tabCRUDM.TabPages.AddRange(new DevExpress.XtraTab.XtraTabPage[] { tpR, tpC, tpU, tpD, tpM });
             tabCRUDM.TabPageWidth = 80;
@@ -426,20 +428,20 @@
             // 
             tpR.Controls.Add(pnlSelect);
             tpR.Name = "tpR";
-            tpR.Size = new Size(607, 493);
+            tpR.Size = new Size(737, 589);
             tpR.Text = "Select";
             // 
             // pnlSelect
             // 
             pnlSelect.Controls.Add(ucSplit5);
-            pnlSelect.CustomHeaderButtons.AddRange(new DevExpress.XtraEditors.ButtonPanel.IBaseButton[] { new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Generate", true, buttonImageOptions3, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1), new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Save", true, buttonImageOptions4, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1), new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Delete", true, buttonImageOptions5, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1) });
+            pnlSelect.CustomHeaderButtons.AddRange(new DevExpress.XtraEditors.ButtonPanel.IBaseButton[] { new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Generate", true, buttonImageOptions2, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1), new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Save", true, buttonImageOptions3, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1), new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Delete", true, buttonImageOptions4, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1) });
             pnlSelect.CustomHeaderButtonsLocation = DevExpress.Utils.GroupElementLocation.BeforeText;
             pnlSelect.Dock = DockStyle.Fill;
             pnlSelect.EditYn = true;
             pnlSelect.Location = new Point(0, 0);
             pnlSelect.Name = "pnlSelect";
             pnlSelect.ShowYn = true;
-            pnlSelect.Size = new Size(607, 493);
+            pnlSelect.Size = new Size(737, 589);
             pnlSelect.TabIndex = 1;
             // 
             // ucSplit5
@@ -455,8 +457,8 @@
             // ucSplit5.Panel2
             // 
             ucSplit5.Panel2.Controls.Add(memoR);
-            ucSplit5.Size = new Size(603, 468);
-            ucSplit5.SplitterDistance = 365;
+            ucSplit5.Size = new Size(733, 564);
+            ucSplit5.SplitterDistance = 380;
             ucSplit5.TabIndex = 0;
             ucSplit5.TitleWidth = 50;
             // 
@@ -472,21 +474,24 @@
             rtxR.Options.DocumentSaveOptions.CurrentFormat = DevExpress.XtraRichEdit.DocumentFormat.PlainText;
             rtxR.Options.HorizontalRuler.Visibility = DevExpress.XtraRichEdit.RichEditRulerVisibility.Hidden;
             rtxR.Options.Search.RegExResultMaxGuaranteedLength = 500;
-            rtxR.ShowYn = true;
-            rtxR.Size = new Size(365, 468);
+            rtxR.ShowYn = false;
+            rtxR.Size = new Size(380, 564);
             rtxR.TabIndex = 0;
             rtxR.Text = "ucRichText1";
             // 
             // memoR
             // 
             memoR.BindText = "";
-            memoR.ControlWidth = 234;
+            memoR.ControlHeight = 564;
+            memoR.ControlWidth = 349;
             memoR.Dock = DockStyle.Fill;
-            memoR.EditYn = false;
+            memoR.EditYn = true;
+            memoR.FontFace = "Tahoma";
+            memoR.FontSize = 9F;
             memoR.Location = new Point(0, 0);
             memoR.Name = "memoR";
-            memoR.ShowYn = true;
-            memoR.Size = new Size(234, 468);
+            memoR.ShowYn = false;
+            memoR.Size = new Size(349, 564);
             memoR.TabIndex = 0;
             memoR.TextAlignment = DevExpress.Utils.HorzAlignment.Near;
             memoR.Title = "UCMemo";
@@ -497,20 +502,20 @@
             // 
             tpC.Controls.Add(pnlInsert);
             tpC.Name = "tpC";
-            tpC.Size = new Size(607, 493);
+            tpC.Size = new Size(737, 589);
             tpC.Text = "Insert";
             // 
             // pnlInsert
             // 
             pnlInsert.Controls.Add(ucSplit6);
-            pnlInsert.CustomHeaderButtons.AddRange(new DevExpress.XtraEditors.ButtonPanel.IBaseButton[] { new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Generate", true, buttonImageOptions6, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1), new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Save", true, buttonImageOptions7, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1), new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Delete", true, buttonImageOptions8, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1) });
+            pnlInsert.CustomHeaderButtons.AddRange(new DevExpress.XtraEditors.ButtonPanel.IBaseButton[] { new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Generate", true, buttonImageOptions5, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1), new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Save", true, buttonImageOptions6, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1), new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Delete", true, buttonImageOptions7, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1) });
             pnlInsert.CustomHeaderButtonsLocation = DevExpress.Utils.GroupElementLocation.BeforeText;
             pnlInsert.Dock = DockStyle.Fill;
             pnlInsert.EditYn = true;
             pnlInsert.Location = new Point(0, 0);
             pnlInsert.Name = "pnlInsert";
             pnlInsert.ShowYn = true;
-            pnlInsert.Size = new Size(607, 493);
+            pnlInsert.Size = new Size(737, 589);
             pnlInsert.TabIndex = 0;
             // 
             // ucSplit6
@@ -526,8 +531,8 @@
             // ucSplit6.Panel2
             // 
             ucSplit6.Panel2.Controls.Add(memoC);
-            ucSplit6.Size = new Size(603, 468);
-            ucSplit6.SplitterDistance = 365;
+            ucSplit6.Size = new Size(733, 564);
+            ucSplit6.SplitterDistance = 443;
             ucSplit6.TabIndex = 1;
             ucSplit6.TitleWidth = 50;
             // 
@@ -544,20 +549,23 @@
             rtxC.Options.HorizontalRuler.Visibility = DevExpress.XtraRichEdit.RichEditRulerVisibility.Hidden;
             rtxC.Options.Search.RegExResultMaxGuaranteedLength = 500;
             rtxC.ShowYn = false;
-            rtxC.Size = new Size(365, 468);
+            rtxC.Size = new Size(443, 564);
             rtxC.TabIndex = 0;
             rtxC.Text = "ucRichText2";
             // 
             // memoC
             // 
             memoC.BindText = "";
-            memoC.ControlWidth = 234;
+            memoC.ControlHeight = 564;
+            memoC.ControlWidth = 286;
             memoC.Dock = DockStyle.Fill;
-            memoC.EditYn = false;
+            memoC.EditYn = true;
+            memoC.FontFace = "Tahoma";
+            memoC.FontSize = 9F;
             memoC.Location = new Point(0, 0);
             memoC.Name = "memoC";
             memoC.ShowYn = false;
-            memoC.Size = new Size(234, 468);
+            memoC.Size = new Size(286, 564);
             memoC.TabIndex = 0;
             memoC.TextAlignment = DevExpress.Utils.HorzAlignment.Near;
             memoC.Title = "UCMemo";
@@ -568,20 +576,20 @@
             // 
             tpU.Controls.Add(pnlUpdate);
             tpU.Name = "tpU";
-            tpU.Size = new Size(607, 493);
+            tpU.Size = new Size(737, 589);
             tpU.Text = "Update";
             // 
             // pnlUpdate
             // 
             pnlUpdate.Controls.Add(ucSplit7);
-            pnlUpdate.CustomHeaderButtons.AddRange(new DevExpress.XtraEditors.ButtonPanel.IBaseButton[] { new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Generate", true, buttonImageOptions9, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1), new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Save", true, buttonImageOptions10, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1), new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Delete", true, buttonImageOptions11, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1) });
+            pnlUpdate.CustomHeaderButtons.AddRange(new DevExpress.XtraEditors.ButtonPanel.IBaseButton[] { new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Generate", true, buttonImageOptions8, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1), new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Save", true, buttonImageOptions9, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1), new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Delete", true, buttonImageOptions10, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1) });
             pnlUpdate.CustomHeaderButtonsLocation = DevExpress.Utils.GroupElementLocation.BeforeText;
             pnlUpdate.Dock = DockStyle.Fill;
             pnlUpdate.EditYn = true;
             pnlUpdate.Location = new Point(0, 0);
             pnlUpdate.Name = "pnlUpdate";
             pnlUpdate.ShowYn = true;
-            pnlUpdate.Size = new Size(607, 493);
+            pnlUpdate.Size = new Size(737, 589);
             pnlUpdate.TabIndex = 2;
             // 
             // ucSplit7
@@ -597,8 +605,8 @@
             // ucSplit7.Panel2
             // 
             ucSplit7.Panel2.Controls.Add(memoU);
-            ucSplit7.Size = new Size(603, 468);
-            ucSplit7.SplitterDistance = 365;
+            ucSplit7.Size = new Size(733, 564);
+            ucSplit7.SplitterDistance = 443;
             ucSplit7.TabIndex = 1;
             ucSplit7.TitleWidth = 50;
             // 
@@ -615,20 +623,23 @@
             rtxU.Options.HorizontalRuler.Visibility = DevExpress.XtraRichEdit.RichEditRulerVisibility.Hidden;
             rtxU.Options.Search.RegExResultMaxGuaranteedLength = 500;
             rtxU.ShowYn = false;
-            rtxU.Size = new Size(365, 468);
+            rtxU.Size = new Size(443, 564);
             rtxU.TabIndex = 0;
             rtxU.Text = "ucRichText3";
             // 
             // memoU
             // 
             memoU.BindText = "";
-            memoU.ControlWidth = 234;
+            memoU.ControlHeight = 564;
+            memoU.ControlWidth = 286;
             memoU.Dock = DockStyle.Fill;
-            memoU.EditYn = false;
+            memoU.EditYn = true;
+            memoU.FontFace = "Tahoma";
+            memoU.FontSize = 9F;
             memoU.Location = new Point(0, 0);
             memoU.Name = "memoU";
             memoU.ShowYn = false;
-            memoU.Size = new Size(234, 468);
+            memoU.Size = new Size(286, 564);
             memoU.TabIndex = 0;
             memoU.TextAlignment = DevExpress.Utils.HorzAlignment.Near;
             memoU.Title = "UCMemo";
@@ -639,20 +650,20 @@
             // 
             tpD.Controls.Add(pnlDelete);
             tpD.Name = "tpD";
-            tpD.Size = new Size(607, 493);
+            tpD.Size = new Size(737, 589);
             tpD.Text = "Delete";
             // 
             // pnlDelete
             // 
             pnlDelete.Controls.Add(ucSplit8);
-            pnlDelete.CustomHeaderButtons.AddRange(new DevExpress.XtraEditors.ButtonPanel.IBaseButton[] { new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Generate", true, buttonImageOptions12, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1), new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Save", true, buttonImageOptions13, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1), new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Delete", true, buttonImageOptions14, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1) });
+            pnlDelete.CustomHeaderButtons.AddRange(new DevExpress.XtraEditors.ButtonPanel.IBaseButton[] { new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Generate", true, buttonImageOptions11, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1), new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Save", true, buttonImageOptions12, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1), new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Delete", true, buttonImageOptions13, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1) });
             pnlDelete.CustomHeaderButtonsLocation = DevExpress.Utils.GroupElementLocation.BeforeText;
             pnlDelete.Dock = DockStyle.Fill;
             pnlDelete.EditYn = true;
             pnlDelete.Location = new Point(0, 0);
             pnlDelete.Name = "pnlDelete";
             pnlDelete.ShowYn = true;
-            pnlDelete.Size = new Size(607, 493);
+            pnlDelete.Size = new Size(737, 589);
             pnlDelete.TabIndex = 2;
             // 
             // ucSplit8
@@ -668,8 +679,8 @@
             // ucSplit8.Panel2
             // 
             ucSplit8.Panel2.Controls.Add(memoD);
-            ucSplit8.Size = new Size(603, 468);
-            ucSplit8.SplitterDistance = 365;
+            ucSplit8.Size = new Size(733, 564);
+            ucSplit8.SplitterDistance = 443;
             ucSplit8.TabIndex = 1;
             ucSplit8.TitleWidth = 50;
             // 
@@ -686,20 +697,23 @@
             rtxD.Options.HorizontalRuler.Visibility = DevExpress.XtraRichEdit.RichEditRulerVisibility.Hidden;
             rtxD.Options.Search.RegExResultMaxGuaranteedLength = 500;
             rtxD.ShowYn = false;
-            rtxD.Size = new Size(365, 468);
+            rtxD.Size = new Size(443, 564);
             rtxD.TabIndex = 0;
             rtxD.Text = "ucRichText4";
             // 
             // memoD
             // 
             memoD.BindText = "";
-            memoD.ControlWidth = 234;
+            memoD.ControlHeight = 564;
+            memoD.ControlWidth = 286;
             memoD.Dock = DockStyle.Fill;
-            memoD.EditYn = false;
+            memoD.EditYn = true;
+            memoD.FontFace = "Tahoma";
+            memoD.FontSize = 9F;
             memoD.Location = new Point(0, 0);
             memoD.Name = "memoD";
             memoD.ShowYn = false;
-            memoD.Size = new Size(234, 468);
+            memoD.Size = new Size(286, 564);
             memoD.TabIndex = 0;
             memoD.TextAlignment = DevExpress.Utils.HorzAlignment.Near;
             memoD.Title = "UCMemo";
@@ -710,20 +724,20 @@
             // 
             tpM.Controls.Add(pnlModel);
             tpM.Name = "tpM";
-            tpM.Size = new Size(607, 493);
+            tpM.Size = new Size(737, 589);
             tpM.Text = "Model";
             // 
             // pnlModel
             // 
             pnlModel.Controls.Add(ucSplit9);
-            pnlModel.CustomHeaderButtons.AddRange(new DevExpress.XtraEditors.ButtonPanel.IBaseButton[] { new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Generate", true, buttonImageOptions15, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1), new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Save", true, buttonImageOptions16, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1), new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Delete", true, buttonImageOptions17, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1) });
+            pnlModel.CustomHeaderButtons.AddRange(new DevExpress.XtraEditors.ButtonPanel.IBaseButton[] { new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Generate", true, buttonImageOptions14, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1), new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Save", true, buttonImageOptions15, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1), new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Delete", true, buttonImageOptions16, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1) });
             pnlModel.CustomHeaderButtonsLocation = DevExpress.Utils.GroupElementLocation.BeforeText;
             pnlModel.Dock = DockStyle.Fill;
             pnlModel.EditYn = true;
             pnlModel.Location = new Point(0, 0);
             pnlModel.Name = "pnlModel";
             pnlModel.ShowYn = true;
-            pnlModel.Size = new Size(607, 493);
+            pnlModel.Size = new Size(737, 589);
             pnlModel.TabIndex = 3;
             // 
             // ucSplit9
@@ -739,8 +753,8 @@
             // ucSplit9.Panel2
             // 
             ucSplit9.Panel2.Controls.Add(memoM);
-            ucSplit9.Size = new Size(603, 468);
-            ucSplit9.SplitterDistance = 365;
+            ucSplit9.Size = new Size(733, 564);
+            ucSplit9.SplitterDistance = 443;
             ucSplit9.TabIndex = 1;
             ucSplit9.TitleWidth = 50;
             // 
@@ -757,20 +771,23 @@
             rtxM.Options.HorizontalRuler.Visibility = DevExpress.XtraRichEdit.RichEditRulerVisibility.Hidden;
             rtxM.Options.Search.RegExResultMaxGuaranteedLength = 500;
             rtxM.ShowYn = false;
-            rtxM.Size = new Size(365, 468);
+            rtxM.Size = new Size(443, 564);
             rtxM.TabIndex = 0;
             rtxM.Text = "ucRichText5";
             // 
             // memoM
             // 
             memoM.BindText = "";
-            memoM.ControlWidth = 234;
+            memoM.ControlHeight = 564;
+            memoM.ControlWidth = 286;
             memoM.Dock = DockStyle.Fill;
-            memoM.EditYn = false;
+            memoM.EditYn = true;
+            memoM.FontFace = "Tahoma";
+            memoM.FontSize = 9F;
             memoM.Location = new Point(0, 0);
             memoM.Name = "memoM";
             memoM.ShowYn = false;
-            memoM.Size = new Size(234, 468);
+            memoM.Size = new Size(286, 564);
             memoM.TabIndex = 0;
             memoM.TextAlignment = DevExpress.Utils.HorzAlignment.Near;
             memoM.Title = "UCMemo";
@@ -781,7 +798,7 @@
             // 
             xtraTabPage2.Controls.Add(ucSplit4);
             xtraTabPage2.Name = "xtraTabPage2";
-            xtraTabPage2.Size = new Size(609, 518);
+            xtraTabPage2.Size = new Size(739, 614);
             xtraTabPage2.TabPageWidth = 120;
             xtraTabPage2.Text = "Filed Properties";
             // 
@@ -799,8 +816,8 @@
             // ucSplit4.Panel2
             // 
             ucSplit4.Panel2.Controls.Add(ucTab1);
-            ucSplit4.Size = new Size(609, 518);
-            ucSplit4.SplitterDistance = 259;
+            ucSplit4.Size = new Size(739, 614);
+            ucSplit4.SplitterDistance = 267;
             ucSplit4.TabIndex = 3;
             ucSplit4.TitleWidth = 50;
             ucSplit4.DragDrop += targetGrid_DragDrop;
@@ -809,14 +826,14 @@
             // ucPanel3
             // 
             ucPanel3.Controls.Add(grdWrkFld);
-            ucPanel3.CustomHeaderButtons.AddRange(new DevExpress.XtraEditors.ButtonPanel.IBaseButton[] { new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Save", true, buttonImageOptions18, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1), new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Delete", true, buttonImageOptions19, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1), new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Numbering", true, buttonImageOptions20, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1), new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Make Columns", true, buttonImageOptions21, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1) });
+            ucPanel3.CustomHeaderButtons.AddRange(new DevExpress.XtraEditors.ButtonPanel.IBaseButton[] { new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Save", true, buttonImageOptions17, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1), new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Delete", true, buttonImageOptions18, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1), new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Numbering", true, buttonImageOptions19, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1), new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Make Columns", true, buttonImageOptions20, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1) });
             ucPanel3.CustomHeaderButtonsLocation = DevExpress.Utils.GroupElementLocation.BeforeText;
             ucPanel3.Dock = DockStyle.Fill;
             ucPanel3.EditYn = true;
             ucPanel3.Location = new Point(0, 0);
             ucPanel3.Name = "ucPanel3";
             ucPanel3.ShowYn = true;
-            ucPanel3.Size = new Size(609, 259);
+            ucPanel3.Size = new Size(739, 267);
             ucPanel3.TabIndex = 2;
             // 
             // grdWrkFld
@@ -832,8 +849,8 @@
             grdWrkFld.RowAutoHeigh = false;
             grdWrkFld.ShowFindPanel = false;
             grdWrkFld.ShowGroupPanel = true;
-            grdWrkFld.Size = new Size(605, 234);
-            grdWrkFld.TabIndex = 2;
+            grdWrkFld.Size = new Size(735, 242);
+            grdWrkFld.TabIndex = 0;
             // 
             // ucTab1
             // 
@@ -842,7 +859,7 @@
             ucTab1.Location = new Point(0, 0);
             ucTab1.Name = "ucTab1";
             ucTab1.SelectedTabPage = xtraTabPage8;
-            ucTab1.Size = new Size(609, 255);
+            ucTab1.Size = new Size(739, 343);
             ucTab1.TabIndex = 0;
             ucTab1.TabPages.AddRange(new DevExpress.XtraTab.XtraTabPage[] { xtraTabPage8, xtraTabPage9, xtraTabPage10 });
             // 
@@ -850,21 +867,21 @@
             // 
             xtraTabPage8.Controls.Add(ucPanel4);
             xtraTabPage8.Name = "xtraTabPage8";
-            xtraTabPage8.Size = new Size(607, 230);
+            xtraTabPage8.Size = new Size(737, 318);
             xtraTabPage8.TabPageWidth = 120;
             xtraTabPage8.Text = "Get Parameters(Pull)";
             // 
             // ucPanel4
             // 
             ucPanel4.Controls.Add(grdWrkGet);
-            ucPanel4.CustomHeaderButtons.AddRange(new DevExpress.XtraEditors.ButtonPanel.IBaseButton[] { new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("New", true, buttonImageOptions22, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1), new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Save", true, buttonImageOptions23, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1), new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Delete", true, buttonImageOptions24, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1), new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Make GetParameters Data", true, buttonImageOptions25, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1) });
+            ucPanel4.CustomHeaderButtons.AddRange(new DevExpress.XtraEditors.ButtonPanel.IBaseButton[] { new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("New", true, buttonImageOptions21, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1), new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Save", true, buttonImageOptions22, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1), new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Delete", true, buttonImageOptions23, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1), new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Make GetParameters Data", true, buttonImageOptions24, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1) });
             ucPanel4.CustomHeaderButtonsLocation = DevExpress.Utils.GroupElementLocation.BeforeText;
             ucPanel4.Dock = DockStyle.Fill;
             ucPanel4.EditYn = true;
             ucPanel4.Location = new Point(0, 0);
             ucPanel4.Name = "ucPanel4";
             ucPanel4.ShowYn = true;
-            ucPanel4.Size = new Size(607, 230);
+            ucPanel4.Size = new Size(737, 318);
             ucPanel4.TabIndex = 2;
             // 
             // grdWrkGet
@@ -880,28 +897,28 @@
             grdWrkGet.RowAutoHeigh = false;
             grdWrkGet.ShowFindPanel = false;
             grdWrkGet.ShowGroupPanel = true;
-            grdWrkGet.Size = new Size(603, 205);
-            grdWrkGet.TabIndex = 3;
+            grdWrkGet.Size = new Size(733, 293);
+            grdWrkGet.TabIndex = 0;
             // 
             // xtraTabPage9
             // 
             xtraTabPage9.Controls.Add(ucPanel5);
             xtraTabPage9.Name = "xtraTabPage9";
-            xtraTabPage9.Size = new Size(607, 230);
+            xtraTabPage9.Size = new Size(737, 278);
             xtraTabPage9.TabPageWidth = 120;
             xtraTabPage9.Text = "Set Parameters(Push)";
             // 
             // ucPanel5
             // 
             ucPanel5.Controls.Add(grdWrkSet);
-            ucPanel5.CustomHeaderButtons.AddRange(new DevExpress.XtraEditors.ButtonPanel.IBaseButton[] { new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("New", true, buttonImageOptions26, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1), new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Save", true, buttonImageOptions27, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1), new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Delete", true, buttonImageOptions28, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1), new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Import Target List", true, buttonImageOptions29, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1) });
+            ucPanel5.CustomHeaderButtons.AddRange(new DevExpress.XtraEditors.ButtonPanel.IBaseButton[] { new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("New", true, buttonImageOptions25, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1), new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Save", true, buttonImageOptions26, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1), new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Delete", true, buttonImageOptions27, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1), new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Import Target List", true, buttonImageOptions28, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1) });
             ucPanel5.CustomHeaderButtonsLocation = DevExpress.Utils.GroupElementLocation.BeforeText;
             ucPanel5.Dock = DockStyle.Fill;
             ucPanel5.EditYn = true;
             ucPanel5.Location = new Point(0, 0);
             ucPanel5.Name = "ucPanel5";
             ucPanel5.ShowYn = true;
-            ucPanel5.Size = new Size(607, 230);
+            ucPanel5.Size = new Size(737, 278);
             ucPanel5.TabIndex = 2;
             // 
             // grdWrkSet
@@ -917,28 +934,28 @@
             grdWrkSet.RowAutoHeigh = false;
             grdWrkSet.ShowFindPanel = false;
             grdWrkSet.ShowGroupPanel = true;
-            grdWrkSet.Size = new Size(603, 205);
-            grdWrkSet.TabIndex = 3;
+            grdWrkSet.Size = new Size(733, 253);
+            grdWrkSet.TabIndex = 0;
             // 
             // xtraTabPage10
             // 
             xtraTabPage10.Controls.Add(ucPanel6);
             xtraTabPage10.Name = "xtraTabPage10";
-            xtraTabPage10.Size = new Size(607, 230);
+            xtraTabPage10.Size = new Size(737, 278);
             xtraTabPage10.TabPageWidth = 120;
             xtraTabPage10.Text = "Reference Data";
             // 
             // ucPanel6
             // 
             ucPanel6.Controls.Add(grdWrkRef);
-            ucPanel6.CustomHeaderButtons.AddRange(new DevExpress.XtraEditors.ButtonPanel.IBaseButton[] { new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("New", true, buttonImageOptions30, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1), new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Save", true, buttonImageOptions31, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1), new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Delete", true, buttonImageOptions32, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1), new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Make Reference Data", true, buttonImageOptions33, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1) });
+            ucPanel6.CustomHeaderButtons.AddRange(new DevExpress.XtraEditors.ButtonPanel.IBaseButton[] { new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("New", true, buttonImageOptions29, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1), new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Save", true, buttonImageOptions30, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1), new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Delete", true, buttonImageOptions31, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1), new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Make Reference Data", true, buttonImageOptions32, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1) });
             ucPanel6.CustomHeaderButtonsLocation = DevExpress.Utils.GroupElementLocation.BeforeText;
             ucPanel6.Dock = DockStyle.Fill;
             ucPanel6.EditYn = true;
             ucPanel6.Location = new Point(0, 0);
             ucPanel6.Name = "ucPanel6";
             ucPanel6.ShowYn = true;
-            ucPanel6.Size = new Size(607, 230);
+            ucPanel6.Size = new Size(737, 278);
             ucPanel6.TabIndex = 4;
             // 
             // grdWrkRef
@@ -954,8 +971,8 @@
             grdWrkRef.RowAutoHeigh = false;
             grdWrkRef.ShowFindPanel = false;
             grdWrkRef.ShowGroupPanel = true;
-            grdWrkRef.Size = new Size(603, 205);
-            grdWrkRef.TabIndex = 3;
+            grdWrkRef.Size = new Size(733, 253);
+            grdWrkRef.TabIndex = 0;
             // 
             // ucSplit3
             // 
@@ -971,22 +988,22 @@
             // ucSplit3.Panel2
             // 
             ucSplit3.Panel2.Controls.Add(tabParam);
-            ucSplit3.Size = new Size(800, 600);
-            ucSplit3.SplitterDistance = 300;
+            ucSplit3.Size = new Size(1082, 705);
+            ucSplit3.SplitterDistance = 352;
             ucSplit3.TabIndex = 4;
             ucSplit3.TitleWidth = 50;
             // 
             // pnlColumn
             // 
             pnlColumn.Controls.Add(t10);
-            pnlColumn.CustomHeaderButtons.AddRange(new DevExpress.XtraEditors.ButtonPanel.IBaseButton[] { new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Save", true, buttonImageOptions34, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1), new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Delete", true, buttonImageOptions35, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1), new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Numbering", true, buttonImageOptions36, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1), new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Make Columns", true, buttonImageOptions37, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1) });
+            pnlColumn.CustomHeaderButtons.AddRange(new DevExpress.XtraEditors.ButtonPanel.IBaseButton[] { new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Save", true, buttonImageOptions33, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1), new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Delete", true, buttonImageOptions34, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1), new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Numbering", true, buttonImageOptions35, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1), new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Make Columns", true, buttonImageOptions36, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1) });
             pnlColumn.CustomHeaderButtonsLocation = DevExpress.Utils.GroupElementLocation.BeforeText;
             pnlColumn.Dock = DockStyle.Fill;
             pnlColumn.EditYn = true;
             pnlColumn.Location = new Point(0, 0);
             pnlColumn.Name = "pnlColumn";
             pnlColumn.ShowYn = true;
-            pnlColumn.Size = new Size(800, 300);
+            pnlColumn.Size = new Size(1082, 352);
             pnlColumn.TabIndex = 2;
             // 
             // t10
@@ -995,7 +1012,7 @@
             t10.Location = new Point(2, 23);
             t10.MainView = gvT10;
             t10.Name = "t10";
-            t10.Size = new Size(796, 275);
+            t10.Size = new Size(1078, 327);
             t10.TabIndex = 0;
             t10.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] { gvT10 });
             // 
@@ -1011,7 +1028,7 @@
             tabParam.Location = new Point(0, 0);
             tabParam.Name = "tabParam";
             tabParam.SelectedTabPage = xtraTabPage5;
-            tabParam.Size = new Size(800, 296);
+            tabParam.Size = new Size(1082, 349);
             tabParam.TabIndex = 0;
             tabParam.TabPages.AddRange(new DevExpress.XtraTab.XtraTabPage[] { xtraTabPage5, xtraTabPage6, xtraTabPage7 });
             // 
@@ -1019,21 +1036,21 @@
             // 
             xtraTabPage5.Controls.Add(pnlGet);
             xtraTabPage5.Name = "xtraTabPage5";
-            xtraTabPage5.Size = new Size(798, 271);
+            xtraTabPage5.Size = new Size(1080, 324);
             xtraTabPage5.TabPageWidth = 120;
             xtraTabPage5.Text = "Get Parameters(Pull)";
             // 
             // pnlGet
             // 
             pnlGet.Controls.Add(grdGetParam);
-            pnlGet.CustomHeaderButtons.AddRange(new DevExpress.XtraEditors.ButtonPanel.IBaseButton[] { new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("New", true, buttonImageOptions38, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1), new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Save", true, buttonImageOptions39, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1), new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Delete", true, buttonImageOptions40, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1), new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Make GetParameters Data", true, buttonImageOptions41, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1) });
+            pnlGet.CustomHeaderButtons.AddRange(new DevExpress.XtraEditors.ButtonPanel.IBaseButton[] { new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("New", true, buttonImageOptions37, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1), new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Save", true, buttonImageOptions38, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1), new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Delete", true, buttonImageOptions39, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1), new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Make GetParameters Data", true, buttonImageOptions40, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1) });
             pnlGet.CustomHeaderButtonsLocation = DevExpress.Utils.GroupElementLocation.BeforeText;
             pnlGet.Dock = DockStyle.Fill;
             pnlGet.EditYn = true;
             pnlGet.Location = new Point(0, 0);
             pnlGet.Name = "pnlGet";
             pnlGet.ShowYn = true;
-            pnlGet.Size = new Size(798, 271);
+            pnlGet.Size = new Size(1080, 324);
             pnlGet.TabIndex = 2;
             // 
             // grdGetParam
@@ -1042,7 +1059,7 @@
             grdGetParam.Location = new Point(2, 23);
             grdGetParam.MainView = gridView2;
             grdGetParam.Name = "grdGetParam";
-            grdGetParam.Size = new Size(794, 246);
+            grdGetParam.Size = new Size(1076, 299);
             grdGetParam.TabIndex = 0;
             grdGetParam.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] { gridView2 });
             // 
@@ -1055,21 +1072,21 @@
             // 
             xtraTabPage6.Controls.Add(pnlSet);
             xtraTabPage6.Name = "xtraTabPage6";
-            xtraTabPage6.Size = new Size(798, 271);
+            xtraTabPage6.Size = new Size(1080, 324);
             xtraTabPage6.TabPageWidth = 120;
             xtraTabPage6.Text = "Set Parameters(Push)";
             // 
             // pnlSet
             // 
             pnlSet.Controls.Add(grdSetParam);
-            pnlSet.CustomHeaderButtons.AddRange(new DevExpress.XtraEditors.ButtonPanel.IBaseButton[] { new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("New", true, buttonImageOptions42, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1), new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Save", true, buttonImageOptions43, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1), new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Delete", true, buttonImageOptions44, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1), new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Import Target List", true, buttonImageOptions45, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1) });
+            pnlSet.CustomHeaderButtons.AddRange(new DevExpress.XtraEditors.ButtonPanel.IBaseButton[] { new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("New", true, buttonImageOptions41, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1), new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Save", true, buttonImageOptions42, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1), new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Delete", true, buttonImageOptions43, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1), new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Import Target List", true, buttonImageOptions44, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1) });
             pnlSet.CustomHeaderButtonsLocation = DevExpress.Utils.GroupElementLocation.BeforeText;
             pnlSet.Dock = DockStyle.Fill;
             pnlSet.EditYn = true;
             pnlSet.Location = new Point(0, 0);
             pnlSet.Name = "pnlSet";
             pnlSet.ShowYn = true;
-            pnlSet.Size = new Size(798, 271);
+            pnlSet.Size = new Size(1080, 324);
             pnlSet.TabIndex = 2;
             // 
             // grdSetParam
@@ -1078,7 +1095,7 @@
             grdSetParam.Location = new Point(2, 23);
             grdSetParam.MainView = gvSet;
             grdSetParam.Name = "grdSetParam";
-            grdSetParam.Size = new Size(794, 246);
+            grdSetParam.Size = new Size(1076, 299);
             grdSetParam.TabIndex = 0;
             grdSetParam.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] { gvSet });
             // 
@@ -1091,21 +1108,21 @@
             // 
             xtraTabPage7.Controls.Add(pnlRef);
             xtraTabPage7.Name = "xtraTabPage7";
-            xtraTabPage7.Size = new Size(798, 271);
+            xtraTabPage7.Size = new Size(1080, 324);
             xtraTabPage7.TabPageWidth = 120;
             xtraTabPage7.Text = "Reference Data";
             // 
             // pnlRef
             // 
             pnlRef.Controls.Add(grdRefData);
-            pnlRef.CustomHeaderButtons.AddRange(new DevExpress.XtraEditors.ButtonPanel.IBaseButton[] { new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("New", true, buttonImageOptions46, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1), new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Save", true, buttonImageOptions47, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1), new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Delete", true, buttonImageOptions48, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1), new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Make Reference Data", true, buttonImageOptions49, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1) });
+            pnlRef.CustomHeaderButtons.AddRange(new DevExpress.XtraEditors.ButtonPanel.IBaseButton[] { new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("New", true, buttonImageOptions45, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1), new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Save", true, buttonImageOptions46, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1), new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Delete", true, buttonImageOptions47, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1), new DevExpress.XtraEditors.ButtonsPanelControl.GroupBoxButton("Make Reference Data", true, buttonImageOptions48, DevExpress.XtraBars.Docking2010.ButtonStyle.PushButton, "", -1, true, null, true, false, true, null, -1) });
             pnlRef.CustomHeaderButtonsLocation = DevExpress.Utils.GroupElementLocation.BeforeText;
             pnlRef.Dock = DockStyle.Fill;
             pnlRef.EditYn = true;
             pnlRef.Location = new Point(0, 0);
             pnlRef.Name = "pnlRef";
             pnlRef.ShowYn = true;
-            pnlRef.Size = new Size(798, 271);
+            pnlRef.Size = new Size(1080, 324);
             pnlRef.TabIndex = 3;
             // 
             // grdRefData
@@ -1114,7 +1131,7 @@
             grdRefData.Location = new Point(2, 23);
             grdRefData.MainView = gridView4;
             grdRefData.Name = "grdRefData";
-            grdRefData.Size = new Size(794, 246);
+            grdRefData.Size = new Size(1076, 299);
             grdRefData.TabIndex = 0;
             grdRefData.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] { gridView4 });
             // 
@@ -1130,7 +1147,7 @@
             Controls.Add(ucSplit1);
             Controls.Add(ucSplit3);
             Name = "WRKFLD";
-            Size = new Size(800, 600);
+            Size = new Size(1082, 705);
             ucSplit1.Panel1.ResumeLayout(false);
             ucSplit1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)ucSplit1).EndInit();
@@ -1247,7 +1264,6 @@
         private Ctrls.UCPanel ucPanel1;
         private Ctrls.UCTab tabWrk;
         private DevExpress.XtraTab.XtraTabPage xtraTabPage3;
-        private Ctrls.UCGridSet grdFrmWrk;
         private DevExpress.XtraTab.XtraTabPage xtraTabPage4;
         private Ctrls.UCTab tabQueryField;
         private DevExpress.XtraTab.XtraTabPage xtraTabPage1;
@@ -1288,11 +1304,7 @@
         private DevExpress.XtraTab.XtraTabPage xtraTabPage9;
         private Ctrls.UCPanel ucPanel5;
         private DevExpress.XtraTab.XtraTabPage xtraTabPage10;
-        private Ctrls.UCGridSet grdWrkFld;
-        private Ctrls.UCGridSet grdWrkGet;
-        private Ctrls.UCGridSet grdWrkSet;
         private Ctrls.UCPanel ucPanel6;
-        private Ctrls.UCGridSet grdWrkRef;
         private Ctrls.UCSplit ucSplit5;
         private Ctrls.UCRichText rtxR;
         private Ctrls.UCMemo memoR;
@@ -1308,7 +1320,12 @@
         private Ctrls.UCSplit ucSplit9;
         private Ctrls.UCRichText rtxM;
         private Ctrls.UCMemo memoM;
-        private Ctrls.UCCodeBox ucCodeBox1;
+        private Ctrls.UCCodeBox cmbFrm;
         private Ctrls.UCGridNav grdFrmCtrl;
+        private Ctrls.UCGridNav grdFrmWrk;
+        private Ctrls.UCGridNav grdWrkFld;
+        private Ctrls.UCGridNav grdWrkGet;
+        private Ctrls.UCGridNav grdWrkSet;
+        private Ctrls.UCGridNav grdWrkRef;
     }
 }

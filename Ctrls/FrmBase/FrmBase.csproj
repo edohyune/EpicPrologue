@@ -16,7 +16,9 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Lib\Lib.csproj" />
     <ProjectReference Include="..\UCField\UCFieldSet.csproj" />
+    <ProjectReference Include="..\UCGridNav\UCGridNav.csproj" />
     <ProjectReference Include="..\UCGridSet\UCGridSet.csproj" />
+    <ProjectReference Include="..\UCTab\UCTab.csproj" />
   </ItemGroup>
 
 </Project>

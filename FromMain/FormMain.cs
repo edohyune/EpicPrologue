@@ -9,6 +9,8 @@ using System.IO;
 using Repo;
 using DevExpress.XtraEditors.ButtonsPanelControl;
 using Ctrls;
+using Frms;
+using DevExpress.XtraEditors;
 
 namespace GAIA
 {
@@ -38,7 +40,7 @@ namespace GAIA
         public FormMain()
         {
             InitializeComponent();
-             
+
             //menuCtrl.VisibleChanged += new EventHandler(menuCtrl_VisibleChanged);
             //msgCtrl.VisibleChanged += new EventHandler(msgCtrl_VisibleChanged);
             ucTab1.VisibleChanged += new EventHandler(ucTab1_VisibleChanged);
@@ -57,15 +59,19 @@ namespace GAIA
                 cmbForm.Properties.Items.Add(frmWrk);
             }
 
-
-
             //Tab 설정
             xtraTabbedMdiManager.AppearancePage.HeaderActive.ForeColor = System.Drawing.Color.BlueViolet;
             xtraTabbedMdiManager.AppearancePage.HeaderActive.BorderColor = System.Drawing.Color.Black;
             xtraTabbedMdiManager.AppearancePage.HeaderActive.Font = new System.Drawing.Font(xtraTabbedMdiManager.AppearancePage.HeaderActive.Font, System.Drawing.FontStyle.Bold);
             xtraTabbedMdiManager.ClosePageButtonShowMode = DevExpress.XtraTab.ClosePageButtonShowMode.InAllTabPageHeaders;
+            //BarItem 설정
+            Common.gMsg = "Ready";
+            this.barStaticItemForm.Caption = "MainFrame";
+            this.barStaticItemUser.Caption = $"{Common.GetValue("gFrameWorkNm")} | {Common.GetValue("gUserNm")} | {Common.GetValue("gDeptNm")}";
+            this.barStaticItemSite.Caption = $"{Common.GetValue("gSysNm")}";
+            this.barStaticItemTime.Caption = DateTime.Now.ToString("yyyy-MM-dd");
         }
-                   
+
         private void ucTab1_VisibleChanged(object sender, EventArgs e)
         {
             simpleButton1.Text = ucTab1.Visible ? "Hide" : "Show";
@@ -111,9 +117,13 @@ namespace GAIA
 
         private void menuCtrl_DoubleClick(object sender, EventArgs e)
         {
-            Common.gMsg = e.ToString();
+            //menuCtrl에서 선택된 리스트
+            IdObject selectedItem = menuCtrl.SelectedItem as IdObject; // 안전한 형변환
+            if (selectedItem == null)
+                return;
+
             var mdi = (from c in MdiChildren
-                       where c.Name.Contains(e.ToString())
+                       where c.Text.Contains(selectedItem.ToString())
                        select c).SingleOrDefault();
 
             if (mdi != null)
@@ -122,52 +132,16 @@ namespace GAIA
             }
             else
             {
-                if (menuCtrl.SelectedItem is IdObject selectedItem)
+                FrwFrm frm = selectedItem.Obj as FrwFrm;
+                if (frm != null)
                 {
-                    FrwFrm frm = selectedItem.Obj as FrwFrm;
-                    if (frm != null)
-                    {
-                        OpenFrm(frm);
-                    }
+                    OpenFrm(frm);
                 }
-
             }
-
-            //if (HasChildren)
-            //{
-            //    foreach (Form frm in this.MdiChildren)
-            //    {
-            //        frm.Dispose();
-            //    }
-            //}
-
-            //dynamicForm = null;
-
-            //switch (cmbForm.SelectedItem.ToString())
-            //{
-            //    case "Grid Basic": dynamicForm = new Frm.UCForm01(); break;
-            //    case "VB Form": dynamicForm = new UCVBForm(); break;
-            //    case "TextBoxTEST": dynamicForm = new Frms.TestFromTextBox(); break;
-            //    case "GAIA-DevTool": dynamicForm = new Frms.TestFromTextBox(); break;
-            //    case "DLL Load":
-            //        dynamicForm = new Frms.DLLLoad();
-            //        break;
-            //    default: break;
-            //}
-
-            //OpenForm(dynamicForm);
         }
 
         private void OpenFrm(FrwFrm frm)
         {
-            //Form은 두가지 개념으로 분리
-
-            //1. 개발자가 개발하고 있는 폼 (DevFrm)
-            //   개발자가 등록한 폼을 실행
-
-            //2. 메뉴에 등록되어 있는 폼 (Frm)
-            //   Frm Version Check 후 다운로드 받아서 실행
-
             string frmFullPath = $"{frm.FilePath}\\{frm.FileNm}"; //@"C:\path\to\your\file.txt";
 
             if (File.Exists(frmFullPath))
@@ -187,13 +161,19 @@ namespace GAIA
                 fb.MdiParent = this;
 
                 fb.Show();
+
+                // 폼이 표시된 후에 탭 페이지 활성화 (FrmBase에 구현)
+                if (ucform is FrmBase frmBase)
+                {
+                    frmBase.ActivateAllTabsOnLoad = true;
+                    frmBase.ActivateAllTabs();
+                }
             }
             else
             {
                 MessageBox.Show($"Form File not found.{frmFullPath}");
             }
         }
-
 
         private void simpleButton1_Click(object sender, EventArgs e)
         {
@@ -265,27 +245,27 @@ namespace GAIA
 
         private void barSubItem1_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
-            Common.gMsg = "SubItem1 Clicked";
+            Common.gMsg = "barSubItem1_ItemClick";
         }
 
         private void barBtnOpen_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
-
+            Common.gMsg = "barBtnOpen_ItemClick";
         }
 
         private void barBtnNew_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
-
+            Common.gMsg = "barBtnNew_ItemClick";
         }
 
         private void barBtnSave_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
-
+            Common.gMsg = "barBtnSave_ItemClick";
         }
 
         private void barBtnDelete_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
-
+            Common.gMsg = "barBtnDelete_ItemClick";
         }
 
         private void barBtnTemplate_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
@@ -300,6 +280,15 @@ namespace GAIA
             fb.Text = Common.GetValue("gOpenFrm");
             fb.Name = Common.GetValue("gOpenFrm");
             fb.Show();
+        }
+
+        private void FormMain_ClientSizeChanged(object sender, EventArgs e)
+        {
+            this.barStaticItemMessage.Width = (int)(this.Width * 0.2);
+            this.barStaticItemForm.Width = (int)(this.Width * 0.1);
+            this.barStaticItemUser.Width = (int)(this.Width * 0.2);
+            this.barStaticItemSite.Width = (int)(this.Width * 0.1);
+            this.barStaticItemTime.Width = (int)(this.Width * 0.2);
         }
     }
 }

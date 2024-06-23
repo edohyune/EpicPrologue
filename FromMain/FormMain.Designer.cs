@@ -38,17 +38,22 @@
             barBtnOpen = new DevExpress.XtraBars.BarButtonItem();
             barBtnNew = new DevExpress.XtraBars.BarButtonItem();
             barBtnSave = new DevExpress.XtraBars.BarButtonItem();
-            barSubItem1 = new DevExpress.XtraBars.BarSubItem();
-            barBtnTemplate = new DevExpress.XtraBars.BarButtonItem();
             barBtnDelete = new DevExpress.XtraBars.BarButtonItem();
+            barBtnTemplate = new DevExpress.XtraBars.BarButtonItem();
             barButtonItem5 = new DevExpress.XtraBars.BarButtonItem();
             bar3 = new DevExpress.XtraBars.Bar();
             barMdiChildrenListItem1 = new DevExpress.XtraBars.BarMdiChildrenListItem();
             barStaticItemMsg = new DevExpress.XtraBars.BarStaticItem();
+            barStaticItemMessage = new DevExpress.XtraBars.BarStaticItem();
+            barStaticItemForm = new DevExpress.XtraBars.BarStaticItem();
+            barStaticItemUser = new DevExpress.XtraBars.BarStaticItem();
+            barStaticItemSite = new DevExpress.XtraBars.BarStaticItem();
+            barStaticItemTime = new DevExpress.XtraBars.BarStaticItem();
             barDockControlTop = new DevExpress.XtraBars.BarDockControl();
             barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
             barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
             barDockControlRight = new DevExpress.XtraBars.BarDockControl();
+            barSubItem1 = new DevExpress.XtraBars.BarSubItem();
             cmbForm = new DevExpress.XtraEditors.ComboBoxEdit();
             msgCtrl = new DevExpress.XtraEditors.MemoEdit();
             bar2 = new DevExpress.XtraBars.Bar();
@@ -80,8 +85,8 @@
             barManager1.DockControls.Add(barDockControlLeft);
             barManager1.DockControls.Add(barDockControlRight);
             barManager1.Form = this;
-            barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] { barBtnOpen, barBtnNew, barMdiChildrenListItem1, barStaticItemMsg, barBtnSave, barSubItem1, barBtnTemplate, barBtnDelete, barButtonItem5 });
-            barManager1.MaxItemId = 9;
+            barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] { barBtnOpen, barBtnNew, barMdiChildrenListItem1, barStaticItemMsg, barBtnSave, barSubItem1, barBtnTemplate, barBtnDelete, barButtonItem5, barStaticItemMessage, barStaticItemForm, barStaticItemUser, barStaticItemSite, barStaticItemTime });
+            barManager1.MaxItemId = 15;
             barManager1.StatusBar = bar3;
             // 
             // bar1
@@ -99,7 +104,7 @@
             // 
             barBtnOpen.Caption = "Open";
             barBtnOpen.Id = 0;
-            barBtnOpen.ImageOptions.SvgImage = (DevExpress.Utils.Svg.SvgImage)resources.GetObject("barButtonItem1.ImageOptions.SvgImage");
+            barBtnOpen.ImageOptions.SvgImage = (DevExpress.Utils.Svg.SvgImage)resources.GetObject("barBtnOpen.ImageOptions.SvgImage");
             barBtnOpen.ItemShortcut = new DevExpress.XtraBars.BarShortcut(System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Q);
             barBtnOpen.Name = "barBtnOpen";
             barBtnOpen.PaintStyle = DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph;
@@ -111,7 +116,7 @@
             // 
             barBtnNew.Caption = "New";
             barBtnNew.Id = 1;
-            barBtnNew.ImageOptions.SvgImage = (DevExpress.Utils.Svg.SvgImage)resources.GetObject("barButtonItem2.ImageOptions.SvgImage");
+            barBtnNew.ImageOptions.SvgImage = (DevExpress.Utils.Svg.SvgImage)resources.GetObject("barBtnNew.ImageOptions.SvgImage");
             barBtnNew.ItemShortcut = new DevExpress.XtraBars.BarShortcut(System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N);
             barBtnNew.Name = "barBtnNew";
             barBtnNew.PaintStyle = DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph;
@@ -123,21 +128,35 @@
             // 
             barBtnSave.Caption = "Save";
             barBtnSave.Id = 4;
-            barBtnSave.ImageOptions.SvgImage = (DevExpress.Utils.Svg.SvgImage)resources.GetObject("barButtonShowMsg.ImageOptions.SvgImage");
+            barBtnSave.ImageOptions.SvgImage = (DevExpress.Utils.Svg.SvgImage)resources.GetObject("barBtnSave.ImageOptions.SvgImage");
             barBtnSave.ItemShortcut = new DevExpress.XtraBars.BarShortcut(System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S);
             barBtnSave.Name = "barBtnSave";
             barBtnSave.PaintStyle = DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph;
             barBtnSave.ShortcutKeyDisplayString = "S";
             barBtnSave.ItemClick += barBtnSave_ItemClick;
             // 
+            // barBtnDelete
+            // 
+            barBtnDelete.Caption = "Delete";
+            barBtnDelete.Id = 7;
+            barBtnDelete.ImageOptions.SvgImage = (DevExpress.Utils.Svg.SvgImage)resources.GetObject("barBtnDelete.ImageOptions.SvgImage");
+            barBtnDelete.Name = "barBtnDelete";
+            barBtnDelete.PaintStyle = DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph;
+            barBtnDelete.ItemClick += barBtnDelete_ItemClick;
+            // 
             // barBtnTemplate
             // 
             barBtnTemplate.Caption = "Show In Templet";
             barBtnTemplate.Id = 6;
-            barBtnTemplate.ImageOptions.SvgImage = (DevExpress.Utils.Svg.SvgImage)resources.GetObject("barButtonItem3.ImageOptions.SvgImage");
+            barBtnTemplate.ImageOptions.SvgImage = (DevExpress.Utils.Svg.SvgImage)resources.GetObject("barBtnTemplate.ImageOptions.SvgImage");
             barBtnTemplate.Name = "barBtnTemplate";
             barBtnTemplate.PaintStyle = DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph;
             barBtnTemplate.ItemClick += barBtnTemplate_ItemClick;
+            // 
+            // barButtonItem5
+            // 
+            barButtonItem5.Id = 8;
+            barButtonItem5.Name = "barButtonItem5";
             // 
             // bar3
             // 
@@ -146,7 +165,7 @@
             bar3.DockCol = 0;
             bar3.DockRow = 0;
             bar3.DockStyle = DevExpress.XtraBars.BarDockStyle.Bottom;
-            bar3.LinksPersistInfo.AddRange(new DevExpress.XtraBars.LinkPersistInfo[] { new DevExpress.XtraBars.LinkPersistInfo(barMdiChildrenListItem1), new DevExpress.XtraBars.LinkPersistInfo(barStaticItemMsg) });
+            bar3.LinksPersistInfo.AddRange(new DevExpress.XtraBars.LinkPersistInfo[] { new DevExpress.XtraBars.LinkPersistInfo(barMdiChildrenListItem1), new DevExpress.XtraBars.LinkPersistInfo(barStaticItemMsg), new DevExpress.XtraBars.LinkPersistInfo(barStaticItemMessage), new DevExpress.XtraBars.LinkPersistInfo(barStaticItemForm), new DevExpress.XtraBars.LinkPersistInfo(barStaticItemUser), new DevExpress.XtraBars.LinkPersistInfo(barStaticItemSite), new DevExpress.XtraBars.LinkPersistInfo(barStaticItemTime) });
             bar3.OptionsBar.AllowQuickCustomization = false;
             bar3.OptionsBar.DrawDragBorder = false;
             bar3.OptionsBar.UseWholeRow = true;
@@ -162,6 +181,36 @@
             barStaticItemMsg.Id = 3;
             barStaticItemMsg.Name = "barStaticItemMsg";
             // 
+            // barStaticItemMessage
+            // 
+            barStaticItemMessage.Caption = "barStaticItemMessage";
+            barStaticItemMessage.Id = 10;
+            barStaticItemMessage.Name = "barStaticItemMessage";
+            // 
+            // barStaticItemForm
+            // 
+            barStaticItemForm.Caption = "barStaticItemForm";
+            barStaticItemForm.Id = 11;
+            barStaticItemForm.Name = "barStaticItemForm";
+            // 
+            // barStaticItemUser
+            // 
+            barStaticItemUser.Caption = "barStaticItemUser";
+            barStaticItemUser.Id = 12;
+            barStaticItemUser.Name = "barStaticItemUser";
+            // 
+            // barStaticItemSite
+            // 
+            barStaticItemSite.Caption = "barStaticItemSite";
+            barStaticItemSite.Id = 13;
+            barStaticItemSite.Name = "barStaticItemSite";
+            // 
+            // barStaticItemTime
+            // 
+            barStaticItemTime.Caption = "barStaticItemTime";
+            barStaticItemTime.Id = 14;
+            barStaticItemTime.Name = "barStaticItemTime";
+            // 
             // barDockControlTop
             // 
             barDockControlTop.CausesValidation = false;
@@ -174,9 +223,9 @@
             // 
             barDockControlBottom.CausesValidation = false;
             barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            barDockControlBottom.Location = new System.Drawing.Point(0, 843);
+            barDockControlBottom.Location = new System.Drawing.Point(0, 845);
             barDockControlBottom.Manager = barManager1;
-            barDockControlBottom.Size = new System.Drawing.Size(1438, 25);
+            barDockControlBottom.Size = new System.Drawing.Size(1438, 23);
             // 
             // barDockControlLeft
             // 
@@ -184,7 +233,7 @@
             barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
             barDockControlLeft.Location = new System.Drawing.Point(0, 25);
             barDockControlLeft.Manager = barManager1;
-            barDockControlLeft.Size = new System.Drawing.Size(0, 818);
+            barDockControlLeft.Size = new System.Drawing.Size(0, 820);
             // 
             // barDockControlRight
             // 
@@ -192,7 +241,12 @@
             barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
             barDockControlRight.Location = new System.Drawing.Point(1438, 25);
             barDockControlRight.Manager = barManager1;
-            barDockControlRight.Size = new System.Drawing.Size(0, 818);
+            barDockControlRight.Size = new System.Drawing.Size(0, 820);
+            // 
+            // barSubItem1
+            // 
+            barSubItem1.Id = 9;
+            barSubItem1.Name = "barSubItem1";
             // 
             // cmbForm
             // 
@@ -213,7 +267,7 @@
             msgCtrl.Location = new System.Drawing.Point(2, 23);
             msgCtrl.MenuManager = barManager1;
             msgCtrl.Name = "msgCtrl";
-            msgCtrl.Size = new System.Drawing.Size(264, 768);
+            msgCtrl.Size = new System.Drawing.Size(264, 770);
             msgCtrl.TabIndex = 10;
             // 
             // bar2
@@ -240,7 +294,7 @@
             menuCtrl.Dock = System.Windows.Forms.DockStyle.Fill;
             menuCtrl.Location = new System.Drawing.Point(0, 0);
             menuCtrl.Name = "menuCtrl";
-            menuCtrl.Size = new System.Drawing.Size(268, 793);
+            menuCtrl.Size = new System.Drawing.Size(268, 795);
             menuCtrl.TabIndex = 26;
             menuCtrl.DoubleClick += menuCtrl_DoubleClick;
             // 
@@ -259,7 +313,7 @@
             ucPanel1.Location = new System.Drawing.Point(0, 0);
             ucPanel1.Name = "ucPanel1";
             ucPanel1.ShowYn = true;
-            ucPanel1.Size = new System.Drawing.Size(268, 793);
+            ucPanel1.Size = new System.Drawing.Size(268, 795);
             ucPanel1.TabIndex = 31;
             ucPanel1.CustomButtonClick += ucPanel1_CustomButtonClick;
             ucPanel1.CustomButtonUnchecked += ucPanel1_CustomButtonUnchecked;
@@ -271,7 +325,7 @@
             ucTab1.Location = new System.Drawing.Point(0, 25);
             ucTab1.Name = "ucTab1";
             ucTab1.SelectedTabPage = xtraTabPage1;
-            ucTab1.Size = new System.Drawing.Size(270, 818);
+            ucTab1.Size = new System.Drawing.Size(270, 820);
             ucTab1.TabIndex = 32;
             ucTab1.TabPages.AddRange(new DevExpress.XtraTab.XtraTabPage[] { xtraTabPage1, xtraTabPage2 });
             // 
@@ -279,7 +333,7 @@
             // 
             xtraTabPage1.Controls.Add(menuCtrl);
             xtraTabPage1.Name = "xtraTabPage1";
-            xtraTabPage1.Size = new System.Drawing.Size(268, 793);
+            xtraTabPage1.Size = new System.Drawing.Size(268, 795);
             xtraTabPage1.TabPageWidth = 120;
             xtraTabPage1.Text = "Menu";
             // 
@@ -287,23 +341,9 @@
             // 
             xtraTabPage2.Controls.Add(ucPanel1);
             xtraTabPage2.Name = "xtraTabPage2";
-            xtraTabPage2.Size = new System.Drawing.Size(268, 793);
+            xtraTabPage2.Size = new System.Drawing.Size(268, 795);
             xtraTabPage2.TabPageWidth = 120;
             xtraTabPage2.Text = "Message";
-            // 
-            // barBtnDelete
-            // 
-            barBtnDelete.Caption = "Delete";
-            barBtnDelete.Id = 7;
-            barBtnDelete.ImageOptions.SvgImage = (DevExpress.Utils.Svg.SvgImage)resources.GetObject("barButtonItem4.ImageOptions.SvgImage");
-            barBtnDelete.Name = "barBtnDelete";
-            barBtnDelete.PaintStyle = DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph;
-            barBtnDelete.ItemClick += barBtnDelete_ItemClick;
-            // 
-            // barButtonItem5
-            // 
-            barButtonItem5.Id = 8;
-            barButtonItem5.Name = "barButtonItem5";
             // 
             // FormMain
             // 
@@ -321,6 +361,7 @@
             Name = "FormMain";
             StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             Text = "Epic Prologue";
+            ClientSizeChanged += FormMain_ClientSizeChanged;
             ((System.ComponentModel.ISupportInitialize)barManager1).EndInit();
             ((System.ComponentModel.ISupportInitialize)cmbForm.Properties).EndInit();
             ((System.ComponentModel.ISupportInitialize)msgCtrl.Properties).EndInit();
@@ -364,6 +405,11 @@
         private Ctrls.UCTab ucTab1;
         private DevExpress.XtraTab.XtraTabPage xtraTabPage1;
         private DevExpress.XtraTab.XtraTabPage xtraTabPage2;
+        private DevExpress.XtraBars.BarStaticItem barStaticItemMessage;
+        private DevExpress.XtraBars.BarStaticItem barStaticItemForm;
+        private DevExpress.XtraBars.BarStaticItem barStaticItemUser;
+        private DevExpress.XtraBars.BarStaticItem barStaticItemSite;
+        private DevExpress.XtraBars.BarStaticItem barStaticItemTime;
     }
 }
 

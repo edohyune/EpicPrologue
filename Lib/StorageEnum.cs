@@ -1,5 +1,23 @@
 ﻿namespace Lib
 {
+    public enum RegexStr
+    {
+        OPattern,
+        DPattern,
+        GPattern,
+        CPattern
+    }
+    public static class RegexStrs
+    {
+        public static readonly Dictionary<RegexStr, string> Lists = new Dictionary<RegexStr, string>
+        {
+            { RegexStr.OPattern, @"@\w+" },
+            { RegexStr.DPattern, @"@_\w+" },
+            { RegexStr.GPattern, @"<\$(\w+)>" },
+            { RegexStr.CPattern, @"andif\s+(.+?)\s+endif" }
+        };
+    }
+
     public enum LookUpType
     {
         None,

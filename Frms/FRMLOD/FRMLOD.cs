@@ -99,7 +99,7 @@ namespace Frms
 
                 frmWrk = new FrmWrk();
                 frmWrkRepo = new FrmWrkRepo();
-                frmWrkbs = new BindingList<FrmWrk>(frmWrkRepo.GetByWorkSetsOpenOrderby(selectedFrwFrm.FrwId, selectedFrwFrm.FrmId));
+                frmWrkbs = new BindingList<FrmWrk>(frmWrkRepo.GetByWorkSetsOrderby(selectedFrwFrm.FrwId, selectedFrwFrm.FrmId));
                 gridWorkset.DataSource = frmWrkbs;
             }
         }
@@ -305,32 +305,7 @@ namespace Frms
                         });
                     }
                 }
-                else if (item.ToolNm == "UCGrid")
-                {   //frmWrks에 데이터가 있으면 업데이트, 없으면 추가.
-                    var frmWrk = frmWrkbs.FirstOrDefault(c => c.CtrlNm == item.CtrlNm);
-                    if (frmWrk != null)
-                    {
-                        frmWrk.FrwId = item.FrwId;
-                        frmWrk.FrmId = item.FrmId;
-                        frmWrk.CtrlNm = item.CtrlNm;
-                        frmWrk.WrkCd = "GridSet";
-                        frmWrk.UseYn = true;
-                        frmWrk.ChangedFlag = MdlState.Updated;
-                    }
-                    else
-                    {
-                        frmWrkbs.Add(new FrmWrk
-                        {
-                            FrwId = item.FrwId,
-                            FrmId = item.FrmId,
-                            CtrlNm = item.CtrlNm,
-                            WrkCd = "GridSet",
-                            UseYn = true,
-                            ChangedFlag = MdlState.Inserted
-                        });
-                    }
-                }
-                else if (item.ToolNm == "UCGridSet")
+                else if (item.ToolNm == "UCGrid" || item.ToolNm == "UCGridSet" || item.ToolNm == "UCGridNav")
                 {   //frmWrks에 데이터가 있으면 업데이트, 없으면 추가.
                     var frmWrk = frmWrkbs.FirstOrDefault(c => c.CtrlNm == item.CtrlNm);
                     if (frmWrk != null)
@@ -630,6 +605,10 @@ namespace Frms
                     }
                     else if (frmWrk.ChangedFlag == MdlState.Inserted)
                     {
+                        if (string.IsNullOrEmpty(frmWrk.WrkId))
+                        {
+                            frmWrk.WrkId = frmWrk.CtrlNm;
+                        }
                         frmWrkRepo.Add(frmWrk);
                     }
                     else if (frmWrk.ChangedFlag == MdlState.Updated)

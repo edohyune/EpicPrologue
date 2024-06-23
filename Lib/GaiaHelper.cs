@@ -96,7 +96,7 @@ namespace Lib
         {
             try
             {
-                sql = GenFunc.ReplaceGPatternVariable(sql);
+                sql = GenFunc.ReplaceGPatternQuery(sql);
                 sql = ProcessQuery(sql, param);
                 return SqlMapper.Query(_conn, sql, param, _tran).Select(x => x as IDictionary<string, object>).ToList().FirstOrDefault();
             }
@@ -152,7 +152,7 @@ namespace Lib
         {
             try
             {
-                sql = GenFunc.ReplaceGPatternVariable(sql);
+                sql = GenFunc.ReplaceGPatternQuery(sql);
                 sql = ProcessQuery(sql, param);
                 return SqlMapper.Query(_conn, sql, param, _tran);
             }
@@ -177,7 +177,7 @@ namespace Lib
         {
             try
             {
-                sql = GenFunc.ReplaceGPatternVariable(sql);
+                sql = GenFunc.ReplaceGPatternQuery(sql);
                 sql = ProcessQuery(sql, null);
                 return SqlMapper.Query<T>(_conn, sql, null, _tran).ToList();
             }
@@ -201,7 +201,7 @@ namespace Lib
         {
             try
             {
-                sql = GenFunc.ReplaceGPatternVariable(sql);
+                sql = GenFunc.ReplaceGPatternQuery(sql);
                 sql = ProcessQuery(sql, param);
                 return SqlMapper.Query<T>(_conn, sql, param, _tran).ToList();
             }
@@ -225,7 +225,7 @@ namespace Lib
         {
             try
             {
-                sql = GenFunc.ReplaceGPatternVariable(sql);
+                sql = GenFunc.ReplaceGPatternQuery(sql);
                 sql = ProcessQuery(sql, param);
                 return SqlMapper.Query<T>(_conn, sql, param, _tran).ToList();
 
@@ -252,7 +252,7 @@ namespace Lib
         {
             try
             {
-                sql = GenFunc.ReplaceGPatternVariable(sql);
+                sql = GenFunc.ReplaceGPatternQuery(sql);
                 sql = ProcessQuery(sql, null);
                 return SqlMapper.Execute(_conn, sql, null, _tran);
             }
@@ -277,7 +277,7 @@ namespace Lib
         {
             try
             {
-                sql = GenFunc.ReplaceGPatternVariable(sql);
+                sql = GenFunc.ReplaceGPatternQuery(sql);
                 sql = ProcessQuery(sql, param);
                 return SqlMapper.Execute(_conn, sql, param, _tran);
 
@@ -304,7 +304,7 @@ namespace Lib
         {
             try
             {
-                sql = GenFunc.ReplaceGPatternVariable(sql);
+                sql = GenFunc.ReplaceGPatternQuery(sql);
                 sql = ProcessQuery(sql, param);
                 return _conn.ExecuteScalar<string>(sql, param, _tran);
             }
@@ -328,7 +328,7 @@ namespace Lib
         {
             try
             {
-                sql = GenFunc.ReplaceGPatternVariable(sql);
+                sql = GenFunc.ReplaceGPatternQuery(sql);
                 sql = ProcessQuery(sql, null);
                 return _conn.ExecuteScalar<T>(sql, param, _tran);
             }
@@ -446,8 +446,8 @@ namespace Lib
         }
         private string ReplaceOPatternMatch(string sql, string[] param, string[] value)
         {
-            SQLVariableExtractor extractor = new SQLVariableExtractor();
-            SQLSyntaxMatch variables = extractor.ExtractVariables(sql);
+            SyntaxExtractor extractor = new SyntaxExtractor();
+            SyntaxMatch variables = extractor.ExtractVariables(sql);
 
             //OPatternMatch에 있는 변수에 value값을 넣는다.
             for (int i = 0; i <= param.Length - 1; i++)

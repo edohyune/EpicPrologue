@@ -13,6 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Ctrls\FrmBase\FrmBase.csproj" />
     <ProjectReference Include="..\..\Ctrls\UCButton\UCButton.csproj" />
     <ProjectReference Include="..\..\Ctrls\UCCheckBox\UCCheckBox.csproj" />
     <ProjectReference Include="..\..\Ctrls\UCCodeBox\UCCodeBox.csproj" />

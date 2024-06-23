@@ -1,3 +1,4 @@
+using DevExpress.XtraTab;
 using Lib;
 using Lib.Repo;
 
@@ -47,7 +48,7 @@ namespace Ctrls
                 foreach (DevExpress.XtraTab.XtraTabPage tabPage in tabCtrl.TabPages)
                 {
                     WrkFld wrkFld = wrkFldRepo.GetTabPageProperties(frwId, frmId, tabPage.Name);
-                    if (wrkFld != null) 
+                    if (wrkFld != null)
                     {
                         tabPage.Text = wrkFld.FldTitle;
                         tabPage.PageVisible = wrkFld.ShowYn;

@@ -1,11 +1,4 @@
-﻿using Lib;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Lib.Repo
+﻿namespace Lib.Repo
 {
     public class CtrlMst : MdlBase
     {
@@ -230,6 +223,19 @@ select a.CtrlId, a.CtrlNm, a.CtrlGrpCd, a.CtrlRegNm, a.ContainYn, a.UseYn,
                 }
 
                 return result;
+            }
+        }
+
+        public Dictionary<string, string> GetBindEventMapping()
+        {
+            string sql = @"
+select a.CtrlNm, a.Event
+  from CTRLMST
+ where a.CtrlGrpCd = 'Bind'
+";
+            using (var db = new GaiaHelper())
+            {
+                return db.QueryDictionary(sql).ToDictionary();
             }
         }
 
