@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net8.0-windows</TargetFramework>
@@ -9,16 +9,22 @@
 
   <ItemGroup>
     <PackageReference Include="Dapper" Version="2.1.35" />
+    <PackageReference Include="DevExpress.Win.Design" Version="23.2.3" />
     <PackageReference Include="System.Data.SqlClient" Version="4.8.6" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\EpicLib\ER000\ER000.csproj" />
+    <ProjectReference Include="..\..\Ctrls\UCField\UCFieldSet.csproj" />
+    <ProjectReference Include="..\..\Ctrls\UCGridNav\UCGridNav.csproj" />
+    <ProjectReference Include="..\..\Ctrls\UCPanel\UCPanel.csproj" />
+    <ProjectReference Include="..\..\Ctrls\UCSplit\UCSplit.csproj" />
+    <ProjectReference Include="..\..\Ctrls\UCTab\UCTab.csproj" />
+    <ProjectReference Include="..\..\Lib\Lib.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="EpicDesigner">
-      <HintPath>..\..\ER000_FrmMain\bin\Debug\net8.0-windows\EpicDesigner.dll</HintPath>
+    <Reference Include="GAIABaseDesigner">
+      <HintPath>..\..\FromMain\bin\Debug\net8.0-windows\GAIABaseDesigner.dll</HintPath>
     </Reference>
   </ItemGroup>
 

@@ -21,4 +21,10 @@
     <ProjectReference Include="..\UCTab\UCTab.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="GAIABaseDesigner">
+      <HintPath>..\..\FromMain\bin\Debug\net8.0-windows\GAIABaseDesigner.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

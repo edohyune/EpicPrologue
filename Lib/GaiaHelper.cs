@@ -392,6 +392,49 @@ namespace Lib
             adapter.Fill(dsSelect);
             return dsSelect;
         }
+        public DataTable QueryToDataTable(string sql, object param = null)
+        {
+            try
+            {
+                sql = GenFunc.ReplaceGPatternQuery(sql);
+                sql = ProcessQuery(sql, param);
+                using (var adapter = new SqlDataAdapter(sql, _conn))
+                {
+                    if (_tran != null)
+                    {
+                        adapter.SelectCommand.Transaction = _tran;
+                    }
+                    if (param != null)
+                    {
+                        foreach (var prop in param.GetType().GetProperties())
+                        {
+                            var value = prop.GetValue(param);
+                            adapter.SelectCommand.Parameters.AddWithValue("@" + prop.Name, value ?? DBNull.Value);
+                        }
+                    }
+
+                    var dataTable = new DataTable();
+                    adapter.Fill(dataTable);
+                    return dataTable;
+                }
+            }
+            catch (Exception ex)
+            {
+                LogException(ex, sql);
+                throw;
+            }
+            finally
+            {
+                if (Common.gTrackMsg)
+                {
+                    string debugSql = GenerateDebugSql(sql, param);
+                    Common.gMsg = "Debug SQL: " + Environment.NewLine + debugSql;
+                }
+                _conn.Close();
+            }
+        }
+
+
         #endregion
 
 

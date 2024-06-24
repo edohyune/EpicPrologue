@@ -20,7 +20,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Ctrls\FrmBase\FrmBase.csproj" />
     <ProjectReference Include="..\Ctrls\UCButton\UCButton.csproj" />
     <ProjectReference Include="..\Ctrls\UCCheckBox\UCCheckBox.csproj" />
     <ProjectReference Include="..\Ctrls\UCChkCodeBox\UCChkCodeBox.csproj" />
@@ -41,7 +40,6 @@
     <ProjectReference Include="..\Ctrls\UCSplit\UCSplit.csproj" />
     <ProjectReference Include="..\Ctrls\UCTab\UCTab.csproj" />
     <ProjectReference Include="..\Ctrls\UCTextBox\UCTextBox.csproj" />
-    <ProjectReference Include="..\EpicLib\ER000\ER000.csproj" />
     <ProjectReference Include="..\Lib\Lib.csproj" />
   </ItemGroup>
 
@@ -235,6 +233,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="FrmBase.cs" />
     <Compile Update="Properties\Resources.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>

@@ -14,7 +14,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Ctrls\FrmBase\FrmBase.csproj" />
     <ProjectReference Include="..\..\..\Ctrls\UCField\UCFieldSet.csproj" />
     <ProjectReference Include="..\..\..\Ctrls\UCGridSet\UCGridSet.csproj" />
     <ProjectReference Include="..\..\..\Ctrls\UCMemo\UCMemo.csproj" />

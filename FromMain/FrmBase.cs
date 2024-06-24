@@ -4,17 +4,12 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Ctrls.FrmBase.Models;
 using Dapper;
 using Ctrls;
-using System.Dynamic;
 using DevExpress.XtraTab;
-using DevExpress.XtraPrinting.Control;
-using DevExpress.XtraEditors;
+using System.Windows.Forms;
 
-namespace Frms
+namespace GAIA
 {
     public class FrmBase : UserControl
     {
@@ -23,15 +18,12 @@ namespace Frms
         private string frwId { get; set; }
         [Browsable(false)]
         private string frmId { get; set; }
+        [Browsable(false)] 
         public bool ActivateAllTabsOnLoad { get; set; }
-
-        private object OSearchParam;
-        private DynamicParameters DSearchParam;
 
         private List<UCFieldSet> fieldSets;
         private List<UCGridNav> gridSets;
-
-
+        private List<UCDataSet> dataSets;
         private List<IWorkSet> workSets;
         private List<FrmWrk> frmWrks;
 
@@ -42,6 +34,7 @@ namespace Frms
             Load += FrmBase_Load;
             fieldSets = new List<UCFieldSet>();
             gridSets = new List<UCGridNav>();
+            dataSets = new List<UCDataSet>();
             GAIA.FormMain.BarButtonActive += new GAIA.FormMain.BarBtnEventHandler(BarButtonAction);
         }
         protected virtual void BarButtonAction(string frm, string action)
@@ -74,14 +67,14 @@ namespace Frms
 
             if (!string.IsNullOrEmpty(frwId))
             {
-                //Initialize FieldSet registered in Form
                 ResetWorkSet();
             }
         }
 
         private void ResetWorkSet()
         {
-            frmWrks = new FrmWrkRepo().GetByWorkSetsOrderby(frwId, frmId); 
+            frmWrks = new FrmWrkRepo().GetByWorkSets(frwId, frmId);
+            //frmWrks = new FrmWrkRepo().GetByWorkSetsOrderby(frwId, frmId); 
 
             if (frmWrks.Count > 0)
             {
@@ -95,7 +88,6 @@ namespace Frms
                             workSets.Add(fieldSet);
                             this.Controls.Add(fieldSet);
                             fieldSet.InitializeField();
-
                             fieldSet.DataChanged += WorkSet_DataChanged;
                         }
                     }
@@ -105,63 +97,18 @@ namespace Frms
                         if (gridSet != null)
                         {
                             gridSets.Add(gridSet);
-
                             gridSet.DataChanged += WorkSet_DataChanged;
                         }
                     }
+                    else if (frmWrk.WrkCd == "DataSet")
+                    {
+                        UCDataSet dataSet = new UCDataSet(frwId, frmId, frmWrk.WrkId);
+                        if (dataSet != null)
+                        {
+                            dataSets.Add(dataSet);
+                        }
+                    }
                 }
-
-
-                #region 하위 워크셋과의 관계설정
-
-                // 하위 워크셋 관계 설정 워크셋이 부모 워크셋의 값을 가지고 있는 경우
-
-                // 자신의 워크셋을 WrkSet Get하는 것으로 하위 워크셋과의 관계를 설정한다.-------------------------------------------------------
-
-                //foreach (var wrkSet in frmWrks)
-                //{
-                //    var parentFieldSet = fieldSets.Find(fs => fs.wrkId == wrkSet.WrkId);
-                //    if (parentFieldSet != null)
-                //    {
-                //        foreach (var child in frmWrks.Where(ws => ws.ParentId == wrkSet.WrkId))
-                //        {
-                //            var childFieldSet = fieldSets.Find(fs => fs.wrkId == child.WrkId);
-                //            if (childFieldSet != null)
-                //            {
-                //                parentFieldSet.ChildWorkSets.Add(childFieldSet);
-                //            }
-
-                //            var childGridSet = gridSets.Find(gs => gs.Name == child.WrkId);
-                //            if (childGridSet != null)
-                //            {
-                //                parentFieldSet.ChildWorkSets.Add(childGridSet);
-                //            }
-                //        }
-                //    }
-
-                //    var parentGridSet = gridSets.Find(gs => gs.Name == wrkSet.WrkId);
-                //    if (parentGridSet != null)
-                //    {
-                //        foreach (var child in wrkSetsOrderby.Where(ws => ws.ParentId == wrkSet.WrkId))
-                //        {
-                //            var childFieldSet = fieldSets.Find(fs => fs.wrkId == child.WrkId);
-                //            if (childFieldSet != null)
-                //            {
-                //                parentGridSet.ChildWorkSets.Add(childFieldSet);
-                //            }
-
-                //            var childGridSet = gridSets.Find(gs => gs.Name == child.WrkId);
-                //            if (childGridSet != null)
-                //            {
-                //                parentGridSet.ChildWorkSets.Add(childGridSet);
-                //            }
-                //        }
-                //    }
-                //}
-                #endregion
-
-
-
             }
         }
 
@@ -169,9 +116,8 @@ namespace Frms
         //전체오픈
         protected void Open()
         {
-            //워트셋의 오픈트리거가 구현되면 최초의 워크셋을 오픈하면 하위 워크셋들이 자동으로 오픈된다.
-
-            foreach (var wrkSet in frmWrks)
+            var openFrmWrks = new FrmWrkRepo().GetByOpenWrks(frwId, frmId);
+            foreach (var wrkSet in openFrmWrks)
             {
                 var fieldSet = fieldSets.Find(fs => fs.wrkId == wrkSet.WrkId);
                 if (fieldSet != null)
@@ -188,8 +134,34 @@ namespace Frms
                 }
             }
         }
-        #endregion
+        
+    public void OpenWorkSet(string wrkId, DynamicParameters param = null)
+    {
+        var fieldSet = fieldSets.FirstOrDefault(fs => fs.wrkId == wrkId);
+        if (fieldSet != null)
+        {
+            fieldSet.Open();
+            return;
+        }
 
+        var gridSet = gridSets.FirstOrDefault(gs => gs.wrkId == wrkId);
+        if (gridSet != null)
+        {
+            gridSet.Open();
+            return;
+        }
+
+        var dataSet = dataSets.FirstOrDefault(ds => ds.wrkId == wrkId);
+        if (dataSet != null)
+        {
+            dataSet.OpenDataSet(param ?? new DynamicParameters());
+            return;
+        }
+
+        MessageBox.Show($"워크셋 {wrkId}을(를) 찾을 수 없습니다.");
+    }
+
+        #endregion
         #region this.Save() ----------------------------------------------------------
         protected void Save()
         {
@@ -213,7 +185,6 @@ namespace Frms
             }
         }
         #endregion
-
         #region this.New() -------------------------------------------------------------
         protected void New() 
         { 
@@ -226,47 +197,9 @@ namespace Frms
 
         }
         #endregion
-        //private void WorkSet_DataChanged(object sender, DataChangedEventArgs e)
-        //{
-        //    // 데이터가 변경되면 해당 필드셋과 이후의 모든 필드셋을 다시 엽니다.
-        //    bool reopen = false;
-        //    foreach (var wrkSet in frmWrks)
-        //    {
-        //        if (wrkSet.WrkId == (sender as IWorkSet)?.wrkId)
-        //        {
-        //            reopen = true;
-        //        }
 
-        //        if (reopen)
-        //        {
-        //            var fieldSet = fieldSets.Find(fs => fs.wrkId == wrkSet.WrkId);
-        //            fieldSet?.Open();
-
-        //            var gridSet = gridSets.Find(gs => gs.wrkId == wrkSet.WrkId);
-        //            gridSet?.Open();
-        //        }
-        //    }
-        //}
         private void WorkSet_DataChanged(object sender, DataChangedEventArgs e)
         {
-            //// 변경된 데이터와 관련된 워크셋만 다시 엽니다.
-            //var senderWorkSet = sender as IWorkSet;
-            //if (senderWorkSet == null) return;
-
-            //// 자신의 그리드를 Get하는 워크셋 목록을 가져옵니다.
-            //WrkGetRepo wrkGetRepo = new WrkGetRepo();
-            //var pullWrks = wrkGetRepo.GetPullFlds(senderWorkSet.frwId, senderWorkSet.frmId, senderWorkSet.wrkId);
-
-            //foreach (var pullWrk in pullWrks)
-            //{
-            //    // 해당 워크셋을 찾습니다.
-            //    var workSet = workSets.FirstOrDefault(ws => ws.wrkId == pullWrk.WrkId);
-            //    if (workSet != null)
-            //    {
-            //        workSet.Open();
-            //    }
-            //}
-            // 데이터가 변경되면 해당 필드셋과 이후의 모든 필드셋을 다시 엽니다.
             var changedWorkSet = sender as IWorkSet;
 
             if (changedWorkSet == null)
@@ -299,7 +232,7 @@ namespace Frms
         {
             foreach (Control control in parentControl.Controls)
             {
-                if (control is UCTab ucTab)
+                if (control is UCTab ucTab) //활성화 대상이 Tab이라 Tab만 확인 
                 {
                     foreach (XtraTabPage tabPage in ucTab.TabPages)
                     {

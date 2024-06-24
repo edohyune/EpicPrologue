@@ -17,9 +17,9 @@ namespace Ctrls
         public string frwId { get; set; }
         public string frmId { get; set; }
         public string wrkId { get; set; }
-        private WrkFld wrkFld { get; set; }
-        private WrkFldRepo wrkFldRepo { get; set; }
-        private List<WrkFld> wrkFlds { get; set; }
+        //private WrkFld wrkFld { get; set; }
+        //private WrkFldRepo wrkFldRepo { get; set; }
+        //private List<WrkFld> wrkFlds { get; set; }
         private DynamicParameters DSearchParam;
         private object OSearchParam;
         public DynamicModel Model { get; set; }
@@ -39,23 +39,37 @@ namespace Ctrls
         public void InitializeField()
         {
             //  - 필드셋의 컨트롤 정보를 불러온다.(frwId, frmId, ctrlNm)
-            wrkFldRepo = new WrkFldRepo();
-            wrkFlds = wrkFldRepo.GetFldsProperties(frwId, frmId, wrkId);
+            //wrkFldRepo = new WrkFldRepo();
+            //wrkFlds = wrkFldRepo.GetFldsProperties(frwId, frmId, wrkId);
+
+
+            var wrkSets = new WrkSetRepo().SetPushFlds(frwId, frmId, wrkId);
 
             //동적 모델을 생성한다. 
             Model = new DynamicModel();
 
             //  - 필드셋의 컨트롤 정보를 이용해 바인딩을 한다. 그리고 각 컨트롤을 초기화한다. 이때 wrkFl.defaultText값이 있으면 기본값으로 셋팅한다.
-            foreach (WrkFld wrkFld in wrkFlds)
+            //foreach (WrkFld wrkFld in wrkFlds)
+            //{
+            //    Model.SetDynamicProperty(wrkFld.FldNm, wrkFld.DefaultText);
+            //    Control ctrl = this.Controls.Find(wrkFld.FldNm, true).FirstOrDefault();
+            //    if (ctrl != null)
+            //    {
+            //        BindControl(ctrl, wrkFld.ToolNm, wrkFld);
+            //        SetControlValue(ctrl, wrkFld.FldNm, wrkFld.ToolNm, wrkFld.DefaultText);
+            //    }
+            //}
+            foreach (WrkSet wrkSet in wrkSets)
             {
-                Model.SetDynamicProperty(wrkFld.FldNm, wrkFld.DefaultText);
-                Control ctrl = this.Controls.Find(wrkFld.FldNm, true).FirstOrDefault();
+                Model.SetDynamicProperty(wrkSet.SetFldNm, wrkSet.SetDefaultValue);
+                Control ctrl = this.Controls.Find(wrkSet.SetFldNm, true).FirstOrDefault();
                 if (ctrl != null)
                 {
-                    BindControl(ctrl, wrkFld.ToolNm, wrkFld);
-                    SetControlValue(ctrl, wrkFld.FldNm, wrkFld.ToolNm, wrkFld.DefaultText);
+                    BindControl(ctrl, wrkSet.ToolNm, wrkSet);
+                    SetControlValue(ctrl, wrkSet.FldNm, wrkSet.ToolNm, wrkSet.SetDefaultValue);
                 }
             }
+
         }
 
         public void Open()
@@ -120,7 +134,7 @@ namespace Ctrls
             }
         }
 
-        private void BindControl(Control ctrl, string toolNm, WrkFld wrkFld)
+        private void BindControl(Control ctrl, string toolNm, WrkSet wrkSet)
         {
             var controlType = toolNm.ToLower();
             var bindPropertyMapping = new CtrlMstRepo().GetBindPropertyMapping();
@@ -137,11 +151,34 @@ namespace Ctrls
                     EventInfo eventInfo = ctrl.GetType().GetEvent(eventName);
                     if (eventInfo != null)
                     {
-                        eventInfo.AddEventHandler(ctrl, new EventHandler((s, e) => OnControlValueChanged(wrkFld.FldNm, property.GetValue(ctrl))));
+                        eventInfo.AddEventHandler(ctrl, new EventHandler((s, e) => OnControlValueChanged(wrkSet.FldNm, property.GetValue(ctrl))));
                     }
                 }
             }
         }
+
+        //private void BindControl(Control ctrl, string toolNm, WrkFld wrkFld)
+        //{
+        //    var controlType = toolNm.ToLower();
+        //    var bindPropertyMapping = new CtrlMstRepo().GetBindPropertyMapping();
+        //    var bindEventMapping = new CtrlMstRepo().GetBindEventMapping();
+
+        //    if (bindPropertyMapping.ContainsKey(controlType) && bindEventMapping.ContainsKey(controlType))
+        //    {
+        //        var propertyName = bindPropertyMapping[controlType];
+        //        var eventName = bindEventMapping[controlType];
+        //        var property = ctrl.GetType().GetProperty(propertyName);
+
+        //        if (property != null)
+        //        {
+        //            EventInfo eventInfo = ctrl.GetType().GetEvent(eventName);
+        //            if (eventInfo != null)
+        //            {
+        //                eventInfo.AddEventHandler(ctrl, new EventHandler((s, e) => OnControlValueChanged(wrkFld.FldNm, property.GetValue(ctrl))));
+        //            }
+        //        }
+        //    }
+        //}
 
         public void SetControlValue(Control uc, string ctrlNm, string toolNm, dynamic value)
         {

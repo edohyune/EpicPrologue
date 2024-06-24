@@ -10,7 +10,7 @@ using System.Data;
 
 namespace Frms
 {
-    public partial class WRKFLD : FrmBase
+    public partial class WRKFLD : GAIA.FrmBase
     {
         public WRKFLD()
         {

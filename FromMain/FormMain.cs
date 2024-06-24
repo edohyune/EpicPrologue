@@ -9,7 +9,6 @@ using System.IO;
 using Repo;
 using DevExpress.XtraEditors.ButtonsPanelControl;
 using Ctrls;
-using Frms;
 using DevExpress.XtraEditors;
 
 namespace GAIA
@@ -96,7 +95,7 @@ namespace GAIA
             }
         }
 
-        dynamic dynamicForm;
+        //dynamic dynamicForm;
         private void cmbForm_SelectedIndexChanged(object sender, EventArgs e)
         {
             //ComboBox cmbForm = sender as ComboBox;
@@ -227,46 +226,44 @@ namespace GAIA
             }
         }
 
-        public delegate void MyEventHandler(string frm, string action);
-        public static event MyEventHandler BarButtonActive;
 
+        #region BarButtonActive
+        public delegate void BarBtnEventHandler(string frm, string action);
+        public static event BarBtnEventHandler BarButtonActive;
         public static void OnBarButtonActive(string frm, string action)
         {
             BarButtonActive?.Invoke(frm, action);
         }
 
-        private void barButtonItem1_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        private void barBtnOpen_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
             string selectedFormName = xtraTabbedMdiManager.SelectedPage.MdiChild.Name;
             string action = e.Item.Caption;
             OnBarButtonActive(selectedFormName, action);
         }
 
-
-        private void barSubItem1_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
-        {
-            Common.gMsg = "barSubItem1_ItemClick";
-        }
-
-        private void barBtnOpen_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
-        {
-            Common.gMsg = "barBtnOpen_ItemClick";
-        }
-
         private void barBtnNew_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
-            Common.gMsg = "barBtnNew_ItemClick";
+            string selectedFormName = xtraTabbedMdiManager.SelectedPage.MdiChild.Name;
+            string action = e.Item.Caption;
+            OnBarButtonActive(selectedFormName, action);
         }
 
         private void barBtnSave_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
-            Common.gMsg = "barBtnSave_ItemClick";
+            string selectedFormName = xtraTabbedMdiManager.SelectedPage.MdiChild.Name;
+            string action = e.Item.Caption;
+            OnBarButtonActive(selectedFormName, action);
         }
 
         private void barBtnDelete_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
-            Common.gMsg = "barBtnDelete_ItemClick";
+            string selectedFormName = xtraTabbedMdiManager.SelectedPage.MdiChild.Name;
+            string action = e.Item.Caption;
+            OnBarButtonActive(selectedFormName, action);
         }
+#endregion
+
 
         private void barBtnTemplate_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {

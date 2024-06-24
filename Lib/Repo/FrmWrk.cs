@@ -147,7 +147,7 @@ namespace Lib.Repo
 select a.FrwId, a.FrmId, a.WrkId, a.CtrlNm, a.WrkNm,
        a.WrkCd, a.SelectMode, a.MultiSelect, a.UseYn, a.NavAdd,
        a.NavDelete, a.NavSave, a.NavCancel, a.SaveSq, a.OpenSq,
-       a.OpenTrg, a.Memo, 
+       a.OpenTrg, a.StartYn, a.Memo, 
        a.CId, a.CDt, a.MId, a.MDt
   from FRMWRK a
  where 1=1
@@ -179,7 +179,7 @@ select a.FrwId, a.FrmId, a.WrkId, a.CtrlNm, a.WrkNm,
 select a.FrwId, a.FrmId, a.WrkId, a.CtrlNm, a.WrkNm,
        a.WrkCd, a.SelectMode, a.MultiSelect, a.UseYn, a.NavAdd,
        a.NavDelete, a.NavSave, a.NavCancel, a.SaveSq, a.OpenSq,
-       a.OpenTrg, a.Memo, 
+       a.OpenTrg, a.StartYn, a.Memo, 
        a.CId, a.CDt, a.MId, a.MDt
   from FRMWRK a
  where 1=1
@@ -205,20 +205,20 @@ select a.FrwId, a.FrmId, a.WrkId, a.CtrlNm, a.WrkNm,
                 }
             }
         }
-
-        public List<FrmWrk> GetByWorkSets(string frwId, string frmId)
+        public List<FrmWrk> GetByOpenWrks(string frwId, string frmId)
         {
             string sql = @"
 select a.FrwId, a.FrmId, a.WrkId, a.CtrlNm, a.WrkNm,
        a.WrkCd, a.SelectMode, a.MultiSelect, a.UseYn, a.NavAdd,
        a.NavDelete, a.NavSave, a.NavCancel, a.SaveSq, a.OpenSq,
-       a.OpenTrg, a.Memo, 
+       a.OpenTrg, a.StartYn, a.Memo, 
        a.CId, a.CDt, a.MId, a.MDt
   from FRMWRK a
  where 1=1
    and a.FrwId = @FrwId
    and a.FrmId = @FrmId
- order by a.OpenSq 
+   and a.StratYn = true
+ order by a.OpenSq
 ";
             using (var db = new Lib.GaiaHelper())
             {
@@ -230,10 +230,35 @@ select a.FrwId, a.FrmId, a.WrkId, a.CtrlNm, a.WrkNm,
                 }
                 else
                 {
-                    foreach (var item in result)
-                    {
-                        item.ChangedFlag = MdlState.None;
-                    }
+                    return result;
+                }
+            }
+        }
+
+        public List<FrmWrk> GetByWorkSets(string frwId, string frmId)
+        {
+            string sql = @"
+select a.FrwId, a.FrmId, a.WrkId, a.CtrlNm, a.WrkNm,
+       a.WrkCd, a.SelectMode, a.MultiSelect, a.UseYn, a.NavAdd,
+       a.NavDelete, a.NavSave, a.NavCancel, a.SaveSq, a.OpenSq,
+       a.OpenTrg, a.StartYn, a.Memo, 
+       a.CId, a.CDt, a.MId, a.MDt
+  from FRMWRK a
+ where 1=1
+   and a.FrwId = @FrwId
+   and a.FrmId = @FrmId
+ order by a.OpenSq
+";
+            using (var db = new Lib.GaiaHelper())
+            {
+                var result = db.Query<FrmWrk>(sql, new { FrwId = frwId, FrmId = frmId }).ToList();
+
+                if (result == null)
+                {
+                    return null;
+                }
+                else
+                {
                     return result;
                 }
             }
@@ -245,7 +270,7 @@ select a.FrwId, a.FrmId, a.WrkId, a.CtrlNm, a.WrkNm,
 select a.FrwId, a.FrmId, a.WrkId, a.CtrlNm, a.WrkNm,
        a.WrkCd, a.SelectMode, a.MultiSelect, a.UseYn, a.NavAdd,
        a.NavDelete, a.NavSave, a.NavCancel, a.SaveSq, a.OpenSq,
-       a.OpenTrg, a.Memo, 
+       a.OpenTrg, a.StartYn, a.Memo, 
        a.CId, a.CDt, a.MId, a.MDt
   from FRMWRK a
  where 1=1
@@ -279,7 +304,7 @@ select a.FrwId, a.FrmId, a.WrkId, a.CtrlNm, a.WrkNm,
 select a.FrwId, a.FrmId, a.WrkId, a.CtrlNm, a.WrkNm,
        a.WrkCd, a.SelectMode, a.MultiSelect, a.UseYn, a.NavAdd,
        a.NavDelete, a.NavSave, a.NavCancel, a.SaveSq, a.OpenSq,
-       a.OpenTrg, a.Memo, 
+       a.OpenTrg, a.StartYn, a.Memo, 
        a.CId, a.CDt, a.MId, a.MDt
   from FRMWRK a
  where 1=1
@@ -313,7 +338,7 @@ select a.FrwId, a.FrmId, a.WrkId, a.CtrlNm, a.WrkNm,
 select a.FrwId, a.FrmId, a.WrkId, a.CtrlNm, a.WrkNm,
        a.WrkCd, a.SelectMode, a.MultiSelect, a.UseYn, a.NavAdd,
        a.NavDelete, a.NavSave, a.NavCancel, a.SaveSq, a.OpenSq,
-       a.OpenTrg, a.Memo, 
+       a.OpenTrg, a.StartYn, a.Memo, 
        a.CId, a.CDt, a.MId, a.MDt
   from FRMWRK a
  where 1=1
@@ -348,6 +373,7 @@ update a
        SaveSq= @SaveSq,
        OpenSq= @OpenSq,
        OpenTrg= @OpenTrg,
+       StartYn= @StartYn,
        Memo= @Memo,
        MId= " + Common.GetValue("gRegId") + @",
        MDt= getdate()
@@ -369,12 +395,12 @@ insert into FRMWRK
       (FrwId, FrmId, WrkId, CtrlNm, WrkNm,
        WrkCd, SelectMode, MultiSelect, UseYn, NavAdd,
        NavDelete, NavSave, NavCancel, SaveSq, OpenSq,
-       OpenTrg, Memo, 
+       OpenTrg, StartYn, Memo, 
        CId, CDt, MId, MDt)
 select @FrwId, @FrmId, @WrkId, @CtrlNm, @WrkNm,
        @WrkCd, @SelectMode, @MultiSelect, @UseYn, @NavAdd,
        @NavDelete, @NavSave, @NavCancel, @SaveSq, @OpenSq,
-       @OpenTrg, @Memo, 
+       @OpenTrg, @StartYn, @Memo, 
        " + Common.GetValue("gRegId") + @", getdate(), " + Common.GetValue("gRegId") + @", getdate()
 ";
             using (var db = new Lib.GaiaHelper())

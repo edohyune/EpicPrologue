@@ -13,7 +13,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Ctrls\FrmBase\FrmBase.csproj" />
     <ProjectReference Include="..\..\Ctrls\UCButton\UCButton.csproj" />
     <ProjectReference Include="..\..\Ctrls\UCCheckBox\UCCheckBox.csproj" />
     <ProjectReference Include="..\..\Ctrls\UCCodeBox\UCCodeBox.csproj" />
@@ -30,9 +29,8 @@
     <ProjectReference Include="..\..\Ctrls\UCSplit\UCSplit.csproj" />
     <ProjectReference Include="..\..\Ctrls\UCTab\UCTab.csproj" />
     <ProjectReference Include="..\..\Ctrls\UCTextBox\UCTextBox.csproj" />
+    <ProjectReference Include="..\..\FromMain\FormMain.csproj" />
     <ProjectReference Include="..\..\Lib\Lib.csproj" />
-    <ProjectReference Include="..\TST\GridSet\GridSet.csproj" />
-    <ProjectReference Include="..\TST\Grid\Grid.csproj" />
   </ItemGroup>
 
 </Project>
