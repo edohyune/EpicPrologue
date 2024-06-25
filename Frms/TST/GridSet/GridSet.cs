@@ -1,13 +1,5 @@
-﻿using DevExpress.Mvvm.POCO;
-using DevExpress.XtraBars.Docking2010;
-using Lib.Repo;
-using DevExpress.XtraGrid.Views.Grid;
-using System.Data;
-using Ctrls;
-using DevExpress.Data.Helpers;
-using DevExpress.Pdf.Native.BouncyCastle.Asn1.X509;
+﻿using DevExpress.XtraBars.Docking2010;
 using DevExpress.XtraGrid.Views.Grid.ViewInfo;
-using Frms.TST;
 
 namespace Frms.TST
 {

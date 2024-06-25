@@ -42,22 +42,22 @@ namespace Frms
             DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions buttonImageOptions9 = new DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions();
             DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions buttonImageOptions10 = new DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions();
             DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions buttonImageOptions11 = new DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions();
-            ucSplit1 = new Ctrls.UCSplit();
-            ucSplit2 = new Ctrls.UCSplit();
-            pnlCode = new Ctrls.UCPanel();
-            grdCde = new Ctrls.UCGridSet();
-            pnlReference = new Ctrls.UCPanel();
-            grdRef = new Ctrls.UCGridSet();
-            ucTab1 = new Ctrls.UCTab();
+            ucSplit1 = new EpicV001Ctrls.UCSplit();
+            ucSplit2 = new EpicV001Ctrls.UCSplit();
+            pnlCode = new EpicV001Ctrls.UCPanel();
+            grdCde = new EpicV001Ctrls.UCGridSet();
+            pnlReference = new EpicV001Ctrls.UCPanel();
+            grdRef = new EpicV001Ctrls.UCGridSet();
+            ucTab1 = new EpicV001Ctrls.UCTab();
             xtraTabPage1 = new DevExpress.XtraTab.XtraTabPage();
-            pnlCodeDetail = new Ctrls.UCPanel();
-            grdDtl = new Ctrls.UCGridSet();
+            pnlCodeDetail = new EpicV001Ctrls.UCPanel();
+            grdDtl = new EpicV001Ctrls.UCGridSet();
             xtraTabPage2 = new DevExpress.XtraTab.XtraTabPage();
-            ucSplit3 = new Ctrls.UCSplit();
-            ucTab2 = new Ctrls.UCTab();
+            ucSplit3 = new EpicV001Ctrls.UCSplit();
+            ucTab2 = new EpicV001Ctrls.UCTab();
             xtraTabPage4 = new DevExpress.XtraTab.XtraTabPage();
             xtraTabPage3 = new DevExpress.XtraTab.XtraTabPage();
-            pnlSelect = new Ctrls.UCPanel();
+            pnlSelect = new EpicV001Ctrls.UCPanel();
             xtraTabPage5 = new DevExpress.XtraTab.XtraTabPage();
             ((System.ComponentModel.ISupportInitialize)ucSplit1).BeginInit();
             ucSplit1.Panel1.SuspendLayout();
@@ -340,22 +340,22 @@ namespace Frms
         }
         #endregion
 
-        private Ctrls.UCSplit ucSplit1;
-        private Ctrls.UCSplit ucSplit2;
-        private Ctrls.UCPanel pnlCode;
-        private Ctrls.UCPanel pnlReference;
-        private Ctrls.UCPanel pnlCodeDetail;
-        private Ctrls.UCGridSet grdCde;
-        private Ctrls.UCGridSet grdRef;
-        private Ctrls.UCGridSet grdDtl;
-        private Ctrls.UCTab ucTab1;
+        private EpicV001Ctrls.UCSplit ucSplit1;
+        private EpicV001Ctrls.UCSplit ucSplit2;
+        private EpicV001Ctrls.UCPanel pnlCode;
+        private EpicV001Ctrls.UCPanel pnlReference;
+        private EpicV001Ctrls.UCPanel pnlCodeDetail;
+        private EpicV001Ctrls.UCGridSet grdCde;
+        private EpicV001Ctrls.UCGridSet grdRef;
+        private EpicV001Ctrls.UCGridSet grdDtl;
+        private EpicV001Ctrls.UCTab ucTab1;
         private DevExpress.XtraTab.XtraTabPage xtraTabPage1;
         private DevExpress.XtraTab.XtraTabPage xtraTabPage2;
-        private Ctrls.UCSplit ucSplit3;
-        private Ctrls.UCTab ucTab2;
+        private EpicV001Ctrls.UCSplit ucSplit3;
+        private EpicV001Ctrls.UCTab ucTab2;
         private DevExpress.XtraTab.XtraTabPage xtraTabPage4;
         private DevExpress.XtraTab.XtraTabPage xtraTabPage3;
         private DevExpress.XtraTab.XtraTabPage xtraTabPage5;
-        private Ctrls.UCPanel pnlSelect;
+        private EpicV001Ctrls.UCPanel pnlSelect;
     }
 }

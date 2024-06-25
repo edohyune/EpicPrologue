@@ -14,9 +14,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Ctrls\UCPanel\UCPanel.csproj" />
-    <ProjectReference Include="..\..\..\Ctrls\UCSplit\UCSplit.csproj" />
-    <ProjectReference Include="..\..\..\Ctrls\UCTab\UCTab.csproj" />
+    <ProjectReference Include="..\..\..\Ctrls\EpicV001Ctrls\EpicV001Ctrls.csproj" />
+    <ProjectReference Include="..\..\..\Lib\Lib.csproj" />
   </ItemGroup>
 
 </Project>

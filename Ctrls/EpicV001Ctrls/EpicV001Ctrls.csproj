@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\UCTextBox\UCTextBox.csproj" />
+    <ProjectReference Include="..\..\Lib\Lib.csproj" />
   </ItemGroup>
 
   <ItemGroup>

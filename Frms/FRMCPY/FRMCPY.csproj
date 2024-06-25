@@ -13,7 +13,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Ctrls\UCTextBox\UCTextBox.csproj" />
+    <ProjectReference Include="..\..\Ctrls\EpicV001Ctrls\EpicV001Ctrls.csproj" />
+    <ProjectReference Include="..\..\Lib\Lib.csproj" />
   </ItemGroup>
 
 </Project>

@@ -5,6 +5,7 @@ using DevExpress.RichEdit.Export;
 using DevExpress.XtraEditors;
 using DevExpress.XtraSpreadsheet.Model;
 using DevExpress.XtraTab;
+using EpicV001Ctrls;
 using Lib;
 using Lib.Repo;
 using System;
@@ -422,34 +423,34 @@ namespace Frms
         #region Get Control Properties
         private string GetTextAlign(Control ctrl)
         {
-            if (ctrl is Ctrls.UCLookUp ucLookUp)
+            if (ctrl is EpicV001Ctrls.UCLookUp ucLookUp)
                 return ucLookUp.TextAlignment.ToString();
-            //else if (ctrl is Ctrls.UCField ucField)
-            //else if (ctrl is Ctrls.UCGrid ucGrid)
-            //else if (ctrl is Ctrls.UCLookUp ucLookUp)
+            //else if (ctrl is EpicV001Ctrls.UCField ucField)
+            //else if (ctrl is EpicV001Ctrls.UCGrid ucGrid)
+            //else if (ctrl is EpicV001Ctrls.UCLookUp ucLookUp)
             //    return ucLookUp.TextAlignment.ToString();
-            //else if (ctrl is Ctrls.UCPanel ucPanel)
-            //else if (ctrl is Ctrls.UCSplit ucSplit)
-            //else if (ctrl is Ctrls.UCDateBox ucDateBox)
+            //else if (ctrl is EpicV001Ctrls.UCPanel ucPanel)
+            //else if (ctrl is EpicV001Ctrls.UCSplit ucSplit)
+            //else if (ctrl is EpicV001Ctrls.UCDateBox ucDateBox)
             //    return ucLookUp.TextAlignment.ToString();
-            else if (ctrl is Ctrls.UCTextBox ucTextBox)
+            else if (ctrl is EpicV001Ctrls.UCTextBox ucTextBox)
                 return ucTextBox.TextAlignment.ToString();
-            //else if (ctrl is Ctrls.UCTab ucTab)
+            //else if (ctrl is EpicV001Ctrls.UCTab ucTab)
             else
                 return string.Empty;
         }
 
         private string GetText(Control ctrl)
         {
-            if (ctrl is Ctrls.UCTextBox ucTextBox)
+            if (ctrl is EpicV001Ctrls.UCTextBox ucTextBox)
                 return ucTextBox.Text;
-            else if (ctrl is Ctrls.UCLookUp ucLookUp)
+            else if (ctrl is EpicV001Ctrls.UCLookUp ucLookUp)
                 return ucLookUp.Text;
-            //else if (ctrl is Ctrls.UCMemo ucMemo)
+            //else if (ctrl is EpicV001Ctrls.UCMemo ucMemo)
             //    return ucLookUp.TitleWidth;
-            //else if (ctrl is Ctrls.UCDateBox ucDateBox)
+            //else if (ctrl is EpicV001Ctrls.UCDateBox ucDateBox)
             //    return ucLookUp.TitleWidth;
-            //else if (ctrl is Ctrls.UCCheckBox ucCheckBox)
+            //else if (ctrl is EpicV001Ctrls.UCCheckBox ucCheckBox)
             //    return ucLookUp.TitleWidth;
             else
                 return "";
@@ -457,15 +458,15 @@ namespace Frms
 
         private int GetTitleWidth(Control ctrl)
         {
-            if (ctrl is Ctrls.UCTextBox ucTextBox)
+            if (ctrl is EpicV001Ctrls.UCTextBox ucTextBox)
                 return ucTextBox.TitleWidth;
-            else if (ctrl is Ctrls.UCLookUp ucLookUp)
+            else if (ctrl is EpicV001Ctrls.UCLookUp ucLookUp)
                 return ucLookUp.TitleWidth;
-            //else if (ctrl is Ctrls.UCMemo ucMemo)
+            //else if (ctrl is EpicV001Ctrls.UCMemo ucMemo)
             //    return ucLookUp.TitleWidth;
-            //else if (ctrl is Ctrls.UCDateBox ucDateBox)
+            //else if (ctrl is EpicV001Ctrls.UCDateBox ucDateBox)
             //    return ucLookUp.TitleWidth;
-            //else if (ctrl is Ctrls.UCCheckBox ucCheckBox)
+            //else if (ctrl is EpicV001Ctrls.UCCheckBox ucCheckBox)
             //    return ucLookUp.TitleWidth;
             else
                 return 0;
@@ -475,14 +476,14 @@ namespace Frms
         {
             if (ctrl is DevExpress.XtraTab.XtraTabPage tabPage)
                 return tabPage.TabPageWidth;
-            //else if (ctrl is Ctrls.UCButton ucButton)
-            //else if (ctrl is Ctrls.UCField ucField)
-            //else if (ctrl is Ctrls.UCGrid ucGrid)
-            //else if (ctrl is Ctrls.UCLookUp ucLookUp)
-            //else if (ctrl is Ctrls.UCPanel ucPanel)
-            //else if (ctrl is Ctrls.UCSplit ucSplit)
-            //else if (ctrl is Ctrls.UCTextBox ucTextBox)
-            //else if (ctrl is Ctrls.UCTab ucTab)
+            //else if (ctrl is EpicV001Ctrls.UCButton ucButton)
+            //else if (ctrl is EpicV001Ctrls.UCField ucField)
+            //else if (ctrl is EpicV001Ctrls.UCGrid ucGrid)
+            //else if (ctrl is EpicV001Ctrls.UCLookUp ucLookUp)
+            //else if (ctrl is EpicV001Ctrls.UCPanel ucPanel)
+            //else if (ctrl is EpicV001Ctrls.UCSplit ucSplit)
+            //else if (ctrl is EpicV001Ctrls.UCTextBox ucTextBox)
+            //else if (ctrl is EpicV001Ctrls.UCTab ucTab)
             else
                 return ctrl.Width;
         }
@@ -490,33 +491,33 @@ namespace Frms
         {
             if (ctrl is DevExpress.XtraTab.XtraTabPage tabPage)
                 return ctrl.TabIndex;
-            //else if (ctrl is Ctrls.UCButton ucButton)
-            //else if (ctrl is Ctrls.UCField ucField)
-            //else if (ctrl is Ctrls.UCGrid ucGrid)
-            //else if (ctrl is Ctrls.UCLookUp ucLookUp)
-            //else if (ctrl is Ctrls.UCPanel ucPanel)
-            //else if (ctrl is Ctrls.UCSplit ucSplit)
-            //else if (ctrl is Ctrls.UCTextBox ucTextBox)
-            //else if (ctrl is Ctrls.UCTab ucTab)
+            //else if (ctrl is EpicV001Ctrls.UCButton ucButton)
+            //else if (ctrl is EpicV001Ctrls.UCField ucField)
+            //else if (ctrl is EpicV001Ctrls.UCGrid ucGrid)
+            //else if (ctrl is EpicV001Ctrls.UCLookUp ucLookUp)
+            //else if (ctrl is EpicV001Ctrls.UCPanel ucPanel)
+            //else if (ctrl is EpicV001Ctrls.UCSplit ucSplit)
+            //else if (ctrl is EpicV001Ctrls.UCTextBox ucTextBox)
+            //else if (ctrl is EpicV001Ctrls.UCTab ucTab)
             else
                 return ctrl.Height;
         }
 
         private string GetTitleText(Control ctrl)
         {
-            if (ctrl is Ctrls.UCButton ucButton)
+            if (ctrl is EpicV001Ctrls.UCButton ucButton)
                 return ucButton.Text;
-            //else if (ctrl is Ctrls.UCField ucField)
-            //else if (ctrl is Ctrls.UCGrid ucGrid)
-            else if (ctrl is Ctrls.UCLookUp ucLookUp)
+            //else if (ctrl is EpicV001Ctrls.UCField ucField)
+            //else if (ctrl is EpicV001Ctrls.UCGrid ucGrid)
+            else if (ctrl is EpicV001Ctrls.UCLookUp ucLookUp)
                 return ucLookUp.Title;
-            else if (ctrl is Ctrls.UCPanel ucPanel)
+            else if (ctrl is EpicV001Ctrls.UCPanel ucPanel)
                 return ucPanel.Text;
-            else if (ctrl is Ctrls.UCSplit ucSplit)
+            else if (ctrl is EpicV001Ctrls.UCSplit ucSplit)
                 return ucSplit.Text;
-            else if (ctrl is Ctrls.UCTextBox ucTextBox)
+            else if (ctrl is EpicV001Ctrls.UCTextBox ucTextBox)
                 return ucTextBox.Title;
-            //else if (ctrl is Ctrls.UCTab ucTab)
+            //else if (ctrl is EpicV001Ctrls.UCTab ucTab)
             else if (ctrl is DevExpress.XtraTab.XtraTabPage tabPage)
                 return tabPage.Text;
             else
@@ -525,39 +526,39 @@ namespace Frms
 
         private string GetTitleAlign(Control ctrl)
         {
-            if (ctrl is Ctrls.UCButton ucButton)
+            if (ctrl is EpicV001Ctrls.UCButton ucButton)
                 return ucButton.TitleAlignment.ToString();
-            //else if (ctrl is Ctrls.UCField ucField)
-            //else if (ctrl is Ctrls.UCGrid ucGrid)
-            else if (ctrl is Ctrls.UCLookUp ucLookUp)
+            //else if (ctrl is EpicV001Ctrls.UCField ucField)
+            //else if (ctrl is EpicV001Ctrls.UCGrid ucGrid)
+            else if (ctrl is EpicV001Ctrls.UCLookUp ucLookUp)
                 return ucLookUp.TitleAlignment.ToString();
-            //else if (ctrl is Ctrls.UCPanel ucPanel)
-            //else if (ctrl is Ctrls.UCSplit ucSplit)
-            else if (ctrl is Ctrls.UCTextBox ucTextBox)
+            //else if (ctrl is EpicV001Ctrls.UCPanel ucPanel)
+            //else if (ctrl is EpicV001Ctrls.UCSplit ucSplit)
+            else if (ctrl is EpicV001Ctrls.UCTextBox ucTextBox)
                 return ucTextBox.TitleAlignment.ToString();
-            //else if (ctrl is Ctrls.UCTab ucTab)
+            //else if (ctrl is EpicV001Ctrls.UCTab ucTab)
             else
                 return string.Empty;
         }
 
         private bool GetEditYn(Control ctrl)
         {
-            if (ctrl is Ctrls.UCButton ucButton)
+            if (ctrl is EpicV001Ctrls.UCButton ucButton)
                 return ucButton.EditYn;
-            //else if (ctrl is Ctrls.UCField ucField)
-            else if (ctrl is Ctrls.UCGridSet ucGrid)
+            //else if (ctrl is EpicV001Ctrls.UCField ucField)
+            else if (ctrl is EpicV001Ctrls.UCGridSet ucGrid)
                 if (ucGrid.gvCtrl != null)
                     return ucGrid.gvCtrl.Editable;
                 else
                     return false; // or throw new Exception("gvCtrl is not initialized");
-            else if (ctrl is Ctrls.UCLookUp ucLookUp)
+            else if (ctrl is EpicV001Ctrls.UCLookUp ucLookUp)
                 return ucLookUp.EditYn;
-            else if (ctrl is Ctrls.UCPanel ucPanel)
+            else if (ctrl is EpicV001Ctrls.UCPanel ucPanel)
                 return ucPanel.EditYn;
-            //else if (ctrl is Ctrls.UCSplit ucSplit)
-            else if (ctrl is Ctrls.UCTextBox ucTextBox)
+            //else if (ctrl is EpicV001Ctrls.UCSplit ucSplit)
+            else if (ctrl is EpicV001Ctrls.UCTextBox ucTextBox)
                 return ucTextBox.EditYn;
-            //else if (ctrl is Ctrls.UCTab ucTab)
+            //else if (ctrl is EpicV001Ctrls.UCTab ucTab)
             else
                 return false;
         }

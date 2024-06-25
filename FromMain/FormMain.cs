@@ -8,7 +8,7 @@ using Lib.Repo;
 using System.IO;
 using Repo;
 using DevExpress.XtraEditors.ButtonsPanelControl;
-using Ctrls;
+using EpicV001Ctrls;
 using DevExpress.XtraEditors;
 
 namespace GAIA

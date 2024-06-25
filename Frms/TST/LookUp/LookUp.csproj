@@ -14,11 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Ctrls\UCButton\UCButton.csproj" />
-    <ProjectReference Include="..\..\..\Ctrls\UCChkCodeBox\UCChkCodeBox.csproj" />
-    <ProjectReference Include="..\..\..\Ctrls\UCCodeBox\UCCodeBox.csproj" />
-    <ProjectReference Include="..\..\..\Ctrls\UCLookup\UCLookUp.csproj" />
-    <ProjectReference Include="..\..\..\Ctrls\UCTextBox\UCTextBox.csproj" />
+    <ProjectReference Include="..\..\..\Ctrls\EpicV001Ctrls\EpicV001Ctrls.csproj" />
     <ProjectReference Include="..\..\..\Lib\Lib.csproj" />
   </ItemGroup>
 

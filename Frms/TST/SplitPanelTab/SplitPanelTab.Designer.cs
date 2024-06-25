@@ -31,12 +31,12 @@
             DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions buttonImageOptions1 = new DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions();
             DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions buttonImageOptions2 = new DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions();
             DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions buttonImageOptions3 = new DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions();
-            ucSplit1 = new Ctrls.UCSplit();
-            ucPanel1 = new Ctrls.UCPanel();
-            ucSplit2 = new Ctrls.UCSplit();
-            ucPanel2 = new Ctrls.UCPanel();
-            ucPanel3 = new Ctrls.UCPanel();
-            ucTab1 = new Ctrls.UCTab();
+            ucSplit1 = new EpicV001Ctrls.UCSplit();
+            ucPanel1 = new EpicV001Ctrls.UCPanel();
+            ucSplit2 = new EpicV001Ctrls.UCSplit();
+            ucPanel2 = new EpicV001Ctrls.UCPanel();
+            ucPanel3 = new EpicV001Ctrls.UCPanel();
+            ucTab1 = new EpicV001Ctrls.UCTab();
             xtraTabPage3 = new DevExpress.XtraTab.XtraTabPage();
             xtraTabPage1 = new DevExpress.XtraTab.XtraTabPage();
             xtraTabPage2 = new DevExpress.XtraTab.XtraTabPage();
@@ -184,12 +184,12 @@
 
         #endregion
 
-        private Ctrls.UCSplit ucSplit1;
-        private Ctrls.UCPanel ucPanel1;
-        private Ctrls.UCSplit ucSplit2;
-        private Ctrls.UCPanel ucPanel2;
-        private Ctrls.UCPanel ucPanel3;
-        private Ctrls.UCTab ucTab1;
+        private EpicV001Ctrls.UCSplit ucSplit1;
+        private EpicV001Ctrls.UCPanel ucPanel1;
+        private EpicV001Ctrls.UCSplit ucSplit2;
+        private EpicV001Ctrls.UCPanel ucPanel2;
+        private EpicV001Ctrls.UCPanel ucPanel3;
+        private EpicV001Ctrls.UCTab ucTab1;
         private DevExpress.XtraTab.XtraTabPage xtraTabPage3;
         private DevExpress.XtraTab.XtraTabPage xtraTabPage1;
         private DevExpress.XtraTab.XtraTabPage xtraTabPage2;

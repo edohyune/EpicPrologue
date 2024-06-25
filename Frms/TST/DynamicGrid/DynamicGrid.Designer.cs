@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            g10 = new Ctrls.UCGridSet();
+            g10 = new EpicV001Ctrls.UCGridSet();
             SuspendLayout();
             // 
             // g10
@@ -53,6 +53,6 @@
 
         #endregion
 
-        private Ctrls.UCGridSet g10;
+        private EpicV001Ctrls.UCGridSet g10;
     }
 }

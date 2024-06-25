@@ -17,8 +17,6 @@
     <ProjectReference Include="..\..\Lib\Lib.csproj" />
     <ProjectReference Include="..\UCCheckBox\UCCheckBox.csproj" />
     <ProjectReference Include="..\UCDateBox\UCDateBox.csproj" />
-    <ProjectReference Include="..\UCMemo\UCMemo.csproj" />
-    <ProjectReference Include="..\UCTextBox\UCTextBox.csproj" />
   </ItemGroup>
 
 </Project>

@@ -15,9 +15,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Lib\Lib.csproj" />
-    <ProjectReference Include="..\UCButton\UCButton.csproj" />
-    <ProjectReference Include="..\UCLookup\UCLookUp.csproj" />
-    <ProjectReference Include="..\UCTextBox\UCTextBox.csproj" />
   </ItemGroup>
 
 </Project>

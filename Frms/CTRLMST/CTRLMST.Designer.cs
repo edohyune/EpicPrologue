@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions buttonImageOptions1 = new DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions();
-            ucPanel1 = new Ctrls.UCPanel();
+            ucPanel1 = new EpicV001Ctrls.UCPanel();
             gridCtrls = new DevExpress.XtraGrid.GridControl();
             gvCtrls = new DevExpress.XtraGrid.Views.Grid.GridView();
             ((System.ComponentModel.ISupportInitialize)ucPanel1).BeginInit();
@@ -92,7 +92,7 @@
 
         #endregion
 
-        private Ctrls.UCPanel ucPanel1;
+        private EpicV001Ctrls.UCPanel ucPanel1;
         private DevExpress.XtraGrid.GridControl gridCtrls;
         private DevExpress.XtraGrid.Views.Grid.GridView gvCtrls;
     }

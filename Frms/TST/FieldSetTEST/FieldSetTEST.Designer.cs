@@ -29,17 +29,17 @@
         private void InitializeComponent()
         {
             DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions buttonImageOptions1 = new DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions();
-            ucSplit1 = new Ctrls.UCSplit();
-            ucPanel3 = new Ctrls.UCPanel();
-            grdWrkSql = new Ctrls.UCGridSet();
-            ucSplit2 = new Ctrls.UCSplit();
-            ucPanel1 = new Ctrls.UCPanel();
-            rtxSQL = new Ctrls.UCRichText();
-            ucPanel2 = new Ctrls.UCPanel();
-            txtFrwId = new Ctrls.UCTextBox();
-            txtWrkId = new Ctrls.UCTextBox();
-            txtFrmId = new Ctrls.UCTextBox();
-            txtCRUDM = new Ctrls.UCTextBox();
+            ucSplit1 = new EpicV001Ctrls.UCSplit();
+            ucPanel3 = new EpicV001Ctrls.UCPanel();
+            grdWrkSql =new EpicV001Ctrls.UCGridSet();
+            ucSplit2 = new EpicV001Ctrls.UCSplit();
+            ucPanel1 = new EpicV001Ctrls.UCPanel();
+            rtxSQL =   new EpicV001Ctrls.UCRichText();
+            ucPanel2 = new EpicV001Ctrls.UCPanel();
+            txtFrwId = new EpicV001Ctrls.UCTextBox();
+            txtWrkId = new EpicV001Ctrls.UCTextBox();
+            txtFrmId = new EpicV001Ctrls.UCTextBox();
+            txtCRUDM = new EpicV001Ctrls.UCTextBox();
             ((System.ComponentModel.ISupportInitialize)ucSplit1).BeginInit();
             ucSplit1.Panel1.SuspendLayout();
             ucSplit1.Panel2.SuspendLayout();
@@ -268,16 +268,16 @@
 
         #endregion
 
-        private Ctrls.UCSplit ucSplit1;
-        private Ctrls.UCPanel ucPanel3;
-        private Ctrls.UCGridSet grdWrkSql;
-        private Ctrls.UCSplit ucSplit2;
-        private Ctrls.UCPanel ucPanel1;
-        private Ctrls.UCPanel ucPanel2;
-        private Ctrls.UCRichText rtxSQL;
-        private Ctrls.UCTextBox txtFrwId;
-        private Ctrls.UCTextBox txtCRUDM;
-        private Ctrls.UCTextBox txtFrmId;
-        private Ctrls.UCTextBox txtWrkId;
+        private EpicV001Ctrls.UCSplit ucSplit1;
+        private EpicV001Ctrls.UCPanel ucPanel3;
+        private EpicV001Ctrls.UCGridSet grdWrkSql;
+        private EpicV001Ctrls.UCSplit ucSplit2;
+        private EpicV001Ctrls.UCPanel ucPanel1;
+        private EpicV001Ctrls.UCPanel ucPanel2;
+        private EpicV001Ctrls.UCRichText rtxSQL;
+        private EpicV001Ctrls.UCTextBox txtFrwId;
+        private EpicV001Ctrls.UCTextBox txtCRUDM;
+        private EpicV001Ctrls.UCTextBox txtFrmId;
+        private EpicV001Ctrls.UCTextBox txtWrkId;
     }
 }

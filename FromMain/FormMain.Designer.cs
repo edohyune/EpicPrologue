@@ -60,8 +60,8 @@
             simpleButton1 = new DevExpress.XtraEditors.SimpleButton();
             menuCtrl = new DevExpress.XtraEditors.ListBoxControl();
             xtraTabbedMdiManager = new DevExpress.XtraTabbedMdi.XtraTabbedMdiManager(components);
-            ucPanel1 = new Ctrls.UCPanel();
-            ucTab1 = new Ctrls.UCTab();
+            ucPanel1 = new EpicV001Ctrls.UCPanel();
+            ucTab1 = new EpicV001Ctrls.UCTab();
             xtraTabPage1 = new DevExpress.XtraTab.XtraTabPage();
             xtraTabPage2 = new DevExpress.XtraTab.XtraTabPage();
             ((System.ComponentModel.ISupportInitialize)barManager1).BeginInit();
@@ -401,8 +401,8 @@
         private DevExpress.XtraEditors.SimpleButton simpleButton1;
         private DevExpress.XtraEditors.ListBoxControl menuCtrl;
         private DevExpress.XtraTabbedMdi.XtraTabbedMdiManager xtraTabbedMdiManager;
-        private Ctrls.UCPanel ucPanel1;
-        private Ctrls.UCTab ucTab1;
+        private EpicV001Ctrls.UCPanel ucPanel1;
+        private EpicV001Ctrls.UCTab ucTab1;
         private DevExpress.XtraTab.XtraTabPage xtraTabPage1;
         private DevExpress.XtraTab.XtraTabPage xtraTabPage2;
         private DevExpress.XtraBars.BarStaticItem barStaticItemMessage;

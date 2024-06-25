@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using Dapper;
-using Ctrls;
+using EpicV001Ctrls;
 using DevExpress.XtraTab;
 using System.Windows.Forms;
 

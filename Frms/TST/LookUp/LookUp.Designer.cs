@@ -28,21 +28,21 @@
         /// </summary>
         private void InitializeComponent()
         {
-            ucLookUp1 = new Ctrls.UCLookUp();
-            ucLookUp2 = new Ctrls.UCLookUp();
-            ucLookUp3 = new Ctrls.UCLookUp();
+            ucLookUp1 = new EpicV001Ctrls.UCLookUp();
+            ucLookUp2 = new EpicV001Ctrls.UCLookUp();
+            ucLookUp3 = new EpicV001Ctrls.UCLookUp();
             simpleButton5 = new DevExpress.XtraEditors.SimpleButton();
             simpleButton6 = new DevExpress.XtraEditors.SimpleButton();
             simpleButton7 = new DevExpress.XtraEditors.SimpleButton();
-            cmbCd = new Ctrls.UCCodeBox();
+            cmbCd = new EpicV001Ctrls.UCCodeBox();
             btnCode = new DevExpress.XtraEditors.SimpleButton();
-            cmbSubCd = new Ctrls.UCCodeBox();
+            cmbSubCd = new EpicV001Ctrls.UCCodeBox();
             simpleButton1 = new DevExpress.XtraEditors.SimpleButton();
             textBox1 = new TextBox();
             textBox2 = new TextBox();
             simpleButton2 = new DevExpress.XtraEditors.SimpleButton();
-            ucChkCodeBox1 = new Ctrls.UCChkCodeBox();
-            ucChkCodeBox2 = new Ctrls.UCChkCodeBox();
+            ucChkCodeBox1 = new EpicV001Ctrls.UCChkCodeBox();
+            ucChkCodeBox2 = new EpicV001Ctrls.UCChkCodeBox();
             simpleButton3 = new DevExpress.XtraEditors.SimpleButton();
             SuspendLayout();
             // 
@@ -282,21 +282,21 @@
 
         #endregion
 
-        private Ctrls.UCLookUp ucLookUp1;
-        private Ctrls.UCLookUp ucLookUp2;
-        private Ctrls.UCLookUp ucLookUp3;
+        private EpicV001Ctrls.UCLookUp ucLookUp1;
+        private EpicV001Ctrls.UCLookUp ucLookUp2;
+        private EpicV001Ctrls.UCLookUp ucLookUp3;
         private DevExpress.XtraEditors.SimpleButton simpleButton5;
         private DevExpress.XtraEditors.SimpleButton simpleButton6;
         private DevExpress.XtraEditors.SimpleButton simpleButton7;
-        private Ctrls.UCCodeBox cmbCd;
+        private EpicV001Ctrls.UCCodeBox cmbCd;
         private DevExpress.XtraEditors.SimpleButton btnCode;
-        private Ctrls.UCCodeBox cmbSubCd;
+        private EpicV001Ctrls.UCCodeBox cmbSubCd;
         private DevExpress.XtraEditors.SimpleButton simpleButton1;
         private TextBox textBox1;
         private TextBox textBox2;
         private DevExpress.XtraEditors.SimpleButton simpleButton2;
-        private Ctrls.UCChkCodeBox ucChkCodeBox1;
-        private Ctrls.UCChkCodeBox ucChkCodeBox2;
+        private EpicV001Ctrls.UCChkCodeBox ucChkCodeBox1;
+        private EpicV001Ctrls.UCChkCodeBox ucChkCodeBox2;
         private DevExpress.XtraEditors.SimpleButton simpleButton3;
     }
 }

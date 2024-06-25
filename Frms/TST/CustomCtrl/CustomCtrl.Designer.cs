@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            ucCheckBox1 = new Ctrls.UCCheckBox();
+            ucCheckBox1 = new EpicV001Ctrls.UCCheckBox();
             ((System.ComponentModel.ISupportInitialize)ucCheckBox1.Properties).BeginInit();
             SuspendLayout();
             // 
@@ -54,6 +54,6 @@
 
         #endregion
 
-        private Ctrls.UCCheckBox ucCheckBox1;
+        private EpicV001Ctrls.UCCheckBox ucCheckBox1;
     }
 }

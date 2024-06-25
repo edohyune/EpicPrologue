@@ -33,15 +33,15 @@ namespace Frms
             DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions buttonImageOptions3 = new DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions();
             DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions buttonImageOptions4 = new DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FLDMAKE));
-            ucSplit1 = new Ctrls.UCSplit();
-            pnlFrmCtrl = new Ctrls.UCPanel();
-            grdFrmCtrl = new Ctrls.UCGridSet();
-            pnlWrkFld = new Ctrls.UCPanel();
-            grdWrkFld = new Ctrls.UCGridSet();
-            ucSplit2 = new Ctrls.UCSplit();
-            ucPanel1 = new Ctrls.UCPanel();
-            ucButton1 = new Ctrls.UCButton();
-            cmbFrm = new Ctrls.UCCodeBox();
+            ucSplit1 = new EpicV001Ctrls.UCSplit();
+            pnlFrmCtrl = new EpicV001Ctrls.UCPanel();
+            grdFrmCtrl = new EpicV001Ctrls.UCGridSet();
+            pnlWrkFld = new EpicV001Ctrls.UCPanel();
+            grdWrkFld = new EpicV001Ctrls.UCGridSet();
+            ucSplit2 = new EpicV001Ctrls.UCSplit();
+            ucPanel1 = new EpicV001Ctrls.UCPanel();
+            ucButton1 = new EpicV001Ctrls.UCButton();
+            cmbFrm = new EpicV001Ctrls.UCCodeBox();
             ((System.ComponentModel.ISupportInitialize)ucSplit1).BeginInit();
             ucSplit1.Panel1.SuspendLayout();
             ucSplit1.Panel2.SuspendLayout();
@@ -243,14 +243,14 @@ namespace Frms
 
         #endregion
 
-        private Ctrls.UCSplit ucSplit1;
-        private Ctrls.UCPanel pnlWrkFld;
-        private Ctrls.UCPanel pnlFrmCtrl;
-        private Ctrls.UCSplit ucSplit2;
-        private Ctrls.UCPanel ucPanel1;
-        private Ctrls.UCCodeBox cmbFrm;
-        private Ctrls.UCGridSet grdFrmCtrl;
-        private Ctrls.UCGridSet grdWrkFld;
-        private Ctrls.UCButton ucButton1;
+        private EpicV001Ctrls.UCSplit ucSplit1;
+        private EpicV001Ctrls.UCPanel pnlWrkFld;
+        private EpicV001Ctrls.UCPanel pnlFrmCtrl;
+        private EpicV001Ctrls.UCSplit ucSplit2;
+        private EpicV001Ctrls.UCPanel ucPanel1;
+        private EpicV001Ctrls.UCCodeBox cmbFrm;
+        private EpicV001Ctrls.UCGridSet grdFrmCtrl;
+        private EpicV001Ctrls.UCGridSet grdWrkFld;
+        private EpicV001Ctrls.UCButton ucButton1;
     }
 }
