@@ -35,9 +35,9 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CTRLFLD));
             ucSplit1 = new Ctrls.UCSplit();
             pnlFrmCtrl = new Ctrls.UCPanel();
-            grdFrmCtrl = new Ctrls.UCGridCode();
+            grdFrmCtrl = new Ctrls.UCGridSet();
             pnlWrkFld = new Ctrls.UCPanel();
-            grdWrkFld = new Ctrls.UCGridCode();
+            grdWrkFld = new Ctrls.UCGridSet();
             ucSplit2 = new Ctrls.UCSplit();
             ucPanel1 = new Ctrls.UCPanel();
             cmbFrm = new Ctrls.UCCodeBox();
@@ -228,10 +228,10 @@
         #endregion
 
         private Ctrls.UCSplit ucSplit1;
-        private Ctrls.UCGridCode grdWrkFld;
+        private Ctrls.UCGridSet grdWrkFld;
         private Ctrls.UCPanel pnlWrkFld;
         private Ctrls.UCPanel pnlFrmCtrl;
-        private Ctrls.UCGridCode grdFrmCtrl;
+        private Ctrls.UCGridSet grdFrmCtrl;
         private Ctrls.UCSplit ucSplit2;
         private Ctrls.UCPanel ucPanel1;
         private Ctrls.UCCodeBox cmbFrm;

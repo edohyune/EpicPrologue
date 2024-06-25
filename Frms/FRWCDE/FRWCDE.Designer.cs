@@ -51,7 +51,7 @@ namespace Frms
             ucTab1 = new Ctrls.UCTab();
             xtraTabPage1 = new DevExpress.XtraTab.XtraTabPage();
             pnlCodeDetail = new Ctrls.UCPanel();
-            grdDtl = new Ctrls.UCGridCode();
+            grdDtl = new Ctrls.UCGridSet();
             xtraTabPage2 = new DevExpress.XtraTab.XtraTabPage();
             ucSplit3 = new Ctrls.UCSplit();
             ucTab2 = new Ctrls.UCTab();
@@ -347,7 +347,7 @@ namespace Frms
         private Ctrls.UCPanel pnlCodeDetail;
         private Ctrls.UCGridSet grdCde;
         private Ctrls.UCGridSet grdRef;
-        private Ctrls.UCGridCode grdDtl;
+        private Ctrls.UCGridSet grdDtl;
         private Ctrls.UCTab ucTab1;
         private DevExpress.XtraTab.XtraTabPage xtraTabPage1;
         private DevExpress.XtraTab.XtraTabPage xtraTabPage2;

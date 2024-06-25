@@ -22,7 +22,7 @@ namespace GAIA
         public bool ActivateAllTabsOnLoad { get; set; }
 
         private List<UCFieldSet> fieldSets;
-        private List<UCGridNav> gridSets;
+        private List<UCGridSet> gridSets;
         private List<UCDataSet> dataSets;
         private List<IWorkSet> workSets;
         private List<FrmWrk> frmWrks;
@@ -33,7 +33,7 @@ namespace GAIA
         {
             Load += FrmBase_Load;
             fieldSets = new List<UCFieldSet>();
-            gridSets = new List<UCGridNav>();
+            gridSets = new List<UCGridSet>();
             dataSets = new List<UCDataSet>();
             GAIA.FormMain.BarButtonActive += new GAIA.FormMain.BarBtnEventHandler(BarButtonAction);
         }
@@ -93,7 +93,7 @@ namespace GAIA
                     }
                     else if (frmWrk.WrkCd == "GridSet")
                     {
-                        UCGridNav gridSet = CtrlHelper.FindControlRecursive<UCGridNav>(this, frmWrk.WrkId);
+                        UCGridSet gridSet = CtrlHelper.FindControlRecursive<UCGridSet>(this, frmWrk.WrkId);
                         if (gridSet != null)
                         {
                             gridSets.Add(gridSet);

@@ -14,7 +14,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Ctrls\UCGridNav\UCGridNav.csproj" />
     <ProjectReference Include="..\..\..\Ctrls\UCGridSet\UCGridSet.csproj" />
     <ProjectReference Include="..\..\..\Ctrls\UCPanel\UCPanel.csproj" />
     <ProjectReference Include="..\..\..\Ctrls\UCSplit\UCSplit.csproj" />

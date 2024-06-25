@@ -96,7 +96,7 @@ namespace Frms
                     grdWrkFld.Save<WrkFld>();
                     break;
                 case "Delete":
-                    grdWrkFld.Delete<WrkFld>();
+                    grdWrkFld.Delete();
                     break;
             }
         }

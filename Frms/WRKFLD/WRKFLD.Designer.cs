@@ -83,9 +83,9 @@
             ucPanel1 = new Ctrls.UCPanel();
             tabWrk = new Ctrls.UCTab();
             xtraTabPage3 = new DevExpress.XtraTab.XtraTabPage();
-            grdFrmWrk = new Ctrls.UCGridNav();
+            grdFrmWrk = new Ctrls.UCGridSet();
             xtraTabPage4 = new DevExpress.XtraTab.XtraTabPage();
-            grdFrmCtrl = new Ctrls.UCGridNav();
+            grdFrmCtrl = new Ctrls.UCGridSet();
             tabQueryField = new Ctrls.UCTab();
             xtraTabPage1 = new DevExpress.XtraTab.XtraTabPage();
             tabCRUDM = new Ctrls.UCTab();
@@ -117,17 +117,17 @@
             xtraTabPage2 = new DevExpress.XtraTab.XtraTabPage();
             ucSplit4 = new Ctrls.UCSplit();
             ucPanel3 = new Ctrls.UCPanel();
-            grdWrkFld = new Ctrls.UCGridNav();
+            grdWrkFld = new Ctrls.UCGridSet();
             ucTab1 = new Ctrls.UCTab();
             xtraTabPage8 = new DevExpress.XtraTab.XtraTabPage();
             ucPanel4 = new Ctrls.UCPanel();
-            grdWrkGet = new Ctrls.UCGridNav();
+            grdWrkGet = new Ctrls.UCGridSet();
             xtraTabPage9 = new DevExpress.XtraTab.XtraTabPage();
             ucPanel5 = new Ctrls.UCPanel();
-            grdWrkSet = new Ctrls.UCGridNav();
+            grdWrkSet = new Ctrls.UCGridSet();
             xtraTabPage10 = new DevExpress.XtraTab.XtraTabPage();
             ucPanel6 = new Ctrls.UCPanel();
-            grdWrkRef = new Ctrls.UCGridNav();
+            grdWrkRef = new Ctrls.UCGridSet();
             ucSplit3 = new Ctrls.UCSplit();
             pnlColumn = new Ctrls.UCPanel();
             t10 = new DevExpress.XtraGrid.GridControl();
@@ -1321,11 +1321,11 @@
         private Ctrls.UCRichText rtxM;
         private Ctrls.UCMemo memoM;
         private Ctrls.UCCodeBox cmbFrm;
-        private Ctrls.UCGridNav grdFrmCtrl;
-        private Ctrls.UCGridNav grdFrmWrk;
-        private Ctrls.UCGridNav grdWrkFld;
-        private Ctrls.UCGridNav grdWrkGet;
-        private Ctrls.UCGridNav grdWrkSet;
-        private Ctrls.UCGridNav grdWrkRef;
+        private Ctrls.UCGridSet grdFrmCtrl;
+        private Ctrls.UCGridSet grdFrmWrk;
+        private Ctrls.UCGridSet grdWrkFld;
+        private Ctrls.UCGridSet grdWrkGet;
+        private Ctrls.UCGridSet grdWrkSet;
+        private Ctrls.UCGridSet grdWrkRef;
     }
 }

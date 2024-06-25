@@ -17,7 +17,6 @@
     <ProjectReference Include="..\..\..\Ctrls\UCButton\UCButton.csproj" />
     <ProjectReference Include="..\..\..\Ctrls\UCChkCodeBox\UCChkCodeBox.csproj" />
     <ProjectReference Include="..\..\..\Ctrls\UCCodeBox\UCCodeBox.csproj" />
-    <ProjectReference Include="..\..\..\Ctrls\UCComboBox\UCComboBox.csproj" />
     <ProjectReference Include="..\..\..\Ctrls\UCLookup\UCLookUp.csproj" />
     <ProjectReference Include="..\..\..\Ctrls\UCTextBox\UCTextBox.csproj" />
     <ProjectReference Include="..\..\..\Lib\Lib.csproj" />

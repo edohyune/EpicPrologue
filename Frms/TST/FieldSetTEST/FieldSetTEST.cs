@@ -11,7 +11,7 @@ using Frms.Models.FieldSetTEST;
 
 namespace Frms.TST
 {
-    public partial class FieldSetTEST : FrmBase
+    public partial class FieldSetTEST : GAIA.FrmBase
     {
         public FieldSetTEST()
         {

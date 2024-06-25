@@ -35,9 +35,9 @@ namespace Frms
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FLDMAKE));
             ucSplit1 = new Ctrls.UCSplit();
             pnlFrmCtrl = new Ctrls.UCPanel();
-            grdFrmCtrl = new Ctrls.UCGridNav();
+            grdFrmCtrl = new Ctrls.UCGridSet();
             pnlWrkFld = new Ctrls.UCPanel();
-            grdWrkFld = new Ctrls.UCGridNav();
+            grdWrkFld = new Ctrls.UCGridSet();
             ucSplit2 = new Ctrls.UCSplit();
             ucPanel1 = new Ctrls.UCPanel();
             ucButton1 = new Ctrls.UCButton();
@@ -249,8 +249,8 @@ namespace Frms
         private Ctrls.UCSplit ucSplit2;
         private Ctrls.UCPanel ucPanel1;
         private Ctrls.UCCodeBox cmbFrm;
-        private Ctrls.UCGridNav grdFrmCtrl;
-        private Ctrls.UCGridNav grdWrkFld;
+        private Ctrls.UCGridSet grdFrmCtrl;
+        private Ctrls.UCGridSet grdWrkFld;
         private Ctrls.UCButton ucButton1;
     }
 }

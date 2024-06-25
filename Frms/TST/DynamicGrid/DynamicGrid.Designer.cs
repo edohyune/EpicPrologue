@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            g10 = new ER000.WorkSet.UCGridSet();
+            g10 = new Ctrls.UCGridSet();
             SuspendLayout();
             // 
             // g10
@@ -36,7 +36,6 @@
             g10.Dock = DockStyle.Fill;
             g10.Location = new Point(0, 0);
             g10.Margin = new Padding(4, 3, 4, 3);
-            g10.Model = null;
             g10.Name = "g10";
             g10.Size = new Size(400, 300);
             g10.TabIndex = 0;
@@ -54,6 +53,6 @@
 
         #endregion
 
-        private ER000.WorkSet.UCGridSet g10;
+        private Ctrls.UCGridSet g10;
     }
 }

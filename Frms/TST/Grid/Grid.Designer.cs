@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             ucPanel1 = new Ctrls.UCPanel();
-            gPaste = new Ctrls.UCGridNav();
-            gCopy = new Ctrls.UCGridNav();
+            gPaste = new Ctrls.UCGridSet();
+            gCopy = new Ctrls.UCGridSet();
             ucSplit1 = new Ctrls.UCSplit();
             ((System.ComponentModel.ISupportInitialize)ucPanel1).BeginInit();
             ucPanel1.SuspendLayout();
@@ -129,8 +129,8 @@
         #endregion
 
         private Ctrls.UCPanel ucPanel1;
-        private Ctrls.UCGridNav gCopy;
-        private Ctrls.UCGridNav gPaste;
+        private Ctrls.UCGridSet gCopy;
+        private Ctrls.UCGridSet gPaste;
         private Ctrls.UCSplit ucSplit1;
     }
 }

@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\EpicLib\ER000\ER000.csproj" />
+    <ProjectReference Include="..\..\..\Ctrls\UCGridSet\UCGridSet.csproj" />
   </ItemGroup>
 
   <ItemGroup>

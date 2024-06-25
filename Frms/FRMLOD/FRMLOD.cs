@@ -305,7 +305,7 @@ namespace Frms
                         });
                     }
                 }
-                else if (item.ToolNm == "UCGrid" || item.ToolNm == "UCGridSet" || item.ToolNm == "UCGridNav")
+                else if (item.ToolNm == "UCGrid" || item.ToolNm == "UCGridSet" || item.ToolNm == "UCGridSet")
                 {   //frmWrks에 데이터가 있으면 업데이트, 없으면 추가.
                     var frmWrk = frmWrkbs.FirstOrDefault(c => c.CtrlNm == item.CtrlNm);
                     if (frmWrk != null)
@@ -545,7 +545,7 @@ namespace Frms
             if (ctrl is Ctrls.UCButton ucButton)
                 return ucButton.EditYn;
             //else if (ctrl is Ctrls.UCField ucField)
-            else if (ctrl is Ctrls.UCGrid ucGrid)
+            else if (ctrl is Ctrls.UCGridSet ucGrid)
                 if (ucGrid.gvCtrl != null)
                     return ucGrid.gvCtrl.Editable;
                 else

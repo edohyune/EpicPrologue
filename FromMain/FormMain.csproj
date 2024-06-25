@@ -24,15 +24,10 @@
     <ProjectReference Include="..\Ctrls\UCCheckBox\UCCheckBox.csproj" />
     <ProjectReference Include="..\Ctrls\UCChkCodeBox\UCChkCodeBox.csproj" />
     <ProjectReference Include="..\Ctrls\UCCodeBox\UCCodeBox.csproj" />
-    <ProjectReference Include="..\Ctrls\UCComboBox\UCComboBox.csproj" />
     <ProjectReference Include="..\Ctrls\UCDataSet\UCDataSet.csproj" />
     <ProjectReference Include="..\Ctrls\UCDateBox\UCDateBox.csproj" />
-    <ProjectReference Include="..\Ctrls\UCField\UCFieldSet.csproj" />
-    <ProjectReference Include="..\Ctrls\UCGridCode\UCGridCode.csproj" />
-    <ProjectReference Include="..\Ctrls\UCGridNav\UCGridNav.csproj" />
+    <ProjectReference Include="..\Ctrls\UCFieldSet\UCFieldSet.csproj" />
     <ProjectReference Include="..\Ctrls\UCGridSet\UCGridSet.csproj" />
-    <ProjectReference Include="..\Ctrls\UCGrid\UCGrid.csproj" />
-    <ProjectReference Include="..\Ctrls\UCLookUpT\UCLookUpT.csproj" />
     <ProjectReference Include="..\Ctrls\UCLookup\UCLookUp.csproj" />
     <ProjectReference Include="..\Ctrls\UCMemo\UCMemo.csproj" />
     <ProjectReference Include="..\Ctrls\UCPanel\UCPanel.csproj" />

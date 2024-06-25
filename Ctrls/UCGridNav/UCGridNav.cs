@@ -396,7 +396,7 @@ namespace Ctrls
             this.gvCtrl.GridControl = this;
             this.gvCtrl.Name = "gvCtrl";
 
-            this.Load += ucGridSet_Load;
+            this.Load += UCGridNav_Load;
 
             this.gvCtrl.FocusedRowChanged += gvCtrl_FocusedRowChanged;
             this.gvCtrl.InitNewRow += gvCtrl_InitNewRow;
@@ -409,7 +409,7 @@ namespace Ctrls
             this.EmbeddedNavigator.ButtonClick += gcCtrls_EmbeddedNavigator_ButtonClick;
         }
 
-        private void ucGridSet_Load(object? sender, EventArgs e)
+        private void UCGridNav_Load(object? sender, EventArgs e)
         {
             frwId = Common.GetValue("gFrameWorkId");
 

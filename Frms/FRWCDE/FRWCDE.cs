@@ -14,7 +14,7 @@ namespace Frms
         private void grdCde_UCFocusedRowChanged(object sender, int preIndex, int rowIndex, FocusedRowChangedEventArgs e)
         {
             grdRef.Open<CdeRef>();
-            grdDtl.Open<FrwCde>(grdCde.GetText("PCd"));
+            grdDtl.Open<FrwCde>();
         }
 
         private void pnlCode_CustomButtonClick(object sender, DevExpress.XtraBars.Docking2010.BaseButtonEventArgs e)

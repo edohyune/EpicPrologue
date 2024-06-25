@@ -25,7 +25,7 @@ using DevExpress.XtraSpreadsheet.DocumentFormats.Xlsb;
 using System.Windows.Controls;
 using DevExpress.Data.ChartDataSources;
 
-namespace Ctrls
+namespace EpicV001Ctrls
 {
     public class UCGridSet : DevExpress.XtraGrid.GridControl, IWorkSet
     {

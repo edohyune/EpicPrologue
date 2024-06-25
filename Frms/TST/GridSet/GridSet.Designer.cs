@@ -52,7 +52,7 @@ namespace Frms.TST
             txtId = new UCTextBox();
             ucPanel3 = new UCPanel();
             g20 = new UCGridSet();
-            g10 = new UCGridNav();
+            g10 = new UCGridSet();
             ((System.ComponentModel.ISupportInitialize)ucSplit1).BeginInit();
             ucSplit1.Panel1.SuspendLayout();
             ucSplit1.Panel2.SuspendLayout();
@@ -384,6 +384,6 @@ namespace Frms.TST
         private Ctrls.UCTextBox sNm;
         private Ctrls.UCTextBox sId;
         private UCGridSet g20;
-        private UCGridNav g10;
+        private UCGridSet g10;
     }
 }

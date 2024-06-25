@@ -31,13 +31,13 @@
             ucSplit1 = new Ctrls.UCSplit();
             ucSplit2 = new Ctrls.UCSplit();
             txtSysCd = new Ctrls.UCTextBox();
-            g10 = new Ctrls.UCGridNav();
+            g10 = new Ctrls.UCGridSet();
             ucSplit3 = new Ctrls.UCSplit();
             ucTextBox1 = new Ctrls.UCTextBox();
             ucCodeBox1 = new Ctrls.UCCodeBox();
             ucSplit4 = new Ctrls.UCSplit();
-            g20 = new Ctrls.UCGridNav();
-            g30 = new Ctrls.UCGridNav();
+            g20 = new Ctrls.UCGridSet();
+            g30 = new Ctrls.UCGridSet();
             ((System.ComponentModel.ISupportInitialize)ucSplit1).BeginInit();
             ucSplit1.Panel1.SuspendLayout();
             ucSplit1.Panel2.SuspendLayout();
@@ -280,9 +280,9 @@
         private Ctrls.UCSplit ucSplit3;
         private Ctrls.UCSplit ucSplit4;
         private Ctrls.UCTextBox txtSysCd;
-        private Ctrls.UCGridNav g10;
-        private Ctrls.UCGridNav g20;
-        private Ctrls.UCGridNav g30;
+        private Ctrls.UCGridSet g10;
+        private Ctrls.UCGridSet g20;
+        private Ctrls.UCGridSet g30;
         private Ctrls.UCTextBox ucTextBox1;
         private Ctrls.UCCodeBox ucCodeBox1;
     }

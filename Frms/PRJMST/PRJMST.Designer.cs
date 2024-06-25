@@ -30,7 +30,7 @@
         {
             ucSplit1 = new Ctrls.UCSplit();
             ucPanel3 = new Ctrls.UCPanel();
-            ucGrid1 = new Ctrls.UCGrid();
+            ucGrid1 = new Ctrls.UCGridSet();
             ucSplit2 = new Ctrls.UCSplit();
             ucPanel1 = new Ctrls.UCPanel();
             ucPanel2 = new Ctrls.UCPanel();
@@ -83,10 +83,8 @@
             // ucGrid1
             // 
             ucGrid1.Dock = DockStyle.Fill;
-            ucGrid1.gvCtrl = null;
             ucGrid1.Location = new Point(2, 23);
             ucGrid1.Name = "ucGrid1";
-            ucGrid1.ShowYn = true;
             ucGrid1.Size = new Size(725, 257);
             ucGrid1.TabIndex = 0;
             ucGrid1.UseEmbeddedNavigator = true;
@@ -159,6 +157,6 @@
         private Ctrls.UCPanel ucPanel1;
         private Ctrls.UCPanel ucPanel3;
         private Ctrls.UCPanel ucPanel2;
-        private Ctrls.UCGrid ucGrid1;
+        private Ctrls.UCGridSet ucGrid1;
     }
 }
