@@ -292,9 +292,5 @@ namespace Ctrls
         {
             DataChanged?.Invoke(this, e);
         }
-        public void OnDataChanged(DevExpress.Data.ChartDataSources.DataChangedEventArgs e)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
