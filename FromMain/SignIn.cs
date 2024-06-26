@@ -61,6 +61,9 @@ namespace GAIA
                 FormMain.signin = true;
                 this.Close();
             }
+            //ini 파일 초기화 기본정보 셋팅하기 
+            //기본정보는 사용자 아이디에 따른 프레임워크를 읽고 셋팅한다.
+
         }
     }
 }

@@ -107,6 +107,15 @@ namespace GAIA
             PrjFrw frmWrk = cmbForm.SelectedItem as PrjFrw;
             Common.SetValue("gFrameWorkId", frmWrk.FrwId.ToString());
 
+            if (string.IsNullOrEmpty(GenFunc.GetIni(frmWrk.FrwId.ToString())))
+            {
+                MessageBox.Show($"Set in Configuration[FrameWork] {frmWrk.FrwId.ToString()}");
+            }
+            else
+            {
+                Common.SetValue("gFrameWorkRoot", GenFunc.GetIni(frmWrk.FrwId.ToString()));
+            }
+
             Common.gLog = $"Select FrameWork : {Common.GetValue("gFrameWorkId")} ({Common.GetValue("gFrameWorkNm")})";
 
             menuCtrl.Items.Clear();

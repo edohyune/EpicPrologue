@@ -431,39 +431,39 @@ namespace EpicV003.Ctrls
             }
         }
         #region Repository Open Save ------------------------------------------------------------------
-        public void Open<T>(MdlRepo repo)
-        {
-            var dataList = repo.Open<T>();
-            Open(dataList);
-        }
+        //public void Open<T>(MdlRepo repo)
+        //{
+        //    var dataList = repo.Open<T>();
+        //    Open(dataList);
+        //}
 
-        public void Save<T>(MdlRepo repo)
-        {
-            var dataSource = this.DataSource as BindingList<T>;
-            if (dataSource == null) return;
+        //public void Save<T>(MdlRepo repo)
+        //{
+        //    var dataSource = this.DataSource as BindingList<T>;
+        //    if (dataSource == null) return;
 
-            var dataList = dataSource.ToList();
-            repo.Save(dataList);
-        }
+        //    var dataList = dataSource.ToList();
+        //    repo.Save(dataList);
+        //}
 
-        public void Open<T>(List<T> dataList)
-        {
-            gvCtrl.Columns.Clear();
-            gvCtrl.OptionsBehavior.Editable = true;
+        //public void Open<T>(List<T> dataList)
+        //{
+        //    gvCtrl.Columns.Clear();
+        //    gvCtrl.OptionsBehavior.Editable = true;
 
-            foreach (var prop in typeof(T).GetProperties())
-            {
-                var column = new GridColumn
-                {
-                    FieldName = prop.Name,
-                    Caption = prop.Name,
-                    Visible = true
-                };
-                gvCtrl.Columns.Add(column);
-            }
+        //    foreach (var prop in typeof(T).GetProperties())
+        //    {
+        //        var column = new GridColumn
+        //        {
+        //            FieldName = prop.Name,
+        //            Caption = prop.Name,
+        //            Visible = true
+        //        };
+        //        gvCtrl.Columns.Add(column);
+        //    }
 
-            this.DataSource = new BindingList<T>(dataList);
-        }
+        //    this.DataSource = new BindingList<T>(dataList);
+        //}
         #endregion
         #region ResetColumns() - Preview Form ---------------------------------------------------------
         private void ResetColumns()

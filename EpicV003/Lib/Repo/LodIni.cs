@@ -29,24 +29,13 @@ namespace EpicV003.Lib.Repo
         }
     }
 
-    public class LodIniRepo : MdlRepo
+    public class LodIniRepo
     {
         private readonly string iniFilePath;
 
         public LodIniRepo(string iniFilePath)
         {
             this.iniFilePath = iniFilePath;
-        }
-
-        public override List<LodIni> Open<LodIni>()
-        {
-            var lodInis = new List<LodIni>();
-            return lodInis;
-        }
-
-        public override void Save<LodIni>(List<LodIni> dataList)
-        {
-            SaveAll(dataList);
         }
 
         public List<LodIni> LoadAll()
