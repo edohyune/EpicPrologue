@@ -2,9 +2,9 @@
 using DevExpress.XtraGrid.Views.Grid;
 using DevExpress.XtraGrid.Views.Grid.ViewInfo;
 using DevExpress.XtraRichEdit.Services;
-using Lib;
-using Lib.Repo;
-using Lib.Syntax;
+using EpicV003.Lib;
+using EpicV003.Lib.Repo;
+using EpicV003.Lib.Syntax;
 using System.ComponentModel;
 using System.Data;
 

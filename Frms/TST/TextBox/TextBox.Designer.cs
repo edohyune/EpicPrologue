@@ -28,9 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            custId = new EpicV001Ctrls.UCTextBox();
-            custNm = new EpicV001Ctrls.UCTextBox();
-            custAge = new EpicV001Ctrls.UCTextBox();
+            custId = new EpicV003.Ctrls.UCTextBox();
+            custNm = new EpicV003.Ctrls.UCTextBox();
+            custAge = new EpicV003.Ctrls.UCTextBox();
             SuspendLayout();
             // 
             // custId
@@ -92,8 +92,8 @@
 
         #endregion
 
-        private EpicV001Ctrls.UCTextBox custId;
-        private EpicV001Ctrls.UCTextBox custNm;
-        private EpicV001Ctrls.UCTextBox custAge;
+        private EpicV003.Ctrls.UCTextBox custId;
+        private EpicV003.Ctrls.UCTextBox custNm;
+        private EpicV003.Ctrls.UCTextBox custAge;
     }
 }

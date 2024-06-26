@@ -28,10 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
-            ucPanel1 = new EpicV001Ctrls.UCPanel();
-            gPaste = new EpicV001Ctrls.UCGridSet();
-            gCopy = new EpicV001Ctrls.UCGridSet();
-            ucSplit1 = new EpicV001Ctrls.UCSplit();
+            ucPanel1 = new EpicV003.Ctrls.UCPanel();
+            gPaste = new EpicV003.Ctrls.UCGridSet();
+            gCopy = new EpicV003.Ctrls.UCGridSet();
+            ucSplit1 = new EpicV003.Ctrls.UCSplit();
             ((System.ComponentModel.ISupportInitialize)ucPanel1).BeginInit();
             ucPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)gPaste).BeginInit();
@@ -128,9 +128,9 @@
 
         #endregion
 
-        private EpicV001Ctrls.UCPanel ucPanel1;
-        private EpicV001Ctrls.UCGridSet gCopy;
-        private EpicV001Ctrls.UCGridSet gPaste;
-        private EpicV001Ctrls.UCSplit ucSplit1;
+        private EpicV003.Ctrls.UCPanel ucPanel1;
+        private EpicV003.Ctrls.UCGridSet gCopy;
+        private EpicV003.Ctrls.UCGridSet gPaste;
+        private EpicV003.Ctrls.UCSplit ucSplit1;
     }
 }

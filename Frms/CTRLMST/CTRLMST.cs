@@ -1,6 +1,6 @@
 ﻿using DevExpress.XtraEditors;
-using Lib;
-using Lib.Repo;
+using EpicV003.Lib;
+using EpicV003.Lib.Repo;
 using System.ComponentModel;
 
 namespace Frms

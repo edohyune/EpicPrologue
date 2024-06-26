@@ -60,10 +60,11 @@
             simpleButton1 = new DevExpress.XtraEditors.SimpleButton();
             menuCtrl = new DevExpress.XtraEditors.ListBoxControl();
             xtraTabbedMdiManager = new DevExpress.XtraTabbedMdi.XtraTabbedMdiManager(components);
-            ucPanel1 = new EpicV001Ctrls.UCPanel();
-            ucTab1 = new EpicV001Ctrls.UCTab();
+            ucPanel1 = new EpicV003.Ctrls.UCPanel();
+            ucTab1 = new EpicV003.Ctrls.UCTab();
             xtraTabPage1 = new DevExpress.XtraTab.XtraTabPage();
             xtraTabPage2 = new DevExpress.XtraTab.XtraTabPage();
+            barBtnConfiguration = new DevExpress.XtraBars.BarButtonItem();
             ((System.ComponentModel.ISupportInitialize)barManager1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)cmbForm.Properties).BeginInit();
             ((System.ComponentModel.ISupportInitialize)msgCtrl.Properties).BeginInit();
@@ -85,8 +86,8 @@
             barManager1.DockControls.Add(barDockControlLeft);
             barManager1.DockControls.Add(barDockControlRight);
             barManager1.Form = this;
-            barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] { barBtnOpen, barBtnNew, barMdiChildrenListItem1, barStaticItemMsg, barBtnSave, barSubItem1, barBtnTemplate, barBtnDelete, barButtonItem5, barStaticItemMessage, barStaticItemForm, barStaticItemUser, barStaticItemSite, barStaticItemTime });
-            barManager1.MaxItemId = 15;
+            barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] { barBtnOpen, barBtnNew, barMdiChildrenListItem1, barStaticItemMsg, barBtnSave, barSubItem1, barBtnTemplate, barBtnDelete, barButtonItem5, barStaticItemMessage, barStaticItemForm, barStaticItemUser, barStaticItemSite, barStaticItemTime, barBtnConfiguration });
+            barManager1.MaxItemId = 16;
             barManager1.StatusBar = bar3;
             // 
             // bar1
@@ -96,7 +97,7 @@
             bar1.DockRow = 0;
             bar1.DockStyle = DevExpress.XtraBars.BarDockStyle.Top;
             bar1.FloatLocation = new System.Drawing.Point(537, 134);
-            bar1.LinksPersistInfo.AddRange(new DevExpress.XtraBars.LinkPersistInfo[] { new DevExpress.XtraBars.LinkPersistInfo(barBtnOpen, true), new DevExpress.XtraBars.LinkPersistInfo(barBtnNew, true), new DevExpress.XtraBars.LinkPersistInfo(barBtnSave, true), new DevExpress.XtraBars.LinkPersistInfo(barBtnDelete, true), new DevExpress.XtraBars.LinkPersistInfo(barBtnTemplate, true), new DevExpress.XtraBars.LinkPersistInfo(barButtonItem5, true) });
+            bar1.LinksPersistInfo.AddRange(new DevExpress.XtraBars.LinkPersistInfo[] { new DevExpress.XtraBars.LinkPersistInfo(barBtnOpen, true), new DevExpress.XtraBars.LinkPersistInfo(barBtnNew, true), new DevExpress.XtraBars.LinkPersistInfo(barBtnSave, true), new DevExpress.XtraBars.LinkPersistInfo(barBtnDelete, true), new DevExpress.XtraBars.LinkPersistInfo(barBtnTemplate, true), new DevExpress.XtraBars.LinkPersistInfo(barButtonItem5, true), new DevExpress.XtraBars.LinkPersistInfo(barBtnConfiguration) });
             bar1.Offset = 273;
             bar1.Text = "Tools";
             // 
@@ -345,6 +346,15 @@
             xtraTabPage2.TabPageWidth = 120;
             xtraTabPage2.Text = "Message";
             // 
+            // barBtnConfiguration
+            // 
+            barBtnConfiguration.Caption = "Configuration";
+            barBtnConfiguration.Id = 15;
+            barBtnConfiguration.ImageOptions.SvgImage = (DevExpress.Utils.Svg.SvgImage)resources.GetObject("barButtonItem1.ImageOptions.SvgImage");
+            barBtnConfiguration.Name = "barBtnConfiguration";
+            barBtnConfiguration.PaintStyle = DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph;
+            barBtnConfiguration.ItemClick += barBtnConfiguration_ItemClick;
+            // 
             // FormMain
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -401,8 +411,8 @@
         private DevExpress.XtraEditors.SimpleButton simpleButton1;
         private DevExpress.XtraEditors.ListBoxControl menuCtrl;
         private DevExpress.XtraTabbedMdi.XtraTabbedMdiManager xtraTabbedMdiManager;
-        private EpicV001Ctrls.UCPanel ucPanel1;
-        private EpicV001Ctrls.UCTab ucTab1;
+        private EpicV003.Ctrls.UCPanel ucPanel1;
+        private EpicV003.Ctrls.UCTab ucTab1;
         private DevExpress.XtraTab.XtraTabPage xtraTabPage1;
         private DevExpress.XtraTab.XtraTabPage xtraTabPage2;
         private DevExpress.XtraBars.BarStaticItem barStaticItemMessage;
@@ -410,6 +420,7 @@
         private DevExpress.XtraBars.BarStaticItem barStaticItemUser;
         private DevExpress.XtraBars.BarStaticItem barStaticItemSite;
         private DevExpress.XtraBars.BarStaticItem barStaticItemTime;
+        private DevExpress.XtraBars.BarButtonItem barBtnConfiguration;
     }
 }
 

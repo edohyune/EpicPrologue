@@ -28,12 +28,12 @@
         /// </summary>
         private void InitializeComponent()
         {
-            ucSplit1 = new EpicV001Ctrls.UCSplit();
-            ucPanel3 = new EpicV001Ctrls.UCPanel();
-            ucGrid1 = new EpicV001Ctrls.UCGridSet();
-            ucSplit2 = new EpicV001Ctrls.UCSplit();
-            ucPanel1 = new EpicV001Ctrls.UCPanel();
-            ucPanel2 = new EpicV001Ctrls.UCPanel();
+            ucSplit1 = new EpicV003.Ctrls.UCSplit();
+            ucPanel3 = new EpicV003.Ctrls.UCPanel();
+            ucGrid1 = new EpicV003.Ctrls.UCGridSet();
+            ucSplit2 = new EpicV003.Ctrls.UCSplit();
+            ucPanel1 = new EpicV003.Ctrls.UCPanel();
+            ucPanel2 = new EpicV003.Ctrls.UCPanel();
             ((System.ComponentModel.ISupportInitialize)ucSplit1).BeginInit();
             ucSplit1.Panel1.SuspendLayout();
             ucSplit1.Panel2.SuspendLayout();
@@ -152,11 +152,11 @@
 
         #endregion
 
-        private EpicV001Ctrls.UCSplit ucSplit1;
-        private EpicV001Ctrls.UCSplit ucSplit2;
-        private EpicV001Ctrls.UCPanel ucPanel1;
-        private EpicV001Ctrls.UCPanel ucPanel3;
-        private EpicV001Ctrls.UCPanel ucPanel2;
-        private EpicV001Ctrls.UCGridSet ucGrid1;
+        private EpicV003.Ctrls.UCSplit ucSplit1;
+        private EpicV003.Ctrls.UCSplit ucSplit2;
+        private EpicV003.Ctrls.UCPanel ucPanel1;
+        private EpicV003.Ctrls.UCPanel ucPanel3;
+        private EpicV003.Ctrls.UCPanel ucPanel2;
+        private EpicV003.Ctrls.UCGridSet ucGrid1;
     }
 }

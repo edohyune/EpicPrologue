@@ -1,0 +1,71 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>EpicV003.Ctrls</RootNamespace>
+    <AssemblyName>EpicV003.Ctrls</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="DevExpress.Win.Design" Version="23.2.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Lib\Lib.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="EpicV003.Lib">
+      <HintPath>..\Lib\bin\Debug\net8.0\EpicV003.Lib.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="UCButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="UCCheckBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="UCChkCodeBox.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="UCCodeBox.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="UCDateBox.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="UCFieldSet.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="UCGridSet.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="UCLookup.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="UCMemo.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="UCPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="UCRichText.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="UCSplit.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="UCTab.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="UCTextBox.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+  </ItemGroup>
+
+</Project>

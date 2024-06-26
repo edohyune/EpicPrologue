@@ -29,12 +29,12 @@
         private void InitializeComponent()
         {
             txtMemo = new DevExpress.XtraEditors.MemoEdit();
-            btnTEST01 = new EpicV001Ctrls.UCButton();
-            btnTEST02 = new EpicV001Ctrls.UCButton();
-            btnTEST03 = new EpicV001Ctrls.UCButton();
-            ucSplit1 = new EpicV001Ctrls.UCSplit();
-            ucSplit2 = new EpicV001Ctrls.UCSplit();
-            txtUCMemo = new EpicV001Ctrls.UCMemo();
+            btnTEST01 = new EpicV003.Ctrls.UCButton();
+            btnTEST02 = new EpicV003.Ctrls.UCButton();
+            btnTEST03 = new EpicV003.Ctrls.UCButton();
+            ucSplit1 = new EpicV003.Ctrls.UCSplit();
+            ucSplit2 = new EpicV003.Ctrls.UCSplit();
+            txtUCMemo = new EpicV003.Ctrls.UCMemo();
             richEditControl1 = new DevExpress.XtraRichEdit.RichEditControl();
             ((System.ComponentModel.ISupportInitialize)txtMemo.Properties).BeginInit();
             ((System.ComponentModel.ISupportInitialize)ucSplit1).BeginInit();
@@ -180,12 +180,12 @@
         #endregion
 
         private DevExpress.XtraEditors.MemoEdit txtMemo;
-        private EpicV001Ctrls.UCButton btnTEST01;
-        private EpicV001Ctrls.UCButton btnTEST02;
-        private EpicV001Ctrls.UCButton btnTEST03;
-        private EpicV001Ctrls.UCSplit ucSplit1;
-        private EpicV001Ctrls.UCSplit ucSplit2;
-        private EpicV001Ctrls.UCMemo txtUCMemo;
+        private EpicV003.Ctrls.UCButton btnTEST01;
+        private EpicV003.Ctrls.UCButton btnTEST02;
+        private EpicV003.Ctrls.UCButton btnTEST03;
+        private EpicV003.Ctrls.UCSplit ucSplit1;
+        private EpicV003.Ctrls.UCSplit ucSplit2;
+        private EpicV003.Ctrls.UCMemo txtUCMemo;
         private DevExpress.XtraRichEdit.RichEditControl richEditControl1;
     }
 }

@@ -3,13 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
-using Lib;
-using Lib.Repo;
+using EpicV003.Lib;
+using EpicV003.Lib.Repo;
 using System.IO;
 using Repo;
 using DevExpress.XtraEditors.ButtonsPanelControl;
-using EpicV001Ctrls;
+using EpicV003.Ctrls;
 using DevExpress.XtraEditors;
+using FormMain;
+using System.Diagnostics;
 
 namespace GAIA
 {
@@ -35,6 +37,7 @@ namespace GAIA
 
         static SignIn sign = null;
         internal static bool signin = false;
+        private FormLog frmLog;
 
         public FormMain()
         {
@@ -44,12 +47,14 @@ namespace GAIA
             //msgCtrl.VisibleChanged += new EventHandler(msgCtrl_VisibleChanged);
             ucTab1.VisibleChanged += new EventHandler(ucTab1_VisibleChanged);
             Common.gMsgChanged += new EventHandler(AddGAIAMsg);
+            Common.gLogChanged += new EventHandler(AddGAIALog);
+
+            //Log FormLog가 시작되면 자동으로 Log Tracking을 시작한다.
+            frmLog = new FormLog();
+            frmLog.Show();
 
             ucTab1.Visible = false;
             ucTab1.SelectedTabPageIndex = 0;
-
-            //msgCtrl.Visible = false;
-            //menuCtrl.Visible = false;
 
             //FrameWork List
             List<PrjFrw> frmwrks = new PrjFrwRepo().GetAll();
@@ -84,13 +89,13 @@ namespace GAIA
             {
                 if (xtraTabbedMdiManager.Pages.Count > 1)
                 {
-                    Common.gMsg = $"{xtraTabbedMdiManager.SelectedPage.MdiChild.Text} ({xtraTabbedMdiManager.SelectedPage.MdiChild.Name})";
+                    Common.gLog = $"Tab activation : {xtraTabbedMdiManager.SelectedPage.MdiChild.Text} ({xtraTabbedMdiManager.SelectedPage.MdiChild.Name})";
                 }
                 //this.barStaticItemForm.Caption = xtraTabbedMdiManager.SelectedPage.MdiChild.Text + "(" + xtraTabbedMdiManager.SelectedPage.MdiChild.Name + ")";
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                Common.gMsg = $"Error";
+                Common.gMsg = $"Tab activation Error : {ex.ToString()}";
                 //this.barStaticItemForm.Caption = "";
             }
         }
@@ -101,6 +106,8 @@ namespace GAIA
             //ComboBox cmbForm = sender as ComboBox;
             PrjFrw frmWrk = cmbForm.SelectedItem as PrjFrw;
             Common.SetValue("gFrameWorkId", frmWrk.FrwId.ToString());
+
+            Common.gLog = $"Select FrameWork : {Common.GetValue("gFrameWorkId")} ({Common.GetValue("gFrameWorkNm")})";
 
             menuCtrl.Items.Clear();
             menuCtrl.Visible = true;
@@ -177,26 +184,20 @@ namespace GAIA
         private void simpleButton1_Click(object sender, EventArgs e)
         {
             ucTab1.Visible = !(ucTab1.Visible);
-            //menuCtrl.Visible = !(menuCtrl.Visible);
         }
-        //private void menuCtrl_VisibleChanged(object sender, EventArgs e)
-        //{
-        //    //simpleButton1.Text = menuCtrl.Visible ? "Hide Menu": "Show Menu";
-        //    simpleButton1.Text = ucTab1.Visible ? "Hide" : "Show";
-        //}
-        //private void msgCtrl_VisibleChanged(object sender, EventArgs e)
-        //{
-        //    barButtonShowMsg.Caption = msgCtrl.Visible ? "Hide Message": "Show Message";
-        //}
-        //private void barButtonShowMsg_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
-        //{
-        //    msgCtrl.Visible = !(msgCtrl.Visible);
-        //}
+
         private void AddGAIAMsg(object sender, EventArgs e)
         {
             if (Common.gTrackMsg)
             {
                 msgCtrl.Text += sender.ToString() + Environment.NewLine;
+            }
+        }
+        private void AddGAIALog(object sender, EventArgs e)
+        {
+            if (Common.gTrackLog)
+            {
+                frmLog.AddLog(sender.ToString());
             }
         }
 
@@ -205,12 +206,12 @@ namespace GAIA
             Common.gTrackMsg = true;
             (e.Button as GroupBoxButton).Caption = "Stop tracking";
         }
-
         private void ucPanel1_CustomButtonUnchecked(object sender, DevExpress.XtraBars.Docking2010.BaseButtonEventArgs e)
         {
             Common.gTrackMsg = false;
             (e.Button as GroupBoxButton).Caption = "Tracking";
         }
+
         private void ucPanel1_CustomButtonClick(object sender, DevExpress.XtraBars.Docking2010.BaseButtonEventArgs e)
         {
             switch (e.Button.Properties.Caption.Trim())
@@ -226,17 +227,18 @@ namespace GAIA
             }
         }
 
-
         #region BarButtonActive
         public delegate void BarBtnEventHandler(string frm, string action);
         public static event BarBtnEventHandler BarButtonActive;
         public static void OnBarButtonActive(string frm, string action)
         {
             BarButtonActive?.Invoke(frm, action);
+            Common.gLog = $"BarButtonActive : {frm} ({action})";
         }
 
         private void barBtnOpen_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
+            if (xtraTabbedMdiManager.SelectedPage?.MdiChild == null) return;
             string selectedFormName = xtraTabbedMdiManager.SelectedPage.MdiChild.Name;
             string action = e.Item.Caption;
             OnBarButtonActive(selectedFormName, action);
@@ -244,6 +246,7 @@ namespace GAIA
 
         private void barBtnNew_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
+            if (xtraTabbedMdiManager.SelectedPage?.MdiChild == null) return;
             string selectedFormName = xtraTabbedMdiManager.SelectedPage.MdiChild.Name;
             string action = e.Item.Caption;
             OnBarButtonActive(selectedFormName, action);
@@ -251,6 +254,7 @@ namespace GAIA
 
         private void barBtnSave_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
+            if (xtraTabbedMdiManager.SelectedPage?.MdiChild == null) return;
             string selectedFormName = xtraTabbedMdiManager.SelectedPage.MdiChild.Name;
             string action = e.Item.Caption;
             OnBarButtonActive(selectedFormName, action);
@@ -258,12 +262,12 @@ namespace GAIA
 
         private void barBtnDelete_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
+            if (xtraTabbedMdiManager.SelectedPage?.MdiChild == null) return;
             string selectedFormName = xtraTabbedMdiManager.SelectedPage.MdiChild.Name;
             string action = e.Item.Caption;
             OnBarButtonActive(selectedFormName, action);
         }
-#endregion
-
+        #endregion
 
         private void barBtnTemplate_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
@@ -278,6 +282,31 @@ namespace GAIA
             fb.Name = Common.GetValue("gOpenFrm");
             fb.Show();
         }
+        private void barBtnConfiguration_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            var mdi = (from c in MdiChildren
+                       where c.Text.Contains("Configuration")
+                       select c).SingleOrDefault();
+
+            FormIni frmIni = new FormIni();
+
+            if (mdi != null)
+            {
+                mdi.Activate();
+            }
+            else
+            {
+                Form fb = new Form();
+                fb.Controls.Add(frmIni);
+                frmIni.Dock = System.Windows.Forms.DockStyle.Fill;
+                fb.Name = frmIni.Name;
+                fb.Text = "Configuration";
+                fb.MdiParent = this;
+
+                fb.Show();
+            }
+        }
+
 
         private void FormMain_ClientSizeChanged(object sender, EventArgs e)
         {

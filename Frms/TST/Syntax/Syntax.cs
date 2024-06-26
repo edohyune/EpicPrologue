@@ -1,7 +1,7 @@
 ﻿using DevExpress.CodeParser;
 using DevExpress.Xpo.DB.Helpers;
 using DevExpress.XtraRichEdit.API.Native;
-using Lib.Repo;
+using EpicV003.Lib.Repo;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -13,7 +13,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Match = System.Text.RegularExpressions.Match;
-using Lib.Syntax;
+using EpicV003.Lib.Syntax;
 
 namespace Frms.TST
 {

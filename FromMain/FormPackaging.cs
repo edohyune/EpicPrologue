@@ -10,7 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Lib;
+using EpicV003.Lib;
 using System.Reflection;
 using Microsoft.VisualBasic.FileIO;
 using System.IO;

@@ -1,11 +1,11 @@
-using Lib;
-using Lib.Repo;
+using EpicV003.Lib;
+using EpicV003.Lib.Repo;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using Dapper;
-using EpicV001Ctrls;
+using EpicV003.Ctrls;
 using DevExpress.XtraTab;
 using System.Windows.Forms;
 
@@ -60,7 +60,7 @@ namespace GAIA
         }
         private void FrmBase_Load(object? sender, EventArgs e)
         {
-            frwId = Lib.Common.GetValue("gFrameWorkId");
+            frwId = EpicV003.Lib.Common.GetValue("gFrameWorkId");
 
             Form? form = this.FindForm();
             frmId = form != null ? form.Name : "Unknown";

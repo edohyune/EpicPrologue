@@ -1,4 +1,4 @@
-﻿using EpicV001Ctrls;
+﻿using EpicV003Ctrls;
 using DevExpress.XtraBars.Docking2010;
 
 namespace Frms.TST
@@ -38,21 +38,21 @@ namespace Frms.TST
             DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions buttonImageOptions5 = new DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions();
             DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions buttonImageOptions6 = new DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions();
             DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions buttonImageOptions7 = new DevExpress.XtraEditors.ButtonsPanelControl.ButtonImageOptions();
-            ucSplit1 = new EpicV001Ctrls.UCSplit();
-            ucSplit3 = new EpicV001Ctrls.UCSplit();
-            ucPanel4 = new EpicV001Ctrls.UCPanel();
-            sAge = new EpicV001Ctrls.UCTextBox();
-            sNm = new EpicV001Ctrls.UCTextBox();
-            sId = new EpicV001Ctrls.UCTextBox();
-            ucPanel1 = new EpicV001Ctrls.UCPanel();
-            ucSplit2 = new EpicV001Ctrls.UCSplit();
-            ucPanel2 = new EpicV001Ctrls.UCPanel();
-            txtAge = new EpicV001Ctrls.UCTextBox();
-            txtNm = new EpicV001Ctrls.UCTextBox();
-            txtId = new EpicV001Ctrls.UCTextBox();
-            ucPanel3 = new EpicV001Ctrls.UCPanel();
-            g20 = new EpicV001Ctrls.UCGridSet();
-            g10 = new EpicV001Ctrls.UCGridSet();
+            ucSplit1 = new EpicV003.Ctrls.UCSplit();
+            ucSplit3 = new EpicV003.Ctrls.UCSplit();
+            ucPanel4 = new EpicV003.Ctrls.UCPanel();
+            sAge = new EpicV003.Ctrls.UCTextBox();
+            sNm = new EpicV003.Ctrls.UCTextBox();
+            sId = new EpicV003.Ctrls.UCTextBox();
+            ucPanel1 = new EpicV003.Ctrls.UCPanel();
+            ucSplit2 = new EpicV003.Ctrls.UCSplit();
+            ucPanel2 = new EpicV003.Ctrls.UCPanel();
+            txtAge = new EpicV003.Ctrls.UCTextBox();
+            txtNm = new EpicV003.Ctrls.UCTextBox();
+            txtId = new EpicV003.Ctrls.UCTextBox();
+            ucPanel3 = new EpicV003.Ctrls.UCPanel();
+            g20 = new EpicV003.Ctrls.UCGridSet();
+            g10 = new EpicV003.Ctrls.UCGridSet();
             ((System.ComponentModel.ISupportInitialize)ucSplit1).BeginInit();
             ucSplit1.Panel1.SuspendLayout();
             ucSplit1.Panel2.SuspendLayout();
@@ -370,20 +370,20 @@ namespace Frms.TST
         }
         #endregion
 
-        private EpicV001Ctrls.UCSplit ucSplit1;
-        private EpicV001Ctrls.UCPanel ucPanel1;
-        private EpicV001Ctrls.UCSplit ucSplit2;
-        private EpicV001Ctrls.UCPanel ucPanel2;
-        private EpicV001Ctrls.UCTextBox txtAge;
-        private EpicV001Ctrls.UCTextBox txtNm;
-        private EpicV001Ctrls.UCTextBox txtId;
-        private EpicV001Ctrls.UCPanel ucPanel3;
-        private EpicV001Ctrls.UCSplit ucSplit3;
-        private EpicV001Ctrls.UCPanel ucPanel4;
-        private EpicV001Ctrls.UCTextBox sAge;
-        private EpicV001Ctrls.UCTextBox sNm;
-        private EpicV001Ctrls.UCTextBox sId;
-        private EpicV001Ctrls.UCGridSet g20;
-        private EpicV001Ctrls.UCGridSet g10;
+        private EpicV003.Ctrls.UCSplit ucSplit1;
+        private EpicV003.Ctrls.UCPanel ucPanel1;
+        private EpicV003.Ctrls.UCSplit ucSplit2;
+        private EpicV003.Ctrls.UCPanel ucPanel2;
+        private EpicV003.Ctrls.UCTextBox txtAge;
+        private EpicV003.Ctrls.UCTextBox txtNm;
+        private EpicV003.Ctrls.UCTextBox txtId;
+        private EpicV003.Ctrls.UCPanel ucPanel3;
+        private EpicV003.Ctrls.UCSplit ucSplit3;
+        private EpicV003.Ctrls.UCPanel ucPanel4;
+        private EpicV003.Ctrls.UCTextBox sAge;
+        private EpicV003.Ctrls.UCTextBox sNm;
+        private EpicV003.Ctrls.UCTextBox sId;
+        private EpicV003.Ctrls.UCGridSet g20;
+        private EpicV003.Ctrls.UCGridSet g10;
     }
 }

@@ -14,8 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Ctrls\EpicV001Ctrls\EpicV001Ctrls.csproj" />
-    <ProjectReference Include="..\..\..\Lib\Lib.csproj" />
+    <ProjectReference Include="..\..\..\Ctrls\EpicV003.Ctrls\Ctrls.csproj" />
   </ItemGroup>
 
 </Project>

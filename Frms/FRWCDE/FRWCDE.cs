@@ -1,5 +1,5 @@
-﻿using Lib.Repo;
-using Lib;
+﻿using EpicV003.Lib.Repo;
+using EpicV003.Lib;
 using DevExpress.XtraGrid.Views.Base;
 using System.ComponentModel;
 

@@ -1,4 +1,6 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿
+
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
@@ -17,11 +19,6 @@
     <PackageReference Include="Dapper" Version="2.1.35" />
     <PackageReference Include="DevExpress.Win.Design" Version="23.2.3" />
     <PackageReference Include="System.Data.SqlClient" Version="4.8.6" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Ctrls\EpicV001Ctrls\EpicV001Ctrls.csproj" />
-    <ProjectReference Include="..\Lib\Lib.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -210,6 +207,12 @@
     </Reference>
     <Reference Include="DevExpress.XtraWizard.v23.2">
       <HintPath>C:\EPIC\Devexpress\DevExpress.XtraWizard.v23.2.dll</HintPath>
+    </Reference>
+    <Reference Include="EpicV003.Ctrls">
+      <HintPath>..\EpicV003\Ctrls\bin\Debug\net8.0-windows\EpicV003.Ctrls.dll</HintPath>
+    </Reference>
+    <Reference Include="EpicV003.Lib">
+      <HintPath>..\EpicV003\Lib\bin\Debug\net8.0\EpicV003.Lib.dll</HintPath>
     </Reference>
   </ItemGroup>
 

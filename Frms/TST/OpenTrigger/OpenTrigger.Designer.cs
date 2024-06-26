@@ -28,16 +28,16 @@
         /// </summary>
         private void InitializeComponent()
         {
-            ucSplit1 = new EpicV001Ctrls.UCSplit();
-            ucSplit2 = new EpicV001Ctrls.UCSplit();
-            txtSysCd = new EpicV001Ctrls.UCTextBox();
-            g10 = new EpicV001Ctrls.UCGridSet();
-            ucSplit3 = new EpicV001Ctrls.UCSplit();
-            ucTextBox1 = new EpicV001Ctrls.UCTextBox();
-            ucCodeBox1 = new EpicV001Ctrls.UCCodeBox();
-            ucSplit4 = new EpicV001Ctrls.UCSplit();
-            g20 = new EpicV001Ctrls.UCGridSet();
-            g30 = new EpicV001Ctrls.UCGridSet();
+            ucSplit1 = new EpicV003.Ctrls.UCSplit();
+            ucSplit2 = new EpicV003.Ctrls.UCSplit();
+            txtSysCd = new EpicV003.Ctrls.UCTextBox();
+            g10 = new EpicV003.Ctrls.UCGridSet();
+            ucSplit3 = new EpicV003.Ctrls.UCSplit();
+            ucTextBox1 = new EpicV003.Ctrls.UCTextBox();
+            ucCodeBox1 = new EpicV003.Ctrls.UCCodeBox();
+            ucSplit4 = new EpicV003.Ctrls.UCSplit();
+            g20 = new EpicV003.Ctrls.UCGridSet();
+            g30 = new EpicV003.Ctrls.UCGridSet();
             ((System.ComponentModel.ISupportInitialize)ucSplit1).BeginInit();
             ucSplit1.Panel1.SuspendLayout();
             ucSplit1.Panel2.SuspendLayout();
@@ -275,15 +275,15 @@
 
         #endregion
 
-        private EpicV001Ctrls.UCSplit ucSplit1;
-        private EpicV001Ctrls.UCSplit ucSplit2;
-        private EpicV001Ctrls.UCSplit ucSplit3;
-        private EpicV001Ctrls.UCSplit ucSplit4;
-        private EpicV001Ctrls.UCTextBox txtSysCd;
-        private EpicV001Ctrls.UCGridSet g10;
-        private EpicV001Ctrls.UCGridSet g20;
-        private EpicV001Ctrls.UCGridSet g30;
-        private EpicV001Ctrls.UCTextBox ucTextBox1;
-        private EpicV001Ctrls.UCCodeBox ucCodeBox1;
+        private EpicV003.Ctrls.UCSplit ucSplit1;
+        private EpicV003.Ctrls.UCSplit ucSplit2;
+        private EpicV003.Ctrls.UCSplit ucSplit3;
+        private EpicV003.Ctrls.UCSplit ucSplit4;
+        private EpicV003.Ctrls.UCTextBox txtSysCd;
+        private EpicV003.Ctrls.UCGridSet g10;
+        private EpicV003.Ctrls.UCGridSet g20;
+        private EpicV003.Ctrls.UCGridSet g30;
+        private EpicV003.Ctrls.UCTextBox ucTextBox1;
+        private EpicV003.Ctrls.UCCodeBox ucCodeBox1;
     }
 }
