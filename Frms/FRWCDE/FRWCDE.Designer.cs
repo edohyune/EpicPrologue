@@ -139,7 +139,7 @@ namespace Frms
             pnlCode.Size = new Size(544, 211);
             pnlCode.TabIndex = 0;
             pnlCode.Text = "Code Master";
-            pnlCode.CustomButtonClick += pnlCode_CustomButtonClick;
+            //pnlCode.CustomButtonClick += pnlCode_CustomButtonClick;
             // 
             // grdCde
             // 
@@ -147,6 +147,8 @@ namespace Frms
             grdCde.Dock = DockStyle.Fill;
             grdCde.FocuseRowIndex = int.MinValue;
             grdCde.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            grdCde.frmId = "Unknown";
+            grdCde.frwId = "";
             grdCde.Location = new Point(2, 23);
             grdCde.MultiSelect = false;
             grdCde.MultiSelectMode = DevExpress.XtraGrid.Views.Grid.GridMultiSelectMode.RowSelect;
@@ -156,7 +158,8 @@ namespace Frms
             grdCde.ShowGroupPanel = true;
             grdCde.Size = new Size(540, 186);
             grdCde.TabIndex = 0;
-            grdCde.UCFocusedRowChanged += grdCde_UCFocusedRowChanged;
+            grdCde.wrkId = "grdCde";
+            //grdCde.UCFocusedRowChanged += grdCde_UCFocusedRowChanged;
             // 
             // pnlReference
             // 
@@ -171,7 +174,7 @@ namespace Frms
             pnlReference.Size = new Size(252, 211);
             pnlReference.TabIndex = 1;
             pnlReference.Text = "Reference Field Config";
-            pnlReference.CustomButtonClick += pnlReference_CustomButtonClick;
+            //pnlReference.CustomButtonClick += pnlReference_CustomButtonClick;
             // 
             // grdRef
             // 
@@ -179,6 +182,8 @@ namespace Frms
             grdRef.Dock = DockStyle.Fill;
             grdRef.FocuseRowIndex = int.MinValue;
             grdRef.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            grdRef.frmId = "Unknown";
+            grdRef.frwId = "";
             grdRef.Location = new Point(2, 23);
             grdRef.MultiSelect = false;
             grdRef.MultiSelectMode = DevExpress.XtraGrid.Views.Grid.GridMultiSelectMode.RowSelect;
@@ -188,6 +193,7 @@ namespace Frms
             grdRef.ShowGroupPanel = true;
             grdRef.Size = new Size(248, 186);
             grdRef.TabIndex = 1;
+            grdRef.wrkId = "grdRef";
             // 
             // ucTab1
             // 
@@ -220,13 +226,16 @@ namespace Frms
             pnlCodeDetail.Size = new Size(798, 334);
             pnlCodeDetail.TabIndex = 1;
             pnlCodeDetail.Text = "Code Detail";
-            pnlCodeDetail.CustomButtonClick += pnlCodeDetail_CustomButtonClick;
+            //pnlCodeDetail.CustomButtonClick += pnlCodeDetail_CustomButtonClick;
             // 
             // grdDtl
             // 
             grdDtl.ColumnAutoWidth = true;
             grdDtl.Dock = DockStyle.Fill;
             grdDtl.FocuseRowIndex = int.MinValue;
+            grdDtl.Font = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            grdDtl.frmId = "Unknown";
+            grdDtl.frwId = "";
             grdDtl.Location = new Point(2, 23);
             grdDtl.MultiSelect = false;
             grdDtl.MultiSelectMode = DevExpress.XtraGrid.Views.Grid.GridMultiSelectMode.RowSelect;
@@ -237,12 +246,13 @@ namespace Frms
             grdDtl.Size = new Size(794, 309);
             grdDtl.TabIndex = 0;
             grdDtl.UseEmbeddedNavigator = true;
+            grdDtl.wrkId = "grdDtl";
             // 
             // xtraTabPage2
             // 
             xtraTabPage2.Controls.Add(ucSplit3);
             xtraTabPage2.Name = "xtraTabPage2";
-            xtraTabPage2.Size = new Size(798, 332);
+            xtraTabPage2.Size = new Size(798, 334);
             xtraTabPage2.TabPageWidth = 95;
             xtraTabPage2.Text = "LookUp";
             // 
@@ -255,7 +265,7 @@ namespace Frms
             // ucSplit3.Panel1
             // 
             ucSplit3.Panel1.Controls.Add(ucTab2);
-            ucSplit3.Size = new Size(798, 332);
+            ucSplit3.Size = new Size(798, 334);
             ucSplit3.SplitterDistance = 266;
             ucSplit3.TabIndex = 0;
             ucSplit3.TitleWidth = 50;
@@ -266,21 +276,21 @@ namespace Frms
             ucTab2.Location = new Point(0, 0);
             ucTab2.Name = "ucTab2";
             ucTab2.SelectedTabPage = xtraTabPage4;
-            ucTab2.Size = new Size(266, 332);
+            ucTab2.Size = new Size(266, 334);
             ucTab2.TabIndex = 0;
             ucTab2.TabPages.AddRange(new DevExpress.XtraTab.XtraTabPage[] { xtraTabPage3, xtraTabPage4, xtraTabPage5 });
             // 
             // xtraTabPage4
             // 
             xtraTabPage4.Name = "xtraTabPage4";
-            xtraTabPage4.Size = new Size(264, 307);
+            xtraTabPage4.Size = new Size(264, 309);
             xtraTabPage4.Text = "Get";
             // 
             // xtraTabPage3
             // 
             xtraTabPage3.Controls.Add(pnlSelect);
             xtraTabPage3.Name = "xtraTabPage3";
-            xtraTabPage3.Size = new Size(264, 307);
+            xtraTabPage3.Size = new Size(264, 309);
             xtraTabPage3.Text = "SQL";
             // 
             // pnlSelect
@@ -292,13 +302,13 @@ namespace Frms
             pnlSelect.Location = new Point(0, 0);
             pnlSelect.Name = "pnlSelect";
             pnlSelect.ShowYn = true;
-            pnlSelect.Size = new Size(264, 307);
+            pnlSelect.Size = new Size(264, 309);
             pnlSelect.TabIndex = 2;
             // 
             // xtraTabPage5
             // 
             xtraTabPage5.Name = "xtraTabPage5";
-            xtraTabPage5.Size = new Size(264, 307);
+            xtraTabPage5.Size = new Size(264, 309);
             xtraTabPage5.Text = "Set";
             // 
             // FRWCDE

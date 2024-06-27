@@ -46,6 +46,7 @@ namespace GAIA
             //menuCtrl.VisibleChanged += new EventHandler(menuCtrl_VisibleChanged);
             //msgCtrl.VisibleChanged += new EventHandler(msgCtrl_VisibleChanged);
             ucTab1.VisibleChanged += new EventHandler(ucTab1_VisibleChanged);
+
             Common.gMsgChanged += new EventHandler(AddGAIAMsg);
             Common.gLogChanged += new EventHandler(AddGAIALog);
 
@@ -157,7 +158,7 @@ namespace GAIA
 
         private void OpenFrm(FrwFrm frm)
         {
-            string frmFullPath = $"{frm.FilePath}\\{frm.FileNm}"; //@"C:\path\to\your\file.txt";
+            string frmFullPath = $"{Common.GetValue("gFrameWorkRoot")}\\{frm.FilePath}\\{frm.FileNm}"; //@"C:\path\to\your\file.txt";
 
             if (File.Exists(frmFullPath))
             {
@@ -177,12 +178,12 @@ namespace GAIA
 
                 fb.Show();
 
-                // 폼이 표시된 후에 탭 페이지 활성화 (FrmBase에 구현)
-                if (ucform is FrmBase frmBase)
-                {
-                    frmBase.ActivateAllTabsOnLoad = true;
-                    frmBase.ActivateAllTabs();
-                }
+                //// 폼이 표시된 후에 탭 페이지 활성화 (FrmBase에 구현)
+                //if (ucform is FrmBase frmBase)
+                //{
+                //    frmBase.ActivateAllTabsOnLoad = true;
+                //    frmBase.ActivateAllTabs();
+                //}
             }
             else
             {
@@ -325,5 +326,20 @@ namespace GAIA
             this.barStaticItemSite.Width = (int)(this.Width * 0.1);
             this.barStaticItemTime.Width = (int)(this.Width * 0.2);
         }
+        #region Form Closing ------------------------------------------------------------------
+        private void xtraTabbedMdiManager_PageRemoved(object sender, DevExpress.XtraTabbedMdi.MdiTabPageEventArgs e)
+        {
+            Form form = e.Page.MdiChild as Form;
+            if (form != null)
+            {
+                HandleTabClosing(form);
+            }
+        }
+
+        private void HandleTabClosing(Form form)
+        {
+            form.Dispose();
+        }
+        #endregion
     }
 }

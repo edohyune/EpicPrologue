@@ -36,11 +36,20 @@ namespace GAIA
         {
             if (Common.gTrackLog)
             {
-                this.Invoke((MethodInvoker)delegate
+                if (this.IsHandleCreated)
                 {
-                    this.logCtrl.AppendText(DateTime.Now.ToLongTimeString() + Environment.NewLine);
-                    this.logCtrl.AppendText(log + Environment.NewLine);
-                });
+                    this.Invoke((MethodInvoker)delegate
+                    {
+                        this.logCtrl.AppendText(DateTime.Now.ToLongTimeString() + Environment.NewLine);
+                        this.logCtrl.AppendText(log + Environment.NewLine);
+                    });
+                }
+                else
+                {
+                    return;
+                    // Handle the case where the control's handle is not created yet
+                    // Maybe queue the log or handle differently
+                }
             }
         }
 

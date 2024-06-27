@@ -65,9 +65,19 @@ namespace GAIA
             Form? form = this.FindForm();
             frmId = form != null ? form.Name : "Unknown";
 
+            Common.gLog = $"Form Load : {frwId}.{frmId}";
+
             if (!string.IsNullOrEmpty(frwId))
             {
                 ResetWorkSet();
+            }
+
+            foreach (Control control in this.Controls)
+            {
+                if (control is UCGridSet gridSet)
+                {
+                    gridSet.ParentForm = this.FindForm();
+                }
             }
         }
 
@@ -205,20 +215,19 @@ namespace GAIA
             if (changedWorkSet == null)
                 return;
 
+            Common.gLog = $"오픈 트리거 {changedWorkSet.wrkId}의 변경이 감지되었습니다.";
+
             // 자신의 그리드를 Get하는 워크셋 목록을 가져옵니다.
             WrkGetRepo wrkGetRepo = new WrkGetRepo();
             var pullWrks = wrkGetRepo.GetPullWrks(changedWorkSet.frwId, changedWorkSet.frmId, changedWorkSet.wrkId);
 
             foreach (var wrkSet in pullWrks)
             {
-                if (wrkSet.WrkId == changedWorkSet.wrkId)
-                {
-                    var fieldSet = fieldSets.Find(fs => fs.wrkId == wrkSet.WrkId);
-                    fieldSet?.Open();
+                var fieldSet = fieldSets.Find(fs => fs.wrkId == wrkSet.WrkId);
+                fieldSet?.Open();
 
-                    var gridSet = gridSets.Find(gs => gs.wrkId == wrkSet.WrkId);
-                    gridSet?.Open();
-                }
+                var gridSet = gridSets.Find(gs => gs.wrkId == wrkSet.WrkId);
+                gridSet?.Open();
             }
         }
 

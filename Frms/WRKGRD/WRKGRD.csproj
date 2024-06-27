@@ -14,7 +14,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Ctrls\EpicV003.Ctrls\Ctrls.csproj" />
+    <ProjectReference Include="..\..\EpicV003\Ctrls\Ctrls.csproj" />
+    <ProjectReference Include="..\..\EpicV003\Lib\Lib.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -56,6 +57,9 @@
     </Reference>
     <Reference Include="DevExpress.XtraRichEdit.v23.2">
       <HintPath>C:\Program Files\DevExpress 23.2\Components\Bin\Framework\DevExpress.XtraRichEdit.v23.2.dll</HintPath>
+    </Reference>
+    <Reference Include="GAIABaseDesigner">
+      <HintPath>..\..\FromMain\bin\Debug\net8.0-windows\GAIABaseDesigner.dll</HintPath>
     </Reference>
   </ItemGroup>
 

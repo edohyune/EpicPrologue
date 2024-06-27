@@ -10,6 +10,28 @@ namespace EpicV003.Ctrls
         private string frmId { get; set; }
         private string thisNm { get; set; }
 
+        [Category("A UserController Property"), Description("Title")]
+        public string Title
+        {
+            get
+            {
+                string str = (this.Text == null) ? string.Empty : this.Text;
+                return str;
+            }
+            set
+            {
+                this.Text = value;
+            }
+        }
+        [Browsable(false)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public new string Text
+        {
+            get => base.Text;
+            set => base.Text = value;
+        }
+
         [Category("A UserController Property"), Description("Title Alignment")]
         public DevExpress.Utils.HorzAlignment TitleAlignment
         {
@@ -113,7 +135,7 @@ namespace EpicV003.Ctrls
             this.Appearance.Options.UseFont = true;
             this.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.Simple;
             this.Text = "UCButton";
-
+            this.Height = 21;
             HandleCreated += UCButton_HandleCreated;
         }
 
@@ -138,7 +160,7 @@ namespace EpicV003.Ctrls
                 var wrkFld = new WrkFldRepo().GetFldProperties(frwId, frmId, thisNm);
                 if (wrkFld != null)
                 {
-                    this.Text = wrkFld.FldTitle;
+                    this.Title = wrkFld.FldTitle;
                     this.ControlWidth = wrkFld.FldWidth;
                     this.ControlHeight = wrkFld.FldHeight;
                     this.ShowYn = wrkFld.ShowYn;

@@ -217,7 +217,7 @@ select a.FrwId, a.FrmId, a.WrkId, a.CtrlNm, a.WrkNm,
  where 1=1
    and a.FrwId = @FrwId
    and a.FrmId = @FrmId
-   and a.StratYn = true
+   and a.StartYn = 1
  order by a.OpenSq
 ";
             using (var db = new Lib.GaiaHelper())

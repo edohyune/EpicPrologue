@@ -121,9 +121,7 @@ select a.FrwId, a.FrmId, a.WrkId, a.FldNm, a.GetWrkId,
         public List<WrkGet> GetPullWrks(string frwId, string frmId, string wrkId)
         {
             string sql = @"
-select a.FrwId, a.FrmId, a.WrkId, a.FldNm, a.GetWrkId,
-       a.GetFldNm, a.GetDefalueValue, a.SqlId, a.Id, a.PId,
-       a.CId, a.CDt, a.MId, a.MDt
+select distinct a.WrkId
   from WRKGET a
  where 1=1
    and a.FrwId = @FrwId
@@ -136,14 +134,10 @@ select a.FrwId, a.FrmId, a.WrkId, a.FldNm, a.GetWrkId,
 
                 if (result == null)
                 {
-                    throw new KeyNotFoundException($"A record with the code {frwId},{frmId},{wrkId} was not found.");
+                    return null;
                 }
                 else
                 {
-                    foreach (var item in result)
-                    {
-                        item.ChangedFlag = MdlState.None;
-                    }
                     return result;
                 }
             }

@@ -12,18 +12,8 @@ using System.Data;
 using System.ComponentModel;
 using EpicV003.Lib;
 using EpicV003.Lib.Repo;
-using DevExpress.XtraGrid.Views.Grid.ViewInfo;
-using DevExpress.Charts.Native;
-using DevExpress.XtraRichEdit.Model;
-using System.Windows.Documents;
-using DevExpress.XtraVerticalGrid;
-using System.Windows.Forms;
-using DevExpress.XtraEditors.Senders;
 using System.Reflection;
-using System.Collections;
-using DevExpress.XtraSpreadsheet.DocumentFormats.Xlsb;
 using System.Windows.Controls;
-using DevExpress.Data.ChartDataSources;
 
 namespace EpicV003.Ctrls
 {
@@ -38,13 +28,19 @@ namespace EpicV003.Ctrls
         public string frwId { get; set; }
         [Browsable(false)]
         public string frmId { get; set; }
-
-        [Browsable(false)]
-        private string nmSpace { get; set; }
-        [Browsable(false)]
         public string wrkId { get; set; }
-        private WrkFldRepo wrkFldRepo { get; set; }
-        private List<WrkFld> wrkFlds { get; set; }
+
+        private Form parentForm;
+        [Browsable(false)]
+        public Form ParentForm
+        {
+            get => parentForm ?? this.FindForm();
+            set => parentForm = value;
+        }
+        private string nmSpace;
+        [Browsable(false)]
+        private WrkFldRepo wrkFldRepo;
+        private List<WrkFld> wrkFlds;
         #endregion
         #region Properties Browseable(true) -----------------------------------------------------------
         [EditorBrowsable(EditorBrowsableState.Always)]
@@ -339,6 +335,7 @@ namespace EpicV003.Ctrls
             var focusedRow = gvCtrl.GetRow(e.FocusedRowHandle);
             if (focusedRow != null)
             {
+                Common.gLog = $"포커스 인덱스({e.PrevFocusedRowHandle})에서 ({e.FocusedRowHandle})로 이동하여 OnDataChanged처리합니다.";
                 var newValue = focusedRow; // 전체 행 객체를 값으로 설정할 수 있습니다.
                 OnDataChanged(new Lib.DataChangedEventArgs("FocusedRowChanged", newValue));
             }
@@ -385,7 +382,7 @@ namespace EpicV003.Ctrls
 
         private object OSearchParam;
         private DynamicParameters DSearchParam;
-        private bool ColumnsInitYn = false;
+        private DevExpress.Utils.ImageCollection imageCollection1;
 
         public UCGridSet()
         {
@@ -407,15 +404,67 @@ namespace EpicV003.Ctrls
             // 클립보드 관련 이벤트 핸들러 추가
             this.gvCtrl.KeyDown += gvCtrl_KeyDown;
             this.EmbeddedNavigator.ButtonClick += gcCtrls_EmbeddedNavigator_ButtonClick;
+
+            #region RowIndicator 이미지 처리 ---------------------------------------------------------------
+            // 이미지 컬렉션 초기화
+            imageCollection1 = new DevExpress.Utils.ImageCollection();
+            imageCollection1.AddImage(DevExpress.Images.ImageResourceCache.Default.GetImage("grayscaleimages/save/saveandnew_16x16.png"), "Inserted");
+            imageCollection1.AddImage(DevExpress.Images.ImageResourceCache.Default.GetImage("grayscaleimages/save/saveas_16x16.png"), "Updated");
+            //gvCtrl.CustomDrawRowIndicator += gvCtrl_CustomDrawRowIndicator;
+            gvCtrl.CustomDrawRowIndicator += (sender, e) =>
+            {
+                if (e.Info.IsRowIndicator && e.RowHandle >= 0)
+                {
+                    MdlState mdlState = (MdlState)gvCtrl.GetRowCellValue(e.RowHandle, "ChangedFlag");
+
+                    if (mdlState == MdlState.Inserted || mdlState == MdlState.Updated)
+                    {
+                        e.Handled = true;
+                        e.DefaultDraw();
+                        System.Drawing.Image image = mdlState == MdlState.Inserted ? imageCollection1.Images[1] : imageCollection1.Images[0];
+                        Rectangle rect = e.Bounds;
+
+                        int imageSize = 12; // 이미지 크기 설정
+                        int x = rect.X + (rect.Width - imageSize) / 2;
+                        int y = rect.Y + (rect.Height - imageSize) / 2;
+
+                        e.Graphics.DrawImage(image, x, y, imageSize, imageSize);
+                    }
+                }
+            };
+            #endregion
         }
+
+        //private void gvCtrl_CustomDrawRowIndicator(object sender, RowIndicatorCustomDrawEventArgs e)
+        //{
+        //    if (e.Info.IsRowIndicator && e.RowHandle >= 0)
+        //    {
+        //        MdlState mdlState = (MdlState)gvCtrl.GetRowCellValue(e.RowHandle, "ChangedFlag");
+
+        //        if (mdlState == MdlState.Inserted || mdlState == MdlState.Updated)
+        //        {
+        //            e.Handled = true;
+        //            e.DefaultDraw();
+        //            System.Drawing.Image image = mdlState == MdlState.Inserted ? imageCollection1.Images[1] : imageCollection1.Images[0];
+        //            Rectangle rect = e.Bounds;
+
+        //            int imageSize = 12; // 이미지 크기 설정
+        //            int x = rect.X + (rect.Width - imageSize) / 2;
+        //            int y = rect.Y + (rect.Height - imageSize) / 2;
+
+        //            e.Graphics.DrawImage(image, x, y, imageSize, imageSize);
+        //        }
+        //    }
+        //}
 
         private void UCGridSet_Load(object? sender, EventArgs e)
         {
             frwId = Common.GetValue("gFrameWorkId");
-
+            
             Form? form = this.FindForm();
             if (form != null)
             {
+                parentForm = form;
                 frmId = form.Name;
             }
             else
@@ -537,7 +586,8 @@ namespace EpicV003.Ctrls
 
             foreach (var wrkGet in wrkGets)
             {
-                string value = GetParamValue(this.FindForm().Controls, wrkGet);
+                string value = GetParamValue(ParentForm.Controls, wrkGet);
+                //string value = GetParamValue(this.FindForm().Controls, wrkGet);
                 DSearchParam.Add(wrkGet.FldNm, value);
             }
             OpenWrk<T>();
@@ -548,8 +598,8 @@ namespace EpicV003.Ctrls
             this.DataSource = null;
             //1. GridControl Configuration  GridDefine(); 위에서 이미처리 해서 생략
             //2. Grid Column Configuration
-            if (!ColumnsInitYn)
-            {
+            //if (!ColumnsInitYn)
+            //{
                 gvCtrl.Columns.Clear();
                 try
                 {
@@ -563,7 +613,7 @@ namespace EpicV003.Ctrls
                             AddGridColumn(gvCtrl, GetGridColumn(column) as GridColumn);
                         }
                         gvCtrl.RefreshData();
-                        ColumnsInitYn = true;  // 컬럼이 초기화되었음을 플래그로 표시
+                        //ColumnsInitYn = true;  // 컬럼이 초기화되었음을 플래그로 표시
                     }
 
                     //3. Data Source Binding
@@ -604,7 +654,7 @@ namespace EpicV003.Ctrls
                     Common.gMsg = $"-- End Exception ---------------------------";
                     return;
                 }
-            }
+            //}
         }
         #endregion
         #region Save - Save Data ----------------------------------------------------------------------
@@ -679,10 +729,6 @@ namespace EpicV003.Ctrls
                 }
                 //OnSaveCompleted(); 저장후 처리할 이벤트를 발동 시킬수 있음 - Documemt개체와 연동하여 처리할 수 있음
             }
-        }
-        public void Save<T>(List<T> dataList)
-        {
-        
         }
 
         private string GetOperation(MdlState state)

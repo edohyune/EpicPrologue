@@ -1,4 +1,6 @@
-﻿namespace GAIA
+﻿using DevExpress.XtraEditors.ButtonsPanelControl;
+
+namespace GAIA
 {
     partial class FormMain
     {
@@ -41,6 +43,7 @@
             barBtnDelete = new DevExpress.XtraBars.BarButtonItem();
             barBtnTemplate = new DevExpress.XtraBars.BarButtonItem();
             barButtonItem5 = new DevExpress.XtraBars.BarButtonItem();
+            barBtnConfiguration = new DevExpress.XtraBars.BarButtonItem();
             bar3 = new DevExpress.XtraBars.Bar();
             barMdiChildrenListItem1 = new DevExpress.XtraBars.BarMdiChildrenListItem();
             barStaticItemMsg = new DevExpress.XtraBars.BarStaticItem();
@@ -64,7 +67,6 @@
             ucTab1 = new EpicV003.Ctrls.UCTab();
             xtraTabPage1 = new DevExpress.XtraTab.XtraTabPage();
             xtraTabPage2 = new DevExpress.XtraTab.XtraTabPage();
-            barBtnConfiguration = new DevExpress.XtraBars.BarButtonItem();
             ((System.ComponentModel.ISupportInitialize)barManager1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)cmbForm.Properties).BeginInit();
             ((System.ComponentModel.ISupportInitialize)msgCtrl.Properties).BeginInit();
@@ -158,6 +160,15 @@
             // 
             barButtonItem5.Id = 8;
             barButtonItem5.Name = "barButtonItem5";
+            // 
+            // barBtnConfiguration
+            // 
+            barBtnConfiguration.Caption = "Configuration";
+            barBtnConfiguration.Id = 15;
+            barBtnConfiguration.ImageOptions.SvgImage = (DevExpress.Utils.Svg.SvgImage)resources.GetObject("barBtnConfiguration.ImageOptions.SvgImage");
+            barBtnConfiguration.Name = "barBtnConfiguration";
+            barBtnConfiguration.PaintStyle = DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph;
+            barBtnConfiguration.ItemClick += barBtnConfiguration_ItemClick;
             // 
             // bar3
             // 
@@ -303,6 +314,7 @@
             // 
             xtraTabbedMdiManager.MdiParent = this;
             xtraTabbedMdiManager.SelectedPageChanged += xtraTabbedMdiManager_SelectedPageChanged;
+            xtraTabbedMdiManager.PageRemoved += xtraTabbedMdiManager_PageRemoved;
             // 
             // ucPanel1
             // 
@@ -345,15 +357,6 @@
             xtraTabPage2.Size = new System.Drawing.Size(268, 795);
             xtraTabPage2.TabPageWidth = 120;
             xtraTabPage2.Text = "Message";
-            // 
-            // barBtnConfiguration
-            // 
-            barBtnConfiguration.Caption = "Configuration";
-            barBtnConfiguration.Id = 15;
-            barBtnConfiguration.ImageOptions.SvgImage = (DevExpress.Utils.Svg.SvgImage)resources.GetObject("barButtonItem1.ImageOptions.SvgImage");
-            barBtnConfiguration.Name = "barBtnConfiguration";
-            barBtnConfiguration.PaintStyle = DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph;
-            barBtnConfiguration.ItemClick += barBtnConfiguration_ItemClick;
             // 
             // FormMain
             // 

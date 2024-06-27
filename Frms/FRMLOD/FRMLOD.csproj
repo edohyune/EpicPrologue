@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Library</OutputType>
@@ -14,8 +14,16 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Ctrls\EpicV003.Ctrls\Ctrls.csproj" />
+    <ProjectReference Include="..\..\EpicV003\Ctrls\Ctrls.csproj" />
+    <ProjectReference Include="..\..\EpicV003\Lib\Lib.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="GAIABaseDesigner">
+      <HintPath>..\..\FromMain\bin\Debug\net8.0-windows\GAIABaseDesigner.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 
   <ItemGroup>
     <Compile Update="Properties\Resources.Designer.cs">

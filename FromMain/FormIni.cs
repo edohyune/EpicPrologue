@@ -1,19 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using EpicV003.Lib.Repo;
 using EpicV003.Lib;
-using DevExpress.XtraGrid;
-using DevExpress.Data.ODataLinq;
-using DevExpress.XtraVerticalGrid;
-using DevExpress.XtraEditors.Repository;
-using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraGrid.Views.Grid;
 
 namespace FormMain
